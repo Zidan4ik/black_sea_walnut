@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.*;
-import org.hibernate.bytecode.enhance.spi.interceptor.AbstractLazyLoadInterceptor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,4 +45,6 @@ public class User {
     private Manager manager;
     @OneToMany
     private List<Order> orders;
+    @OneToOne
+    private Basket basket;
 }

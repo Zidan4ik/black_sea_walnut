@@ -11,6 +11,7 @@ import org.example.black_sea_walnut.enums.OrderStatus;
 import org.example.black_sea_walnut.enums.Region;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -40,4 +41,8 @@ public class Order {
     private String addressDelivery;
     private int summaWithoutDiscount;
     private int summaWithDiscount;
+    @OneToMany
+    private List<OrderDetail> orderDetails;
+    @ManyToMany
+    private List<DeliveryPrice> deliveryPrices;
 }

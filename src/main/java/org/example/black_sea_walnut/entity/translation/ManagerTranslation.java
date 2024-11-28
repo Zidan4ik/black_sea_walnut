@@ -13,7 +13,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ManagerTranslations {
+public class ManagerTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
