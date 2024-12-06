@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Black sea walnut</title>
+    <!--    <link th:href="@{/summernote/summernote-bs5.css}" rel="stylesheet">-->
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <style>
+        .nav-tabs .nav-item {
+            flex: 0 0 auto;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .nav-link.active {
+            background: none !important;
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            color: #334A2E !important;
+            box-shadow: 0 -2px 0 #334A2E inset;
+        }
+
+        /*.nav-tabs {*/
+        /*    --bs-nav-tabs-link-active-color*/
+        /*}*/
+
+        .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus {
+            box-shadow: 0 -2px 0 #334A2E inset;
+        }
+
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+            color: #334A2E;
+        }
+
+        .btn-image {
+            position: absolute;
+            top: 19%;
+            width: 30%;
+            height: 45px;
+            background: #337D5A;
+            border: #337D5A;
+            border-radius: 0;
+            box-shadow: none !important;
+        }
+
+        #edit {
+            min-height: 100px; /* Мінімальна висота */
+            max-width: 100%; /* Контейнер займає всю доступну ширину */
+            overflow-wrap: break-word; /* Перенос слів, які перевищують ширину */
+            word-wrap: break-word; /* Для сумісності зі старими браузерами */
+            word-break: break-word; /* Дозволяє розривати слова */
+            white-space: normal; /* Дозволяє тексту переноситися на наступний рядок */
+            overflow-x: hidden; /* Запобігає горизонтальному скролу */
+        }
+
+        #edit > * {
+            max-width: 100%; /* Дочірні елементи не виходять за межі контейнера */
+            box-sizing: border-box; /* Ураховує padding і border у розмірах */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+
+        <!-- Header content -->
+        <div class="row">
+            <div class="col-auto text-center d-flex align-items-center">
+                <a th:href="@{/admin/news}"><i class="ti ti-arrow-left" style="color: green;font-size: 30px;"></i></a>
+            </div>
+            <div class="col-auto text-start d-flex align-items-center">
+                <span class="title-out">Центр підтримки експорту</span>
+            </div>
+            <div class="col-sm-1 d-flex align-items-center">
+                <label class="switch switch-success">
+                    <input type="checkbox" class="switch-input"/>
+                    <span class="switch-toggle-slider">
+                        <span class="switch-on"></span>
+                        <span class="switch-off"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+        <!--/ Header content -->
+
+        <div class="nav-align-top">
+            <ul class="nav nav-tabs" role="tablist" style="background: none;">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" data-bs-toggle="tab"
+                            data-bs-target="#navs-ua" aria-controls="navs-ua" aria-selected="true"
+                            style="margin-left: 15px;"
+                            data-lang="ua">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UA
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" data-bs-toggle="tab"
+                            data-bs-target="#navs-eng" aria-controls="navs-eng" aria-selected="false"
+                            data-lang="eng">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>ENG
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+
+            <!-- UA TAB -->
+            <div class="tab-pane fade show active" id="navs-ua" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div id="image-block-ua" class="col-12 col-sm-4 mb-3"
+                         style="text-align: center; position: relative; display: inline-block;">
+                    </div>
+                    <div class="col-12 col-sm-8 mb-3">
+                        <div class="mb-3">
+                            <label for="title-ua" class="form-label" style="color: darkgrey; font-size: large;">
+                                Заголовок:</label>
+                            <input type="text" class="form-control" id="title-ua"
+                                   placeholder="Центр підтримки експорту"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description_ua" class="form-label"
+                                   style="color: darkgrey; font-size: large;">
+                                Опис:</label>
+                            <div id="description_ua" style="min-height: 100px; border: 1px solid #ccc;"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 mb-3 text-center">
+                        <label for="date-of-publication_" class="form-label"
+                               style="display: block; margin-bottom: 5px;">
+                            Дата публікування:
+                        </label>
+                        <div id="date-of-publication-block-ua" class="input-group input-group-merge"
+                             style="width:20%; justify-content: center; display: inline-flex;">
+                        </div>
+                    </div>
+                    <div id="save-block-ua" class="col-12 col-sm-12 mb-3 text-center">
+                    </div>
+                </div>
+            </div>
+            <!--/ UA TAB -->
+
+            <!-- ENG TAB -->
+            <div class="tab-pane fade mb-5" id="navs-eng" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div id="image-block-eng" class="col-12 col-sm-4 mb-3"
+                         style="text-align: center; position: relative; display: inline-block;">
+                    </div>
+                    <div class="col-12 col-sm-8 mb-3">
+                        <div class="mb-3">
+                            <label for="title_eng" class="form-label" style="color: darkgrey; font-size: large;">
+                                Title:</label>
+                            <input type="text" class="form-control" id="title_eng" placeholder="Export Support Center"
+                                   aria-describedby="defaultFormControlHelp"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description_eng" class="form-label"
+                                   style="color: darkgrey; font-size: large;">
+                                Description:</label>
+                            <div id="description_eng" style="min-height: 100px; border: 1px solid #ccc;"></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 mb-3 text-center">
+                        <label for="date-of-publication_" class="form-label"
+                               style="display: block; margin-bottom: 5px;">
+                            Date of publication:
+                        </label>
+                        <div id="date-of-publication-block-eng" class="input-group input-group-merge"
+                             style="width:20%; justify-content: center; display: inline-flex;">
+                        </div>
+                    </div>
+                    <div id="save-block-eng" class="col-12 col-sm-12 mb-3 text-center">
+                    </div>
+                </div>
+            </div>
+            <!--/ ENG TAB -->
+
+            <!-- Image Base -->
+            <div id="shared-image" class="shared-image" style="display: none;">
+                <div class="text-center" style="position: relative; display: inline-block;">
+                    <img id="img_"
+                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                         alt="error"
+                         style="width: 345px; height: 304px; display: block; margin: 0 auto;">
+                    <button id="btn-select_" class="btn btn-success btn-image" style="left: 13%;">
+                        Змінити
+                    </button>
+                    <button id="btn-delete_" class="btn btn-success btn-image" style="right: 13%;">
+                        Видалити
+                    </button>
+                    <input type="file" id="file-input_" accept="image/*" style="display: none;">
+                    <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;">
+                        png, jpg, jpeg, mp4 до 15 МБ
+                    </span>
+                </div>
+            </div>
+            <!--/ Image Base -->
+
+            <!-- Date of publication Base -->
+            <div id="shared-date" style="display: none;">
+                <input type="text" class="form-control" id="date-of-publication_"
+                       placeholder="dd.mm.yyyy" name="dateOfPublication"/>
+                        <span class="input-group-text" onclick="focusInput('date-of-publication_')">
+                                <i class="ti ti-calendar"></i>
+                        </span>
+            </div>
+            <!--/ Date of publication Base -->
+
+            <!-- Button save Base -->
+            <div id="shared-save" style="display: none;">
+                <button class="btn btn-green" type="button" id="btn-save" style="width: 25%;">Зберегти</button>
+            </div>
+            <!--/ Button save Base -->
+
+            <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+            <script th:src='@{/froala_editor/js/languages/uk.js}'></script>
+            <script th:src="@{/js/image.js}"></script>
+
+            <script>
+                var currentElement = null;
+                var editor_ua = new FroalaEditor('#description_ua', {
+                    height: 12 * 20,
+                    events: {
+                        'html.get': function (html) {
+                            // console.log(html);
+                            if (this.undo_stack.length > 0) {
+                                // currentElement = this.undo_stack.at(-1).html;
+                                currentElement = html;
+                            }
+                        }
+                    }
+                });
+                var editor_eng = new FroalaEditor('#description_eng', {
+                    height: 12 * 20,
+                    events: {
+                        'html.get': function (html) {
+                            console.log(html);
+                            if (this.undo_stack.length > 0) {
+                                currentElement = html;
+                            }
+                        }
+                    }
+                });
+
+                document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                    tab.addEventListener('shown.bs.tab', function (event) {
+                        const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
+                        let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+
+                        console.log(`Switched to tab: ${activatedTabId}`);
+
+                        if (previousActiveTab) {
+                            console.log(`Previous tab was: `, previousActiveTab);
+                            copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
+                            copyHTMLBlockDate(`date-of-publication-block-${previousActiveTab}`, 'shared-date');
+                            copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
+                        }
+
+                        if (activatedTabId) {
+                            console.log(`Active tab is: `, activatedTabId);
+                            copyHTMLBlockImage('shared-image', `image-block-${activatedTabId}`);
+                            copyHTMLBlockDate('shared-date', `date-of-publication-block-${activatedTabId}`);
+                            copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
+                        }
+                    });
+                });
+            </script>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let activeLang = getActiveLangTab();
+                    console.log(activeLang);
+                    copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
+                    copyHTMLBlockDate('shared-date', `date-of-publication-block-${activeLang}`);
+                    copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
+                });
+
+                function getActiveLangTab() {
+                    return document.querySelector('button.nav-link.active').getAttribute('data-lang');
+                }
+
+                function copyHTMLBlockImage(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    addEventListenersImage();
+                    clearBlock(fromElementId);
+                }
+
+                function copyHTMLBlockDate(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    $("#date-of-publication_").datepicker({
+                        format: "dd.mm.yyyy"
+                    });
+                    clearBlock(fromElementId);
+                }
+
+                function copyHTMLBlockSave(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    clearBlock(fromElementId);
+                }
+
+                function clearBlock(elementId) {
+                    $(`#${elementId}`).empty();
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<!--/ Content -->
+
+</body>
+</html>

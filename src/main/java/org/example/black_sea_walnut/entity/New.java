@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.enums.MediaType;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,9 +22,9 @@ public class New {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean isActive;
-    private LocalDateTime timeUpdate;
+    private LocalDate dateOfPublication;
     private String pathToMedia;
     private MediaType mediaType;
-    @OneToMany
+    @OneToMany(mappedBy = "new_",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<NewTranslation> translations;
 }

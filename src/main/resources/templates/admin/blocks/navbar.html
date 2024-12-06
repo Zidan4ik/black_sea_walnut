@@ -1,0 +1,42 @@
+<div th:fragment="navbar" style="margin-bottom: 1px;border-bottom: 1px solid #334A2E">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-succes">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbar-ex-7">
+                <div class="navbar-nav me-auto">
+                    <div class="btn-group">
+                        <button type="button" class="dropdown-toggle hide-arrow" data-bs-toggle="dropdown"
+                                style="all: unset; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round"
+                                 class="icon icon-tabler icons-tabler-outline icon-tabler-language rounded-pill"
+                                 style="stroke: #334A2E;">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M4 5h7"/>
+                                <path d="M9 3v2c0 4.418 -2.239 8 -5 8"/>
+                                <path d="M5 9c0 2.144 2.952 3.908 6.7 4"/>
+                                <path d="M12 20l4 -9l4 9"/>
+                                <path d="M19.1 18h-6.2"/>
+                            </svg>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item button-dropdown" href="javascript:void(0);">EN</a></li>
+                            <li><a class="dropdown-item button-dropdown" href="javascript:void(0);">UK</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="btn-group dropstart">
+                    <button type="button" class="btn btn-logout btn-icon rounded-pill dropdown-toggle hide-arrow"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="ti ti-user-circle rounded-block"
+                           style="color: whitesmoke;font-size: xx-large;"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="button-dropdown-logout dropdown-item" href="javascript:void(0);">Вийти</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

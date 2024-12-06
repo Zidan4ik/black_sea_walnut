@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout=""
+      lang="en"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="/static/">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>News</title>
+
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/css/rtl/core.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/css/rtl/theme-default.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/fonts/tabler-icons.css}">
+
+<!--    <script src='/froala_editor/js/languages/en_ca.js'></script>-->
+    <link th:href="@{/froala_editor/css/froala_style.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/froala_editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" th:src="@{/froala_editor/js/froala_editor.pkgd.min.js}"></script>
+    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:inline="javascript">
+        const contextPath = '[[@{/}]]'.replaceAll("\"", "");
+        console.log(contextPath);
+    </script>
+    <style>
+        .active-buttonMy {
+            background: currentColor;
+        }
+
+        .btn-logout {
+            background: #334A2E;
+            border: #334A2E;
+        }
+
+        .btn-logout:hover {
+            background: #083b08 !important;
+        }
+
+        .btn-green {
+            background: #337D5A;
+            border: #337D5A;
+            color: white;
+        }
+
+        .btn-green:hover {
+            color: white;
+            background: #276046 !important;
+        }
+
+        .button-dropdown:hover{
+            background: rgba(108, 184, 108, 0.57) !important;
+            color: white;
+        }
+
+        .button-dropdown-logout:hover{
+            background: rgba(255, 36, 43, 0.57) !important;
+            color: white;
+        }
+
+        /* Стиль для кнопки, коли вона у стані активного спадного меню */
+        .btn-logout:focus,
+        .btn-logout[aria-expanded="true"] {
+            background: #083b08 !important; /* Залишає зелений колір при відкритті */
+            box-shadow: none; /* Видаляє будь-які тіні, які додає Bootstrap */
+        }
+
+        .title-out{
+            font-size: large;
+            font-weight: bold;
+            color: green;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+
+    <!-- Layout container -->
+    <div class="layout-container">
+        <!-- Menu -->
+        <th:block th:insert="admin/blocks/sidebar::sidebar"></th:block>
+        <!--/ Menu -->
+        <!-- Layout page -->
+        <div class="layout-page">
+            <!-- Navbar -->
+            <th:block th:insert="admin/blocks/navbar::navbar"></th:block>
+            <!--/ Navbar -->
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+                <div layout:fragment="content"></div>
+                <!--/ Content -->
+                <!-- Content area backdrop -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!--/ Content wrapper -->
+        </div>
+        <!--/ Layout page -->
+    </div>
+    <!--/ Layout container -->
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
+</div>
+<!--/ Layout wrapper -->
+
+<div layout:fragment="modal-content"></div>
+
+<div class="modal fade show" id="ModalForLogout" tabindex="-1" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center" style="font-size: 20px">
+                Are you sure you want to exit?
+            </div>
+            <div class="modal-footer">
+                <a th:href="@{/logout}" class="btn btn-danger float-end">Logout</a>
+                <button class="btn btn-secondary float-end" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function focusInput(inputId) {
+        const input = document.getElementById(inputId);
+        input.focus();
+        $(input).datepicker({
+            showOnFocus: true,
+            format: "dd.mm.yyyy"
+        });
+    }
+</script>
+<script th:src="@{/htmx/htmx.min.js}"></script>
+<script th:src="@{/vuexy/assets/vendor/js/helpers.js}"></script>
+<script th:src="@{/vuexy/assets/js/config.js}"></script>
+<script th:src="@{/vuexy/dist/js/bootstrap.js}"></script>
+<script th:src="@{/vuexy/assets/vendor/js/menu.js}"></script>
+<script th:src="@{/vuexy/assets/js/main.js}"></script>
+</body>
+</html>

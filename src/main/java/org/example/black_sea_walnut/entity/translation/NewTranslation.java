@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
 @Entity
@@ -20,4 +21,7 @@ public class NewTranslation {
     private LanguageCode languageCode;
     private String title;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "new_id")
+    private New new_;
 }
