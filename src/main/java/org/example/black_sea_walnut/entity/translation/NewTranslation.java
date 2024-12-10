@@ -24,4 +24,11 @@ public class NewTranslation {
     @ManyToOne
     @JoinColumn(name = "new_id")
     private New new_;
+
+    public NewTranslation(LanguageCode languageCode, String title, String description, New new_) {
+        this.languageCode = languageCode;
+        this.title = title;
+        this.description = description;
+        this.new_ = new_;
+    }
 }

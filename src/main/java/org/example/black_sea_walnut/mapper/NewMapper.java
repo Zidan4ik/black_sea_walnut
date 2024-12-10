@@ -35,28 +35,34 @@ public class NewMapper {
                 .build();
     }
 
-    public ResponseNewForAdd toDtoAdd(New entity, LanguageCode code) {
-        NewTranslation translation = entity.getTranslations()
-                .stream()
-                .filter(c -> c.getLanguageCode().equals(code))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Translation not found for language code: " + code));
+    public ResponseNewForAdd toDtoAdd(New entity) {
 
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDate parsedDate = LocalDate.parse(entity.getDateOfPublication().toString(), inputFormat);
 
-        return ResponseNewForAdd.builder()
+        ResponseNewForAdd builder = ResponseNewForAdd.builder()
                 .id(entity.getId())
-                .idTranslation(translation.getId())
-                .code(code)
                 .isActive(entity.isActive())
-                .title(translation.getTitle())
-                .description(translation.getDescription())
                 .mediaType(entity.getMediaType())
                 .pathToImage(entity.getPathToMedia())
                 .dateOfPublication(parsedDate.format(outputFormat))
                 .build();
+
+        for (NewTranslation t: entity.getTranslations()){
+            switch (t.getLanguageCode()){
+                case uk -> {
+                    builder.setTitleUA(t.getTitle());
+                    builder.setDescriptionUA(t.getDescription());
+                }
+                case en -> {
+                    builder.setTitleENG(t.getTitle());
+                    builder.setDescriptionENG(t.getDescription());
+                }
+            }
+        }
+
+        return builder;
     }
 
     public New toEntity(ResponseNewForAdd dto) {
@@ -66,16 +72,19 @@ public class NewMapper {
         new_.setMediaType(dto.getMediaType());
         new_.setPathToMedia(dto.getPathToImage());
 
-        NewTranslation translation = new NewTranslation(
-                dto.getId(), dto.getCode(), dto.getTitle(), dto.getDescription(), new_
+        NewTranslation translationUA = new NewTranslation(
+                LanguageCode.uk, dto.getTitleUA(), dto.getDescriptionUA(), new_
         );
-        new_.setTranslations(List.of(translation));
+        NewTranslation translationEN = new NewTranslation(
+                LanguageCode.en, dto.getTitleENG(), dto.getDescriptionENG(), new_
+        );
+        new_.setTranslations(List.of(translationUA,translationEN));
 
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate parsedDate = LocalDate.parse(dto.getDateOfPublication(), inputFormat);
 
-        dto.setDateOfPublication(parsedDate.format(outputFormat));
+        new_.setDateOfPublication(parsedDate);
         return new_;
     }
 }

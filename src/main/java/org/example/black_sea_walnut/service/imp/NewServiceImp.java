@@ -46,8 +46,8 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
-    public ResponseNewForAdd getByIdAndCodeInResponseAdd(Long id, LanguageCode code) {
-        return mapper.toDtoAdd(getById(id), code);
+    public ResponseNewForAdd getByIdAndCodeInResponseAdd(Long id) {
+        return mapper.toDtoAdd(getById(id));
     }
 
     @Override
@@ -58,17 +58,24 @@ public class NewServiceImp implements NewService {
     @Override
     @Transactional
     public New save(New entity) {
+        if (entity.getId() != null) {
+            New existingNew = getById(entity.getId());
+            existingNew.getTranslations().clear();
+            existingNew.getTranslations().addAll(entity.getTranslations());
+        }
         return newRepository.save(entity);
     }
 
     @Override
-    public New saveAsDto(ResponseNewForAdd dto) {
+    @Transactional
+    public New saveLikeDto(ResponseNewForAdd dto) {
         return save(mapper.toEntity(dto));
     }
 
     @Override
+    @Transactional
     public New saveImage(ResponseNewForAdd dto) throws IOException {
-//        LogUtil.logInfo("Saving new_ with file for ID: " + dtoAdd.getId());
+//        LogUtil.logInfo("Saving new with file for ID: " + dtoAdd.getId());
         if (dto.getId() != null) {
             New newById = getById(dto.getId());
             if (dto.getFile() != null && (newById.getPathToMedia() != null
@@ -79,14 +86,14 @@ public class NewServiceImp implements NewService {
         }
 
         if (dto.getFile() != null) {
-            String generatedPath = contextPath + "/service/" + dto.getMediaType().toString() + "/" + imageServiceImp.generateFileName(dto.getFile());
+            String generatedPath = contextPath + "/news/" + dto.getMediaType().toString() + "/" + imageServiceImp.generateFileName(dto.getFile());
             dto.setPathToImage(generatedPath);
 //            LogUtil.logInfo("Generated new path for image: " + generatedPath);
         }
-        New new_ = saveAsDto(dto);
-        imageServiceImp.save(dto.getFile(), new_.getPathToMedia());
-//        LogUtil.logInfo("Saved new_ with id: " + new_.getId() + " - " + new_);
-        return new_;
+        New entity = saveLikeDto(dto);
+        imageServiceImp.save(dto.getFile(), entity.getPathToMedia());
+//        LogUtil.logInfo("Saved new with id: " + entity.getId() + " - " + new);
+        return entity;
     }
 
     @Override

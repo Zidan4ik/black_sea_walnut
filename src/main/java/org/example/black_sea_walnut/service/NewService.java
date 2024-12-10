@@ -17,11 +17,11 @@ public interface NewService {
 
     New getById(Long id);
 
-    ResponseNewForAdd getByIdAndCodeInResponseAdd(Long id, LanguageCode code);
+    ResponseNewForAdd getByIdAndCodeInResponseAdd(Long id);
 
     New save(New entity);
 
-    New saveAsDto(ResponseNewForAdd dto);
+    New saveLikeDto(ResponseNewForAdd dto);
 
     New saveImage(ResponseNewForAdd dto) throws IOException;
 

@@ -22,10 +22,15 @@
                 <div class="row mb-3">
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
-                            <label class="d-flex align-items-center">Show
-                                <select class="form-select mx-2" id="pick-size-for-pagination_">
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
+                                <select class="form-select mx-2" id="pick-size-for-pagination_"
+                                        name="size"
+                                        hx-get="/admin/news/table"
+                                        hx-target="#table-data-container_"
+                                        hx-swap="innerHTML"
+                                        hx-include="[name=id],[name=title],[name=dateOfPublication],[name=page]">
                                     <option value="3">3</option>
-                                    <option value="5">5</option>
+                                    <option value="5" selected>5</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
                                 </select> entries</label>
@@ -46,39 +51,13 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow"
-                           id="content-table" style="table-layout: fixed; position: static; zoom: 1;">
-                        <thead>
-                        <tr>
-                            <th style="width: 100px">ID</th>
-                            <th style="width: 200px">Title</th>
-                            <th style="width: 200px">Description</th>
-                            <th style="width: 200px">Date of publication</th>
-                            <th style="width: 200px">Actions</th>
-                        </tr>
-                        <tr>
-                            <th><input class="form-control for-filter" name="id"
-                                       oninput="handleInputChange(this)">
-                            </th>
-                            <th><input class="form-control for-filter" name="title"
-                                       oninput="handleInputChange(this)">
-                            </th>
-                            <th></th>
-                            <th>
-                                <div class="input-group input-group-merge">
-                                    <input type="text" class="form-control for-filter" id="bs-datepicker-basic"
-                                           placeholder="dd.mm.yyyy" name="dateOfPublication"
-                                           oninput="handleInputChange(this)"/>
-                                    <span class="input-group-text" onclick="focusInput('bs-datepicker-basic')">
-                                        <i class="ti ti-calendar"></i>
-                                    </span>
-                                </div>
-                            </th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody id="table-data-container_"></tbody>
-                    </table>
+                    <div id="table-data-container_"
+                         hx-get="/admin/news/table"
+                         hx-trigger="load"
+                         hx-target="#table-data-container_"
+                         hx-swap="innerHTML">
+
+                    </div>
                 </div>
             </div>
             <div class="card-footer">
@@ -87,14 +66,28 @@
                         <label class="d-flex align-items-center" id="showing-elements_"></label>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <nav class="d-flex justify-content-end"
-                             aria-label="Page navigation" id="pagination-container_">
-                        </nav>
+                        <!--                        <nav class="d-flex justify-content-end"-->
+                        <!--                             aria-label="Page navigation" id="pagination-container_">-->
+                        <!--                        </nav>-->
+                        <div id="pagination-container_"
+                        hx-get="/admin/news/table"
+                        hx-trigger="load"
+                        hx-target="#pagination-container_"
+                        hx-swap="innerHTML">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script th:src="@{/js/pagination.js}"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            // getPageWithFilter(0, 5);
+        });
+
+    </script>
 </div>
 <!--/ Content -->
 
