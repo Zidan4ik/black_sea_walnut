@@ -25,16 +25,10 @@ public class User {
     private String lastName;
     private String email;
     private String phone;
-    private Country country;
-    private Region region;
-    private City city;
     private String address;
     private String password;
     private String pathToImage;
     private String okpo;
-    private Country countryLawful;
-    private Region regionLawful;
-    private City cityLawful;
     private String addressLawful;
     private LocalDate dateRegistered;
     private RegisterType registerType;
@@ -47,4 +41,16 @@ public class User {
     private List<Order> orders;
     @OneToOne
     private Basket basket;
+    @ManyToOne
+    private Country country;
+    @ManyToOne
+    private Region region;
+    @ManyToOne
+    private City city;
+    @ManyToOne
+    private Country countryLawful;
+    @ManyToOne
+    private Region regionLawful;
+    @ManyToOne
+    private City cityLawful;
 }

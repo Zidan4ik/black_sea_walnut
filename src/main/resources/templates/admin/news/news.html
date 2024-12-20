@@ -8,10 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>News</title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
 </head>
 <body>
-
-
 <!-- Content -->
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
@@ -23,12 +27,16 @@
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
                             <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
-                                <select class="form-select mx-2" id="pick-size-for-pagination_"
+                                <select class="form-select mx-2"
+                                        id="pick-size-for-pagination_"
                                         name="size"
-                                        hx-get="/admin/news/table"
+                                        hx-get="/admin/news/table?page=0"
                                         hx-target="#table-data-container_"
                                         hx-swap="innerHTML"
-                                        hx-include="[name=id],[name=title],[name=dateOfPublication],[name=page]">
+                                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]"
+                                    >
+                                    <option value="1">1
+                                    </option>
                                     <option value="3">3</option>
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
@@ -50,43 +58,77 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <div id="table-data-container_"
-                         hx-get="/admin/news/table"
-                         hx-trigger="load"
-                         hx-target="#table-data-container_"
-                         hx-swap="innerHTML">
+                <div id="table-data-container_"
+                     hx-get="/admin/news/table?languageCode=en"
+                     hx-trigger="load"
+                     hx-target="#table-data-container_"
+                     hx-swap="innerHTML">
 
-                    </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                        <label class="d-flex align-items-center" id="showing-elements_"></label>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <!--                        <nav class="d-flex justify-content-end"-->
-                        <!--                             aria-label="Page navigation" id="pagination-container_">-->
-                        <!--                        </nav>-->
-                        <div id="pagination-container_"
-                        hx-get="/admin/news/table"
-                        hx-trigger="load"
-                        hx-target="#pagination-container_"
-                        hx-swap="innerHTML">
-                        </div>
-                    </div>
-                </div>
+                <input type="hidden" name="languageCode" value="en">
             </div>
         </div>
     </div>
 
-    <script th:src="@{/js/pagination.js}"></script>
+    <!--    <script th:src="@{/js/pagination.js}"></script>-->
     <script>
-        window.addEventListener('DOMContentLoaded', function () {
-            // getPageWithFilter(0, 5);
-        });
+        // htmx.ajax('GET', `/admin/news/table?languageCode=en&page=${0}&size=3`, {
+        //     target: '#table-data-container_',
+        //     swap: 'beforeend'
+        // });
+        // htmx.ajax('GET', `/admin/news/pagination?languageCode=en&page=${0}&size=3`, {
+        //     target: '#pagination-container_',
+        //     swap: 'innerHTML'
+        // });
 
+        // function loadTable(page,size){
+        //     const lang = document.documentElement.lang;
+        //     htmx.ajax('GET', `/admin/news/table?languageCode=${lang}&page=${page}&size=${size}`, {
+        //         target: '#table-data-container_',
+        //         swap: 'beforeend'
+        //     });
+        //
+        //     document.body.addEventListener('htmx:afterSwap', function (event) {
+        //         if (event.target.id === 'table-data-container_') {
+        //             htmx.ajax('GET', `/admin/news/pagination?languageCode=${lang}&page=${page}&size=${size}`, {
+        //                 target: '#pagination-container_',
+        //                 swap: 'beforeend'
+        //             });
+        //         }
+        //     });
+        // }
+
+        // function loadTable(page, size) {
+        //     const lang = document.documentElement.lang;
+        //
+        //     htmx.ajax('GET', `/admin/news/table?languageCode=${lang}&page=${page}&size=${size}`, {
+        //         target: '#table-data-container_',
+        //         swap: 'beforeend'
+        //     }).then(() => {
+        //         htmx.ajax('GET', `/admin/news/pagination?languageCode=${lang}&page=${page}&size=${size}`, {
+        //             target: '#pagination-container_',
+        //             swap: 'beforeend'
+        //         });
+        //     });
+        //     clearTableAndPagination();
+        // }
+
+
+        // document.body.addEventListener('htmx:afterSwap', function (event) {
+        //     if (event.target.id === 'table-data-container_') {
+        //         const datePicker = $("#bs-datepicker-basic");
+        //         datePicker.datepicker({
+        //             format: "dd.mm.yyyy"
+        //         }).on('changeDate',function (){
+        //             htmx.trigger($("#bs-datepicker-basic")[0],'input')
+        //         });
+        //     }
+        // });
+
+        // function clearTableAndPagination() {
+        //     $("#pagination-container_").empty();
+        //     $("#table-data-container_").empty();
+        // }
     </script>
 </div>
 <!--/ Content -->
@@ -105,12 +147,13 @@
                     <div class="col-6 d-flex flex-column align-items-center justify-content-center gap-4"
                          style="border-right: 1px solid gray;    ">
                         <div class="col-md-12">
-                            <input class="form-control fields-entity" type="text" id="title_" name="title"
+                            <input class="form-control fields-entity" type="text" id="title_" name="title-modal"
                                    placeholder="John Doe"
                                    style="border: 1px solid rebeccapurple;">
                         </div>
                         <div class="col-md-12">
-                            <textarea class="form-control fields-entity" id="description_" name="description" rows="8"
+                            <textarea class="form-control fields-entity" id="description_" name="description-modal"
+                                      rows="8"
                                       style="border: 1px solid rebeccapurple;" placeholder="Description..."></textarea>
                         </div>
                     </div>
@@ -146,11 +189,6 @@
     <!--    <script th:src="@{/js/modal.js}"></script>-->
     <!--    <script th:src="@{/js/validator.js}"></script>-->
     <!--    <script th:src="@{/js/image.js}"></script>-->
-    <script>
-        $("#bs-datepicker-basic").datepicker({
-            format: "dd.mm.yyyy"
-        });
-    </script>
 </div>
 <!--/ Modal -->
 </body>

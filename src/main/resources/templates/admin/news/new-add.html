@@ -7,71 +7,12 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Black sea walnut</title>
-    <!--    <link th:href="@{/summernote/summernote-bs5.css}" rel="stylesheet">-->
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
-    <!--    <script src="https://unpkg.com/htmx.org@1.8.4/dist/htmx.min.js"></script>-->
-
-    <style>
-        .nav-tabs .nav-item {
-            flex: 0 0 auto;
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .nav-link.active {
-            background: none !important;
-        }
-
-        .nav-link:hover, .nav-link:focus {
-            color: #334A2E !important;
-            box-shadow: 0 -2px 0 #334A2E inset;
-        }
-
-        /*.nav-tabs {*/
-        /*    --bs-nav-tabs-link-active-color*/
-        /*}*/
-
-        .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus {
-            box-shadow: 0 -2px 0 #334A2E inset;
-        }
-
-        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-            color: #334A2E;
-        }
-
-        .btn-image {
-            position: absolute;
-            top: 19%;
-            width: 30%;
-            height: 45px;
-            background: #337D5A;
-            border: #337D5A;
-            border-radius: 0;
-            box-shadow: none !important;
-        }
-
-        #edit {
-            min-height: 100px; /* Мінімальна висота */
-            max-width: 100%; /* Контейнер займає всю доступну ширину */
-            overflow-wrap: break-word; /* Перенос слів, які перевищують ширину */
-            word-wrap: break-word; /* Для сумісності зі старими браузерами */
-            word-break: break-word; /* Дозволяє розривати слова */
-            white-space: normal; /* Дозволяє тексту переноситися на наступний рядок */
-            overflow-x: hidden; /* Запобігає горизонтальному скролу */
-        }
-
-        #edit > * {
-            max-width: 100%; /* Дочірні елементи не виходять за межі контейнера */
-            box-sizing: border-box; /* Ураховує padding і border у розмірах */
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 </head>
 <body>
-
-
 <!-- Content -->
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
@@ -79,7 +20,7 @@
         <!-- Header content -->
         <div class="row">
             <div class="col-auto text-center d-flex align-items-center">
-                <a th:href="@{/admin/news}"><i class="ti ti-arrow-left" style="color: green;font-size: 30px;"></i></a>
+                <a th:href="@{/admin/news}"><i class="ti ti-arrow-left icon-hover-arrow" style="color: green;font-size: 30px;"></i></a>
             </div>
             <div class="col-auto text-start d-flex align-items-center">
                 <span class="title-out">Центр підтримки експорту</span>
@@ -121,7 +62,7 @@
                 </li>
             </ul>
         </div>
-        <form hx-post="/admin/new/save" enctype="multipart/form-data" hx-encoding="multipart/form-data">
+        <form id="form" th:hx-post="@{/admin/new/save}" enctype="multipart/form-data" hx-encoding="multipart/form-data">
             <div class="tab-content" id="pills-tabContent">
                 <!-- UA TAB -->
                 <div class="tab-pane fade show active" id="navs-ua" role="tabpanel"
@@ -134,15 +75,22 @@
                             <div class="mb-3">
                                 <label for="title-ua_" class="form-label" style="color: darkgrey; font-size: large;">
                                     Заголовок:</label>
-                                <input type="text" class="form-control" id="title-ua_" name="titleUA"
-                                       placeholder="Центр підтримки експорту"/>
+                                <input class="form-control"
+                                       id="title-ua_"
+                                       type="text"
+                                       name="titleUA"
+                                       placeholder="Центр підтримки експорту"
+                                />
+                                <div id="title-ua-error" style="color: red;"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="description_ua" class="form-label"
                                        style="color: darkgrey; font-size: large;">
                                     Опис:</label>
-                                <div id="description_ua" style="min-height: 100px; border: 1px solid #ccc;"></div>
-                                <input type="hidden" id="hidden-description-ua_" name="descriptionUA">
+                                <div id="description_ua"
+                                     style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                                <input
+                                        type="hidden" id="hidden-description-ua_" name="descriptionUA">
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 mb-3 text-center">
@@ -174,12 +122,14 @@
                                 <input id="title-eng_" type="text" class="form-control" name="titleENG"
                                        placeholder="Export Support Center"
                                        aria-describedby="defaultFormControlHelp"/>
+                                <div id="error-titleENG" class="error-message" style="color: red;"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="description_eng" class="form-label"
                                        style="color: darkgrey; font-size: large;">
                                     Description:</label>
-                                <div id="description_eng" style="min-height: 100px; border: 1px solid #ccc;"></div>
+                                <div id="description_eng"
+                                     style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
                                 <input type="hidden" id="hidden-description-eng_" name="descriptionENG">
                             </div>
                         </div>
@@ -199,7 +149,8 @@
                 <!--/ ENG TAB -->
 
                 <input type="hidden" id="hidden-status_" name="isActive" value="false">
-                <input type="hidden" id="hidden-image_" name="file">
+                <input type="file" id="file_" name="file"
+                       accept="image/*,video/*" style="display: none;">
 
                 <!-- Image Base -->
                 <div id="shared-image" class="shared-image" style="display: none;">
@@ -218,7 +169,6 @@
                         <button type="button" id="btn-delete_" class="btn btn-success btn-image" style="right: 13%;">
                             Видалити
                         </button>
-                        <input type="file" id="file-input_" accept="image/*,video/*" style="display: none;">
                         <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;">
                         png, jpg, jpeg, mp4 до 15 МБ
                     </span>
@@ -233,40 +183,48 @@
                     <span class="input-group-text" onclick="focusInput('date-of-publication_')">
                                 <i class="ti ti-calendar"></i>
                         </span>
+                    <div id="error-dateOfPublication" class="error-message" style="color: red;"></div>
                 </div>
                 <!--/ Date of publication Base -->
 
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
-                    <button class="btn btn-green" type="button" id="btn-save_" style="width: 25%;">Зберегти</button>
+                    <button type="submit" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
                 </div>
                 <!--/ Button save Base -->
+
                 <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-                <script th:src='@{/froala_editor/js/languages/uk.js}'></script>
                 <script th:src="@{/js/image.js}"></script>
+                <script th:src="@{/js/validator.js}"></script>
+                <script th:src="@{/js/copy.js}"></script>
                 <script>
-                    let path_to_image = '';
-                    var currentElement = null;
+                    let descriptionUA = document.getElementById("hidden-description-ua_").value;
+                    let descriptionEN = document.getElementById("hidden-description-eng_").value;
                     var editor_ua = new FroalaEditor('#description_ua', {
                         height: 12 * 20,
+                        scrollableContainer: '#description_ua',
                         events: {
-                            'html.get': function (html) {
-                                // console.log(html);
-                                if (this.undo_stack.length > 0) {
-                                    // currentElement = this.undo_stack.at(-1).html;
-                                    currentElement = html;
-                                }
+                            'initialized': function () {
+                                this.html.set(descriptionUA || '');
+                            },
+                            'contentChanged': function () {
+                                const html = this.html.get();
+                                // console.log('UA: ', html);
+                                $("#hidden-description-ua_").html(html);
                             }
                         }
                     });
                     var editor_eng = new FroalaEditor('#description_eng', {
                         height: 12 * 20,
+                        scrollableContainer: '#description_eng',
                         events: {
-                            'html.get': function (html) {
-                                // console.log(html);
-                                if (this.undo_stack.length > 0) {
-                                    currentElement = html;
-                                }
+                            'initialized': function () {
+                                this.html.set(descriptionEN || '');
+                            },
+                            'contentChanged': function () {
+                                const html = this.html.get();
+                                console.log('EN: ', html);
+                                $("#hidden-description-eng_").html(html);
                             }
                         }
                     });
@@ -291,9 +249,7 @@
                             }
                         });
                     });
-                </script>
 
-                <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         let activeLang = getActiveLangTab();
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
@@ -305,40 +261,6 @@
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
                     }
 
-                    function copyHTMLBlockImage(fromElementId, toElementId) {
-                        $(`#${toElementId}`).html($(`#${fromElementId}`).html());
-                        addEventListenersImage();
-                        clearBlock(fromElementId);
-                    }
-
-                    function copyHTMLBlockDate(fromElementId, toElementId) {
-                        let dateValue = $(`#${fromElementId} input`).val();
-                        $(`#${toElementId}`).html($(`#${fromElementId}`).html());
-
-                        $(`#${toElementId} input`).datepicker({
-                            format: "dd.mm.yyyy",
-                            autoclose: true
-                        });
-
-                        if (dateValue) {
-                            $(`#${toElementId} input`).datepicker("update", dateValue);
-                        }
-                        clearBlock(fromElementId);
-                    }
-
-                    function copyHTMLBlockSave(fromElementId, toElementId) {
-                        $(`#${toElementId}`).html($(`#${fromElementId}`).html());
-                        document.getElementById('btn-save_').addEventListener('click', function () {
-                            saveDate('/admin/new/save');
-                        });
-                        clearBlock(fromElementId);
-                    }
-
-                    function clearBlock(elementId) {
-                        $(`#${elementId}`).empty();
-                        $(`#${elementId} input`).val('');
-                    }
-
                     document.querySelector('#status_').addEventListener('change', function () {
                         const statusCheckbox = document.getElementById("status_");
                         const hiddenStatus = document.getElementById("hidden-status_");
@@ -348,65 +270,13 @@
                         }
                     });
 
-                    function saveDate(url) {
-                        let formData = getFormData();
-                        $.ajax({
-                            type: "post",
-                            url: url,
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function () {
-                                // window.location.replace(`${contextPath}admin/news`);
-                            },
-                            error: function (error) {
-                                // clearValid();
-                                // let data = JSON.parse(error.responseText);
-                                // console.log(data);
-                                // Object.entries(data).forEach(function ([field, message]) {
-                                //     console.log("Field:", field, "Message:", message);
-                                //     const inputField = document.getElementById(field + `_`);
-                                //     console.log(inputField);
-                                //     if (inputField) {
-                                //         inputField.classList.add("errorMy");
-                                //         let errorMessage = document.createElement("span");
-                                //         errorMessage.className = "error-message";
-                                //         errorMessage.style.color = "red";
-                                //         errorMessage.innerText = message;
-                                //         inputField.parentNode.appendChild(errorMessage);
-                                //     } else if (inputField && inputField.id === 'fileImage_') {
-                                //         console.log(1);
-                                //         let parentContainer = inputField.parentNode;
-                                //         parentContainer.classList.add('errorMy');
-                                //
-                                //         let errorMessage = document.createElement("span");
-                                //         errorMessage.className = "error-message";
-                                //         errorMessage.style.color = "red";
-                                //         errorMessage.innerText = message;
-                                //
-                                //         parentContainer.appendChild(errorMessage);
-                                //     }
-                                // });
-                                console.log("Error submitting form:", error);
-                            }
-                        });
-                    }
-
-                    function getFormData() {
-                        const data = new FormData();
-                        data.append("titleUA", $('#title-ua_').val());
-                        data.append("titleENG", $('#title-eng_').val());
-                        data.append("descriptionUA", editor_ua.html.get());
-                        data.append("descriptionENG", editor_eng.html.get());
-                        data.append("isActive", $('#hidden-status_').val());
-                        data.append("dateOfPublication",$('#date-of-publication_').val());
-                        if (currentFile != null) {
-                            data.append("file", currentFile);
-                        } else if (currentFile === null && !path_to_image.includes('/default-images/')) {
-                            data.append("pathToImage", path_to_image);
+                    document.body.addEventListener('htmx:responseError', function (event) {
+                        if (event.detail.xhr.status === 400) {
+                            clearValid();
+                            let data = JSON.parse(event.detail.xhr.responseText);
+                            validate(data);
                         }
-                        return data;
-                    }
+                    });
                 </script>
             </div>
         </form>

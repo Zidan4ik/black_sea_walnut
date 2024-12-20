@@ -17,7 +17,7 @@ public interface NewService {
 
     New getById(Long id);
 
-    ResponseNewForAdd getByIdAndCodeInResponseAdd(Long id);
+    ResponseNewForAdd getByIdLikeDTO(Long id);
 
     New save(New entity);
 

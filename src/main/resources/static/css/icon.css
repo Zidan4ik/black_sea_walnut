@@ -1,0 +1,13 @@
+.icon-hover-arrow {
+    color: green;
+    font-size: 30px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.icon-hover-arrow:hover {
+    background-color: rgba(0, 128, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    border-radius: 50%;
+}

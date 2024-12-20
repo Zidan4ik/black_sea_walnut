@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.ResponseNewForView;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.util.DateUtil;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,36 +18,23 @@ public class NewMapper {
                 .filter(c -> c.getLanguageCode().equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Translation not found for language code: " + code));
-
-        DateTimeFormatter inputDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter outputDate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-        LocalDate date = entity.getDateOfPublication();
-
-        LocalDate dateOutput = LocalDate.parse(date.toString(), inputDate);
-
         return ResponseNewForView.builder().id(entity.getId())
                 .title(translation.getTitle())
                 .description(translation.getDescription())
                 .code(code)
                 .isActive(entity.isActive())
-                .date(dateOutput.format(outputDate))
+                .date(DateUtil.toFormatDateFromDB(entity.getDateOfPublication(),"dd.MM.yyyy"))
                 .id(entity.getId())
                 .build();
     }
 
     public ResponseNewForAdd toDtoAdd(New entity) {
-
-        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate parsedDate = LocalDate.parse(entity.getDateOfPublication().toString(), inputFormat);
-
         ResponseNewForAdd builder = ResponseNewForAdd.builder()
                 .id(entity.getId())
                 .isActive(entity.isActive())
                 .mediaType(entity.getMediaType())
                 .pathToImage(entity.getPathToMedia())
-                .dateOfPublication(parsedDate.format(outputFormat))
+                .dateOfPublication(DateUtil.toFormatDateFromDB(entity.getDateOfPublication(),"dd.MM.yyyy"))
                 .build();
 
         for (NewTranslation t: entity.getTranslations()){
@@ -68,7 +56,7 @@ public class NewMapper {
     public New toEntity(ResponseNewForAdd dto) {
         New new_ = new New();
         new_.setId(dto.getId());
-        new_.setActive(dto.getIsActive());
+        new_.setActive(dto.isActive());
         new_.setMediaType(dto.getMediaType());
         new_.setPathToMedia(dto.getPathToImage());
 
@@ -79,12 +67,7 @@ public class NewMapper {
                 LanguageCode.en, dto.getTitleENG(), dto.getDescriptionENG(), new_
         );
         new_.setTranslations(List.of(translationUA,translationEN));
-
-        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate parsedDate = LocalDate.parse(dto.getDateOfPublication(), inputFormat);
-
-        new_.setDateOfPublication(parsedDate);
+        new_.setDateOfPublication(DateUtil.toFormatDateToDB(dto.getDateOfPublication(),"dd.MM.yyyy"));
         return new_;
     }
 }

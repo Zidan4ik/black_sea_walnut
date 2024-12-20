@@ -21,15 +21,15 @@ public class DatabaseLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (newService.getAll().isEmpty()) {
             for (int i = 0; i < 3; i++) {
-                New new_ = FakerUtil.fill(New.class);
-                NewTranslation eng = FakerUtil.fill(NewTranslation.class);
-                eng.setLanguageCode(LanguageCode.en);
-                NewTranslation ukr = FakerUtil.fill(NewTranslation.class);
-                ukr.setLanguageCode(LanguageCode.uk);
-                ukr.setNew_(new_);
-                eng.setNew_(new_);
-                new_.setTranslations(List.of(eng, ukr));
-                newService.save(new_);
+//                New new_ = FakerUtil.fill(New.class);
+//                NewTranslation eng = FakerUtil.fill(NewTranslation.class);
+//                eng.setLanguageCode(LanguageCode.en);
+//                NewTranslation ukr = FakerUtil.fill(NewTranslation.class);
+//                ukr.setLanguageCode(LanguageCode.uk);
+//                ukr.setNew_(new_);
+//                eng.setNew_(new_);
+//                new_.setTranslations(List.of(eng, ukr));
+//                newService.save(new_);
             }
         }
     }

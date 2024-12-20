@@ -31,7 +31,7 @@ public class NewServiceImp implements NewService {
 
     @Override
     public PageResponse<ResponseNewForView> getAll(ResponseNewForView response, Pageable pageable, LanguageCode code) {
-        Page<New> page = newRepository.findAll(NewSpecification.getSpecification(response), pageable);
+        Page<New> page = newRepository.findAll(NewSpecification.getSpecification(response,code), pageable);
         List<ResponseNewForView> responsesDtoAdd = page.map(t -> mapper.toDtoView(t, code)).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
@@ -46,7 +46,7 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
-    public ResponseNewForAdd getByIdAndCodeInResponseAdd(Long id) {
+    public ResponseNewForAdd getByIdLikeDTO(Long id) {
         return mapper.toDtoAdd(getById(id));
     }
 
@@ -78,8 +78,7 @@ public class NewServiceImp implements NewService {
 //        LogUtil.logInfo("Saving new with file for ID: " + dtoAdd.getId());
         if (dto.getId() != null) {
             New newById = getById(dto.getId());
-            if (dto.getFile() != null && (newById.getPathToMedia() != null
-                    && !newById.getPathToMedia().equals(dto.getPathToImage()))) {
+                if (dto.getPathToImage().isEmpty()) {
 //                LogUtil.logInfo("Deleting old image at path: " + newById.getPathToImage());
                 imageServiceImp.deleteByPath(newById.getPathToMedia());
             }

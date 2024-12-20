@@ -13,12 +13,15 @@
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/css/rtl/theme-default.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/fonts/tabler-icons.css}">
 
-<!--    <script src='/froala_editor/js/languages/en_ca.js'></script>-->
-    <link th:href="@{/froala_editor/css/froala_style.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/froala_editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css" />
+    <!--    <script src='/froala_editor/js/languages/en_ca.js'></script>-->
+<!--    <script src="https://unpkg.com/htmx.org@1.5.0"></script>-->
+    <link th:href="@{/froala_editor/css/froala_style.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/froala_editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" th:src="@{/froala_editor/js/froala_editor.pkgd.min.js}"></script>
     <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/htmx/htmx.min.js}"></script>
+        <script th:src="@{/htmx/htmx.min.js}"></script>
+    <!--    <script src="https://unpkg.com/htmx.org/dist/ext/validate.js"></script>-->
+
     <script th:inline="javascript">
         const contextPath = '[[@{/}]]'.replaceAll("\"", "");
         console.log(contextPath);
@@ -48,12 +51,12 @@
             background: #276046 !important;
         }
 
-        .button-dropdown:hover{
+        .button-dropdown:hover {
             background: rgba(108, 184, 108, 0.57) !important;
             color: white;
         }
 
-        .button-dropdown-logout:hover{
+        .button-dropdown-logout:hover {
             background: rgba(255, 36, 43, 0.57) !important;
             color: white;
         }
@@ -65,7 +68,7 @@
             box-shadow: none; /* Видаляє будь-які тіні, які додає Bootstrap */
         }
 
-        .title-out{
+        .title-out {
             font-size: large;
             font-weight: bold;
             color: green;
@@ -91,7 +94,9 @@
             <!-- Content wrapper -->
             <div class="content-wrapper">
                 <!-- Content -->
-                <div layout:fragment="content"></div>
+                <div layout:fragment="content">
+
+                </div>
                 <!--/ Content -->
                 <!-- Content area backdrop -->
                 <div class="content-backdrop fade"></div>
