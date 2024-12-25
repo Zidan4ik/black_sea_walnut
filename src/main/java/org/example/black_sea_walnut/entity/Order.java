@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.black_sea_walnut.enums.Country;
 import org.example.black_sea_walnut.enums.DeliveryStatus;
 import org.example.black_sea_walnut.enums.OrderStatus;
-import org.example.black_sea_walnut.enums.Region;
+import org.example.black_sea_walnut.enums.PaymentType;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -24,25 +23,28 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long personalId;
-    private OrderStatus orderStatus;
-    private DeliveryStatus deliveryStatus;
-    private boolean isPay;
+    @Column(length = 50)
     private String fio;
     private String email;
     private String phone;
-    private LocalDateTime dateOrdering;
     private int countProducts;
+    private int totalPrice;
     private String companyDelivery;
-    private String contactPersonNameDelivery;
+    private String personNameDelivery;
     private String emailDelivery;
     private String phoneDelivery;
-    private Country countryDelivery;
-    private Region regionDelivery;
     private String addressDelivery;
-    private int summaWithoutDiscount;
-    private int summaWithDiscount;
+    private OrderStatus orderStatus;
+    private DeliveryStatus deliveryStatus;
+    private PaymentType paymentType;
+    private boolean isPayed;
+    private LocalDate dateOfOrdering;
     @OneToMany
     private List<OrderDetail> orderDetails;
     @ManyToMany
     private List<DeliveryPrice> deliveryPrices;
+    @ManyToOne
+    private City city;
+    @ManyToOne
+    private User user;
 }

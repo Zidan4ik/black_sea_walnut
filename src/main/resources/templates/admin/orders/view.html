@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Black sea walnut</title>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+
+    <style>
+        .boldMy {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+
+        <!-- Header content -->
+        <div class="row">
+            <div class="col-auto text-center d-flex align-items-center">
+                <a th:href="@{/admin/orders}"><i class="ti ti-arrow-left icon-hover-arrow"
+                                                 style="color: green;font-size: 30px;"></i></a>
+            </div>
+            <div class="col-auto text-start d-flex align-items-center">
+                <span class="title-out" style="color: darkgrey;">Orders
+                <i class="ti ti-arrow-right" style="font-size: small"></i>
+                    Order<span th:text="' № '+${id}"></span>
+                </span>
+            </div>
+            <div class="mt-5">
+                <h3>Order <span th:text="' № '+${id}"></span></h3>
+                <div class="table-responsive" style="width: 75%">
+                    <table class="table table-bordered table-hover table-striped linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;">
+                        <thead>
+                        <tr>
+                            <th style="width: 200px">Product</th>
+                            <th style="width: 200px">Count</th>
+                            <th style="width: 137px">Price</th>
+                            <th style="width: 137px">Total count</th>
+                            <th style="width: 137px">Summa</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-data-container_"></tbody>
+                    </table>
+                    <span class="d-flex justify-content-end" id="total-summa_"></span>
+                </div>
+                <div class="mt-4 pb-4 row" style="border-bottom: 1px solid black;">
+                    <div class="col-12">
+                        <label class="form-label boldMy">Information about customer:</label>
+                        <input id="isFop_" class="form-control" value="" style="width: 23%;">
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">FIO:</label>
+                        <input id="fio_" class="form-control" value="">
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">Phone:</label>
+                        <input id="phone_" class="form-control" value="">
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">Email:</label>
+                        <input id="email_" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="mt-2 pb-4 row" style="border-bottom: 1px solid black;">
+                    <div class="col-3">
+                        <label class="form-label boldMy">Date of ordering:</label>
+                        <br>
+                        <span id="dateOfOrdering_"></span>
+                    </div>
+                </div>
+                <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
+                    <div class="col-3">
+                        <label class="form-label boldMy">Type of delivery:</label>
+                        <input id="deliveryStatus_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">Type of payment:</label>
+                        <input id="paymentType_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">Status of payment:</label>
+                        <input id="orderStatus_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">Status:</label>
+                        <input id="isPayed_" class="form-control" value="" disabled>
+                    </div>
+                </div>
+                <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
+                    <div class="col-3">
+                        <label class="form-label boldMy">City:</label>
+                        <input id="city_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy">Address:</label>
+                        <input id="addressDelivery_" class="form-control" value="" disabled>
+                    </div>
+                </div>
+                <div class="mt-2 d-flex justify-content-center">
+                    <a th:href="@{/admin/orders}" class="btn btn-success"
+                       style="background: #334a2e !important;
+                       border-color: #334a2e !important">Back to list of orders</a>
+                </div>
+            </div>
+        </div>
+        <!--/ Header content -->
+        <input id="id_" type="hidden" th:value="${id}">
+        <script th:src="@{/js/pagination.js}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log(window.location.pathname);
+                getData($('#id_').val());
+            });
+
+            function getData(id) {
+                let request = new XMLHttpRequest();
+                request.open('GET', `${contextPath}admin/order/${id}/data`);
+                request.send();
+                request.addEventListener('load', function () {
+                    let data = JSON.parse(request.response);
+                    console.log(data);
+                    let count = 0;
+                    data.orderDetails.forEach(item => {
+                        count += item.totalSumma = item.price * item.count;
+                    });
+                    loadTable(data.orderDetails);
+                    document.getElementById('total-summa_').textContent = 'Total price: ' + count;
+
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            let elementById = document.getElementById(`${key}_`);
+                            if (elementById) {
+                                if (elementById.tagName === 'INPUT' || elementById.tagName === 'TEXTAREA') {
+                                    if (key === 'isPayed') {
+                                        elementById.value = data[key] ? 'Payed' : 'Un payed';
+                                        continue;
+                                    } else if (key === 'isFop'){
+                                        elementById.value = data[key] ? 'Individual entrepreneur' : 'Legal entity';
+                                        continue;
+                                    }
+                                    elementById.value = data[key];
+                                } else {
+                                    elementById.textContent = data[key];
+                                }
+                                console.log(`Field: ${key}, Value: ${data[key]}`);
+                            }
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+</div>
+<!--/ Content -->
+
+</body>
+</html>

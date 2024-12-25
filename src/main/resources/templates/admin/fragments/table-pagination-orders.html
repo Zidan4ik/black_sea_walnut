@@ -1,33 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Table and Pagination</title>
+</head>
+<body>
+
 <div class="table-responsive">
     <table class="table table-bordered table-hover table-striped linkedRow"
            style="table-layout: fixed; position: static; zoom: 1;">
         <thead>
         <tr>
             <th style="width: 100px">ID</th>
-            <th style="width: 200px">Title</th>
-            <th style="width: 200px">Date of publication</th>
-            <th style="width: 200px">Actions</th>
+            <th style="width: 200px">Customer</th>
+            <th style="width: 200px">Email</th>
+            <th style="width: 137px">Total count</th>
+            <th style="width: 137px">Total price</th>
+            <th style="width: 200px">Date of ordering</th>
+            <th style="width: 150px">Actions</th>
         </tr>
         <tr>
             <th>
                 <input class="form-control"
                        name="id"
-                       hx-get="/admin/news/table?page=0"
-                       hx-trigger="keyup changed delay:1000ms"
-                       hx-target="#table-data-container_"
-                       hx-swap="innerHTML"
-                       hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]"
                        th:value="${id}"/>
             </th>
             <th>
                 <input class="form-control"
-                       name="title"
-                       hx-get="/admin/news/table?page=0"
-                       hx-trigger="keyup changed delay:1000ms"
-                       hx-target="#table-data-container_"
-                       hx-swap="innerHTML"
-                       hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]"
-                       th:value="${title}"/>
+                       name="fullName"
+                       th:value="${fullName}"/>
+            </th>
+            <th>
+                <input class="form-control"
+                       name="email"
+                       th:value="${email}"/>
+            </th>
+            <th>
+                <input class="form-control"
+                       name="totalCount"
+                       th:value="${totalCount}"/>
+            </th>
+            <th>
+                <input class="form-control"
+                       name="totalPrice"
+                       th:value="${totalPrice}"/>
             </th>
             <th>
                 <div class="input-group input-group-merge">
@@ -35,13 +52,14 @@
                            class="form-control"
                            id="bs-datepicker-basic"
                            placeholder="dd.mm.yyyy"
-                           name="date"
-                           hx-get="/admin/news/table?page=0"
+                           name="dateOfOrdering"
+                           th:hx-get="@{/admin/orders/table?page=0}"
                            hx-trigger="input"
                            hx-target="#table-data-container_"
                            hx-swap="innerHTML"
-                           hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]"
-                           th:value="${date}"/>
+                           hx-include="[name=id],[name=fio],[name=email],[name=totalCount],[name=totalPrice],
+                       [name=dateOfOrdering],[name=size],[name=languageCode]"
+                           th:value="${dateOfOrdering}"/>
                     <span class="input-group-text">
                         <i class="ti ti-calendar"></i>
                     </span>
@@ -51,24 +69,27 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${news.size()>0}" th:each="item : ${news}">
-            <td class="divided-text" th:text="${item.id}"></td>
-            <td class="divided-text" th:text="${item.title}"></td>
-            <td class="divided-text" th:text="${item.date}"></td>
+        <tr th:if="${orders.size()>0}" th:each="item : ${orders}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.fullName}"></td>
+            <td th:text="${item.email}"></td>
+            <td th:text="${item.totalCount}"></td>
+            <td th:text="${item.totalPrice}"></td>
+            <td th:text="${item.dateOfOrdering}"></td>
             <td>
-                <div class="text-center">
+                <div class="text-center" style="width: auto;">
                     <a class="btn btn-sm btn-github" type="button"
-                       th:href="@{/admin/new/edit/{id} (id=${item.getId()})}">
-                        <i class="ti ti-pencil"></i>
+                       th:href="@{/admin/order/{id} (id=${item.getId()})}">
+                        <i class="ti ti-eye"></i>
                     </a>
                     <a class="btn btn-sm btn-github" type="button"
-                       th:href="@{/admin/new/delete/{id_} (id_=${item.id})}">
+                       th:href="@{/admin/order/{id_}/delete (id_=${item.id})}">
                         <i class="ti ti-trash"></i>
                     </a>
                 </div>
             </td>
         </tr>
-        <tr th:unless="${news.size()>0}">
+        <tr th:unless="${orders.size()>0}">
             <td colspan="5" style="text-align: center; color: gray; font-style: italic;">No data
                 available in table
             </td>
@@ -76,13 +97,13 @@
         </tbody>
     </table>
 </div>
-<div class="row mt-3" th:if="${news.size()>0}">
+<div class="row mt-3" th:if="${orders.size()>0}">
     <div class="col-sm-12 col-md-6 d-flex align-items-center">
         <label class="d-flex align-items-center" id="showing-elements_">
             Showing&nbsp;
             <b th:text="${pageData.page * pageData.size + 1}"></b>
             &nbsp;to&nbsp;
-            <b th:text="${pageData.page * pageData.size + #lists.size(news)}"></b>
+            <b th:text="${pageData.page * pageData.size + #lists.size(orders)}"></b>
             &nbsp;of&nbsp;
             <b th:text="${pageData.totalElements}"></b>
             &nbsp;entries.
@@ -93,7 +114,7 @@
             <ul class="pagination mb-0">
                 <li th:classappend="${pageData.page == 0} ? 'disabled' : 'pointer'"
                     class="page-item first">
-                    <a hx-get="/admin/news/table?&page=0"
+                    <a hx-get="/admin/orders/table?&page=0"
                        class="page-link pagination-icon"
                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]">
                         <i class="ti ti-chevrons-left ti-sm"
@@ -103,7 +124,7 @@
                 <li class="page-item prev"
                     th:classappend="${pageData.page == 0} ? 'disabled' : 'pointer'">
                     <a class="page-link pagination-icon"
-                       th:hx-get="'/admin/news/table?&page='+${pageData.page - 1}"
+                       th:hx-get="'/admin/orders/table?&page='+${pageData.page - 1}"
                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]">
                         <i class="ti ti-chevron-left ti-sm"
                            th:styleappend="${pageData.page == 0}? '' : 'color:white;'"></i></a>
@@ -119,7 +140,7 @@
            (${i >= pageData.page - 2 and i <= pageData.page + 2})"
                     th:classappend="${i == pageData.page} ? 'active' : 'pointer'" class="page-item">
                     <a class="page-link pagination-number d-flex-full"
-                       th:hx-get="'/admin/news/table?page='+${i}"
+                       th:hx-get="'/admin/orders/table?page='+${i}"
                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]"
                        style="width: 90%;height: 100%;">
                         <span th:text="${i + 1}" style="color: white;"></span>
@@ -133,7 +154,7 @@
                 <li th:classappend="${pageData.page == pageData.totalPages - 1} ? 'disabled' : 'pointer'"
                     class="page-item next">
                     <a class="page-link pagination-icon"
-                       th:hx-get="'/admin/news/table?&page='+${pageData.page + 1}"
+                       th:hx-get="'/admin/orders/table?&page='+${pageData.page + 1}"
                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]">
                         <i class="ti ti-chevron-right ti-sm"
                            th:styleappend="${pageData.page == pageData.totalPages - 1}? '' : 'color:white;'"></i>
@@ -143,7 +164,7 @@
                 <li th:classappend="${pageData.page == pageData.totalPages - 1} ? 'disabled' : 'pointer'"
                     class="page-item last">
                     <a class="page-link pagination-icon"
-                       th:hx-get="'/admin/news/table?&page='+${pageData.totalPages - 1}"
+                       th:hx-get="'/admin/orders/table?&page='+${pageData.totalPages - 1}"
                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]">
                         <i class="ti ti-chevrons-right ti-sm"
                            th:styleappend="${pageData.page == pageData.totalPages - 1}? '' : 'color:white;'"></i>
@@ -151,5 +172,6 @@
                 </li>
             </ul>
         </nav>
-    </div>
-</div>
+    </div></div>
+</body>
+</html>

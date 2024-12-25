@@ -12,15 +12,14 @@
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/css/rtl/core.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/css/rtl/theme-default.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/fonts/tabler-icons.css}">
-
-    <!--    <script src='/froala_editor/js/languages/en_ca.js'></script>-->
-<!--    <script src="https://unpkg.com/htmx.org@1.5.0"></script>-->
     <link th:href="@{/froala_editor/css/froala_style.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/froala_editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/spinkit/spinkit.css}"/>
+
     <script type="text/javascript" th:src="@{/froala_editor/js/froala_editor.pkgd.min.js}"></script>
     <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
-        <script th:src="@{/htmx/htmx.min.js}"></script>
-    <!--    <script src="https://unpkg.com/htmx.org/dist/ext/validate.js"></script>-->
+    <script th:src="@{/htmx/htmx.min.js}"></script>
 
     <script th:inline="javascript">
         const contextPath = '[[@{/}]]'.replaceAll("\"", "");
@@ -61,17 +60,20 @@
             color: white;
         }
 
-        /* Стиль для кнопки, коли вона у стані активного спадного меню */
         .btn-logout:focus,
         .btn-logout[aria-expanded="true"] {
-            background: #083b08 !important; /* Залишає зелений колір при відкритті */
-            box-shadow: none; /* Видаляє будь-які тіні, які додає Bootstrap */
+            background: #083b08 !important;
+            box-shadow: none;
         }
 
         .title-out {
             font-size: large;
             font-weight: bold;
             color: green;
+        }
+
+        .sk-primary .sk-rect {
+            background-color: green; /* Колір полосок */
         }
 
     </style>
@@ -128,7 +130,7 @@
         </div>
     </div>
 </div>
-
+<script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
 <script>
     function focusInput(inputId) {
         const input = document.getElementById(inputId);
@@ -144,5 +146,42 @@
 <script th:src="@{/vuexy/dist/js/bootstrap.js}"></script>
 <script th:src="@{/vuexy/assets/vendor/js/menu.js}"></script>
 <script th:src="@{/vuexy/assets/js/main.js}"></script>
+<script th:src="@{/vuexy/assets/vendor/libs/block-ui/block-ui.js}"></script>
+
+<script>
+    // CUSTOM SPINNER
+    $(document).on("click", ".btn-card-block-spinner", function () {
+        invokeBlockUI();
+    });
+    $(document).on("input", ".input-card-block-spinner", function () {
+        invokeBlockUI();
+    });
+    $(document).on("change", ".select-card-block-spinner", function () {
+        invokeBlockUI();
+    });
+    $(document).on("change", ".select-card-block-spinner", function () {
+        invokeBlockUI();
+    });
+    $(document).ready(function (){
+        invokeBlockUI();
+    });
+
+
+    function invokeBlockUI() {
+        $("#card-block").block({
+            message:
+                '<div class="sk-wave sk-primary mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+            timeout: 1000,
+            css: {
+                backgroundColor: "transparent",
+                border: "0"
+            },
+            overlayCSS: {
+                backgroundColor: "#fff",
+                opacity: 0.8
+            }
+        });
+    }
+</script>
 </body>
 </html>

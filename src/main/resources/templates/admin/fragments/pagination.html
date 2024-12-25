@@ -1,0 +1,58 @@
+<nav th:if="${pageData.totalElements>0}" class="d-flex justify-content-end align-items-end"
+     aria-label="Page navigation">
+    <ul class="pagination mb-0">
+        <li th:classappend="${pageData.page == 0} ? 'disabled' : 'pointer'"
+            class="page-item first">
+            <a class="page-link pagination-icon pagination btn-card-block-spinner"
+            th:data-page="0">
+                <i class="ti ti-chevrons-left ti-sm"
+                   th:styleappend="${pageData.page == 0}? '' : 'color:white;'"></i></a>
+        </li>
+
+        <li class="page-item prev"
+            th:classappend="${pageData.page == 0} ? 'disabled' : 'pointer'">
+            <a class="page-link pagination-icon pagination btn-card-block-spinner"
+               th:data-page="${pageData.page - 1}">
+                <i class="ti ti-chevron-left ti-sm"
+                   th:styleappend="${pageData.page == 0}? '' : 'color:white;'"></i></a>
+        </li>
+
+        <li th:if="${pageData.page > 3}" class="page-item disabled">
+            <span class="page-link pagination-icon">...</span>
+        </li>
+
+        <li th:each="i : ${#numbers.sequence(0, pageData.totalPages - 1)}"
+            th:if="(${pageData.page <= 2 and i <= 4}) or
+           (${pageData.page >= pageData.totalPages - 3 and i >= pageData.totalPages - 5}) or
+           (${i >= pageData.page - 2 and i <= pageData.page + 2})"
+            th:classappend="${i == pageData.page} ? 'active' : 'pointer'" class="page-item">
+            <a class="page-link pagination-number d-flex-full pagination btn-card-block-spinner"
+               th:data-page="${i}"
+               style="width: 90%;height: 100%;">
+                <span th:text="${i + 1}" style="color: white;"></span>
+            </a>
+        </li>
+
+        <li th:if="${pageData.page < pageData.totalPages - 4}" class="page-item disabled">
+            <span class="page-link pagination-icon" style="height: 100%;">...</span>
+        </li>
+
+        <li th:classappend="${pageData.page == pageData.totalPages - 1} ? 'disabled' : 'pointer'"
+            class="page-item next">
+            <a class="page-link pagination-icon pagination btn-card-block-spinner"
+               th:data-page="${pageData.page + 1}">
+                <i class="ti ti-chevron-right ti-sm"
+                   th:styleappend="${pageData.page == pageData.totalPages - 1}? '' : 'color:white;'"></i>
+            </a>
+        </li>
+
+        <li th:classappend="${pageData.page == pageData.totalPages - 1} ? 'disabled' : 'pointer'"
+            class="page-item last">
+            <a class="page-link pagination-icon pagination btn-card-block-spinner"
+            th:data-page="${pageData.totalPages - 1}">
+                <i class="ti ti-chevrons-right ti-sm"
+                   th:styleappend="${pageData.page == pageData.totalPages - 1}? '' : 'color:white;'"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

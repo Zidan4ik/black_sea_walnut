@@ -8,12 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>News</title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
     <style>
         .pointer {
             cursor: pointer;
         }
     </style>
-    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
 </head>
 <body>
 <!-- Content -->
@@ -27,16 +27,10 @@
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
                             <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
-                                <select class="form-select mx-2"
+                                <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-size-for-pagination_"
-                                        name="size"
-                                        hx-get="/admin/news/table?page=0"
-                                        hx-target="#table-data-container_"
-                                        hx-swap="innerHTML"
-                                        hx-include="[name=id],[name=title],[name=date],[name=size],[name=languageCode]"
-                                    >
-                                    <option value="1">1
-                                    </option>
+                                        name="size">
+                                    <option value="1">1</option>
                                     <option value="3">3</option>
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
@@ -58,77 +52,90 @@
                         </div>
                     </div>
                 </div>
-                <div id="table-data-container_"
-                     hx-get="/admin/news/table?languageCode=en"
-                     hx-trigger="load"
-                     hx-target="#table-data-container_"
-                     hx-swap="innerHTML">
-
+                <div class="table-responsive" id="card-block">
+                    <table class="table table-bordered table-hover table-striped linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;"
+                           id="table-data-container_">
+                        <thead>
+                        <tr>
+                            <th style="width: 100px">ID</th>
+                            <th style="width: 200px">Title</th>
+                            <th style="width: 200px">Date of publication</th>
+                            <th style="width: 200px">Actions</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="id"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="title"/>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-merge">
+                                    <input type="text"
+                                           class="form-control input-card-block-spinner"
+                                           id="date_"
+                                           placeholder="dd.mm.yyyy"
+                                           name="date"/>
+                                    <span class="input-group-text">
+                                        <i class="ti ti-calendar"></i>
+                                     </span>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
                 </div>
+                <div id="table-pagination-container_" class="mt-3"></div>
                 <input type="hidden" name="languageCode" value="en">
             </div>
         </div>
     </div>
 
-    <!--    <script th:src="@{/js/pagination.js}"></script>-->
+    <script th:src="@{/js/table.js}"></script>
     <script>
-        // htmx.ajax('GET', `/admin/news/table?languageCode=en&page=${0}&size=3`, {
-        //     target: '#table-data-container_',
-        //     swap: 'beforeend'
-        // });
-        // htmx.ajax('GET', `/admin/news/pagination?languageCode=en&page=${0}&size=3`, {
-        //     target: '#pagination-container_',
-        //     swap: 'innerHTML'
-        // });
-
-        // function loadTable(page,size){
-        //     const lang = document.documentElement.lang;
-        //     htmx.ajax('GET', `/admin/news/table?languageCode=${lang}&page=${page}&size=${size}`, {
-        //         target: '#table-data-container_',
-        //         swap: 'beforeend'
-        //     });
-        //
-        //     document.body.addEventListener('htmx:afterSwap', function (event) {
-        //         if (event.target.id === 'table-data-container_') {
-        //             htmx.ajax('GET', `/admin/news/pagination?languageCode=${lang}&page=${page}&size=${size}`, {
-        //                 target: '#pagination-container_',
-        //                 swap: 'beforeend'
-        //             });
-        //         }
-        //     });
-        // }
-
-        // function loadTable(page, size) {
-        //     const lang = document.documentElement.lang;
-        //
-        //     htmx.ajax('GET', `/admin/news/table?languageCode=${lang}&page=${page}&size=${size}`, {
-        //         target: '#table-data-container_',
-        //         swap: 'beforeend'
-        //     }).then(() => {
-        //         htmx.ajax('GET', `/admin/news/pagination?languageCode=${lang}&page=${page}&size=${size}`, {
-        //             target: '#pagination-container_',
-        //             swap: 'beforeend'
-        //         });
-        //     });
-        //     clearTableAndPagination();
-        // }
+        const inputs = ['id', 'title', 'date'];
+        let pathToTable = `${contextPath}admin/news/table/load`;
+        let pathToPagination = `${contextPath}admin/news/pagination/load`;
+        let timeoutId;
 
 
-        // document.body.addEventListener('htmx:afterSwap', function (event) {
-        //     if (event.target.id === 'table-data-container_') {
-        //         const datePicker = $("#bs-datepicker-basic");
-        //         datePicker.datepicker({
-        //             format: "dd.mm.yyyy"
-        //         }).on('changeDate',function (){
-        //             htmx.trigger($("#bs-datepicker-basic")[0],'input')
-        //         });
-        //     }
-        // });
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id === 'table-data-container_') {
+                const datePicker = $("#date_");
+                datePicker.datepicker({
+                    format: "dd.mm.yyyy"
+                }).on('changeDate', function () {
+                    htmx.trigger($("#date_")[0], 'input')
+                });
+            }
+        });
+    </script>
+    <script>
 
-        // function clearTableAndPagination() {
-        //     $("#pagination-container_").empty();
-        //     $("#table-data-container_").empty();
-        // }
+        $(document).on('click', '.edit-icon', function () {
+            let id = $(this).data('id');
+            window.location.pathname = contextPath + `admin/new/edit/${id}`;
+        });
+
+        $(document).on('click', '.delete-icon', function () {
+            let id = $(this).data('id');
+            requestDelete(id);
+        });
+
+        function requestDelete(id) {
+            let request = new XMLHttpRequest();
+            request.open('GET', `${contextPath}admin/new/delete/${id}`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    window.location.pathname = `${contextPath}admin/new/delete/${id}`;
+                }
+            });
+        }
     </script>
 </div>
 <!--/ Content -->

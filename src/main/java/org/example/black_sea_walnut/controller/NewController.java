@@ -50,19 +50,27 @@ public class NewController {
         return new ModelAndView("admin/news/news");
     }
 
-    @GetMapping("/news/table")
+    @GetMapping("/news/table/load")
     public ModelAndView loadTable(@ModelAttribute ResponseNewForView responseNewForView,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "5") int size,
                                   @RequestParam String languageCode) {
-        ModelAndView model = new ModelAndView("admin/fragments/table-pagination");
+        ModelAndView model = new ModelAndView("admin/fragments/table-news");
         PageRequest pageable = PageRequest.of(page, size);
         PageResponse<ResponseNewForView> pageResponse = newService.getAll(responseNewForView, pageable, LanguageCode.fromString(languageCode));
-        model.addObject("news", pageResponse.getContent());
+        model.addObject("data", pageResponse.getContent());
+        return model;
+    }
+
+    @GetMapping("/news/pagination/load")
+    public ModelAndView loadPagination(@ModelAttribute ResponseNewForView responseNewForView,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "5") int size,
+                                  @RequestParam String languageCode) {
+        ModelAndView model = new ModelAndView("admin/fragments/pagination");
+        PageRequest pageable = PageRequest.of(page, size);
+        PageResponse<ResponseNewForView> pageResponse = newService.getAll(responseNewForView, pageable, LanguageCode.fromString(languageCode));
         model.addObject("pageData", pageResponse.getMetadata());
-        model.addObject("id", responseNewForView.getId());
-        model.addObject("title", responseNewForView.getTitle());
-        model.addObject("date", responseNewForView.getDate());
         return model;
     }
 

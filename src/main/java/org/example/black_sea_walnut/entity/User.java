@@ -32,7 +32,7 @@ public class User {
     private String addressLawful;
     private LocalDate dateRegistered;
     private RegisterType registerType;
-    private boolean isFop;
+    private Boolean isFop;
     private Role role;
     private int department;
     @ManyToOne

@@ -1,10 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <h4 class="text-center fw-bold">Table Of Orders</h4>
+        <div class="card">
+            <h5 class="card-header">Orders</h5>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-size-for-pagination_"
+                                        name="size"
+                                >
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5" selected>5</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select> entries</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" id="card-block">
+                    <table class="table table-bordered table-hover table-striped linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;"
+                           id="table-data-container_">
+                        <thead>
+                        <tr>
+                            <th style="width: 100px">ID</th>
+                            <th style="width: 200px">Customer</th>
+                            <th style="width: 200px">Email</th>
+                            <th style="width: 137px">Total count</th>
+                            <th style="width: 137px">Total price</th>
+                            <th style="width: 200px">Date of ordering</th>
+                            <th style="width: 150px">Actions</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="id"
+                                       th:value="${id}"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="fullName"
+                                       th:value="${fullName}"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="email"
+                                       th:value="${email}"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="totalCount"
+                                       th:value="${totalCount}"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="totalPrice"
+                                       th:value="${totalPrice}"/>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-merge">
+                                    <input type="text"
+                                           class="form-control input-card-block-spinner"
+                                           id="dateOfOrdering_"
+                                           placeholder="dd.mm.yyyy"
+                                           name="dateOfOrdering"
+                                           th:value="${dateOfOrdering}"/>
+                                    <span class="input-group-text">
+                                        <i class="ti ti-calendar"></i>
+                                     </span>
+                                </div>
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table-pagination-container_"></div>
+                <input type="hidden" name="languageCode" value="en" id="languageCode_">
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/table.js}"></script>
+    <script>
+        const inputs = ['id', 'fullName', 'email', 'totalCount', 'totalPrice', 'dateOfOrdering'];
+        let pathToTable = `${contextPath}admin/orders/table/load`;
+        let pathToPagination = `${contextPath}admin/orders/pagination/load`;
+        let timeoutId;
 
+        $(document).on('click', '.edit-icon', function () {
+            let id = $(this).data('id');
+            window.location.pathname = contextPath + `admin/order/${id}`;
+        });
+
+        $(document).on('click', '.delete-icon', function () {
+            let id = $(this).data('id');
+            requestDelete(id);
+        });
+
+        function requestDelete(id) {
+            let request = new XMLHttpRequest();
+            request.open('GET', `${contextPath}admin/order/delete/${id}`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    window.location.pathname = `${contextPath}admin/order/delete/${id}`;
+                }
+            });
+        }
+    </script>
+</div>
+<!--/ Content -->
 </body>
 </html>
