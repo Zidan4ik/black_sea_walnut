@@ -12,7 +12,7 @@ function invokeRequest(inputs, page) {
                     params.append(name, input.value);
                 }
             });
-            console.log(page);
+            // console.log(page);
             params.append('page', page);
             params.append('languageCode', $('[name=languageCode]').val());
             params.append('size', $('[name=size]').val());

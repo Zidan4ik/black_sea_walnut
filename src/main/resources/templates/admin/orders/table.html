@@ -56,28 +56,23 @@
                         <tr>
                             <th>
                                 <input class="form-control input-card-block-spinner"
-                                       name="id"
-                                       th:value="${id}"/>
+                                       name="id"/>
                             </th>
                             <th>
                                 <input class="form-control input-card-block-spinner"
-                                       name="fullName"
-                                       th:value="${fullName}"/>
+                                       name="fullName"/>
                             </th>
                             <th>
                                 <input class="form-control input-card-block-spinner"
-                                       name="email"
-                                       th:value="${email}"/>
+                                       name="email"/>
                             </th>
                             <th>
                                 <input class="form-control input-card-block-spinner"
-                                       name="totalCount"
-                                       th:value="${totalCount}"/>
+                                       name="totalCount"/>
                             </th>
                             <th>
                                 <input class="form-control input-card-block-spinner"
-                                       name="totalPrice"
-                                       th:value="${totalPrice}"/>
+                                       name="totalPrice"/>
                             </th>
                             <th>
                                 <div class="input-group input-group-merge">
@@ -86,7 +81,7 @@
                                            id="dateOfOrdering_"
                                            placeholder="dd.mm.yyyy"
                                            name="dateOfOrdering"
-                                           th:value="${dateOfOrdering}"/>
+                                    autocomplete="off"/>
                                     <span class="input-group-text">
                                         <i class="ti ti-calendar"></i>
                                      </span>
@@ -129,6 +124,17 @@
                 }
             });
         }
+
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id === 'table-data-container_') {
+                const datePicker = $("#dateOfOrdering_");
+                datePicker.datepicker({
+                    format: "dd.mm.yyyy"
+                }).on('changeDate', function () {
+                    htmx.trigger($("#dateOfOrdering_")[0], 'input')
+                });
+            }
+        });
     </script>
 </div>
 <!--/ Content -->
