@@ -1,0 +1,18 @@
+<tbody>
+<tr th:if="${data.size()>0}" th:each="item : ${data}">
+  <td th:text="${item.id}"></td>
+  <td th:text="${item.customer}"></td>
+  <td th:text="${item.date}"></td>
+  <td th:text="${item.time}"></td>
+  <td th:text="${item.summa}"></td>
+  <td th:text="${item.phone}"></td>
+  <td th:text="${item.email}"></td>
+  <td th:text="${item.typeOfPayment}"></td>
+  <td th:text="${item.statusPayment}?'Payed':'UnPayed'"></td>
+</tr>
+<tr th:unless="${data.size()>0}">
+  <td colspan="9" style="text-align: center; color: gray; font-style: italic;">No data
+    available in table
+  </td>
+</tr>
+</tbody>

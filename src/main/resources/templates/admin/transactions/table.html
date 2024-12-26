@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <h4 class="text-center fw-bold">Table Of transactions</h4>
+        <div class="card" style="width: 1220px;">
+            <h5 class="card-header">Transactions</h5>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-size-for-pagination_"
+                                        name="size"
+                                >
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5" selected>5</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select> entries</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" id="card-block" style="overflow-x: auto;">
+                    <table class="table table-bordered table-hover table-striped linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;"
+                           id="table-data-container_">
+                        <thead>
+                        <tr>
+                            <th style="width: 100px">ID</th>
+                            <th style="width: 200px">Customer</th>
+                            <th style="width: 200px">Date</th>
+                            <th style="width: 200px">Time</th>
+                            <th style="width: 200px">Summa, grn</th>
+                            <th style="width: 200px">Phone</th>
+                            <th style="width: 200px">Email</th>
+                            <th style="width: 137px">Type of payment</th>
+                            <th style="width: 137px">Status payment</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="id"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="customer"/>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-merge">
+                                    <input type="text"
+                                           class="form-control input-card-block-spinner"
+                                           id="date_"
+                                           placeholder="dd.mm.yyyy"
+                                           name="date"
+                                           autocomplete="off"/>
+                                    <span class="input-group-text">
+                        <i class="ti ti-calendar"></i>
+                     </span>
+                                </div>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="phone"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="email"/>
+                            </th>
+                            <th>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-type-of-payment_"
+                                        name="typeOfPayment">
+                                    <option value="" selected>All</option>
+                                    <option value="card">Card</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="invoice">Invoice</option>
+                                </select>
+                            </th>
+                            <th>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-status-payment_"
+                                        name="statusPayment">
+                                    <option value="" selected>All</option>
+                                    <option value="true">Payed</option>
+                                    <option value="false">UnPayed</option>
+                                </select>
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table-pagination-container_"></div>
+                <input type="hidden" name="languageCode" value="en" id="languageCode_">
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/table.js}"></script>
+    <script>
+        const inputs = ['id', 'customer', 'date', 'phone', 'email', 'typeOfPayment', 'statusPayment'];
+        let pathToTable = `${contextPath}admin/transactions/table/load`;
+        let pathToPagination = `${contextPath}admin/transactions/pagination/load`;
+        let timeoutId;
+
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id === 'table-data-container_') {
+                const datePicker = $("#date_");
+                datePicker.datepicker({
+                    format: "dd.mm.yyyy"
+                }).on('changeDate', function () {
+                    htmx.trigger($("#date_")[0], 'input')
+                });
+            }
+        });
+    </script>
+</div>
+<!--/ Content -->
+</body>
+</html>

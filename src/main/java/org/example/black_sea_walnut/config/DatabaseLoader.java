@@ -2,9 +2,12 @@ package org.example.black_sea_walnut.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.New;
+import org.example.black_sea_walnut.entity.Transaction;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.repository.TransactionsRepository;
 import org.example.black_sea_walnut.service.NewService;
+import org.example.black_sea_walnut.service.TransactionsService;
 import org.example.black_sea_walnut.util.FakerUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DatabaseLoader implements CommandLineRunner {
     private final NewService newService;
+    private final TransactionsRepository transactionsRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -30,6 +34,11 @@ public class DatabaseLoader implements CommandLineRunner {
 //                eng.setNew_(new_);
 //                new_.setTranslations(List.of(eng, ukr));
 //                newService.save(new_);
+            }
+        } else if (transactionsRepository.findAll().isEmpty()) {
+            for (int i = 0; i < 3; i++) {
+                Transaction transaction = FakerUtil.fill(Transaction.class);
+                transactionsRepository.save(transaction);
             }
         }
     }

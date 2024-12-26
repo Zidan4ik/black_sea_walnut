@@ -19,13 +19,13 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nameCustomer;
-    private LocalDateTime transactionDate;
+    private String customer;
+    private LocalDateTime date;
     private int summa;
     private String phone;
     private String email;
     private PaymentType paymentType;
-    private boolean isPay;
+    private Boolean isPay;
     @ManyToOne
     private User user;
 }
