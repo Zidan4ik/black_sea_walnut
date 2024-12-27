@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.ResponseTransactionForView;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.Transaction;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.enums.PaymentStatus;
 import org.example.black_sea_walnut.enums.PaymentType;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -48,7 +49,8 @@ public class TransactionSpecification {
     }
 
     private static Specification<Transaction> hasStatusPayment(String statusPayment) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isPay"), Boolean.valueOf(statusPayment));
+        PaymentStatus paymentStatus = PaymentStatus.valueOf(statusPayment);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("paymentStatus"), paymentStatus);
     }
 
     private static Specification<Transaction> hasDate(LocalDate date) {

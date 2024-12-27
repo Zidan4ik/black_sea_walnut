@@ -18,7 +18,7 @@ public class TransactionMapper {
                 .phone(entity.getPhone())
                 .email(entity.getEmail())
                 .typeOfPayment(entity.getPaymentType().toString())
-                .statusPayment(entity.getIsPay().toString())
+                .statusPayment(entity.getPaymentStatus().toString())
                 .date(entity.getDate().toLocalDate().format(outputDate))
                 .time(entity.getDate().toLocalTime().format(outputTime))
                 .build();

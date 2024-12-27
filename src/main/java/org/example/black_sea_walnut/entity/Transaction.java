@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.black_sea_walnut.enums.PaymentStatus;
 import org.example.black_sea_walnut.enums.PaymentType;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class Transaction {
     private String phone;
     private String email;
     private PaymentType paymentType;
-    private Boolean isPay;
+    private PaymentStatus paymentStatus;
     @ManyToOne
     private User user;
 }

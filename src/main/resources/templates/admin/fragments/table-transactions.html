@@ -8,7 +8,9 @@
   <td th:text="${item.phone}"></td>
   <td th:text="${item.email}"></td>
   <td th:text="${item.typeOfPayment}"></td>
-  <td th:text="${item.statusPayment}?'Payed':'UnPayed'"></td>
+  <td th:if="${item.statusPayment}=='payed'"  th:text="${item.statusPayment}" class="bg-greenMy" style="background-color: green;"></td>
+  <td th:if="${item.statusPayment}=='unPayed'"  th:text="${item.statusPayment}" class="bg-redMy"></td>
+  <td th:if="${item.statusPayment}=='inProcess'"  th:text="${item.statusPayment}" class="bg-orangeMy"></td>
 </tr>
 <tr th:unless="${data.size()>0}">
   <td colspan="9" style="text-align: center; color: gray; font-style: italic;">No data

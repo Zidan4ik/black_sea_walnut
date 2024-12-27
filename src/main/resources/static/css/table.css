@@ -1,0 +1,29 @@
+.bg-greenMy {
+    background-color: green !important;
+    color: white !important ;
+}
+
+.bg-greenMy:hover {
+    background-color: #005e00 !important;
+    color: white !important;
+}
+
+.bg-redMy {
+    background-color: red !important;
+    color: white !important;
+}
+
+.bg-redMy:hover {
+    background-color: #ba0000 !important;
+    color: white !important;
+}
+
+.bg-orangeMy {
+    background-color: orange !important;
+    color: white !important;
+}
+
+.bg-orangeMy:hover {
+    background-color: #c88400 !important;
+    color: white !important;
+}

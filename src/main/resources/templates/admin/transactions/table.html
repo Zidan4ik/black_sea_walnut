@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Orders</title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
     <style>
         .pointer {
             cursor: pointer;
@@ -40,7 +41,7 @@
                     </div>
                 </div>
                 <div class="table-responsive" id="card-block" style="overflow-x: auto;">
-                    <table class="table table-bordered table-hover table-striped linkedRow"
+                    <table class="table table-bordered table-hover linkedRow"
                            style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
@@ -102,8 +103,9 @@
                                         id="pick-status-payment_"
                                         name="statusPayment">
                                     <option value="" selected>All</option>
-                                    <option value="true">Payed</option>
-                                    <option value="false">UnPayed</option>
+                                    <option value="payed">Payed</option>
+                                    <option value="unPayed">UnPayed</option>
+                                    <option value="inProcess">In process</option>
                                 </select>
                             </th>
                         </tr>
