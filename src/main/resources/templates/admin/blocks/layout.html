@@ -94,7 +94,7 @@
             <th:block th:insert="admin/blocks/navbar::navbar"></th:block>
             <!--/ Navbar -->
             <!-- Content wrapper -->
-            <div class="content-wrapper">
+            <div class="content-wrapper justify-content-center">
                 <!-- Content -->
                 <div layout:fragment="content">
 
@@ -182,6 +182,43 @@
             }
         });
     }
+
+    // function invokeBlockUI() {
+    //     const tableContainer = $("#card-block");
+    //     const table = tableContainer.find("table");
+    //
+    //     table.block({
+    //         message: '<div class="sk-wave sk-primary mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+    //         timeout: 1000,
+    //         css: {
+    //             backgroundColor: "transparent",
+    //             border: "0",
+    //             position: "absolute",
+    //             top: "0",
+    //             left: "0",
+    //             width: "100%",
+    //             height: "100%",
+    //             display: "flex",
+    //             justifyContent: "center",
+    //             alignItems: "center",
+    //         },
+    //         overlayCSS: {
+    //             backgroundColor: "#fff",
+    //             opacity: 0.8,
+    //         },
+    //     });
+    //
+    //     $(".sk-rect").css({
+    //         width: "20px",
+    //         height: "10px",
+    //         backgroundColor: "green"
+    //     });
+    //
+    //
+    //     tableContainer.css({
+    //         position: "relative", // Задаємо відносне позиціонування контейнера
+    //     });
+    // }
 </script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+<tbody>
+<tr th:if="${data.size()>0}" th:each="item : ${data}">
+    <td th:text="${item.id}"></td>
+    <td th:text="${item.name}"></td>
+    <td th:text="${item.taste}"></td>
+    <td th:text="${item.totalCount}"></td>
+    <td th:text="${item.priceByUnit}"></td>
+    <td th:text="${item.discountType}"></td>
+    <td>
+        <div class="text-center" style="width: auto;">
+            <a class="btn btn-sm btn-github edit-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-edit"></i>
+            </a>
+            <a class="btn btn-sm btn-github delete-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+<tr th:unless="${data.size()>0}">
+    <td colspan="7" style="text-align: center; color: gray; font-style: italic;">No data
+        available in table
+    </td>
+</tr>
+</tbody>
+<input type="hidden" th:value="${tastes}" id="tastes_">
+<input type="hidden" th:value="${discounts}" id="discounts_">

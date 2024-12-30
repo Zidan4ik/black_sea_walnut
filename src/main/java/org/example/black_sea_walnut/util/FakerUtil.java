@@ -21,7 +21,8 @@ public class FakerUtil {
                 if (field.getType().equals(String.class)) {
                     field.set(instance, faker.lorem().word());
                 } else if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
-                    field.set(instance, random.nextInt(100));
+                    int value = random.nextInt(100);
+                    field.set(instance, value > 0 ? value : 1);
                 } else if (field.getType().equals(long.class) || field.getType().equals(Long.class)) {
                     field.set(instance, faker.number().randomNumber());
                 } else if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {

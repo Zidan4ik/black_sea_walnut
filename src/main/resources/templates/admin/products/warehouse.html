@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Storage</title>
+    <style>
+         .btn-productsMy {
+             padding: 10px 30px;
+             font-size: 16px;
+             color: white;
+             text-align: center;
+             text-decoration: none;
+             border: none;
+             border-radius: 50px;
+             background: linear-gradient(90deg, #004d00, #006600);
+             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+             transition: all 0.3s ease;
+             width: 50%;
+         }
+
+        .btn-productsMy:hover {
+            background: linear-gradient(90deg, #006600, #004d00);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-productsMy:active {
+            transform: scale(0.98);
+            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+        }
+
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl p-0">
+    <div class="text-center">
+        <div>
+            <div class="mb-5">
+                <a class="btn btn-secondary btn-productsMy"
+                th:href="@{/admin/products/configuration}">Configuration</a>
+            </div>
+            <div>
+                <a class="btn btn-secondary btn-productsMy"
+                th:href="@{/admin/products}">Products</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ Content -->
+</body>
+</html>

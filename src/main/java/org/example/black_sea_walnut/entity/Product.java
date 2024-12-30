@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
-import org.example.black_sea_walnut.enums.PackingType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,23 +21,24 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long articleId;
-    private PackingType packingType;
     private int price;
+    private Long totalCount;
     private LocalDateTime createdDate;
     private String pathToImage1;
     private String pathToImage2;
     private String pathToImage3;
+    private int mass;
     private int massEnergy;
     private String pathToImageDescription;
     private String pathToImagePayment;
     private String pathToImagePacking;
     private String pathToImageDelivery;
-    @OneToOne
-    private Mass mass;
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "discount_id", referencedColumnName = "discountId")
     private Discount discount;
-    @ManyToMany
-    private List<Mass> masses;
-    @ManyToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ProductTranslation> productTranslations;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "taste_id", referencedColumnName = "tasteId")
+    private Taste taste;
 }
