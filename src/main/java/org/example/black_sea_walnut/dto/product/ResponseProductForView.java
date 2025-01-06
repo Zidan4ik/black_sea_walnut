@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.dto;
+package org.example.black_sea_walnut.dto.product;
 
 import lombok.Builder;
 import lombok.Getter;

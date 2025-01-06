@@ -1,8 +1,7 @@
 package org.example.black_sea_walnut.service.imp;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.ResponseTasteForView;
-import org.example.black_sea_walnut.dto.ResponseTastesForProduct;
+import org.example.black_sea_walnut.dto.taste.ResponseTasteForView;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.TasteMapper;
@@ -37,11 +36,11 @@ public class TasteServiceImp implements TasteService {
                 .collect(Collectors.joining(", "));
     }
 
-    @Override
-    public ResponseTastesForProduct getByTasteIdInDTO(Long id) {
-        List<Taste> all = getAllByTasteId(id);
-        return mapper.toDTOForProduct(all);
-    }
+//    @Override
+//    public ResponseTastesForProduct getByTasteIdInDTO(Long id) {
+//        List<Taste> all = getAllByTasteId(id);
+//        return mapper.toDTOForProduct(all);
+//    }
 
     @Override
     public List<Taste> getAllByTasteId(Long id) {

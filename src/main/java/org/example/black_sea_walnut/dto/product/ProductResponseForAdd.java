@@ -1,12 +1,13 @@
-package org.example.black_sea_walnut.dto;
+package org.example.black_sea_walnut.dto.product;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
 
 @Builder
 @Getter
-public class ResponseProductForAdd {
+public class ProductResponseForAdd {
     private Long id;
     private Long articleId;
     private Boolean isActive;
@@ -25,10 +26,18 @@ public class ResponseProductForAdd {
     private String descriptionPaymentEn;
     private String descriptionDeliveryUk;
     private String descriptionDeliveryEn;
+    private String pathToImage1;
+    private String pathToImage2;
+    private String pathToImage3;
+    private String pathToImage4;
+    private String pathToImageDescription;
+    private String pathToImagePacking;
+    private String pathToImagePayment;
+    private String pathToImageDelivery;
     @Setter
-    private ResponseHistoryPricesForProduct prices;
+    private HistoryRequestPricesForProduct prices;
     @Setter
-    private ResponseTastesForProduct taste;
+    private Long tasteId;
     @Setter
-    private ResponseDiscountsForProduct discount;
+    private Long discountId;
 }

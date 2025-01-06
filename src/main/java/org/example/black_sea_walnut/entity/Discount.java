@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
+import java.util.List;
+
 @Entity
-@Table(name = "discounts",uniqueConstraints = @UniqueConstraint(columnNames = {"discountId","languageCode"}))
+@Table(name = "discounts",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"discountId", "languageCode"}))
 @Getter
 @Setter
 public class Discount {
@@ -18,4 +21,6 @@ public class Discount {
     private LanguageCode languageCode;
     private String name;
     private int value;
+    @ManyToMany(mappedBy = "discounts")
+    private List<Product> products;
 }

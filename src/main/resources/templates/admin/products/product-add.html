@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
     <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/css/text.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -19,18 +20,18 @@
 
         <!-- Header content -->
         <div class="row">
-            <div class="row col-12 d-flex align-items-center justify-content-start">
+            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
                 <div class="col-auto text-center">
                     <a th:href="@{/admin/products}">
                         <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
                     </a>
                 </div>
-                <div class="col-auto" style="padding-right: 5px;">Table</div>
+                <div class="col-auto" style="padding-right: 5px;">Таблиця</div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;">Add product</div>
+                <div class="col-auto" style="padding-left: 5px;">Добавлення продукту</div>
             </div>
             <div class="col-12 text-start">
-                <span class="title-out">Table</span>
+                <span class="title-out">Добавлення продукту</span>
             </div>
         </div>
         <!--/ Header content -->
@@ -40,21 +41,21 @@
             <ul class="nav nav-tabs gap-3" role="tablist" style="background: none;">
                 <li class="nav-item">
                     <button type="button" class="nav-link active" data-bs-toggle="tab"
-                            data-bs-target="#navs-ua" aria-controls="navs-ua" aria-selected="true"
+                            data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
                             style="margin-left: 15px;"
-                            data-lang="ua">
+                            data-lang="uk">
                             <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UA
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
                             </span>
                         <i class="ti ti-planet ti-sm d-sm-none"></i>
                     </button>
                 </li>
                 <li class="nav-item">
                     <button type="button" class="nav-link" data-bs-toggle="tab"
-                            data-bs-target="#navs-eng" aria-controls="navs-eng" aria-selected="false"
-                            data-lang="eng">
+                            data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
+                            data-lang="en">
                             <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>ENG
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
                             </span>
                         <i class="ti ti-planet ti-sm d-sm-none"></i>
                     </button>
@@ -63,234 +64,739 @@
         </div>
         <!--/ Language Tabs -->
 
-        <form id="form" th:hx-post="@{/admin/new/save}" enctype="multipart/form-data" hx-encoding="multipart/form-data">
+        <form id="form">
             <div class="tab-content" id="pills-tabContent">
-                <!-- UA TAB -->
-                <div class="tab-pane fade show active" id="navs-ua" role="tabpanel"
+                <!-- UK TAB -->
+                <div class="tab-pane fade show active" id="navs-uk" role="tabpanel"
                      data-bs-toggle="tab">
                     <div class="row">
-                        <div class="d-flex-full">
-                            <div class="col-auto">
-                                <label class="form-label" for="articleId_">Article: </label>
-                                <input class="form-control" id="articleId_">
-                            </div>
-                            <div class="col-auto">
-                                <label class="form-label" for="totalCount_">Amount: </label>
-                                <i class="ti ti-arrow-left" style="color: green;"></i>
-                                <input class="form-control" id="totalCount_">
-                                <i class="ti ti-arrow-right" style="color: green;"></i>
+                        <div id="header-block-uk"></div>
+
+                        <div id="image-block-uk" class="col-12 col-sm-5 mb-3"
+                             style="text-align: center;">
+                        </div>
+                        <div class="col-12 col-sm-7 mb-3">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label for="name-uk_" class="form-label bold">Назва:</label>
+                                    <input class="form-control" id="name-uk_" type="text" data-name="nameUk" placeholder=""/>
+                                </div>
+                                <div class="col-6">
+                                    <label for="tastes-uk_" class="form-label bold">Смак:</label>
+                                    <select class="form-select mx-2 select-card-block-spinner ms-0"
+                                            id="tastes-uk_">
+                                        <option value="" selected></option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="energyMass_" class="form-label bold">Енергетична маса, Ккал:</label>
+                                    <div id="energy-mass-block-uk"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="mass_" class="form-label bold">Маса,
+                                        Ккал:</label>
+                                    <div id="mass-block-uk"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="oldPrice_" class="form-label bold">Стара ціна:</label>
+                                    <div id="old-price-block-uk"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="newPrice_" class="form-label bold">Нова ціна:</label>
+                                    <div id="new-price-block-uk"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="discounts-uk_" class="form-label bold">Статус знижки:</label>
+                                    <select class="form-select mx-2 select-card-block-spinner ms-0"
+                                            id="discounts-uk_">
+                                        <option value="" selected></option>
+                                    </select>
+                                </div>
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <label for="recipe-uk_" class="form-label bold">Рецепт:</label>
+                                    <textarea class="form-control" id="recipe-uk_" data-name="recipeUk" rows="3"></textarea>
+                                    <label class="form-label" style="color: #AAAAAA;">Максимум: 500 символів</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="condition-exploitation-uk_" class="form-label bold">Спосіб
+                                        зберігання:</label>
+                                    <textarea class="form-control" id="condition-exploitation-uk_"
+                                              data-name="conditionExploitationUk"
+                                              rows="3"></textarea>
+                                    <label class="form-label" style="color: #AAAAAA;">Максимум: 500 символів</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div id="image-block-ua" class="col-12 col-sm-4 mb-3"
-                             style="text-align: center; position: relative; display: inline-block;">
+                        <div id="image-block-description-uk" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;"></div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-product-uk" class="form-label bold">Опис товару:</label>
+                            <div id="edit-description-product-uk"
+                                 style="min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 2000 символів</label>
+                            <div type="hidden" id="hidden-edit-description-product-uk" data-name="descriptionProductUk"
+                                 style="display: none;"></div>
                         </div>
-                        <div class="col-12 col-sm-8 mb-3">
-                            <div class="mb-3">
-                                <label for="title-ua_" class="form-label" style="color: darkgrey; font-size: large;">
-                                    Заголовок:</label>
-                                <input class="form-control"
-                                       id="title-ua_"
-                                       type="text"
-                                       name="titleUA"
-                                       placeholder="Центр підтримки експорту"
-                                />
-                                <div id="title-ua-error" style="color: red;"></div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="description_ua" class="form-label"
-                                       style="color: darkgrey; font-size: large;">
-                                    Опис:</label>
-                                <div id="description_ua"
-                                     style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
-                                <input
-                                        type="hidden" id="hidden-description-ua_" name="descriptionUA">
-                            </div>
+
+                        <div id="image-block-payment-uk" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;">
                         </div>
-                        <div class="col-12 col-sm-12 mb-3 text-center">
-                            <label for="date-of-publication_" class="form-label"
-                                   style="display: block; margin-bottom: 5px;">
-                                Дата публікування:
-                            </label>
-                            <div id="date-of-publication-block-ua" class="input-group input-group-merge"
-                                 style="width:20%; justify-content: center; display: inline-flex;" data-lang="ua">
-                            </div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-packing-uk" class="form-label bold">Упаковка:</label>
+                            <div id="edit-description-packing-uk"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 2000 символів</label>
+                            <div type="hidden" id="hidden-edit-description-packing-uk" data-name="descriptionPackingUk"
+                                 style="display: none;"></div>
                         </div>
-                        <div id="save-block-ua" class="col-12 col-sm-12 mb-3 text-center">
+
+                        <div id="image-block-packing-uk" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;"></div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-payment-uk" class="form-label bold">Платіж:</label>
+                            <div id="edit-description-payment-uk"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 2000 символів</label>
+                            <div type="hidden" id="hidden-edit-description-payment-uk" data-name="descriptionPaymentUk"
+                                 style="display: none;"></div>
                         </div>
+
+                        <div id="image-block-delivery-uk" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;">
+                        </div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-packing-uk" class="form-label bold">Доставка:</label>
+                            <div id="edit-description-delivery-uk"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 2000 символів</label>
+                            <div type="hidden" id="hidden-edit-description-delivery-uk" data-name="descriptionDeliveryUk"
+                                 style="display: none;"></div>
+                        </div>
+
+                        <div id="save-block-uk" class="col-12 col-sm-12 mb-3 text-center"></div>
                     </div>
                 </div>
-                <!--/ UA TAB -->
+                <!--/ UK TAB -->
 
-                <!-- ENG TAB -->
-                <div class="tab-pane fade mb-5" id="navs-eng" role="tabpanel"
+                <!-- EN TAB -->
+                <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
                      data-bs-toggle="tab">
                     <div class="row">
-                        <div id="image-block-eng" class="col-12 col-sm-4 mb-3"
-                             style="text-align: center; position: relative; display: inline-block;">
+                        <div id="header-block-en"></div>
+
+                        <div id="image-block-en" class="col-12 col-sm-5 mb-3"
+                             style="text-align: center;">
                         </div>
-                        <div class="col-12 col-sm-8 mb-3">
-                            <div class="mb-3">
-                                <label for="title-eng_" class="form-label" style="color: darkgrey; font-size: large;">
-                                    Title:</label>
-                                <input id="title-eng_" type="text" class="form-control" name="titleENG"
-                                       placeholder="Export Support Center"
-                                       aria-describedby="defaultFormControlHelp"/>
-                                <div id="error-titleENG" class="error-message" style="color: red;"></div>
+                        <div class="col-12 col-sm-7 mb-3">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label for="name-en_" class="form-label bold">Name:</label>
+                                    <input class="form-control" id="name-en_" type="text" data-name="nameEn" placeholder=""/>
+                                </div>
+                                <div class="col-6">
+                                    <label for="tastes-en_" class="form-label bold">Taste:</label>
+                                    <select class="form-select mx-2 select-card-block-spinner ms-0"
+                                            id="tastes-en_">
+                                        <option value="" selected></option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="energyMass_" class="form-label bold">Energy mass, kkal:</label>
+                                    <div id="energy-mass-block-en"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="mass_" class="form-label bold">Mass, kkal:</label>
+                                    <div id="mass-block-en"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="oldPrice_" class="form-label bold">Old price:</label>
+                                    <div id="old-price-block-en"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="newPrice_" class="form-label bold">New price:</label>
+                                    <div id="new-price-block-en"></div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="discounts-en_" class="form-label bold">Status discount:</label>
+                                    <select class="form-select mx-2 select-card-block-spinner ms-0"
+                                            id="discounts-en_">
+                                        <option value="" selected></option>
+                                    </select>
+                                </div>
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <label for="recipe-en_" class="form-label bold">Recipe:</label>
+                                    <textarea class="form-control" id="recipe-en_" data-name="recipeEn" rows="3"></textarea>
+                                    <label class="form-label" style="color: #AAAAAA;">Max: 500 characters</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="condition-exploitation-en_" class="form-label bold">Approach
+                                        saving:</label>
+                                    <textarea class="form-control" id="condition-exploitation-en_"
+                                              data-name="conditionExploitationEn" rows="3"></textarea>
+                                    <label class="form-label" style="color: #AAAAAA;">Max: 500 characters</label>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="description_eng" class="form-label"
-                                       style="color: darkgrey; font-size: large;">
-                                    Description:</label>
-                                <div id="description_eng"
-                                     style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
-                                <input type="hidden" id="hidden-description-eng_" name="descriptionENG">
-                            </div>
                         </div>
-                        <div class="col-12 col-sm-12 mb-3 text-center">
-                            <label for="date-of-publication_" class="form-label"
-                                   style="display: block; margin-bottom: 5px;">
-                                Date of publication:
-                            </label>
-                            <div id="date-of-publication-block-eng" class="input-group input-group-merge"
-                                 style="width:20%; justify-content: center; display: inline-flex;">
-                            </div>
+
+                        <div id="image-block-description-en" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;"></div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-product-en" class="form-label bold">Description
+                                product:</label>
+                            <div id="edit-description-product-en"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 2000 characters</label>
+                            <div type="hidden" id="hidden-edit-description-product-en" data-name="descriptionProductEn"
+                                 style="display: none;"></div>
                         </div>
-                        <div id="save-block-eng" class="col-12 col-sm-12 mb-3 text-center">
+
+                        <div id="image-block-payment-en" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;"></div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-payment-en" class="form-label bold">Payment:</label>
+                            <div id="edit-description-payment-en"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 2000 characters</label>
+                            <div type="hidden" id="hidden-edit-description-payment-en" data-name="descriptionPaymentEn"
+                                 style="display: none;"></div>
                         </div>
+
+                        <div id="image-block-packing-en" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;"></div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-packing-en" class="form-label bold">Packing:</label>
+                            <div id="edit-description-packing-en"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <div type="hidden" id="hidden-edit-description-packing-en" data-name="descriptionPackingEn"
+                                 style="display: none;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 2000 characters</label>
+                        </div>
+
+                        <div id="image-block-delivery-en" class="d-flex col-12 col-sm-5 mb-3 mt-4"
+                             style="height: 100%;"></div>
+                        <div class="col-12 col-sm-7">
+                            <label for="edit-description-delivery-en" class="form-label bold">Delivery:</label>
+                            <div id="edit-description-delivery-en"
+                                 style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 2000 characters</label>
+                            <div type="hidden" id="hidden-edit-description-delivery-en" data-name="descriptionDeliveryEn"
+                                 style="display: none;"></div>
+                        </div>
+                        <div id="save-block-en" class="col-12 col-sm-12 mb-3 text-center"></div>
                     </div>
                 </div>
-                <!--/ ENG TAB -->
+                <!--/ EN TAB -->
 
+                <!-- Hidden Inputs-->
                 <input type="hidden" id="hidden-status_" name="isActive" value="false">
-                <input type="file" id="file_" name="file"
-                       accept="image/*,video/*" style="display: none;">
+                <input type="file" id="file-image1" data-type="image1" class="files"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image2" data-type="image2" class="files"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image3" data-type="image3" class="files"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image4" data-type="image4" class="files"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image-description" class="files" data-type="image-description"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image-payment" class="files" data-type="image-payment"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image-delivery" class="files" data-type="image-delivery"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-image-packing" class="files" data-type="image-packing"
+                       accept="image/*" style="display: none;">
+                <!--/ Hidden Inputs-->
+
+
+                <!-- Description Image Block -->
+                <div id="shared-image-description" style="display: none;">
+                    <div class="d-flex flex-column justify-content-center align-items-center"
+                         style="flex: 1; text-align: center;">
+                                <span style="color: darkgrey; margin-top: 10px;">
+                                    png, jpg, jpeg, mp4 до 15 МБ
+                                </span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center ms-1 position-relative"
+                         style="flex: 1;">
+                        <img id="image-description" data-name="imageDescription"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                             alt="error" style="width: 100%; height: 175px; display: block;">
+                        <button type="button" data-type="image-description"
+                                class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                style="width: 55%;">
+                            Змінити
+                        </button>
+                        <button type="button" data-type="image-description"
+                                class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                            <i class="ti ti-trash" style="font-size: x-large;"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--/ Description Image Block -->
+
+                <!-- Packing Image Block -->
+                <div id="shared-image-packing" style="display: none;">
+                    <div class="d-flex flex-column justify-content-center align-items-center"
+                         style="flex: 1; text-align: center;">
+                                <span style="color: darkgrey; margin-top: 10px;">
+                                    png, jpg, jpeg, mp4 до 15 МБ
+                                </span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center ms-1 position-relative"
+                         style="flex: 1;">
+                        <img id="image-packing" data-name="imagePacking"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                             alt="error" style="width: 100%; height: 175px; display: block;">
+                        <button type="button" data-type="image-packing"
+                                class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                style="width: 55%;">
+                            Змінити
+                        </button>
+                        <button type="button" data-type="image-packing"
+                                class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                            <i class="ti ti-trash" style="font-size: x-large;"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--/ Payment Image Block -->
+
+                <!-- Payment Image Block -->
+                <div id="shared-image-payment" style="display: none;">
+                    <div class="d-flex flex-column justify-content-center align-items-center"
+                         style="flex: 1; text-align: center;">
+                                <span style="color: darkgrey; margin-top: 10px;">
+                                    png, jpg, jpeg, mp4 до 15 МБ
+                                </span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center ms-1 position-relative"
+                         style="flex: 1;">
+                        <img id="image-payment" data-name="imagePayment"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                             alt="error" style="width: 100%; height: 175px; display: block;">
+                        <button type="button" data-type="image-payment"
+                                class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                style="width: 55%;">
+                            Змінити
+                        </button>
+                        <button type="button" data-type="image-payment"
+                                class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                            <i class="ti ti-trash" style="font-size: x-large;"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--/ Payment Image Block -->
+
+                <!-- Delivery Image Block -->
+                <div id="shared-image-delivery" style="display: none;">
+                    <div class="d-flex flex-column justify-content-center align-items-center"
+                         style="flex: 1; text-align: center;">
+                        <span style="color: darkgrey; margin-top: 10px;">
+                            png, jpg, jpeg, mp4 до 15 МБ
+                        </span>
+                    </div>
+                    <div class="d-flex flex-column align-items-center ms-1 position-relative"
+                         style="flex: 1;">
+                        <img id="image-delivery" data-name="imageDelivery"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                             alt="error" style="width: 100%; height: 175px; display: block;">
+                        <button type="button" data-type="image-delivery"
+                                class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                style="width: 55%;">
+                            Змінити
+                        </button>
+                        <button type="button" data-type="image-delivery"
+                                class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                            <i class="ti ti-trash" style="font-size: x-large;"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--/ Delivery Image Block -->
+
+                <!-- Header Base -->
+                <div id="shared-header" style="display: none;">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 id="name-product_" class="mb-0 me-3"></h4>
+                        <div class="d-flex align-items-center me-3 pe-3">
+                            <label class="switch switch-success">
+                                <input id="status_" type="checkbox" class="switch-input"/>
+                                <span class="switch-toggle-slider">
+                                        <span class="switch-on"></span>
+                                        <span class="switch-off"></span>
+                                    </span>
+                            </label>
+                        </div>
+                        <button id="btn-target_" type="button" class="btn btnTrashMyBefore">
+                            <i class="ti ti-trash" style="font-size: x-large;"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="col-3 d-flex align-items-center me-2 ms-2">
+                            <label class="form-label me-2" for="articleId_">Артикул:</label>
+                            <div class="input-group input-group-merge" style="width: 73%;">
+                                <input class="form-control" id="articleId_" data-name="articleId" placeholder="">
+                                <span class="input-group-text">
+                                        <i class="ti ti-edit"></i>
+                                    </span>
+                            </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center flex-wrap">
+                            <label class="form-label me-2" for="amount_">Кількість:</label>
+                            <i class="ti ti-chevron-left icon-hover-arrow me-2" id="arrow-left"></i>
+                            <input class="form-control text-center errorMy" id="amount_" data-name="amount" style="width: 20%;">
+                            <i class="ti ti-chevron-right icon-hover-arrow ms-2" id="arrow-right"></i>
+                            <div class="d-flex justify-content-center" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ Header Base -->
 
                 <!-- Image Base -->
                 <div id="shared-image" class="shared-image" style="display: none;">
-                    <div class="text-center" style="position: relative; display: inline-block;">
-                        <img id="img_"
+                    <!-- Основне фото -->
+                    <div class="position-relative">
+                        <img id="image1" data-name="image1"
                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
                              alt="error"
-                             style="width: 345px; height: 304px; display: block; margin: 0 auto;">
+                             style="width: 100%; height: 409px; display: block; margin: 0 auto;">
 
-                        <video id="video_" controls
-                               style="display: none; width: 345px; height: 304px; margin: 0 auto;"></video>
-
-                        <button type="button" id="btn-select_" class="btn btn-success btn-image" style="left: 13%;">
+                        <button type="button" data-type="image1"
+                                class="btn btn-success btn-image position-absolute top-50 start-50 translate-middle btn-select"
+                                style="width: 55%;">
                             Змінити
                         </button>
-                        <button type="button" id="btn-delete_" class="btn btn-success btn-image" style="right: 13%;">
-                            Видалити
+                        <button type="button" data-type="image1"
+                                class="btn btnTrashMyBefore position-absolute top-0 end-0 me-2 mt-2 btn-delete">
+                            <i class="ti ti-trash" style="font-size: x-large;"></i>
                         </button>
-                        <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;">
-                        png, jpg, jpeg, mp4 до 15 МБ
-                    </span>
                     </div>
+
+                    <!-- Три фото в ряд -->
+                    <div class="mt-3 row row-cols-1 row-cols-sm-3 g-3">
+                        <div class="col text-center position-relative">
+                            <img id="image2" data-name="image2"
+                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                                 alt="Thumbnail 1"
+                                 style="width: 100%; height: 110px; display: block; margin: 0 auto;">
+                            <button type="button" data-type="image2"
+                                    class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                    style="width: 50%">
+                                Змінити
+                            </button>
+                            <button type="button" data-type="image2"
+                                    class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                                <i class="ti ti-trash"></i>
+                            </button>
+                        </div>
+                        <div class="col text-center position-relative">
+                            <img id="image3" data-name="image3"
+                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                                 alt="Thumbnail 2"
+                                 style="width: 100%; height: 110px; display: block; margin: 0 auto;">
+                            <button type="button" data-type="image3"
+                                    class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                    style="width: 50%">
+                                Змінити
+                            </button>
+                            <button type="button" data-type="image3"
+                                    class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                                <i class="ti ti-trash"></i>
+                            </button>
+                        </div>
+                        <div class="col text-center position-relative">
+                            <img id="image4" data-name="image4"
+                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                                 alt="Thumbnail 3"
+                                 style="width: 100%; height: 110px; display: block; margin: 0 auto;">
+                            <button type="button" data-type="image4"
+                                    class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
+                                    style="width: 50%">
+                                Змінити
+                            </button>
+                            <button type="button" data-type="image4"
+                                    class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
+                                <i class="ti ti-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;">
+                            png, jpg, jpeg, mp4 до 15 МБ
+                    </span>
                 </div>
                 <!--/ Image Base -->
 
-                <!-- Date of publication Base -->
-                <div id="shared-date" style="display: none;">
-                    <input type="text" class="form-control" id="date-of-publication_"
-                           placeholder="dd.mm.yyyy" name="dateOfPublication"/>
-                    <span class="input-group-text" onclick="focusInput('date-of-publication_')">
-                                <i class="ti ti-calendar"></i>
-                        </span>
-                    <div id="error-dateOfPublication" class="error-message" style="color: red;"></div>
-                </div>
-                <!--/ Date of publication Base -->
-
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
-                    <button type="submit" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
                 </div>
                 <!--/ Button save Base -->
+
+                <!-- Energy Mass Base -->
+                <div id="shared-energy-mass" style="display: none;">
+                    <input class="form-control" id="energyMass_" data-name="energyMass" type="text" placeholder=""/>
+                </div>
+                <!--/ Energy Mass Base -->
+
+                <!-- Mass Base -->
+                <div id="shared-mass" style="display: none;">
+                    <input class="form-control" id="mass_" data-name="mass" type="text" placeholder=""/>
+                </div>
+                <!--/ Mass Base -->
+
+                <!-- Old price -->
+                <div id="shared-old-price">
+                    <input class="form-control" id="oldPrice_" data-name="oldPrice" type="text" placeholder=""/>
+                </div>
+                <!--/ Old price -->
+
+                <!-- New price -->
+                <div id="shared-new-price">
+                    <input class="form-control" id="newPrice_" data-name="newPrice" type="text" placeholder=""/>
+                </div>
+                <!--/ New price -->
+
 
                 <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
                 <script th:src="@{/js/image.js}"></script>
                 <script th:src="@{/js/validator.js}"></script>
                 <script th:src="@{/js/copy.js}"></script>
-                <script>
-                    let descriptionUA = document.getElementById("hidden-description-ua_").value;
-                    let descriptionEN = document.getElementById("hidden-description-eng_").value;
-                    var editor_ua = new FroalaEditor('#description_ua', {
-                        height: 12 * 20,
-                        scrollableContainer: '#description_ua',
-                        events: {
-                            'initialized': function () {
-                                this.html.set(descriptionUA || '');
-                            },
-                            'contentChanged': function () {
-                                const html = this.html.get();
-                                // console.log('UA: ', html);
-                                $("#hidden-description-ua_").html(html);
-                            }
-                        }
-                    });
-                    var editor_eng = new FroalaEditor('#description_eng', {
-                        height: 12 * 20,
-                        scrollableContainer: '#description_eng',
-                        events: {
-                            'initialized': function () {
-                                this.html.set(descriptionEN || '');
-                            },
-                            'contentChanged': function () {
-                                const html = this.html.get();
-                                console.log('EN: ', html);
-                                $("#hidden-description-eng_").html(html);
-                            }
-                        }
-                    });
+                <script th:src="@{/js/event-listener.js}"></script>
 
+                <script>
+                    function copyHTMLBlockImage(fromElementId, toElementId) {
+                        $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                        addEventListenersImage2();
+                        clearBlock(fromElementId);
+                    }
+                </script>
+                <script>
+                    const editorDescProductUK = getFroalaEditor("edit-description-product-uk");
+                    const editorDescPackingUK = getFroalaEditor("edit-description-packing-uk");
+                    const editorDescPaymentUK = getFroalaEditor("edit-description-payment-uk");
+                    const editorDescDeliveryUK = getFroalaEditor("edit-description-delivery-uk");
+
+                    const editorDescProductEN = getFroalaEditor("edit-description-product-en");
+                    const editorDescPackingEN = getFroalaEditor("edit-description-packing-en");
+                    const editorDescPaymentEN = getFroalaEditor("edit-description-payment-en");
+                    const editorDescDeliveryEN = getFroalaEditor("edit-description-delivery-en");
+
+                    function getFroalaEditor(idElementEditor) {
+                        return new FroalaEditor(`#${idElementEditor}`, {
+                            height: 12 * 10,
+                            width: 700,
+                            scrollableContainer: `#${idElementEditor}`,
+                            events: {
+                                'initialized': function () {
+                                    let element = $(`#hidden-${idElementEditor}`);
+                                    this.html.set(element.val() || '');
+                                },
+                                'contentChanged': function () {
+                                    const html = this.html.get();
+                                    // console.log(html);
+                                    $(`#hidden-${idElementEditor}`).html(html);
+                                }
+                            }
+                        });
+                    }
+                </script>
+                <script>
                     document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
                         tab.addEventListener('shown.bs.tab', function (event) {
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
 
-                            console.log(`Switched to tab: ${activatedTabId}`);
+                            // console.log(`Switched to tab: ${activatedTabId}`);
+                            console.log(`Previous: ${previousActiveTab}`);
+                            console.log(`Active: ${activatedTabId}`);
 
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
-                                copyHTMLBlockDate(`date-of-publication-block-${previousActiveTab}`, 'shared-date');
                                 copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
+                                copyHTMLBlockHeader(`header-block-${previousActiveTab}`, 'shared-header');
+                                copyHTMLBlockTextImage(`image-block-description-${previousActiveTab}`, 'shared-image-description');
+                                copyHTMLBlockTextImage(`image-block-packing-${previousActiveTab}`, 'shared-image-packing');
+                                copyHTMLBlockTextImage(`image-block-payment-${previousActiveTab}`, 'shared-image-payment');
+                                copyHTMLBlockTextImage(`image-block-delivery-${previousActiveTab}`, 'shared-image-delivery');
+                                copyHTMLBlockInput(`energy-mass-block-${previousActiveTab}`, 'shared-energy-mass');
+                                copyHTMLBlockInput(`mass-block-${previousActiveTab}`, 'shared-mass');
+                                copyHTMLBlockInput(`old-price-block-${previousActiveTab}`, 'shared-old-price');
+                                copyHTMLBlockInput(`new-price-block-${previousActiveTab}`, 'shared-new-price');
                             }
 
                             if (activatedTabId) {
                                 copyHTMLBlockImage('shared-image', `image-block-${activatedTabId}`);
-                                copyHTMLBlockDate('shared-date', `date-of-publication-block-${activatedTabId}`);
                                 copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
+                                copyHTMLBlockHeader('shared-header', `header-block-${activatedTabId}`);
+                                copyHTMLBlockTextImage('shared-image-description', `image-block-description-${activatedTabId}`);
+                                copyHTMLBlockTextImage('shared-image-packing', `image-block-packing-${activatedTabId}`);
+                                copyHTMLBlockTextImage('shared-image-payment', `image-block-payment-${activatedTabId}`);
+                                copyHTMLBlockTextImage('shared-image-delivery', `image-block-delivery-${activatedTabId}`);
+                                copyHTMLBlockInput('shared-energy-mass', `energy-mass-block-${activatedTabId}`);
+                                copyHTMLBlockInput('shared-mass', `mass-block-${activatedTabId}`);
+                                copyHTMLBlockInput('shared-old-price', `old-price-block-${activatedTabId}`);
+                                copyHTMLBlockInput('shared-new-price', `new-price-block-${activatedTabId}`);
                             }
                         });
                     });
 
-                    document.addEventListener("DOMContentLoaded", function () {
+                    $(document).ready(function () {
                         let activeLang = getActiveLangTab();
+                        // console.log(activeLang);
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
-                        copyHTMLBlockDate('shared-date', `date-of-publication-block-${activeLang}`);
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
+                        copyHTMLBlockHeader('shared-header', `header-block-${activeLang}`);
+                        copyHTMLBlockTextImage('shared-image-description', `image-block-description-${activeLang}`);
+                        copyHTMLBlockTextImage('shared-image-packing', `image-block-packing-${activeLang}`);
+                        copyHTMLBlockTextImage('shared-image-payment', `image-block-payment-${activeLang}`);
+                        copyHTMLBlockTextImage('shared-image-delivery', `image-block-delivery-${activeLang}`);
+                        copyHTMLBlockInput('shared-energy-mass', `energy-mass-block-${activeLang}`);
+                        copyHTMLBlockInput('shared-mass', `mass-block-${activeLang}`);
+                        copyHTMLBlockInput('shared-old-price', `old-price-block-${activeLang}`);
+                        copyHTMLBlockInput('shared-new-price', `new-price-block-${activeLang}`);
+                        addEventListenerNameManager();
+                        getTastesAndDiscounts();
+                        addEventListenerForSwitch();
                     });
+                    const url = `${contextPath}admin/product/save`;
 
                     function getActiveLangTab() {
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
                     }
 
-                    document.querySelector('#status_').addEventListener('change', function () {
-                        const statusCheckbox = document.getElementById("status_");
-                        const hiddenStatus = document.getElementById("hidden-status_");
-
-                        if (hiddenStatus) {
-                            hiddenStatus.value = statusCheckbox.checked ? 'true' : 'false';
+                    function addEventListenerForSwitch() {
+                        $('#discounts-uk_, #discounts-en_').on('change', function () {
+                            if (this.id === 'discounts-uk_') {
+                                let selector = $('#discounts-en_');
+                                selector.val(this.value);
+                            } else if (this.id === 'discounts-en_') {
+                                let selector = $('#discounts-uk_');
+                                selector.val(this.value);
+                            }
+                        });
+                        $('#tastes-uk_, #tastes-en_').on('change', function () {
+                            if (this.id === 'tastes-uk_') {
+                                console.log(1);
+                                let selector = $('#tastes-en_');
+                                selector.val(this.value);
+                            } else if (this.id === 'tastes-en_') {
+                                console.log(2);
+                                let selector = $('#tastes-uk_');
+                                selector.val(this.value);
+                            }
+                        });
+                    }
+                </script>
+                <script>
+                    function fillDataInSelectors(arr, elSelector) {
+                        if (elSelector) {
+                            arr.forEach(function (el) {
+                                let option = document.createElement("option");
+                                option.value = el.id;
+                                option.textContent = el.name;
+                                elSelector.append(option);
+                            });
                         }
-                    });
+                    }
 
-                    document.body.addEventListener('htmx:responseError', function (event) {
-                        if (event.detail.xhr.status === 400) {
-                            clearValid();
-                            let data = JSON.parse(event.detail.xhr.responseText);
-                            validate(data);
-                        }
-                    });
+                    function getTastesAndDiscounts() {
+                        let request = new XMLHttpRequest();
+                        request.open("GET", `${contextPath}admin/tastesAndDiscounts/get`);
+                        request.send();
+                        request.addEventListener('load', function () {
+                            if (request.status === 200) {
+                                let data = JSON.parse(request.response);
+                                console.log(data);
+                                let selectorTasteUk = document.getElementById("tastes-uk_");
+                                let selectorTasteEn = document.getElementById("tastes-en_");
+                                let selectorDiscountUk = document.getElementById("discounts-uk_");
+                                let selectorDiscountEn = document.getElementById("discounts-en_");
+                                fillDataInSelectors(data.tastesUk, selectorTasteUk);
+                                fillDataInSelectors(data.tastesEn, selectorTasteEn);
+                                fillDataInSelectors(data.discountsUk, selectorDiscountUk);
+                                fillDataInSelectors(data.discountsEn, selectorDiscountEn);
+                            }
+                        });
+                    }
+
+                    function saveRequest(url) {
+                        let formData = getFormData();
+                        $.ajax({
+                            type: "post",
+                            url: url,
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function () {
+                                // window.location.replace(`${contextPath}admin/products`);
+                                console.log('Success!!!')
+                            },
+                            error: function (error) {
+                                clearValid();
+                                let data = JSON.parse(error.responseText);
+                                // console.log(data);
+                                validate2(data);
+                                console.log("Error submitting form:", error);
+                            }
+                        });
+                    }
+
+                    function getFormData() {
+                        const resForm = new FormData();
+                        resForm.append("nameUk", $('#name-uk_').val());
+                        resForm.append("nameEn", $('#name-en_').val());
+                        resForm.append("amount", $('#amount_').val());
+                        resForm.append("articleId", $('#articleId_').val());
+                        resForm.append("isActive", $('#status_').val());
+                        resForm.append("recipeUk", $('#recipe-uk_').val());
+                        resForm.append("recipeEn", $('#recipe-en_').val());
+                        resForm.append("conditionExploitationUk", $('#condition-exploitation-uk_').val());
+                        resForm.append("conditionExploitationEn", $('#condition-exploitation-en_').val());
+
+                        resForm.append("prices", JSON.stringify({
+                            id: $('#discounts-uk_').val(),
+                            newPrice: $('#newPrice_').val(),
+                            oldPrice: $('#oldPrice_').val()
+                        }));
+
+                        resForm.append("energyMass", $('#energyMass_').val());
+                        resForm.append("mass", $('#mass_').val());
+                        resForm.append("discountId", $('#discounts-uk_').val());
+                        resForm.append("tasteId", $('#tastes-uk_').val());
+
+                        resForm.append("descriptionProductUk", document.getElementById("hidden-edit-description-product-uk").innerHTML);
+                        resForm.append("descriptionProductEn", document.getElementById("hidden-edit-description-product-en").innerHTML);
+                        resForm.append("descriptionPackingUk", document.getElementById("hidden-edit-description-packing-uk").innerHTML);
+                        resForm.append("descriptionPackingEn", document.getElementById("hidden-edit-description-packing-en").innerHTML);
+                        resForm.append("descriptionPaymentUk", document.getElementById("hidden-edit-description-payment-uk").innerHTML);
+                        resForm.append("descriptionPaymentEn", document.getElementById("hidden-edit-description-payment-en").innerHTML);
+                        resForm.append("descriptionDeliveryUk", document.getElementById("hidden-edit-description-delivery-uk").innerHTML);
+                        resForm.append("descriptionDeliveryEn", document.getElementById("hidden-edit-description-delivery-en").innerHTML);
+
+
+                        let files = [
+                            {id: "#file-image1", fieldName: "image1"},
+                            {id: "#file-image2", fieldName: "image2"},
+                            {id: "#file-image3", fieldName: "image3"},
+                            {id: "#file-image4", fieldName: "image4"},
+                            {id: "#file-image-description", fieldName: "imageDescription"},
+                            {id: "#file-image-payment", fieldName: "imagePayment"},
+                            {id: "#file-image-packing", fieldName: "imagePacking"},
+                            {id: "#file-image-delivery", fieldName: "imageDelivery"}
+                        ];
+
+                        files.forEach(function (fileObj) {
+                            let file = $(fileObj.id)[0].files[0];
+                            if (file) {
+                                resForm.append(fileObj.fieldName, file);
+                            }
+                        });
+
+                        resForm.append("isActive", $("#status_").prop('checked'));
+
+                        return resForm;
+                    }
                 </script>
             </div>
         </form>

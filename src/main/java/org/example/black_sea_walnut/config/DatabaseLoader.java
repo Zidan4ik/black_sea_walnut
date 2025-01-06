@@ -2,13 +2,11 @@ package org.example.black_sea_walnut.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.*;
-import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.repository.TransactionsRepository;
 import org.example.black_sea_walnut.service.NewService;
-import org.example.black_sea_walnut.service.TransactionsService;
 import org.example.black_sea_walnut.util.FakerUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -46,10 +44,10 @@ public class DatabaseLoader implements CommandLineRunner {
                 Product product = FakerUtil.fill(Product.class);
 
                 Discount discount = FakerUtil.fill(Discount.class);
-                product.setDiscount(discount);
+                product.setDiscounts(List.of(discount));
 
                 Taste taste = FakerUtil.fill(Taste.class);
-                product.setTaste(taste);
+                product.setTastes(List.of(taste));
 
                 ProductTranslation eng = FakerUtil.fill(ProductTranslation.class);
                 eng.setLanguageCode(LanguageCode.en);

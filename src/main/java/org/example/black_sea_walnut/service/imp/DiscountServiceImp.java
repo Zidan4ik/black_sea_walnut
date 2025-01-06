@@ -1,8 +1,7 @@
 package org.example.black_sea_walnut.service.imp;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.ResponseDiscountForView;
-import org.example.black_sea_walnut.dto.ResponseDiscountsForProduct;
+import org.example.black_sea_walnut.dto.discount.ResponseDiscountForView;
 import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.DiscountMapper;
@@ -38,10 +37,10 @@ public class DiscountServiceImp implements DiscountService {
                 .collect(Collectors.joining(", "));
     }
 
-    @Override
-    public ResponseDiscountsForProduct getByDiscountIdInDTO(Long id) {
-        return mapper.toDTOForProduct(getAllByDiscountId(id));
-    }
+//    @Override
+//    public ResponseDiscountsForProduct getByDiscountIdInDTO(Long id) {
+//        return mapper.toDTOForProduct(getAllByDiscountId(id));
+//    }
 
     @Override
     public List<Discount> getAllByDiscountId(Long id) {

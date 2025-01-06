@@ -3,6 +3,8 @@ package org.example.black_sea_walnut.service.imp;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.*;
+import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.product.ResponseProductForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ProductMapper;
@@ -22,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
-    private final ProductMapper mapper = new ProductMapper();
+    private final ProductMapper mapper;
     private final TasteService tasteService;
     private final DiscountService discountService;
     private final HistoryPricesService historyPricesService;
@@ -54,16 +56,16 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResponseProductForAdd getByIdLikeDTOAdd(Long id) {
+    public ProductResponseForAdd getByIdLikeDTOAdd(Long id) {
         Product product = getById(id);
-        ResponseProductForAdd productInDtoAdd = mapper.toDTOForAdd(product);
-        ResponseTastesForProduct tasteInDTOForProduct = tasteService.getByTasteIdInDTO(product.getTaste().getTasteId());
-        ResponseDiscountsForProduct discountInDTOForProduct = discountService.getByDiscountIdInDTO(product.getDiscount().getDiscountId());
-        ResponseHistoryPricesForProduct historyPricesInDTOForProduct = historyPricesService.getLatestPriceByProductIdInDtoForProduct(product.getId());
-        productInDtoAdd.setTaste(tasteInDTOForProduct);
-        productInDtoAdd.setDiscount(discountInDTOForProduct);
-        productInDtoAdd.setPrices(historyPricesInDTOForProduct);
-        return productInDtoAdd;
+//        ProductResponseForAdd productInDtoAdd = mapper.toResponseForAdd(product);
+//        ResponseTastesForProduct tasteInDTOForProduct = tasteService.getByTasteIdInDTO(product.getTaste().getTasteId());
+//        ResponseDiscountsForProduct discountInDTOForProduct = discountService.getByDiscountIdInDTO(product.getDiscount().getDiscountId());
+//        ResponseHistoryPricesForProduct historyPricesInDTOForProduct = historyPricesService.getLatestPriceByProductIdInDtoForProduct(product.getId());
+//        productInDtoAdd.setTaste(tasteInDTOForProduct);
+//        productInDtoAdd.setDiscount(discountInDTOForProduct);
+//        productInDtoAdd.setPrices(historyPricesInDTOForProduct);
+        return null;
     }
 
     @Override

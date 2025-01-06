@@ -27,13 +27,49 @@ function addEventListenersImage() {
             videoElement.style.display = 'none';
             document.getElementById('hidden-path-to-media_').value = null;
         } else if (fileType.startsWith('video/')) {
-            const url = URL.createObjectURL(file);
-            videoElement.src = url;
+            videoElement.src = URL.createObjectURL(file);
             videoElement.style.display = 'block';
             imgElement.style.display = 'none';
             document.getElementById('hidden-path-to-media_').value = null;
         } else {
             alert('Підтримуються лише файли зображень або відео.');
         }
+    });
+}
+
+function addEventListenersImage2() {
+    document.querySelectorAll(".btn-select, .btn-delete, .files").forEach(function (button) {
+        button.replaceWith(button.cloneNode(true));
+    });
+
+    document.querySelectorAll(".btn-select").forEach(function (button) {
+        button.addEventListener('click', function () {
+            // console.log(this);
+            let attribute = this.getAttribute('data-type');
+            document.getElementById("file-" + attribute).click();
+        });
+    });
+    document.querySelectorAll(".files").forEach(function (button) {
+        button.addEventListener('change', function (event) {
+            // console.log(this);
+            let attribute = this.getAttribute("data-type");
+            // console.log("this:", this);
+
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const imageElement = document.getElementById(attribute);
+            imageElement.src = URL.createObjectURL(file);
+        });
+    });
+    document.querySelectorAll(".btn-delete").forEach(function (button) {
+        button.addEventListener('click', function () {
+            // console.log(this);
+            let attribute = this.getAttribute("data-type");
+            let input = document.getElementById("file-"+attribute);
+            let elementById = document.getElementById(attribute);
+            elementById.src = path_default_image;
+            input.value = "";
+        });
     });
 }

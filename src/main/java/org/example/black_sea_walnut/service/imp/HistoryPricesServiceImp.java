@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service.imp;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.ResponseHistoryPricesForProduct;
+import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.mapper.HistoryPricesMapper;
 import org.example.black_sea_walnut.repository.HistoryPricesRepository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HistoryPricesServiceImp implements HistoryPricesService {
     private final HistoryPricesRepository historyPricesRepository;
-    private final HistoryPricesMapper mapper = new HistoryPricesMapper();
+    private final HistoryPricesMapper mapper;
 
     @Override
     public HistoryPrices getLatestPriceByProductId(Long productId) {
@@ -20,7 +20,7 @@ public class HistoryPricesServiceImp implements HistoryPricesService {
     }
 
     @Override
-    public ResponseHistoryPricesForProduct getLatestPriceByProductIdInDtoForProduct(Long productId) {
+    public HistoryResponsePricesForProduct getLatestPriceByProductIdInDtoForProduct(Long productId) {
         return mapper.toDTOForView(getLatestPriceByProductId(productId));
     }
 }

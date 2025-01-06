@@ -1,8 +1,8 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.ResponseProductForAdd;
-import org.example.black_sea_walnut.dto.ResponseProductForView;
+import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.product.ResponseProductForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,9 @@ public interface ProductService {
 
     Product getById(Long id);
 
-    ResponseProductForAdd getByIdLikeDTOAdd(Long id);
+    ProductResponseForAdd getByIdLikeDTOAdd(Long id);
 
     void deleteById(Long id);
+
+
 }

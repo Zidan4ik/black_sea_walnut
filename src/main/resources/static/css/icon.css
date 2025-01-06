@@ -11,3 +11,16 @@
     transform: scale(1.1);
     border-radius: 50%;
 }
+
+.btnTrashMyBefore {
+    color: black;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: none !important;
+}
+
+.btnTrashMyBefore:hover {
+    color: red;
+    box-shadow: none !important;
+    transform: scale(1.1);
+}
+/* не focus/active */

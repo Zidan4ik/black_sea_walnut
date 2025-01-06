@@ -32,4 +32,14 @@ public class ProductTranslation {
     @Lob
     private String descriptionDelivery;
 
+    public ProductTranslation(LanguageCode languageCode, String name, String recipe, String conditionExploitation, String descriptionProduct, String descriptionPacking, String descriptionPayment, String descriptionDelivery) {
+        this.languageCode = languageCode;
+        this.name = name;
+        this.recipe = recipe;
+        this.conditionExploitation = conditionExploitation;
+        this.descriptionProduct = descriptionProduct;
+        this.descriptionPacking = descriptionPacking;
+        this.descriptionPayment = descriptionPayment;
+        this.descriptionDelivery = descriptionDelivery;
+    }
 }

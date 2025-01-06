@@ -7,7 +7,7 @@ function clearValid() {
     });
 }
 
-function validate(data){
+function validate(data) {
     Object.entries(data).forEach(function ([field, message]) {
         // console.log("Field:", field, "Message:", message);
         const inputField = document.getElementById(field + `_`);
@@ -24,6 +24,32 @@ function validate(data){
                 const imgElement = document.getElementById('img_');
                 imgElement.parentNode.append(errorMessage);
             } else {
+                inputField.parentNode.appendChild(errorMessage);
+            }
+        }
+    });
+}
+
+function validate2(data) {
+    Object.entries(data).forEach(function ([field, message]) {
+        const inputField = document.querySelector(`[data-name=${field}]`);
+        // console.log(inputField);
+        if (inputField) {
+            // console.log("Field:", field, "Message:", message);
+
+            inputField.classList.add("errorMy");
+            let errorMessage = document.createElement("span");
+            errorMessage.className = "error-message";
+            errorMessage.style.color = "red";
+            errorMessage.innerText = message;
+            if (inputField.getAttribute("class")==="files") {
+                inputField.parentNode.append(errorMessage);
+            } else if(inputField.id === 'amount_'){
+                let parentDiv = inputField.closest('div');
+                if(parentDiv)
+                    parentDiv.appendChild(errorMessage);
+            }
+            else {
                 inputField.parentNode.appendChild(errorMessage);
             }
         }
