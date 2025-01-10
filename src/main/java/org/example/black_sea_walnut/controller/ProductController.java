@@ -7,11 +7,14 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
 import org.example.black_sea_walnut.dto.discount.ResponseDiscountForView;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
+import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ResponseAllDiscountsAndTastes;
-import org.example.black_sea_walnut.dto.product.ResponseProductForView;
+import org.example.black_sea_walnut.dto.product.ProductResponseForView;
 import org.example.black_sea_walnut.dto.taste.ResponseTasteForView;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.DiscountService;
+import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.util.JsonUtil;
@@ -38,6 +41,7 @@ public class ProductController {
     private final DiscountService discountService;
     private final TasteService tasteService;
     private final Validator validator;
+    private final HistoryPricesService historyPricesService;
 
     @GetMapping("/warehouse")
     public ModelAndView viewWareAndHouse() {
@@ -50,13 +54,13 @@ public class ProductController {
     }
 
     @GetMapping("/products/table/load")
-    public ModelAndView loadTable(@ModelAttribute ResponseProductForView responseProductForView,
+    public ModelAndView loadTable(@ModelAttribute ProductResponseForView responseProductForView,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "5") int size,
                                   @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-products");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseProductForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
+        PageResponse<ProductResponseForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
         model.addObject("data", pageResponse.getContent());
 
         Set<ResponseTasteForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
@@ -68,13 +72,13 @@ public class ProductController {
     }
 
     @GetMapping("/products/pagination/load")
-    public ModelAndView loadPagination(@ModelAttribute ResponseProductForView responseProductForView,
+    public ModelAndView loadPagination(@ModelAttribute ProductResponseForView responseProductForView,
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "5") int size,
                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseProductForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
+        PageResponse<ProductResponseForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
@@ -89,19 +93,22 @@ public class ProductController {
     public ResponseEntity<?> saveProduct(@Valid ProductRequestForAdd dto,
                                          BindingResult bindingResult) {
         HistoryRequestPricesForProduct readValue = JsonUtil.parseObject(dto.getPrices(), HistoryRequestPricesForProduct.class);
-        BindingResult br = new BeanPropertyBindingResult(readValue,"prices");
-        validator.validate(readValue,br);
+        BindingResult br = new BeanPropertyBindingResult(readValue, "prices");
+        validator.validate(readValue, br);
 
         if (bindingResult.hasErrors() || br.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
             br.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
-                return ResponseEntity
+            return ResponseEntity
                     .status(HttpStatus.valueOf(400))
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
+        Product product = productService.save(dto);
+        readValue.setProductId(product.getId());
+        historyPricesService.save(readValue);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -113,12 +120,25 @@ public class ProductController {
         Set<ResponseDiscountForView> discountEn = discountService.getAllByLanguageCodeInDTO(LanguageCode.en);
         ResponseAllDiscountsAndTastes dto = ResponseAllDiscountsAndTastes.builder().tastesUk(tastesUk).tastesEn(tastesEn).discountsUk(discountUk).discountsEn(discountEn).build();
         return new ResponseEntity<>(dto, HttpStatus.OK);
-
     }
 
 
-//    @GetMapping("/product/{id}")
-//    public ResponseEntity<ResponseProductForView> getProductById(@PathVariable Long id){
-//
-//    }
+    @GetMapping("/product/{id}/edit")
+    public ModelAndView viewProduct(@PathVariable Long id){
+        ModelAndView modelAndView = new ModelAndView("admin/products/product-edit");
+        modelAndView.addObject("id",id);
+        return modelAndView;
+    }
+
+    @SneakyThrows
+    @GetMapping("/product/{id}/delete")
+    public ModelAndView deleteProduct(@PathVariable Long id) {
+        productService.deleteById(id);
+        return new ModelAndView("redirect:/admin/products");
+    }
+    @GetMapping("/product/{id}")
+    @ResponseBody
+    public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id){
+        return new ResponseEntity<>(productService.getByIdLikeDTOAdd(id),HttpStatus.OK);
+    }
 }

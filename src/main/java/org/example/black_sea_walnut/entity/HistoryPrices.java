@@ -23,5 +23,6 @@ public class HistoryPrices {
     private LocalDateTime validFrom;
     private LocalDateTime validTo;
     @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 }

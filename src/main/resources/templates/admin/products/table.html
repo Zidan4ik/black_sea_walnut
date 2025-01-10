@@ -90,7 +90,7 @@
                             <th>
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-type-of-discount_"
-                                        name="discountType">
+                                        name="discount">
                                     <option value="" selected>All</option>
                                 </select>
                             </th>
@@ -106,7 +106,7 @@
     </div>
     <script th:src="@{/js/table.js}"></script>
     <script>
-        const inputs = ['id', 'name', 'taste', 'priceByUnit', 'discountType'];
+        const inputs = ['id', 'name', 'taste', 'priceByUnit', 'discount'];
         let pathToTable = `${contextPath}admin/products/table/load`;
         let pathToPagination = `${contextPath}admin/products/pagination/load`;
         let timeoutId;
@@ -114,7 +114,7 @@
 
         $(document).on('click', '.edit-icon', function () {
             let id = $(this).data('id');
-            window.location.pathname = contextPath + `admin/product/edit/${id}`;
+            window.location.pathname = contextPath + `admin/product/${id}/edit`;
         });
 
         $(document).on('click', '.delete-icon', function () {
@@ -124,7 +124,7 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('GET', `${contextPath}admin/product/delete/${id}`);
+            request.open('GET', `${contextPath}admin/product/${id}/delete`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
-import java.util.List;
 
 @Entity
 @Table(
@@ -21,6 +20,4 @@ public class Taste {
     @Enumerated(EnumType.STRING)
     private LanguageCode languageCode;
     private String name;
-    @ManyToMany(mappedBy = "tastes")
-    private List<Product> products;
 }

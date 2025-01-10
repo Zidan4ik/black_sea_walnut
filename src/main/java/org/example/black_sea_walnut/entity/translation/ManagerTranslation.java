@@ -17,6 +17,7 @@ public class ManagerTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     private LanguageCode languageCode;
     private String name;
     private String surname;

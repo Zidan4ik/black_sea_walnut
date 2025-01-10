@@ -12,5 +12,5 @@ public interface DiscountService {
     Set<ResponseDiscountForView> getAllByLanguageCodeInDTO(LanguageCode code);
     String getSentence(Set<ResponseDiscountForView> discounts);
 //    ResponseDiscountsForProduct getByDiscountIdInDTO(Long id);
-    List<Discount> getAllByDiscountId(Long id);
+    Set<Discount> getAllByDiscountId(Long id);
 }

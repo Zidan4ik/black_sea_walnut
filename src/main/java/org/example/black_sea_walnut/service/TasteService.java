@@ -12,5 +12,5 @@ public interface TasteService {
     Set<ResponseTasteForView> getAllByLanguageCodeInDTO(LanguageCode code);
     String getSentence(Set<ResponseTasteForView> tastes);
 //    ResponseTastesForProduct getByTasteIdInDTO(Long id);
-    List<Taste> getAllByTasteId(Long id);
+    Set<Taste> getAllByTasteId(Long id);
 }

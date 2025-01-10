@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 @RequiredArgsConstructor
@@ -44,10 +45,10 @@ public class DatabaseLoader implements CommandLineRunner {
                 Product product = FakerUtil.fill(Product.class);
 
                 Discount discount = FakerUtil.fill(Discount.class);
-                product.setDiscounts(List.of(discount));
+                product.setDiscounts(Set.of(discount));
 
                 Taste taste = FakerUtil.fill(Taste.class);
-                product.setTastes(List.of(taste));
+                product.setTastes(Set.of(taste));
 
                 ProductTranslation eng = FakerUtil.fill(ProductTranslation.class);
                 eng.setLanguageCode(LanguageCode.en);

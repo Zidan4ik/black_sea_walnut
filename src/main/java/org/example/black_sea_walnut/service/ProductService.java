@@ -1,26 +1,32 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
+import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.product.ResponseProductForView;
+import org.example.black_sea_walnut.dto.product.ProductResponseForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
     List<Product> getAll();
 
-    PageResponse<ResponseProductForView> getAll(ResponseProductForView response, Pageable pageable, LanguageCode code);
+    PageResponse<ProductResponseForView> getAll(ProductResponseForView response, Pageable pageable, LanguageCode code);
 
     Product save(Product entity);
+
+    Product save(ProductRequestForAdd dto);
 
     Product getById(Long id);
 
     ProductResponseForAdd getByIdLikeDTOAdd(Long id);
 
-    void deleteById(Long id);
+    void deleteById(Long id) throws IOException;
 
+    boolean isExistByArticleId(Long id);
 
+    boolean isExistById(Long id);
 }

@@ -1,20 +1,19 @@
 package org.example.black_sea_walnut.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.discount.ResponseDiscountForView;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.product.ResponseAllDiscountsAndTastes;
-import org.example.black_sea_walnut.dto.product.ResponseProductForView;
-import org.example.black_sea_walnut.dto.taste.ResponseTasteForView;
+import org.example.black_sea_walnut.dto.product.ProductResponseForView;
+import org.example.black_sea_walnut.entity.Discount;
+import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
+import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 
 @Component
@@ -22,47 +21,66 @@ import java.util.Set;
 public class ProductMapper {
     private final HistoryPricesMapper historyPricesMapper;
 
-    public ResponseProductForView toDTOForView(Product entity, LanguageCode languageCode) {
+    public ProductResponseForView toDTOForView(Product entity, LanguageCode languageCode) {
         ProductTranslation translation = entity.getProductTranslations().stream()
                 .filter(l -> l.getLanguageCode() == languageCode)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Translation not found for language code: " + languageCode));
-        return null;
-//        return ResponseProductForView
-//                .builder()
-//                .id(entity.getId())
-//                .name(translation.getName())
-//                .taste(String.valueOf(entity.getTaste().getName()))
-//                .totalCount(String.valueOf(entity.getTotalCount()))
-//                .priceByUnit(String.valueOf(entity.getPrice()))
-//                .discountType(entity.getDiscount().getName())
-//                .build();
+        Taste taste = entity.getTastes().stream().filter(t -> t.getLanguageCode().equals(languageCode))
+                .findFirst().orElse(null);
+        Discount discount = entity.getDiscounts().stream().filter(d -> d.getLanguageCode().equals(languageCode))
+                .findFirst().orElse(null);
+        String tasteName = taste != null ? taste.getName() : null;
+        String discountName = discount != null ? discount.getName() : null;
+        List<HistoryPrices> entityHistoryPrices = entity.getHistoryPrices();
+        return ProductResponseForView
+                .builder()
+                .id(entity.getId())
+                .name(translation.getName())
+                .taste(tasteName)
+                .totalCount(String.valueOf(entity.getTotalCount()))
+                .priceByUnit(String.valueOf(1))
+                .discount(discountName)
+                .build();
     }
 
     public ProductResponseForAdd toResponseForAdd(Product entity) {
         ProductTranslation productInUk = entity.getProductTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().get();
         ProductTranslation productInEn = entity.getProductTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().get();
-
-        return ProductResponseForAdd
+        ProductResponseForAdd dto = ProductResponseForAdd
                 .builder()
                 .id(entity.getId())
                 .articleId(entity.getArticleId())
+                .isActive(entity.isActive())
                 .amount(String.valueOf(entity.getTotalCount()))
                 .mass(String.valueOf(entity.getMass()))
                 .energyMass(String.valueOf(entity.getMassEnergy()))
                 .nameUk(productInUk.getName())
+                .recipeUk(productInUk.getRecipe())
                 .conditionExploitationUk(productInUk.getConditionExploitation())
                 .descriptionProductUk(productInUk.getDescriptionProduct())
                 .descriptionPackingUk(productInUk.getDescriptionPacking())
                 .descriptionPaymentUk(productInUk.getDescriptionPayment())
                 .descriptionDeliveryUk(productInUk.getDescriptionDelivery())
                 .nameEn(productInEn.getName())
+                .recipeEn(productInEn.getRecipe())
                 .descriptionProductEn(productInEn.getDescriptionProduct())
                 .conditionExploitationEn(productInEn.getConditionExploitation())
                 .descriptionPackingEn(productInEn.getDescriptionPacking())
                 .descriptionPaymentEn(productInEn.getDescriptionPayment())
                 .descriptionDeliveryEn(productInEn.getDescriptionDelivery())
+                .pathToImage1(entity.getPathToImage1())
+                .pathToImage2(entity.getPathToImage2())
+                .pathToImage3(entity.getPathToImage3())
+                .pathToImage4(entity.getPathToImage4())
+                .pathToImageDescription(entity.getPathToImageDescription())
+                .pathToImagePacking(entity.getPathToImagePacking())
+                .pathToImagePayment(entity.getPathToImagePayment())
+                .pathToImageDelivery(entity.getPathToImageDelivery())
                 .build();
+        entity.getTastes().stream().findFirst().ifPresent(t -> dto.setTasteId(t.getTasteId()));
+        entity.getDiscounts().stream().findFirst().ifPresent(d -> dto.setTasteId(d.getDiscountId()));
+        return dto;
     }
 
     public Product toEntityForRequestAdd(ProductRequestForAdd dto) {
@@ -70,17 +88,28 @@ public class ProductMapper {
         entity.setId(dto.getId());
         entity.setArticleId(dto.getArticleId());
         entity.setActive(dto.getIsActive());
-        entity.setTotalCount(Long.valueOf(dto.getAmount()));
+        entity.setTotalCount(dto.getAmount());
         ProductTranslation productUk = new ProductTranslation(LanguageCode.uk,
                 dto.getNameUk(), dto.getRecipeUk(), dto.getConditionExploitationUk(), dto.getDescriptionProductUk(),
-                dto.getDescriptionPackingUk(), dto.getDescriptionPaymentUk(), dto.getDescriptionDeliveryUk());
+                dto.getDescriptionPackingUk(), dto.getDescriptionPaymentUk(), dto.getDescriptionDeliveryUk(), entity);
         ProductTranslation productEn = new ProductTranslation(LanguageCode.en,
                 dto.getNameEn(), dto.getRecipeEn(), dto.getConditionExploitationEn(), dto.getDescriptionProductEn(),
-                dto.getDescriptionPackingEn(), dto.getDescriptionPaymentEn(), dto.getDescriptionDeliveryEn());
+                dto.getDescriptionPackingEn(), dto.getDescriptionPaymentEn(), dto.getDescriptionDeliveryEn(), entity);
+
         entity.setProductTranslations(List.of(productUk, productEn));
         entity.setCreatedDate(LocalDateTime.now());
+
         entity.setMass(dto.getMass().intValue());
         entity.setMassEnergy(dto.getEnergyMass().intValue());
+
+        entity.setPathToImage1(dto.getPathToImage1());
+        entity.setPathToImage2(dto.getPathToImage2());
+        entity.setPathToImage3(dto.getPathToImage3());
+        entity.setPathToImage4(dto.getPathToImage4());
+        entity.setPathToImageDescription(dto.getPathToImageDescription());
+        entity.setPathToImagePacking(dto.getPathToImagePacking());
+        entity.setPathToImagePayment(dto.getPathToImagePayment());
+        entity.setPathToImageDelivery(dto.getPathToImageDelivery());
         return entity;
     }
 }

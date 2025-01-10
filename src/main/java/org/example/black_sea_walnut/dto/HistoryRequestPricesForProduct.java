@@ -1,10 +1,7 @@
 package org.example.black_sea_walnut.dto;
 
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.black_sea_walnut.validator.NumberNullValidation;
 
 @Builder
@@ -13,6 +10,7 @@ import org.example.black_sea_walnut.validator.NumberNullValidation;
 @AllArgsConstructor
 public class HistoryRequestPricesForProduct {
     private Long id;
+    @Setter
     private Long productId;
     @NumberNullValidation
     @Min(value = 0, message = "{error.field.valid.min.value}")

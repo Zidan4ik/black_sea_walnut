@@ -17,6 +17,7 @@ public class HistoryTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     private LanguageCode languageCode;
     private String title;
     private String subtitle;

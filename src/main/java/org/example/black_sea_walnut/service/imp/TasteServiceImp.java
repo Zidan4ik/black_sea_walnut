@@ -43,7 +43,7 @@ public class TasteServiceImp implements TasteService {
 //    }
 
     @Override
-    public List<Taste> getAllByTasteId(Long id) {
+    public Set<Taste> getAllByTasteId(Long id) {
         return tasteRepository.findAllByTasteId(id);
     }
 }

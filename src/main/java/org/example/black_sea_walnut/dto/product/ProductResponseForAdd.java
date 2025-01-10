@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
+import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
 
 @Builder
 @Getter
@@ -16,6 +17,8 @@ public class ProductResponseForAdd {
     private String nameEn;
     private String energyMass;
     private String mass;
+    private String recipeUk;
+    private String recipeEn;
     private String conditionExploitationUk;
     private String conditionExploitationEn;
     private String descriptionProductUk;
@@ -35,7 +38,7 @@ public class ProductResponseForAdd {
     private String pathToImagePayment;
     private String pathToImageDelivery;
     @Setter
-    private HistoryRequestPricesForProduct prices;
+    private HistoryResponsePricesForProduct prices;
     @Setter
     private Long tasteId;
     @Setter

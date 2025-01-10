@@ -43,8 +43,12 @@ function copyHTMLBlockSave(fromElementId, toElementId) {
 
 function copyHTMLBlockHeader(fromElementId, toElementId) {
     let checked = $(`#${fromElementId} input`).prop('checked');
+    let articleValue = $(`#${fromElementId} input[data-name="articleId"]`).prop('value');
+    let amountValue = $(`#${fromElementId} input[data-name="amount"]`).prop('value');
     $(`#${toElementId}`).html($(`#${fromElementId}`).html());
     $(`#${toElementId} input`).prop('checked', checked);
+    $(`#${toElementId} input[data-name="articleId"]`).prop('value',articleValue);
+    $(`#${toElementId} input[data-name="amount"]`).prop('value',amountValue);
     addEventListenerCounter();
     addEventListenerNameManager();
     clearBlock(fromElementId);

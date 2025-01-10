@@ -64,12 +64,15 @@ function addEventListenersImage2() {
     });
     document.querySelectorAll(".btn-delete").forEach(function (button) {
         button.addEventListener('click', function () {
-            // console.log(this);
             let attribute = this.getAttribute("data-type");
-            let input = document.getElementById("file-"+attribute);
+            let input = document.getElementById("file-" + attribute);
             let elementById = document.getElementById(attribute);
             elementById.src = path_default_image;
             input.value = "";
+            let $input = $(`input[data-image="${attribute}"]`)[0];
+            if ($input) {
+                $input.value = '';
+            }
         });
     });
 }

@@ -43,7 +43,7 @@ public class DiscountServiceImp implements DiscountService {
 //    }
 
     @Override
-    public List<Discount> getAllByDiscountId(Long id) {
+    public Set<Discount> getAllByDiscountId(Long id) {
         return discountRepository.getAllByDiscountId(id);
     }
 }

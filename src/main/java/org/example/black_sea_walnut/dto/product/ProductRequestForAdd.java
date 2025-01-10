@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
+import org.example.black_sea_walnut.validator.IsExistProductValidation;
 import org.example.black_sea_walnut.validator.MediaValidation;
 import org.example.black_sea_walnut.validator.NumberNullValidation;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Getter
+@Setter
+@IsExistProductValidation
 public class ProductRequestForAdd {
     private Long id;
     @NumberNullValidation(message = "The article id should be present!")
@@ -21,7 +24,7 @@ public class ProductRequestForAdd {
     private Long articleId;
     private Boolean isActive;
     @Min(value = 0, message = "{error.field.valid.min.value}")
-    private String amount;
+    private Long amount;
     @NotBlank(message = "{error.field.empty}")
     private String nameUk;
     @NotBlank(message = "{error.field.empty}")
@@ -80,11 +83,7 @@ public class ProductRequestForAdd {
     private MultipartFile imagePacking;
     @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile imageDelivery;
-
-    private String prices; //change on request form name!
-    @Setter
-    private HistoryRequestPricesForProduct pricesDTO;
+    private String prices;
     private Long tasteId;
     private Long discountId;
-
 }

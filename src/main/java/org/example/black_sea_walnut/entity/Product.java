@@ -5,7 +5,9 @@ import lombok.*;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -32,20 +34,22 @@ public class Product {
     private String pathToImagePayment;
     private String pathToImagePacking;
     private String pathToImageDelivery;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "products_discounts",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "articleId"),
             inverseJoinColumns = @JoinColumn(name = "discount_id", referencedColumnName = "discountId")
     )
-    private List<Discount> discounts;
-    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Discount> discounts;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductTranslation> productTranslations;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "products_tastes",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "articleId"),
             inverseJoinColumns = @JoinColumn(name = "taste_id", referencedColumnName = "tasteId")
     )
-    private List<Taste> tastes;
+    private Set<Taste> tastes;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HistoryPrices> historyPrices;
 }
