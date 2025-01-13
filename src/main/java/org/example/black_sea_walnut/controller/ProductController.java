@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
-import org.example.black_sea_walnut.dto.discount.ResponseDiscountForView;
+import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ResponseAllDiscountsAndTastes;
 import org.example.black_sea_walnut.dto.product.ProductResponseForView;
-import org.example.black_sea_walnut.dto.taste.ResponseTasteForView;
+import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.DiscountService;
@@ -63,8 +63,8 @@ public class ProductController {
         PageResponse<ProductResponseForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
         model.addObject("data", pageResponse.getContent());
 
-        Set<ResponseTasteForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
-        Set<ResponseDiscountForView> discounts = discountService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
+        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
+        Set<DiscountResponseForView> discounts = discountService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
         model.addObject("tastes", tasteService.getSentence(names));
         model.addObject("discounts", discountService.getSentence(discounts));
 
@@ -114,10 +114,10 @@ public class ProductController {
 
     @GetMapping("/tastesAndDiscounts/get")
     public ResponseEntity<ResponseAllDiscountsAndTastes> getTastesAndDiscounts() {
-        Set<ResponseTasteForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk);
-        Set<ResponseTasteForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en);
-        Set<ResponseDiscountForView> discountUk = discountService.getAllByLanguageCodeInDTO(LanguageCode.uk);
-        Set<ResponseDiscountForView> discountEn = discountService.getAllByLanguageCodeInDTO(LanguageCode.en);
+        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk);
+        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en);
+        Set<DiscountResponseForView> discountUk = discountService.getAllByLanguageCodeInDTO(LanguageCode.uk);
+        Set<DiscountResponseForView> discountEn = discountService.getAllByLanguageCodeInDTO(LanguageCode.en);
         ResponseAllDiscountsAndTastes dto = ResponseAllDiscountsAndTastes.builder().tastesUk(tastesUk).tastesEn(tastesEn).discountsUk(discountUk).discountsEn(discountEn).build();
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
@@ -140,5 +140,10 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id){
         return new ResponseEntity<>(productService.getByIdLikeDTOAdd(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/products/configuration")
+    public ModelAndView viewConfiguration(){
+        return new ModelAndView("/admin/products/configuration");
     }
 }

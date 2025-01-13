@@ -1,8 +1,9 @@
-package org.example.black_sea_walnut.validator;
+package org.example.black_sea_walnut.validator.annotation;
 
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import org.example.black_sea_walnut.validator.validator.MediaValidator;
 
 import java.lang.annotation.*;
 

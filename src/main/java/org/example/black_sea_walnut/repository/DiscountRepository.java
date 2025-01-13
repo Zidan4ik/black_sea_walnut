@@ -11,4 +11,5 @@ import java.util.Set;
 public interface DiscountRepository extends JpaRepository<Discount, Long> {
     Set<Discount> getAllByLanguageCode(LanguageCode code);
     Set<Discount> getAllByDiscountId(Long id);
+    boolean existsByDiscountId(Long discountId);
 }

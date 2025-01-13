@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.dto;
 
 import jakarta.validation.constraints.Min;
 import lombok.*;
-import org.example.black_sea_walnut.validator.NumberNullValidation;
+import org.example.black_sea_walnut.validator.annotation.NumberNullValidation;
 
 @Builder
 @Getter

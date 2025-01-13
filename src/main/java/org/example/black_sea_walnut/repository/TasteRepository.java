@@ -11,4 +11,5 @@ import java.util.Set;
 public interface TasteRepository extends JpaRepository<Taste,Long> {
     Set<Taste> findAllByLanguageCode(LanguageCode languageCode);
     Set<Taste> findAllByTasteId(Long id);
+    boolean existsByTasteId(Long tasteId);
 }

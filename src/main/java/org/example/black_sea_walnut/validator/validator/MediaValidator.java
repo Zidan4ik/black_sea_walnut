@@ -1,7 +1,8 @@
-package org.example.black_sea_walnut.validator;
+package org.example.black_sea_walnut.validator.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

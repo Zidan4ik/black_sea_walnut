@@ -58,3 +58,7 @@ function clearBlock(elementId) {
     $(`#${elementId}`).empty();
     $(`#${elementId} input`).val('');
 }
+
+function getActiveLangTab() {
+    return document.querySelector('button.nav-link.active').getAttribute('data-lang');
+}

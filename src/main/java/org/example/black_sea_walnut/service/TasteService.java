@@ -1,6 +1,8 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.taste.ResponseTasteForView;
+import org.example.black_sea_walnut.dto.taste.TasteRequestForAdd;
+import org.example.black_sea_walnut.dto.taste.TasteResponseForAdd;
+import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
@@ -9,8 +11,12 @@ import java.util.Set;
 
 public interface TasteService {
     List<Taste> getAllByLanguageCodeInDTO();
-    Set<ResponseTasteForView> getAllByLanguageCodeInDTO(LanguageCode code);
-    String getSentence(Set<ResponseTasteForView> tastes);
-//    ResponseTastesForProduct getByTasteIdInDTO(Long id);
+    Set<TasteResponseForView> getAllByLanguageCodeInDTO(LanguageCode code);
+    String getSentence(Set<TasteResponseForView> tastes);
     Set<Taste> getAllByTasteId(Long id);
+    Taste save(Taste taste);
+    void save(TasteRequestForAdd dto);
+    boolean isExistByTasteId(Long tasteId);
+    Taste getById(Long id);
+    TasteResponseForAdd getByIdInResponseForAdd(Long id);
 }

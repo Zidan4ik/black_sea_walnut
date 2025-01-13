@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ResponseDiscountForView {
+public class DiscountResponseForView {
     private Long id;
     private String name;
     private Long value;

@@ -1,32 +1,53 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.discount.ResponseDiscountForView;
+import org.example.black_sea_walnut.dto.discount.DiscountRequestForAdd;
+import org.example.black_sea_walnut.dto.discount.DiscountResponseForAdd;
+import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.entity.Discount;
+import org.example.black_sea_walnut.enums.LanguageCode;
+
+import java.util.List;
+import java.util.Set;
 
 
 public class DiscountMapper {
-    public ResponseDiscountForView toDTOForView(Discount entity) {
-        return ResponseDiscountForView
+    public DiscountResponseForView toDTOForView(Discount entity) {
+        return DiscountResponseForView
                 .builder()
                 .id(entity.getDiscountId())
                 .name(entity.getName())
                 .value((long) entity.getValue())
                 .build();
     }
+    public List<Discount> toEntityFromRequest(DiscountRequestForAdd dto) {
+        Discount discountUk = new Discount();
+        discountUk.setId(dto.getId());
+        discountUk.setDiscountId(dto.getDiscountId());
+        discountUk.setLanguageCode(LanguageCode.uk);
+        discountUk.setName(dto.getNameUk2());
+        discountUk.setValue(Math.toIntExact(dto.getValue()));
 
-//    public ResponseDiscountsForProduct toDTOForProduct(List<Discount> discounts) {
-//        Discount nameUk = discounts.stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("Discount with language code 'uk' not found"));
-//        Discount nameEn = discounts.stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst()
-//                .orElseThrow(() -> new IllegalArgumentException("Discount with language code 'en' not found"));
-//        Long id = nameUk.getId().equals(nameUk.getProduct().getId()) ? nameUk.getProduct().getId() : null;
-//        Integer price = nameUk.getValue() == nameEn.getValue() ? nameUk.getValue() : null;
-//        return ResponseDiscountsForProduct
-//                .builder()
-//                .commonId(id)
-//                .price(price)
-//                .nameUk(nameUk.getName())
-//                .nameEn(nameEn.getName())
-//                .build();
-//    }
+        Discount discountEn = new Discount();
+        discountEn.setId(dto.getId());
+        discountEn.setDiscountId(dto.getDiscountId());
+        discountEn.setLanguageCode(LanguageCode.en);
+        discountEn.setName(dto.getNameEn2());
+        discountEn.setValue(Math.toIntExact(dto.getValue()));
+        return List.of(discountUk, discountEn);
+    }
+
+    public DiscountResponseForAdd toResponseForAdd(Set<Discount> entities) {
+        Discount tasteUk = entities.stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
+        Discount tasteEn = entities.stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
+        if (tasteUk != null && tasteEn != null) {
+            return DiscountResponseForAdd
+                    .builder()
+                    .id(tasteUk.getId())
+                    .discountId(tasteUk.getDiscountId())
+                    .discountNameUk(tasteUk.getName())
+                    .discountNameEn(tasteEn.getName())
+                    .build();
+        }
+        return null;
+    }
 }

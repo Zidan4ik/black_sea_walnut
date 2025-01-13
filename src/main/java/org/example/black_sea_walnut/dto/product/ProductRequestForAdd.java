@@ -6,11 +6,12 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
-import org.example.black_sea_walnut.validator.IsExistProductValidation;
-import org.example.black_sea_walnut.validator.MediaValidation;
-import org.example.black_sea_walnut.validator.NumberNullValidation;
+import org.example.black_sea_walnut.validator.annotation.IsExistProductValidation;
+import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.example.black_sea_walnut.validator.annotation.NumberNullValidation;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigDecimal;
 
 
 @Builder

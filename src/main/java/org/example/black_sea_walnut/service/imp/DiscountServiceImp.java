@@ -1,8 +1,12 @@
 package org.example.black_sea_walnut.service.imp;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.discount.ResponseDiscountForView;
+import org.example.black_sea_walnut.dto.discount.DiscountRequestForAdd;
+import org.example.black_sea_walnut.dto.discount.DiscountResponseForAdd;
+import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.entity.Discount;
+import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.DiscountMapper;
 import org.example.black_sea_walnut.repository.DiscountRepository;
@@ -25,25 +29,49 @@ public class DiscountServiceImp implements DiscountService {
     }
 
     @Override
-    public Set<ResponseDiscountForView> getAllByLanguageCodeInDTO(LanguageCode code) {
+    public Set<DiscountResponseForView> getAllByLanguageCodeInDTO(LanguageCode code) {
         Set<Discount> discountSet = discountRepository.getAllByLanguageCode(code);
         return discountSet.stream().map(mapper::toDTOForView).collect(Collectors.toSet());
     }
 
     @Override
-    public String getSentence(Set<ResponseDiscountForView> tastes) {
+    public String getSentence(Set<DiscountResponseForView> tastes) {
         return tastes.stream()
-                .map(ResponseDiscountForView::getName)
+                .map(DiscountResponseForView::getName)
                 .collect(Collectors.joining(", "));
     }
-
-//    @Override
-//    public ResponseDiscountsForProduct getByDiscountIdInDTO(Long id) {
-//        return mapper.toDTOForProduct(getAllByDiscountId(id));
-//    }
 
     @Override
     public Set<Discount> getAllByDiscountId(Long id) {
         return discountRepository.getAllByDiscountId(id);
+    }
+
+    @Override
+    public boolean isExistByDiscountId(Long discountId) {
+        return discountRepository.existsByDiscountId(discountId);
+    }
+
+    @Override
+    public Discount getById(Long id) {
+        return discountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Discount with id: " + id + " was not found!"));
+    }
+
+    @Override
+    public DiscountResponseForAdd getByIdInResponseForAdd(Long id) {
+        return mapper.toResponseForAdd(discountRepository.getAllByDiscountId(id));
+    }
+
+    @Override
+    public void save(Discount discount) {
+        discountRepository.save(discount);
+    }
+
+    @Override
+    public void save(DiscountRequestForAdd dto) {
+        List<Discount> list = mapper.toEntityFromRequest(dto);
+        for (Discount t: list){
+            save(t);
+        }
     }
 }
