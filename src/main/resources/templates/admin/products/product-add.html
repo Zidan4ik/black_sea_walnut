@@ -680,11 +680,9 @@
                         });
                         $('#tastes-uk_, #tastes-en_').on('change', function () {
                             if (this.id === 'tastes-uk_') {
-                                console.log(1);
                                 let selector = $('#tastes-en_');
                                 selector.val(this.value);
                             } else if (this.id === 'tastes-en_') {
-                                console.log(2);
                                 let selector = $('#tastes-uk_');
                                 selector.val(this.value);
                             }
@@ -710,7 +708,7 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                console.log(data);
+                                // console.log(data);
                                 let selectorTasteUk = document.getElementById("tastes-uk_");
                                 let selectorTasteEn = document.getElementById("tastes-en_");
                                 let selectorDiscountUk = document.getElementById("discounts-uk_");

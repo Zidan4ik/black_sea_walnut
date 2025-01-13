@@ -570,24 +570,6 @@
                 <!--/ New price -->
 
                 <!-- Modal -->
-                <!--                <div class="modal-dialog modal-lg" role="document">-->
-                <!--                    <div class="modal-content">-->
-                <!--                        <div class="modal-header">-->
-                <!--                            <h5 class="modal-title" id="modal-title_"></h5>-->
-                <!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-                <!--                        </div>-->
-                <!--                        <div class="modal-body"></div>-->
-                <!--                        <div class="modal-footer justify-content-start">-->
-                <!--                            <button id="submit-modal_"-->
-                <!--                                    type="button" class="btn btn-primary"-->
-                <!--                                    style="background-color: #9494CB;">-->
-                <!--                            </button>-->
-                <!--                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal"-->
-                <!--                                    style="background-color: #F6F6FA;">Cancel-->
-                <!--                            </button>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
                 <div class="modal fade show" id="ModalForDelete" tabindex="-1" aria-modal="true" role="dialog">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
@@ -596,12 +578,13 @@
                             </div>
                             <div class="modal-footer">
                                 <a th:href="@{/admin/product/{id}/delete (id=${id})}" class="btn btn-danger float-end">Yes</a>
-                                <button type="button" class="btn btn-secondary float-end" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-secondary float-end" data-bs-dismiss="modal">No
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                <!--/ Modal -->
                 <script>
                     function deleteButtonTarget() {
                         $('#btn-target_').on('click', function () {
@@ -689,7 +672,6 @@
 
                     $(document).ready(function () {
                         let activeLang = getActiveLangTab();
-                        // console.log(activeLang);
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
                         copyHTMLBlockHeader('shared-header', `header-block-${activeLang}`);
@@ -708,9 +690,6 @@
                         deleteButtonTarget();
                     });
 
-                    function getActiveLangTab() {
-                        return document.querySelector('button.nav-link.active').getAttribute('data-lang');
-                    }
 
                     function addEventListenerForSwitch() {
                         $('#discounts-uk_, #discounts-en_').on('change', function () {
@@ -775,11 +754,11 @@
                             contentType: false,
                             success: function () {
                                 window.location.replace(`${contextPath}admin/products`);
+                                console.log('Success');
                             },
                             error: function (error) {
                                 clearValid();
                                 let data = JSON.parse(error.responseText);
-                                // console.log(data);
                                 validate2(data);
                                 console.log("Error submitting form:", error);
                             }
@@ -855,7 +834,6 @@
                 <script>
                     function requestGetProduct() {
                         const id = $("#id_").val();
-                        // console.log(id);
                         let request = new XMLHttpRequest();
                         request.open("GET", `${contextPath}admin/product/${id}`);
                         request.send();
@@ -864,7 +842,7 @@
                                 let data = JSON.parse(request.response);
                                 console.log(data);
                                 for (let key in data) {
-                                    if (data.hasOwnProperty(key) && data[key] !== '') {
+                                    if (data.hasOwnProperty(key)) {
                                         // console.log(`Key: ${key} Value: ${data[key]}`);
                                         let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
                                         if (input) {
