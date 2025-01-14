@@ -112,11 +112,11 @@ public class NewController {
 
         HttpHeaders headers = new HttpHeaders();
         if (dto.getFile() != null) {
-            if (Objects.requireNonNull(dto.getFile().getContentType()).contains("image")) {
-                dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.image);
-            } else if (Objects.requireNonNull(dto.getFile().getContentType()).contains("video")) {
-                dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.video);
-            }
+                    if (Objects.requireNonNull(dto.getFile().getContentType()).contains("image")) {
+                        dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.image);
+                    } else if (Objects.requireNonNull(dto.getFile().getContentType()).contains("video")) {
+                        dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.video);
+                    }
         }
         newService.saveImage(dto);
         headers.add("HX-Redirect", "/admin/news");

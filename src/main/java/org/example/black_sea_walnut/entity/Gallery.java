@@ -21,10 +21,11 @@ public class Gallery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
     private MediaType mediaType;
     private boolean isActive;
     private LocalDateTime timeUpdate;
     private String pathToMedia;
-    @OneToMany
+    @OneToMany(mappedBy = "gallery", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GalleryTranslation> translations;
 }

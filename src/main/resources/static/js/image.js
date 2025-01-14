@@ -46,6 +46,7 @@ function addEventListenersImage2() {
         button.addEventListener('click', function () {
             // console.log(this);
             let attribute = this.getAttribute('data-type');
+            console.log(attribute);
             document.getElementById("file-" + attribute).click();
         });
     });

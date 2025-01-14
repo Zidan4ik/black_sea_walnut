@@ -407,18 +407,8 @@
             });
         }
 
-        function setActiveTab(modalId) {
-            let savedLang = localStorage.getItem('activeLang_Global') || 'uk';
-            let modalElement = document.getElementById(modalId);
-            const targetTab = modalElement.querySelector(`[data-lang="${savedLang}"]`);
-            if (targetTab) {
-                targetTab.click();
-            }
-        }
-
         function addEventListenerButtonAdd() {
             document.getElementById('btnAdd-taste').addEventListener('click', () => {
-                // setActiveTab('ModalForSaveTaste');
                 $('#tasteName-uk_').val('');
                 $('#tasteName-en_').val('');
                 $('#tasteId_').val('');

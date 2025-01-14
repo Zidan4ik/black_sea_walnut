@@ -1,0 +1,53 @@
+<div class="col-6 row" th:each="p:${list}" th:data-id="${p.getId()}" data-type="old">
+    <div class="col-6 text-center">
+        <img th:id="'image'+${p.getId()}"
+             th:src="${(p.getPathToMediaFile()!=null && !p.getPathToMediaFile.isEmpty())? p.getPathToMediaFile():'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s'}"
+             alt="error" style="width: 200px;height: 200px;">
+        <label class="form-label" style="color: #AAAAAA;">Png, jpg, jpeg, mp4, avi до 15 МБ</label>
+        <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn btn-success btn-image btn-select"
+                    th:data-type="'image'+${p.getId()}"
+                    style="background-color: #337D5A;border-color: #337D5A;">
+                Змінити
+            </button>
+            <button type="button" class="btn btn-success btn-image btn-delete"
+                    th:data-type="'image'+${p.getId()}" data-typeDelete="delete-image"
+                    style="background-color: #337D5A;border-color: #337D5A;">
+                Видалити
+            </button>
+            <input type="file" th:id="'file-image'+${p.getId()}" th:data-type="'image'+${p.getId()}" class="files"
+                   data-error="file" accept="image/*" style="display: none;">
+            <input type="hidden" th:data-name="'pathToImage'+${p.getId()}" th:data-image="'image'+${p.getId()}"
+                   class="files" data-error="pathToMediaFile" th:value="${p.getPathToMediaFile()}">
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="col-12" style="display: flex; align-items: center; gap: 26px;">
+            <div class="col-sm-1 d-flex align-items-center">
+                <label class="switch switch-success">
+                    <input id="status_" type="checkbox" class="switch-input status" th:checked="${p.isActive()}"
+                    data-error="isActive">
+                    <span class="switch-toggle-slider">
+                                        <span class="switch-on"></span>
+                                        <span class="switch-off"></span>
+                                    </span>
+                </label>
+            </div>
+            <a type="button" class="btnTrashMyBefore btn-delete"
+               data-typeDelete="delete-object">
+                <i class="ti ti-trash" style="font-size: x-large;margin-bottom: 2px;"></i>
+            </a>
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="title_">Заголовок:</label>
+            <input class="form-control titles" id="title_" th:value="${p.getTitle()}"
+                   style="width: 100%;" data-error="title">
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="description_">Опис:</label>
+            <textarea class="form-control descriptions" id="description_" rows="3" th:text="${p.getDescription()}"
+            data-error="description"></textarea>
+            <label class="form-label" style="color: #AAAAAA;width: 100%;">Максимум: 600 символів</label>
+        </div>
+    </div>
+</div>

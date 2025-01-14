@@ -8,7 +8,6 @@ import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForPro
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForView;
-import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
