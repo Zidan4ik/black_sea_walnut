@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.entity.translation.NutTranslation;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,7 @@ public class Nut {
     private boolean isActive;
     private String pathToImage;
     private String pathToSvg;
-    @OneToMany
+    private LocalDate date;
+    @OneToMany(mappedBy = "nut", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NutTranslation> translations;
 }

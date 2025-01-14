@@ -1,0 +1,29 @@
+package org.example.black_sea_walnut.dto.nut;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.springframework.web.multipart.MultipartFile;
+
+@Builder
+@Getter
+public class NutRequestForAdd {
+    private Long id;
+    private boolean isActive;
+    @NotBlank(message = "{error.field.empty}")
+    private String titleUk;
+    @NotBlank(message = "{error.field.empty}")
+    private String titleEn;
+    private String descriptionUk;
+    private String descriptionEn;
+    @Setter
+    private String pathToImage;
+    @Setter
+    private String pathToSvg;
+    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    private MultipartFile fileImage;
+    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    private MultipartFile fileSvg;
+}

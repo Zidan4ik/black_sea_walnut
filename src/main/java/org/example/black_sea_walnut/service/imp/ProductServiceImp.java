@@ -167,7 +167,6 @@ public class ProductServiceImp implements ProductService {
             imageServiceImp.deleteByPath(product.getPathToImagePacking());
         if (product.getPathToImagePayment() != null && product.getPathToImagePayment().isEmpty())
             imageServiceImp.deleteByPath(product.getPathToImagePayment());
-//        historyPricesService.deleteAllByProduct(product.getId());
         productRepository.deleteById(id);
     }
 

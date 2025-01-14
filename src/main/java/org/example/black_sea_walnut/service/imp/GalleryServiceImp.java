@@ -6,9 +6,7 @@ import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.gallery.GalleryRequestForAdd;
 import org.example.black_sea_walnut.dto.gallery.GalleryResponseForAdd;
 import org.example.black_sea_walnut.entity.Gallery;
-import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.GalleryMapper;
 import org.example.black_sea_walnut.repository.GalleryRepository;
 import org.example.black_sea_walnut.service.GalleryService;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

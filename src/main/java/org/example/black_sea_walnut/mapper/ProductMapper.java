@@ -19,8 +19,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ProductMapper {
-    private final HistoryPricesMapper historyPricesMapper;
-
     public ProductResponseForView toDTOForView(Product entity, LanguageCode languageCode) {
         ProductTranslation translation = entity.getProductTranslations().stream()
                 .filter(l -> l.getLanguageCode() == languageCode)
@@ -32,7 +30,6 @@ public class ProductMapper {
                 .findFirst().orElse(null);
         String tasteName = taste != null ? taste.getName() : null;
         String discountName = discount != null ? discount.getName() : null;
-        List<HistoryPrices> entityHistoryPrices = entity.getHistoryPrices();
         return ProductResponseForView
                 .builder()
                 .id(entity.getId())

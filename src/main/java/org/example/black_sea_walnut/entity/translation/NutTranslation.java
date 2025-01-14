@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.black_sea_walnut.entity.Nut;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
 @Entity
@@ -21,4 +22,6 @@ public class NutTranslation {
     private LanguageCode languageCode;
     private String title;
     private String description;
+    @ManyToOne
+    private Nut nut;
 }
