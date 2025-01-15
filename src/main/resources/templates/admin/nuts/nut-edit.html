@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Add new nut</title>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+
+        <!-- Header content -->
+        <div class="row">
+            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
+                <div class="col-auto text-center">
+                    <a th:href="@{/admin/nuts}">
+                        <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
+                    </a>
+                </div>
+                <div class="col-auto" style="padding-right: 5px;">Таблиця з горіхами</div>
+                <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
+                <div class="col-auto" style="padding-left: 5px;">Добавлення горіха</div>
+            </div>
+        </div>
+        <!--/ Header content -->
+
+        <!-- Language tabs -->
+        <div class="nav-align-top">
+            <ul class="nav nav-tabs" role="tablist" style="background: none;">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" data-bs-toggle="tab"
+                            data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
+                            style="margin-left: 15px;"
+                            data-lang="uk">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" data-bs-toggle="tab"
+                            data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
+                            data-lang="en">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!--/ Language tabs -->
+
+        <form id="form" th:hx-post="@{/admin/nut/save}" enctype="multipart/form-data" hx-encoding="multipart/form-data">
+            <div class="tab-content" id="pills-tabContent">
+                <!-- UK Form -->
+                <div class="tab-pane fade show active" id="navs-uk" role="tabpanel"
+                     data-bs-toggle="tab">
+                    <div class="row">
+                        <div id="image-block-uk" class="col-12 col-sm-4 mb-3"
+                             style="text-align: center; position: relative; display: inline-block;">
+                        </div>
+                        <div class="col-12 col-sm-8 mb-3">
+                            <div class="mb-3" id="switch-block-uk"></div>
+                            <div class="mb-3">
+                                <label for="titleUk_" class="form-label" style="color: darkgrey; font-size: large;">
+                                    Заголовок:</label>
+                                <input class="form-control" id="titleUk_" data-name="titleUk" type="text"
+                                       placeholder="" style="width: 50%;"/>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="fileSvg" class="form-label"
+                                       style="color: darkgrey; font-size: large;">
+                                    Іконка:</label>
+                                <div id="image-svg-block-uk"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit-description-uk" class="form-label bold">Опис:</label>
+                                <div id="edit-description-uk" class="editor-realise"
+                                     style="min-height: 100px; border: 1px solid #ccc;"></div>
+                                <label class="form-label" style="color: #AAAAAA;">Максимум: 2000 символів</label>
+                                <div type="hidden" id="hidden-edit-description-uk" data-name="descriptionUk"
+                                     style="display: none;" class="editors"></div>
+                            </div>
+                        </div>
+                        <div id="save-block-uk" class="col-12 col-sm-12 mb-3 text-center"></div>
+                    </div>
+                </div>
+                <!--/ UK Form -->
+
+                <!-- EN Form -->
+                <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
+                     data-bs-toggle="tab">
+                    <div class="row">
+                        <div id="image-block-en" class="col-12 col-sm-4 mb-3"
+                             style="text-align: center; position: relative; display: inline-block;">
+                        </div>
+                        <div class="col-12 col-sm-8 mb-3">
+                            <div class="mb-3" id="switch-block-en"></div>
+                            <div class="mb-3">
+                                <label for="titleEn_" class="form-label" style="color: darkgrey; font-size: large;">
+                                    Title:</label>
+                                <input class="form-control" id="titleEn_" data-name="titleEn" type="text"
+                                       placeholder="" style="width: 50%;"/>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="fileSvg" class="form-label"
+                                       style="color: darkgrey; font-size: large;">
+                                    Icon:</label>
+                                <div id="image-svg-block-en"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-description-en" class="form-label bold">Description:</label>
+                                <div id="edit-description-en" class="editor-realise"
+                                     style="min-height: 100px; border: 1px solid #ccc;"></div>
+                                <label class="form-label" style="color: #AAAAAA;">Max: 2000 characters</label>
+                                <div type="hidden" id="hidden-edit-description-en" data-name="descriptionEn"
+                                     style="display: none;" class="editors"></div>
+                            </div>
+                        </div>
+                        <div id="save-block-en" class="col-12 col-sm-12 mb-3 text-center"></div>
+                    </div>
+                </div>
+                <!--/ EN Form -->
+
+                <!-- Input hidden -->
+                <input type="hidden" id="id_" th:value="${id}">
+                <input type="hidden" id="hidden-status_" name="isActive" value="false">
+                <input type="file" id="file-fileImage" data-type="fileImage" class="files"
+                       accept="image/*" style="display: none;">
+                <input type="file" id="file-fileSvg" data-type="fileSvg" class="files"
+                       accept="image/*" style="display: none;">
+                <input type="hidden" data-name="pathToSvg" class="files" data-image="fileSvg">
+                <input type="hidden" data-name="pathToImage" class="files" data-image="fileImage">
+                <!--/ Input hidden -->
+
+                <!-- Switch Base -->
+                <div id="shared-switch" style="display: none;">
+                    <label class="switch switch-success">
+                        <input id="status_" type="checkbox" class="switch-input" checked="checked">
+                        <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                    </label>
+                </div>
+                <!--/ Switch Base -->
+
+                <!-- Image Svg Base -->
+                <div id="shared-image-svg" class="shared-image" style="display: none;">
+                    <img id="fileSvg" data-name="fileSvg"
+                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                         alt="error" style="width: 150px;height: 100px;">
+                    <div class="row gap-3" style="margin: 3px;">
+                        <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-select"
+                                style="width: 25%;">
+                            Змінити
+                        </button>
+                        <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-delete"
+                                style="width: 25%;">
+                            Видалити
+                        </button>
+                    </div>
+                </div>
+                <!--/ Image Svg Base -->
+
+                <!-- Image Base -->
+                <div id="shared-image" class="shared-image" style="display: none;">
+                    <div class="position-relative">
+                        <img id="fileImage" data-name="fileImage"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                             alt="error"
+                             style="width: 100%; height: 255px; display: block; margin: 0 auto;">
+                        <button type="button" data-type="fileImage" class="btn btn-success btn-image btn-select"
+                                style="left: 13%;">
+                            Редагувати
+                        </button>
+                        <button type="button" data-type="fileImage" class="btn btn-success btn-image btn-delete"
+                                style="right: 13%;">
+                            Видалити
+                        </button>
+                    </div>
+                </div>
+                <!--/ Image Base -->
+
+                <!-- Button save Base -->
+                <div id="shared-save" style="display: none;">
+                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+                </div>
+                <!--/ Button save Base -->
+
+                <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+                <script th:src="@{/js/image.js}"></script>
+                <script th:src="@{/js/validator.js}"></script>
+                <script th:src="@{/js/copy.js}"></script>
+                <script th:src="@{/js/event-listener.js}"></script>
+
+                <script>
+                    function copyHTMLBlockImage(fromElementId, toElementId) {
+                        $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                        addEventListenersImage2();
+                        clearBlock(fromElementId);
+                    }
+                </script>
+                <script>
+                    // const editorDescProductUK = getFroalaEditor("edit-description-uk");
+                    // const editorDescProductEN = getFroalaEditor("edit-description-en");
+
+                    function getFroalaEditor(idElementEditor) {
+                        return new FroalaEditor(`#${idElementEditor}`, {
+                            height: 12 * 10,
+                            width: 700,
+                            scrollableContainer: `#${idElementEditor}`,
+                            events: {
+                                'initialized': function () {
+                                    let element = $(`#hidden-${idElementEditor}`);
+                                    console.log(element.html());
+                                    this.html.set(element.html() || '');
+                                },
+                                'contentChanged': function () {
+                                    const html = this.html.get();
+                                    // console.log(html);
+                                    $(`#hidden-${idElementEditor}`).html(html);
+                                }
+                            }
+                        });
+                    }
+                </script>
+                <script>
+                    document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                        tab.addEventListener('shown.bs.tab', function (event) {
+                            const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
+                            let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+
+                            // console.log(`Switched to tab: ${activatedTabId}`);
+                            console.log(`Previous: ${previousActiveTab}`);
+                            console.log(`Active: ${activatedTabId}`);
+
+                            if (previousActiveTab) {
+                                copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
+                                copyHTMLBlockImage(`image-svg-block-${previousActiveTab}`, 'shared-image-svg');
+                                copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
+                                copyHTMLBlockSwitch(`switch-block-${previousActiveTab}`, 'shared-switch');
+                            }
+
+                            if (activatedTabId) {
+                                copyHTMLBlockImage('shared-image', `image-block-${activatedTabId}`);
+                                copyHTMLBlockImage('shared-image-svg', `image-svg-block-${activatedTabId}`);
+                                copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
+                                copyHTMLBlockSwitch('shared-switch', `switch-block-${activatedTabId}`);
+                            }
+                        });
+                    });
+
+                    $(document).ready(function () {
+                        let activeLang = getActiveLangTab();
+                        copyHTMLBlockImage('shared-image-svg', `image-svg-block-${activeLang}`);
+                        copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
+                        copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
+                        copyHTMLBlockSwitch('shared-switch', `switch-block-${activeLang}`);
+                        requestGetNut();
+                    });
+                    const url = `${contextPath}admin/nut/save`;
+
+                    function getActiveLangTab() {
+                        return document.querySelector('button.nav-link.active').getAttribute('data-lang');
+                    }
+                </script>
+                <script>
+                    function saveRequest(url) {
+                        let formData = getFormData();
+                        $.ajax({
+                            type: "post",
+                            url: url,
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function () {
+                                window.location.replace(`${contextPath}admin/nuts`);
+                            },
+                            error: function (error) {
+                                clearValid();
+                                let data = JSON.parse(error.responseText);
+                                validate2(data);
+                                console.log("Error submitting form:", error);
+                            }
+                        });
+                    }
+
+                    function getFormData() {
+                        const resForm = new FormData();
+                        resForm.append("id", $("#id_").val());
+                        resForm.append("titleUk", $('#titleUk_').val());
+                        resForm.append("titleEn", $('#titleEn_').val());
+                        resForm.append("isActive", $("#status_").prop('checked'));
+                        resForm.append("pathToImage", $("#pathToImage").val());
+                        resForm.append("pathToSvg", $("#pathToSvg").val());
+
+                        resForm.append("descriptionUk", document.getElementById("hidden-edit-description-uk").innerHTML);
+                        resForm.append("descriptionEn", document.getElementById("hidden-edit-description-en").innerHTML);
+
+                        let files = [
+                            {id: "#file-fileImage", fieldName: "fileImage"},
+                            {id: "#file-fileSvg", fieldName: "fileSvg"},
+                        ];
+
+                        files.forEach(function (fileObj) {
+                            let file = $(fileObj.id)[0].files[0];
+                            if (file) {
+                                resForm.append(fileObj.fieldName, file);
+                            }
+                        });
+                        return resForm;
+                    }
+
+                    function requestGetNut() {
+                        const id = $("#id_").val();
+                        let request = new XMLHttpRequest();
+                        request.open("GET", `${contextPath}admin/nut/${id}`);
+                        request.send();
+                        request.addEventListener('load', function () {
+                            if (request.status === 200) {
+                                let data = JSON.parse(request.response);
+                                console.log(data);
+                                for (let key in data) {
+                                    if (data.hasOwnProperty(key)) {
+                                        console.log(`Key: ${key} Value: ${data[key]}`);
+                                        let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
+                                        // console.log(input);
+                                        if (input) {
+                                            if (input.hasClass('files')) {
+                                                let img = input.attr('data-image');
+                                                // console.log(img);
+                                                let $input = $(`#${img}`);
+                                                if ($input && data[key] !== null) {
+                                                    $input.attr('src', data[key]);
+                                                    input.val(data[key]);
+                                                }
+                                            } else if (input.hasClass('editors')) {
+                                                // console.log(`Key: ${key} Value: ${data[key]}`);
+                                                let $div = $(input);
+                                                // console.log($div[0]);
+                                                if ($div) {
+                                                    $div.html(data[key]);
+                                                    let parent = $div.parent();
+                                                    let find = parent.find('.editor-realise');
+                                                    // console.log(find[0]);
+                                                    getFroalaEditor(find[0].getAttribute('id'));
+                                                }
+                                            } else {
+                                                if (typeof data[key] === 'boolean') {
+                                                    let isActiveEl = $(`input[data-name="${key}"]`)[0];
+                                                    if (isActiveEl)
+                                                        isActiveEl.checked = `${data[key]}`;
+                                                } else {
+                                                        input.val(data[key]);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                </script>
+            </div>
+        </form>
+    </div>
+</div>
+<!--/ Content -->
+</body>
+</html>

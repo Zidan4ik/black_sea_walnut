@@ -35,7 +35,7 @@ function validate2(data) {
         const inputField = document.querySelector(`[data-name=${field}]`);
         console.log(inputField);
         if (inputField) {
-            // console.log("Field:", field, "Message:", message);
+            console.log("Field:", field, "Message:", message);
 
             inputField.classList.add("errorMy");
             let errorMessage = document.createElement("span");

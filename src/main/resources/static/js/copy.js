@@ -54,6 +54,13 @@ function copyHTMLBlockHeader(fromElementId, toElementId) {
     clearBlock(fromElementId);
 }
 
+function copyHTMLBlockSwitch(fromElementId, toElementId){
+    let checked = $(`#${fromElementId} input`).prop('checked');
+    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+    $(`#${toElementId} input`).prop('checked', checked);
+    clearBlock(fromElementId);
+}
+
 function clearBlock(elementId) {
     $(`#${elementId}`).empty();
     $(`#${elementId} input`).val('');

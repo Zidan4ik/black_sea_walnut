@@ -44,7 +44,7 @@ function addEventListenersImage2() {
 
     document.querySelectorAll(".btn-select").forEach(function (button) {
         button.addEventListener('click', function () {
-            // console.log(this);
+            console.log(this);
             let attribute = this.getAttribute('data-type');
             console.log(attribute);
             document.getElementById("file-" + attribute).click();
