@@ -19,4 +19,7 @@ public class HistoryMedia {
     private Long id;
     private MediaType mediaType;
     private String pathToImage;
+    @ManyToOne
+    @JoinColumn(name = "history_id")
+    public History history;
 }

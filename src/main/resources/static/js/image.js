@@ -1,4 +1,4 @@
-let path_default_image = "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+let path_default_image = contextPath + "uploads/default/default-image.jpg";
 
 function addEventListenersImage() {
     document.getElementById('btn-delete_').addEventListener('click', function () {
@@ -61,6 +61,11 @@ function addEventListenersImage2() {
 
             const imageElement = document.getElementById(attribute);
             imageElement.src = URL.createObjectURL(file);
+
+            let $input = $(`input[data-image="${attribute}"]`)[0];
+            if ($input) {
+                $input.value = '';
+            }
         });
     });
     document.querySelectorAll(".btn-delete").forEach(function (button) {

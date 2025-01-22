@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
+import org.example.black_sea_walnut.enums.PageType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,8 +22,12 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean isActive;
-    @OneToMany
+    @Column(unique = true)
+    private PageType pageType;
+    @OneToOne(mappedBy = "history", cascade = CascadeType.ALL)
+    public Banner banner;
+    @OneToMany(mappedBy = "history",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<HistoryTranslation> translations;
-    @OneToMany
-    private List<HistoryMedia> historyMedia;
+    @OneToMany(mappedBy = "history",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<HistoryMedia> historyMedia = new ArrayList<>();
 }

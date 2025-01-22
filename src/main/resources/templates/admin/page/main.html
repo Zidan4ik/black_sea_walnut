@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Main Page</title>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+
+        <!-- Header content -->
+        <div class="row">
+            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
+                <div class="col-auto text-center">
+                    <a th:href="@{/admin/pages}">
+                        <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
+                    </a>
+                </div>
+                <div class="col-auto" style="padding-right: 5px;">Сторінка</div>
+                <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
+                <div class="col-auto" style="padding-left: 5px;">Головна</div>
+            </div>
+        </div>
+        <!--/ Header content -->
+
+        <!-- Language tabs -->
+        <div class="nav-align-top">
+            <ul class="nav nav-tabs" role="tablist" style="background: none;">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" data-bs-toggle="tab"
+                            data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
+                            style="margin-left: 15px;"
+                            data-lang="uk">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" data-bs-toggle="tab"
+                            data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
+                            data-lang="en">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!--/ Language tabs -->
+
+        <div class="tab-content" id="pills-tabContent">
+            <!-- UK Form -->
+            <div class="tab-pane fade show active" id="navs-uk" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>1 блок - Головна</h4>
+                        </div>
+                        <div class="col-6" id="status-main-block-uk"></div>
+                    </div>
+                    <div class="col-6" id="image-main-block-uk"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-title-uk_"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <input class="form-control" id="main-title-uk_" data-name="mainTitleUk" data-error="requestMainForAdd.mainTitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-description-uk_" rows="3"
+                                      data-name="mainDescriptionUk" data-error="requestMainForAdd.mainDescriptionUk"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>2 блок - Продукція</h4>
+                        </div>
+                        <div class="col-6" id="status-production-block-uk"></div>
+                    </div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="mainProduction-title-uk_"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <input class="form-control" id="mainProduction-title-uk_"
+                                   data-name="mainProductionTitleUk" data-error="requestProductionBlockForAdd.mainProductionTitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="mainProduction-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="mainProduction-description-uk_" rows="3"
+                                      data-name="mainProductionDescriptionUk" data-error="requestProductionBlockForAdd.mainProductionDescriptionUk"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>3 блок - Про виробника</h4>
+                        </div>
+                        <div class="col-6" id="status-factory-block-uk"></div>
+                    </div>
+                    <div class="row" id="container-factory-images_">
+                        <div class="col-3" id="add-button-container"
+                             style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-success" id="btn-add-media-block">Добавити медіа</button>
+                            </div>
+                            <span class="text-center"
+                                  style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                                    Png, jpg, jpeg, mp4, avi до 10МБ
+                                </span>
+                        </div>
+                    </div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-factory-title-uk_"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <input class="form-control" id="main-factory-title-uk_"
+                                   data-name="mainFactoryTitleUk" data-error="requestFactoryForAdd.mainFactoryTitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-factory-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-factory-description-uk_" rows="3"
+                                      data-name="mainFactoryDescriptionUk" data-error="requestFactoryForAdd.mainFactoryDescriptionUk"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 500 символів</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>4 блок - В цифрах</h4>
+                        </div>
+                        <div class="col-6" id="status-number-block-uk"></div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number1-title"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <div id="main-number-title1-block-uk"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number1-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-number1-description-uk_" rows="3"
+                                      data-name="mainNumberDescriptionUk1" data-error="requestNumberBlockForAdd.mainNumberDescriptionUk1"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 50 символів</label>
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number2-title"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <div id="main-number-title2-block-uk"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number2-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-number2-description-uk_" rows="3"
+                                      data-name="mainNumberDescriptionUk2" data-error="requestNumberBlockForAdd.mainNumberDescriptionUk2"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 50 символів</label>
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number3-title"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <div id="main-number-title3-block-uk"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number3-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-number3-description-uk_" rows="3"
+                                      data-name="mainNumberDescriptionUk3" data-error="requestNumberBlockForAdd.mainNumberDescriptionUk3"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 50 символів</label>
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number4-title"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <div id="main-number-title4-block-uk"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number4-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-number4-description-uk_" rows="3"
+                                      data-name="mainNumberDescriptionUk4" data-error="requestNumberBlockForAdd.mainNumberDescriptionUk4"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 50 символів</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>5 блок - Наша головна ціль</h4>
+                        </div>
+                        <div class="col-6" id="status-aim-block-uk"></div>
+                    </div>
+                    <div class="col-6" id="image-aim-block-uk"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-aim-title-uk_"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <input class="form-control" id="main-aim-title-uk_" data-name="mainAimTitleUk"
+                            data-error="requestAimBlockForAdd.mainAimTitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-aim-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-aim-description-uk_" rows="3"
+                                      data-name="mainAimDescriptionUk" data-error="requestAimBlockForAdd.mainAimDescriptionUk"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>6 блок - Єко продукція</h4>
+                        </div>
+                        <div class="col-6" id="status-eco-production-block-uk"></div>
+                    </div>
+                    <div class="col-6" id="image-eco-production-block-uk"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-eco-production-title-uk_"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <input class="form-control" id="main-eco-production-title-uk_"
+                                   data-name="mainEcoProductionTitleUk" data-error="requestEcoProductionForAdd.mainEcoProductionTitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-eco-production-description-uk_"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <textarea class="form-control descriptions" id="main-eco-production-description-uk_"
+                                      rows="3" data-name="mainEcoProductionTitleUk"
+                            data-error="requestEcoProductionForAdd.mainEcoProductionDescriptionUk"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div id="save-block-uk"></div>
+            </div>
+            <!--/ UK Form -->
+
+            <!-- EN Form -->
+            <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>1 block - Main</h4>
+                        </div>
+                        <div class="col-6" id="status-main-block-en"></div>
+                    </div>
+                    <div class="col-6" id="image-main-block-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="main-title-en_" data-name="mainTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-description-en_" rows="3"
+                                      data-name="mainDescriptionUk"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>2 block - Production</h4>
+                        </div>
+                        <div class="col-6" id="status-production-block-en"></div>
+                    </div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="mainProduction-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="mainProduction-title-en_"
+                                   data-name="mainProductionTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="mainProduction-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="mainProduction-description-en_" rows="3"
+                                      data-name="mainProductionDescriptionEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>3 block - About factory</h4>
+                        </div>
+                        <div class="col-6" id="status-factory-block-en"></div>
+                    </div>
+                    <div class="row" id="container-factory-images-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-factory-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="main-factory-title-en_"
+                                   data-name="mainProductionTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-factory-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-factory-description-en_" rows="3"
+                                      data-name="mainFactoryDescriptionEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 500 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>4 block - Numbers</h4>
+                        </div>
+                        <div class="col-6" id="status-number-block-en"></div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number1-title"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <div id="main-number-title1-block-en"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number1-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-number1-description-en_" rows="3"
+                                      data-name="mainNumberDescriptionEn1"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number2-title"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <div id="main-number-title2-block-en"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number2-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-number2-description-en_" rows="3"
+                                      data-name="mainNumberDescriptionEn2"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number3-title"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <div id="main-number-title3-block-en"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number3-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-number3-description-en_" rows="3"
+                                      data-name="mainNumberDescriptionEn3"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-number4-title"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <div id="main-number-title4-block-en"></div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-number4-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-number4-description-en_" rows="3"
+                                      data-name="mainNumberDescriptionEn4"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>5 block - Our main aim</h4>
+                        </div>
+                        <div class="col-6" id="status-aim-block-en"></div>
+                    </div>
+                    <div class="col-6" id="image-aim-block-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-aim-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="main-aim-title-en_" data-name="mainAimTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-aim-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-aim-description-en_" rows="3"
+                                      data-name="mainAimDescriptionEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>6 блок - Eco products</h4>
+                        </div>
+                        <div class="col-6" id="status-eco-production-block-en"></div>
+                    </div>
+                    <div class="col-6" id="image-eco-production-block-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="main-eco-production-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="main-eco-production-title-en_"
+                                   data-name="mainEcoProductionTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="main-eco-production-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="main-eco-production-description-en_"
+                                      rows="3"
+                                      data-name="mainEcoProductionTitleEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 character</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div id="save-block-en"></div>
+            </div>
+            <!--/ EN Form -->
+
+            <!-- Input hidden -->
+            <input type="hidden" id="mainId_" data-name="mainId">
+            <input type="hidden" id="mainProductionId_" data-name="mainProductionId">
+            <input type="hidden" id="mainFactoryId_" data-name="mainFactoryId">
+            <input type="hidden" id="mainNumberId_" data-name="mainNumberId">
+            <input type="hidden" id="mainAimId_" data-name="mainAimId">
+            <input type="hidden" id="mainEcoProductionId_" data-name="mainEcoProductionId">
+
+            <input type="file" id="file-mainFileBanner" data-type="mainFileBanner" class="files"
+                   accept="image/*" style="display: none;">
+            <input type="file" id="file-mainAimFileBanner" data-type="mainAimFileBanner" class="files"
+                   accept="image/*" style="display: none;">
+            <input type="file" id="file-mainEcoProductionFileBanner" data-type="mainEcoProductionFileBanner"
+                   class="files" accept="image/*" style="display: none;">
+            <input type="hidden" data-name="mainPathToBanner" class="files" data-image="mainFileBanner">
+            <input type="hidden" data-name="mainAimPathToBanner" class="files" data-image="mainAimFileBanner">
+            <input type="hidden" data-name="mainEcoProductionPathToBanner" class="files"
+                   data-image="mainEcoProductionFileBanner">
+            <!--/ Input hidden -->
+
+            <!-- Title number 1 Based -->
+            <div id="shared-title1-number" style="display: none;">
+                <input class="form-control" id="main-number1-title"
+                       data-name="mainNumberTitle1" data-error="requestNumberBlockForAdd.mainNumberTitle1">
+            </div>
+            <!--/ Title number 1 Based -->
+
+            <!-- Title number 2 Based -->
+            <div id="shared-title2-number" style="display: none;">
+                <input class="form-control" id="main-number2-title"
+                       data-name="mainNumberTitle2" data-error="requestNumberBlockForAdd.mainNumberTitle2">
+            </div>
+            <!--/ Title number 2 Based -->
+
+            <!-- Title number 3 Based -->
+            <div id="shared-title3-number" style="display: none;">
+                <input class="form-control" id="main-number3-title"
+                       data-name="mainNumberTitle3" data-error="requestNumberBlockForAdd.mainNumberTitle3">
+            </div>
+            <!--/ Title number 3 Based -->
+
+            <!-- Title number 4 Based -->
+            <div id="shared-title4-number" style="display: none;">
+                <input class="form-control" id="main-number4-title"
+                       data-name="mainNumberTitle4" data-error="requestNumberBlockForAdd.mainNumberTitle4">
+            </div>
+            <!--/ Title number 4 Based -->
+
+            <!-- Status Main Base -->
+            <div id="shared-status-main" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-main_" data-name="mainIsActive" type="checkbox" class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Status Main Base -->
+
+            <!-- Status Production Base -->
+            <div id="shared-status-production" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-production_" data-name="mainProductionIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Status Production Base -->
+
+            <!-- Status Factory Base -->
+            <div id="shared-status-factory" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-factory_" data-name="mainFactoryIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Status Factory Base -->
+
+            <!-- Switch Number Base -->
+            <div id="shared-status-number" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-number_" data-name="mainNumberIsActive" type="checkbox" class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Switch Number Base -->
+
+            <!-- Switch Aim Base -->
+            <div id="shared-status-aim" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-aim_" data-name="mainAimIsActive" type="checkbox" class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Switch Aim Base -->
+
+            <!-- Switch Eco Production Base -->
+            <div id="shared-status-eco-production" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-eco-production_" data-name="mainEcoProductionIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Switch Eco Production Base -->
+
+            <!-- Image Main Base -->
+            <div id="shared-image-main" style="display: none;">
+                <div class="position-relative">
+                    <img id="mainFileBanner" data-name="mainFileBanner"
+                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"  data-error="requestMainForAdd.mainFileBanner">
+                    <button type="button" data-type="mainFileBanner"
+                            class="btn btn-outline-success btn-select"
+                            style="left: 13%;top:25%;position: absolute;width: 35%;">
+                        Змінити банер
+                    </button>
+                    <button type="button" data-type="mainFileBanner"
+                            class="btn btn-outline-success btn-delete"
+                            style="right: 13%;top:25%;position: absolute;width: 35%;">
+                        Видалити
+                    </button>
+                    <span class="text-center"
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                                    png, jpg, jpeg, mp4 до 15 МБ
+                                </span>
+                </div>
+            </div>
+            <!--/ Image Main Base -->
+
+            <!-- Image Aim Base -->
+            <div id="shared-image-aim" style="display: none;">
+                <div class="position-relative">
+                    <img id="mainAimFileBanner" data-name="mainAimFileBanner"
+                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
+                         data-error="requestAimBlockForAdd.mainAimFileBanner">
+                    <button type="button" data-type="mainAimFileBanner"
+                            class="btn btn-outline-success btn-select"
+                            style="left: 13%;top:25%;position: absolute;width: 30%;">
+                        Змінити банер
+                    </button>
+                    <button type="button" data-type="mainAimFileBanner"
+                            class="btn btn-outline-success btn-delete"
+                            style="right: 13%;top:25%;position: absolute;width: 30%;">
+                        Видалити
+                    </button>
+                    <span class="text-center"
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                                    png, jpg, jpeg, mp4 до 15 МБ
+                                </span>
+                </div>
+            </div>
+            <!--/ Image Aim Base -->
+
+            <!-- Image Eco Production Base -->
+            <div id="shared-image-eco-production" style="display: none;">
+                <div class="position-relative">
+                    <img id="mainEcoProductionFileBanner" data-name="mainEcoProductionFileBanner"
+                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
+                         data-error="requestEcoProductionForAdd.mainEcoProductionFileBanner">
+                    <button type="button" data-type="mainEcoProductionFileBanner"
+                            class="btn btn-outline-success btn-select"
+                            style="left: 13%;top:25%;position: absolute;width: 30%;">
+                        Змінити банер
+                    </button>
+                    <button type="button" data-type="mainEcoProductionFileBanner"
+                            class="btn btn-outline-success btn-delete"
+                            style="right: 13%;top:25%;position: absolute;width: 30%;">
+                        Видалити
+                    </button>
+                    <span class="text-center"
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                                    png, jpg, jpeg, mp4 до 15 МБ
+                                </span>
+                </div>
+            </div>
+            <!--/ Image Eco Production Base -->
+
+            <!-- Button save Base -->
+            <div id="shared-save" style="display: none;">
+                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+            </div>
+            <!--/ Button save Base -->
+
+            <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+            <script th:src="@{/js/image.js}"></script>
+            <script th:src="@{/js/validator.js}"></script>
+            <script th:src="@{/js/copy.js}"></script>
+            <script th:src="@{/js/event-listener.js}"></script>
+
+            <script>
+                function copyHTMLBlockImage(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    addEventListenersImage2();
+                    clearBlock(fromElementId);
+                }
+
+                function copyHTMLBlockSave(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    document.getElementById('btn-save_').addEventListener('click', function () {
+                        console.log('button save was clicked!')
+                        saveRequestMainBlock(urlMainBlock);
+                    });
+                    clearBlock(fromElementId);
+                }
+            </script>
+            <script>
+                function getFroalaEditor(idElementEditor) {
+                    return new FroalaEditor(`#${idElementEditor}`, {
+                        height: 12 * 10,
+                        width: 700,
+                        scrollableContainer: `#${idElementEditor}`,
+                        events: {
+                            'initialized': function () {
+                                let element = $(`#hidden-${idElementEditor}`);
+                                console.log(element.html());
+                                this.html.set(element.html() || '');
+                            },
+                            'contentChanged': function () {
+                                const html = this.html.get();
+                                // console.log(html);
+                                $(`#hidden-${idElementEditor}`).html(html);
+                            }
+                        }
+                    });
+                }
+            </script>
+            <script>
+                document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                    tab.addEventListener('shown.bs.tab', function (event) {
+                        const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
+                        let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+
+                        // console.log(`Switched to tab: ${activatedTabId}`);
+                        // console.log(`Previous: ${previousActiveTab}`);
+                        // console.log(`Active: ${activatedTabId}`);
+
+                        if (previousActiveTab) {
+                            copyHTMLBlockImage(`image-main-block-${previousActiveTab}`, 'shared-image-main');
+                            copyHTMLBlockImage(`image-aim-block-${previousActiveTab}`, 'shared-image-aim');
+                            copyHTMLBlockImage(`image-eco-production-block-${previousActiveTab}`, 'shared-image-eco-production');
+                            copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
+                            copyHTMLBlockSwitch(`status-main-block-${previousActiveTab}`, 'shared-status-main');
+                            copyHTMLBlockSwitch(`status-production-block-${previousActiveTab}`, 'shared-status-production');
+                            copyHTMLBlockSwitch(`status-factory-block-${previousActiveTab}`, 'shared-status-factory');
+                            copyHTMLBlockSwitch(`status-number-block-${previousActiveTab}`, 'shared-status-number');
+                            copyHTMLBlockSwitch(`status-aim-block-${previousActiveTab}`, 'shared-status-aim');
+                            copyHTMLBlockSwitch(`status-eco-production-block-${previousActiveTab}`, 'shared-status-eco-production');
+                            copyHTMLBlockInput(`main-number-title1-block-${previousActiveTab}`, 'shared-title1-number');
+                            copyHTMLBlockInput(`main-number-title2-block-${previousActiveTab}`, 'shared-title2-number');
+                            copyHTMLBlockInput(`main-number-title3-block-${previousActiveTab}`, 'shared-title3-number');
+                            copyHTMLBlockInput(`main-number-title4-block-${previousActiveTab}`, 'shared-title4-number');
+                        }
+
+                        if (activatedTabId) {
+                            copyHTMLBlockImage('shared-image-main', `image-main-block-${activatedTabId}`);
+                            copyHTMLBlockImage('shared-image-aim', `image-aim-block-${activatedTabId}`);
+                            copyHTMLBlockImage('shared-image-eco-production', `image-eco-production-block-${activatedTabId}`);
+                            copyHTMLBlockImage('shared-image', `image-block-${activatedTabId}`);
+                            copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-main', `status-main-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-production', `status-production-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-factory', `status-factory-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-number', `status-number-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-aim', `status-aim-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-eco-production', `status-eco-production-block-${activatedTabId}`);
+                            copyHTMLBlockInput('shared-title1-number', `main-number-title1-block-${activatedTabId}`);
+                            copyHTMLBlockInput('shared-title2-number', `main-number-title2-block-${activatedTabId}`);
+                            copyHTMLBlockInput('shared-title3-number', `main-number-title3-block-${activatedTabId}`);
+                            copyHTMLBlockInput('shared-title4-number', `main-number-title4-block-${activatedTabId}`);
+                        }
+                    });
+                });
+
+                $(document).ready(function () {
+                    let activeLang = getActiveLangTab();
+                    copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
+                    copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
+                    copyHTMLBlockImage('shared-image-main', `image-main-block-${activeLang}`);
+                    copyHTMLBlockImage('shared-image-aim', `image-aim-block-${activeLang}`);
+                    copyHTMLBlockImage('shared-image-eco-production', `image-eco-production-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-main', `status-main-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-production', `status-production-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-factory', `status-factory-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-number', `status-number-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-aim', `status-aim-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-eco-production', `status-eco-production-block-${activeLang}`);
+                    copyHTMLBlockInput('shared-title1-number', `main-number-title1-block-${activeLang}`);
+                    copyHTMLBlockInput('shared-title2-number', `main-number-title2-block-${activeLang}`);
+                    copyHTMLBlockInput('shared-title3-number', `main-number-title3-block-${activeLang}`);
+                    copyHTMLBlockInput('shared-title4-number', `main-number-title4-block-${activeLang}`);
+                    requestGetData();
+                });
+
+                const urlMainBlock = `${contextPath}admin/page/main/save`;
+
+                const container = "#container-factory-images_";
+                $(container).on('click', '.btn-select', function () {
+                    let attribute = $(this).attr('data-type');
+                    console.log('Edit button clicked:', attribute);
+                    $("#file-" + attribute).click();
+                });
+                $(container).on('change', '.files', function (event) {
+                    let attribute = $(this).data('type');
+                    console.log(attribute);
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const imageElement = $("#" + attribute);
+                    imageElement.attr('src', URL.createObjectURL(file));
+                    $(`input[data-image="${attribute}"]`).val('');
+                });
+                $(container).on('click', '.btn-delete', function () {
+                    $(this).parent().parent().remove();
+                });
+
+                function getActiveLangTab() {
+                    return document.querySelector('button.nav-link.active').getAttribute('data-lang');
+                }
+            </script>
+            <script>
+                function saveRequestMainBlock(url) {
+                    let formData = getFormMainBanner();
+
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function () {
+                            console.log('success save');
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            clearValid();
+                            let data = JSON.parse(error.responseText);
+                            console.log(data);
+                            validate3(data);
+                            console.log("Error submitting form:", error);
+                        }
+                    });
+                }
+
+                function getFormMainBanner() {
+                    let resForm = new FormData();
+                    resForm.append('requestMainForAdd.mainId', $("#mainId_").val());
+                    resForm.append("requestMainForAdd.mainIsActive", $("#status-main_").prop('checked'));
+                    resForm.append("requestMainForAdd.mainTitleUk", $("#main-title-uk_").val());
+                    resForm.append("requestMainForAdd.mainTitleEn", $("#main-title-en_").val());
+                    resForm.append("requestMainForAdd.mainDescriptionUk", $("#main-description-uk_").val());
+                    resForm.append("requestMainForAdd.mainDescriptionEn", $("#main-description-en_").val());
+                    resForm.append("requestMainForAdd.mainPathToBanner", $('input[data-name="mainPathToBanner"]').val());
+                    let mainFile = $('#file-mainFileBanner')[0].files[0];
+                    if (mainFile) {
+                        resForm.append('requestMainForAdd.mainFileBanner', mainFile);
+                    }
+
+                    resForm.append("requestNumberBlockForAdd.mainNumberId", $("#mainNumberId_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberIsActive", $("#status-number_").prop('checked'));
+                    resForm.append("requestNumberBlockForAdd.mainNumberTitle1", $("#main-number1-title").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberTitle2", $("#main-number2-title").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberTitle3", $("#main-number3-title").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberTitle4", $("#main-number4-title").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionUk1", $("#main-number1-description-uk_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionEn1", $("#main-number1-description-en_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionUk2", $("#main-number2-description-uk_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionEn2", $("#main-number2-description-en_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionUk3", $("#main-number3-description-uk_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionEn3", $("#main-number3-description-en_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionUk4", $("#main-number4-description-uk_").val());
+                    resForm.append("requestNumberBlockForAdd.mainNumberDescriptionEn4", $("#main-number4-description-en_").val());
+
+
+                    resForm.append("requestProductionBlockForAdd.mainProductionId", $("#mainProductionId_").val());
+                    resForm.append("requestProductionBlockForAdd.mainProductionIsActive", $("#status-production_").prop('checked'));
+                    resForm.append("requestProductionBlockForAdd.mainProductionTitleUk", $("#mainProduction-title-uk_").val());
+                    resForm.append("requestProductionBlockForAdd.mainProductionTitleEn", $("#mainProduction-title-en_").val());
+                    resForm.append("requestProductionBlockForAdd.mainProductionDescriptionUk", $("#mainProduction-description-uk_").val());
+                    resForm.append("requestProductionBlockForAdd.mainProductionDescriptionEn", $("#mainProduction-description-en_").val());
+
+
+                    resForm.append("requestFactoryForAdd.mainFactoryId", $("#mainFactoryId_").val());
+                    resForm.append("requestFactoryForAdd.mainFactoryIsActive", $("#status-factory_").val());
+                    resForm.append("requestFactoryForAdd.mainFactoryTitleUk", $("#main-factory-title-uk_").val());
+                    resForm.append("requestFactoryForAdd.mainFactoryTitleEn", $("#main-factory-title-en_").val());
+                    resForm.append("requestFactoryForAdd.mainFactoryDescriptionUk", $("#main-factory-description-uk_").val());
+                    resForm.append("requestFactoryForAdd.mainFactoryDescriptionEn", $("#main-factory-description-en_").val());
+
+                    let $containerFactoryImages = $("#container-factory-images_ .col-3");
+                    let counter = 0;
+                    $containerFactoryImages.each(function () {
+                        let attrId = $(this).attr("data-id");
+                        let attrDataType = $(this).attr('data-type');
+                        if (attrId) {
+                            let $file = $(`input[data-type="image${attrId}"]`);
+                            let $pathToFile = $(`input[data-image="image${attrId}"]`);
+                            let file = $file[0].files[0];
+                            if (attrDataType && attrDataType !== 'new') resForm.append(`requestFactoryForAdd.files[${counter}].id`, attrId);
+                            if ($file[0].files.length > 0) resForm.append(`requestFactoryForAdd.files[${counter}].fileImage`, file);
+                            resForm.append(`requestFactoryForAdd.files[${counter}].pathToImage`, $pathToFile.val() === 'undefined' ? '' : $pathToFile.val());
+                        }
+                        counter++;
+                    });
+
+
+                    resForm.append('requestAimBlockForAdd.mainAimId', $("#mainAimId_").val());
+                    resForm.append("requestAimBlockForAdd.mainAimIsActive", $("#status-aim_").prop('checked'));
+                    resForm.append("requestAimBlockForAdd.mainAimTitleUk", $("#main-aim-title-uk_").val());
+                    resForm.append("requestAimBlockForAdd.mainAimTitleEn", $("#main-aim-title-en_").val());
+                    resForm.append("requestAimBlockForAdd.mainAimDescriptionUk", $("#main-aim-description-uk_").val());
+                    resForm.append("requestAimBlockForAdd.mainAimDescriptionEn", $("#main-aim-description-en_").val());
+                    resForm.append("requestAimBlockForAdd.mainAimPathToBanner", $('input[data-name="mainAimPathToBanner"]').val());
+                    let mainAimFile = $('#file-mainAimFileBanner')[0].files[0];
+                    if (mainAimFile) {
+                        resForm.append('requestAimBlockForAdd.mainAimFileBanner', mainAimFile);
+                    }
+
+                    resForm.append('requestEcoProductionForAdd.mainEcoProductionId', $("#mainEcoProductionId_").val());
+                    resForm.append("requestEcoProductionForAdd.mainEcoProductionIsActive", $("#status-eco-production_").prop('checked'));
+                    resForm.append("requestEcoProductionForAdd.mainEcoProductionTitleUk", $("#main-eco-production-title-uk_").val());
+                    resForm.append("requestEcoProductionForAdd.mainEcoProductionTitleEn", $("#main-eco-production-title-en_").val());
+                    resForm.append("requestEcoProductionForAdd.mainEcoProductionDescriptionUk", $("#main-eco-production-description-uk_").val());
+                    resForm.append("requestEcoProductionForAdd.mainEcoProductionDescriptionEn", $("#main-eco-production-description-en_").val());
+                    resForm.append("requestEcoProductionForAdd.mainEcoProductionPathToBanner", $('input[data-name="mainEcoProductionPathToBanner"]').val());
+                    let mainEcoProductionFile = $('#file-mainEcoProductionFileBanner')[0].files[0];
+                    if (mainEcoProductionFile) {
+                        resForm.append('requestEcoProductionForAdd.mainEcoProductionFileBanner', mainEcoProductionFile);
+                    }
+                    return resForm;
+                }
+                function requestGetData() {
+                    let request = new XMLHttpRequest();
+                    request.open("GET", `${contextPath}admin/page/main/data`);
+                    request.send();
+                    request.addEventListener('load', function () {
+                        if (request.status === 200) {
+                            let data = JSON.parse(request.response);
+                            console.log(data);
+                            for (let key in data) {
+                                let nestedObject = data[key];
+                                if (typeof nestedObject === 'object' && nestedObject !== null) {
+                                    for (let nestedKey in nestedObject) {
+                                        // console.log(nestedKey);
+                                        if (nestedObject.hasOwnProperty(nestedKey)) {
+                                            // console.log(`Key: ${nestedKey} Value: ${nestedObject[nestedKey]}`);
+
+                                            let input = $(`input[data-name="${nestedKey}"], textarea[data-name="${nestedKey}"], div[data-name="${nestedKey}"]`);
+                                            // console.log(input[0]);
+                                            if (input) {
+                                                if (input.hasClass('files')) {
+                                                    let img = input.attr('data-image');
+                                                    // console.log(img);
+                                                    let $input = $(`#${img}`);
+                                                    if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
+                                                        $input.attr('src', nestedObject[nestedKey]);
+                                                        input.val(nestedObject[nestedKey]);
+                                                    }
+                                                } else if (input.hasClass('editors')) {
+                                                    // console.log(`Key: ${key} Value: ${data[key]}`);
+                                                    let $div = $(input);
+                                                    // console.log($div[0]);
+                                                    if ($div) {
+                                                        $div.html(nestedObject[nestedKey]);
+                                                        let parent = $div.parent();
+                                                        let find = parent.find('.editor-realise');
+                                                        // console.log(find[0]);
+                                                        getFroalaEditor(find[0].getAttribute('id'));
+                                                    }
+                                                } else {
+                                                    if (typeof nestedObject[nestedKey] === 'boolean') {
+                                                        let isActiveEl = $(`input[data-name="${nestedKey}"]`)[0];
+                                                        if (isActiveEl) {
+                                                            isActiveEl.checked = nestedObject[nestedKey];
+                                                        }
+                                                    } else if (nestedKey === 'mainFactoryHistories') {
+                                                        console.log(nestedObject[nestedKey]);
+                                                        let array = nestedObject[nestedKey];
+                                                        if (Array.isArray(array)) {
+                                                            array.forEach(function (el) {
+                                                                // console.log(el);
+                                                                addFactoryImageBlock('old', el.id, el.pathToImage);
+                                                            });
+                                                        }
+                                                    } else {
+                                                        input.val(nestedObject[nestedKey]);
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                $('#btn-add-media-block').on('click', function () {
+                    addFactoryImageBlock('new');
+                });
+                const PathToDefaultImage = contextPath + 'uploads/default/default-image.jpg';
+                let counter = 0;
+                function addFactoryImageBlock(TYPE, ID, PATH) {
+                    const newBlock = document.createElement('div');
+                    newBlock.className = 'col-3 row text-center position-relative';
+                    let UUID = new Date().getTime();
+                    if (ID) UUID = ID;
+                    newBlock.dataset.id = UUID;
+                    newBlock.dataset.type = TYPE;
+                    newBlock.innerHTML = `
+                                    <img id="image${UUID}" data-name="image${UUID}"
+                                    src="${PATH ? PATH : PathToDefaultImage}"
+                                    alt="error" style="width: 100%; height: 167px;display: block; margin: 0 auto;"
+                                    data-error="requestFactoryForAdd.files[${counter}].fileImage">
+                                    <div class="d-flex justify-content-center gap-3">
+                                         <button type="button" data-type="image${UUID}" class="btn btn-outline-success btn-select"
+                                            style="left: 22%;top:42%;position: absolute; width: 57%;">Змінити
+                                         </button>
+                                        <button type="button" data-type="image${UUID}" data-typedelete="delete-image"
+                                        class="btn btnTrashMyBefore position-absolute top-0 end-0 me-2 mt-2 btn-delete">
+                                         <i class="ti ti-trash" style="font-size: x-large;"></i>
+                                        </button>
+                                    <input type="file" id="file-image${UUID}" data-type="image${UUID}" class="files"
+                                           accept="image/*" style="display: none;" data-error="file">
+                                    <input type="hidden" data-name="pathToImage${UUID}" data-image="image${UUID}"
+                                           class="files" data-error="pathToMediaFile" value="${PATH}">
+                                    </div>
+                             `;
+                    const container = document.getElementById('container-factory-images_');
+                    const addButtonContainer = document.getElementById('add-button-container');
+                    container.insertBefore(newBlock, addButtonContainer);
+                    counter++;
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<!--/ Content -->
+</body>
+</html>

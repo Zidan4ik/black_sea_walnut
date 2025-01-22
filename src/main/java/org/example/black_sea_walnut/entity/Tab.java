@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.entity.translation.TabTranslation;
-import org.example.black_sea_walnut.enums.PageType;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class Tab {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private PageType pageType;
     private boolean isActive;
     private String pathToImage;
     private String pathToIcon;

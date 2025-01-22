@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
 import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
 import org.example.black_sea_walnut.entity.HistoryPrices;
-import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.mapper.HistoryPricesMapper;
 import org.example.black_sea_walnut.repository.HistoryPricesRepository;
 import org.example.black_sea_walnut.repository.ProductRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class HistoryPricesServiceImp implements HistoryPricesService {
     private final HistoryPricesRepository historyPricesRepository;
     private final HistoryPricesMapper mapper;
-    private final ProductRepository productRepository;
 
     @Override
     public HistoryPrices getLatestPriceByProductId(Long productId) {
