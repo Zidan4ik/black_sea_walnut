@@ -13,6 +13,7 @@ import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.HistoryMainMapper;
 import org.example.black_sea_walnut.repository.HistoryRepository;
 import org.example.black_sea_walnut.service.HistoryMainService;
+import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.example.black_sea_walnut.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,56 +26,40 @@ import java.util.List;
 public class HistoryMainServiceImp implements HistoryMainService {
     private final HistoryRepository historyRepository;
     private final HistoryMainMapper historyMainMapper;
+    private final HistoryService historyService;
     private final ImageService imageService;
     @Value("${upload.path}")
     private String contextPath;
 
     @Override
-    public History getById(Long id) {
-        return historyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("History with id: " + id + " was not found!"));
-    }
-
-    @Override
-    public History getByPageType(PageType type) {
-        return historyRepository.findByPageType(type)
-                .orElseThrow(() -> new EntityNotFoundException("History with type: " + type + " was not found!"));
-    }
-
-    @Override
     public MainBlockResponseForAdd getByPageTypeInResponseMainBlock(PageType type) {
-        return historyMainMapper.toResponseMainBlockForAdd(getByPageType(type));
+        return historyMainMapper.toResponseMainBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
     public ProductionBlockResponseForAdd getByPageTypeInResponseProductionBlock(PageType type) {
-        return historyMainMapper.toResponseProductionBlockForAdd(getByPageType(type));
+        return historyMainMapper.toResponseProductionBlockForAdd(historyService.getByPageType(type));
 
     }
 
     @Override
     public FactoryBlockResponseForAdd getByPageTypeInResponseFactoryBlock(PageType type) {
-        return historyMainMapper.toResponseFactoryBlockForAdd(getByPageType(type));
+        return historyMainMapper.toResponseFactoryBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
     public NumberBlockResponseForAdd getByPageTypeInResponseNumberBlock(PageType type) {
-        return historyMainMapper.toResponseNumberBlockForAdd(getByPageType(type));
+        return historyMainMapper.toResponseNumberBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
     public AimBlockResponseForAdd getByPageTypeInResponseAimBlock(PageType type) {
-        return historyMainMapper.toResponseAimBlockForAdd(getByPageType(type));
+        return historyMainMapper.toResponseAimBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
     public EcoProductionResponseForAdd getByPageTypeInResponseEcoProductionBlock(PageType type) {
-        return historyMainMapper.toResponseEcoProductionBLockForAdd(getByPageType(type));
-    }
-
-    @Override
-    public History saveHistory(History entity) {
-        return historyRepository.save(entity);
+        return historyMainMapper.toResponseEcoProductionBLockForAdd(historyService.getByPageType(type));
     }
 
     @SneakyThrows
@@ -82,7 +67,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
     public History saveHistoryMainBlock(MainBlockRequestForAdd dto) {
         dto.setMediaType(ImageUtil.getMediaType(dto.getMainFileBanner()));
         if (dto.getMainId() != null) {
-            History historyById = getById(dto.getMainId());
+            History historyById = historyService.getById(dto.getMainId());
             if (dto.getMainPathToBanner().isEmpty() && historyById.getBanner() != null) {
                 imageService.deleteByPath(historyById.getBanner().getPathToMedia());
             }
@@ -103,7 +88,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
         History mappedHistory = historyMainMapper.toEntityFromRequestForAdd(dto);
         if (dto.getMainId() == null)
             mappedHistory.setBanner(new Banner(null, dto.getMainPathToBanner(), dto.getMediaType(), mappedHistory));
-        return saveHistory(mappedHistory);
+        return historyService.save(mappedHistory);
     }
 
     @SneakyThrows
@@ -111,7 +96,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
     public History saveHistoryAimBlock(AimBlockRequestForAdd dto) {
         dto.setMediaType(ImageUtil.getMediaType(dto.getMainAimFileBanner()));
         if (dto.getMainAimId() != null) {
-            History historyById = getById(dto.getMainAimId());
+            History historyById = historyService.getById(dto.getMainAimId());
             if (dto.getMainAimPathToBanner().isEmpty() && historyById.getBanner() != null) {
                 imageService.deleteByPath(historyById.getBanner().getPathToMedia());
             }
@@ -132,7 +117,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
         History mappedHistory = historyMainMapper.toEntityFromRequestForAdd(dto);
         if (dto.getMainAimId() == null)
             mappedHistory.setBanner(new Banner(null, dto.getMainAimPathToBanner(), dto.getMediaType(), mappedHistory));
-        return saveHistory(mappedHistory);
+        return historyService.save(mappedHistory);
     }
 
     @SneakyThrows
@@ -140,7 +125,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
     public History saveHistoryEcoProductionBlock(EcoProductionRequestForAdd dto) {
         dto.setMediaType(ImageUtil.getMediaType(dto.getMainEcoProductionFileBanner()));
         if (dto.getMainEcoProductionId() != null) {
-            History historyById = getById(dto.getMainEcoProductionId());
+            History historyById = historyService.getById(dto.getMainEcoProductionId());
             if (dto.getMainEcoProductionPathToBanner().isEmpty() && historyById.getBanner() != null) {
                 imageService.deleteByPath(historyById.getBanner().getPathToMedia());
             }
@@ -161,24 +146,24 @@ public class HistoryMainServiceImp implements HistoryMainService {
         History mappedHistory = historyMainMapper.toEntityFromRequestForAdd(dto);
         if (dto.getMainEcoProductionId() == null)
             mappedHistory.setBanner(new Banner(null, dto.getMainEcoProductionPathToBanner(), dto.getMediaType(), mappedHistory));
-        return saveHistory(mappedHistory);
+        return historyService.save(mappedHistory);
     }
 
     @Override
     public History saveHistoryProductionBlock(ProductionBlockRequestForAdd dto) {
-        return saveHistory(historyMainMapper.toEntityFromRequestForAdd(dto));
+        return historyService.save(historyMainMapper.toEntityFromRequestForAdd(dto));
     }
 
     @Override
     public History saveHistoryNumberBlock(NumberBlockRequestForAdd dto) {
-        return saveHistory(historyMainMapper.toEntityFromRequestForAdd(dto));
+        return historyService.save(historyMainMapper.toEntityFromRequestForAdd(dto));
     }
 
     @SneakyThrows
     @Override
     public History saveHistoryFactoryBlock(FactoryBlockRequestForAdd dto) {
         if (dto.getMainFactoryId() != null) {
-            History historyById = getById(dto.getMainFactoryId());
+            History historyById = historyService.getById(dto.getMainFactoryId());
             if (dto.getFiles() != null) {
                 List<HistoryMedia> mediasFromBd = historyById.getHistoryMedia();
 
@@ -209,11 +194,6 @@ public class HistoryMainServiceImp implements HistoryMainService {
             }
         }
         History mappedHistory = historyMainMapper.toEntityFromRequestForAdd(dto);
-        return saveHistory(mappedHistory);
-    }
-
-    @Override
-    public List<History> findAll() {
-        return historyRepository.findAll();
+        return historyService.save(mappedHistory);
     }
 }

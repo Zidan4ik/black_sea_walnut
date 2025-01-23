@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Main Page</title>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+
+        <!-- Header content -->
+        <div class="row">
+            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
+                <div class="col-auto text-center">
+                    <a th:href="@{/admin/pages}">
+                        <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
+                    </a>
+                </div>
+                <div class="col-auto" style="padding-right: 5px;">Сторінка</div>
+                <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
+                <div class="col-auto" style="padding-left: 5px;">Головна</div>
+            </div>
+        </div>
+        <!--/ Header content -->
+
+        <!-- Language tabs -->
+        <div class="nav-align-top">
+            <ul class="nav nav-tabs" role="tablist" style="background: none;">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" data-bs-toggle="tab"
+                            data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
+                            style="margin-left: 15px;"
+                            data-lang="uk">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" data-bs-toggle="tab"
+                            data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
+                            data-lang="en">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!--/ Language tabs -->
+
+        <div class="tab-content" id="pills-tabContent">
+            <!-- UK Form -->
+            <div class="tab-pane fade show active" id="navs-uk" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>Баннер - Каталог</h4>
+                        </div>
+                        <div class="col-6" id="status-catalog-banner-uk"></div>
+                    </div>
+                    <div class="col-12" id="image-catalog-banner-block-uk"></div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-8 text-end">
+                            <h4>Екологічний чистий грецький горіх</h4>
+                        </div>
+                        <div class="col-4" id="status-ecologically-block-uk"></div>
+                    </div>
+                    <div class="row" id="container-catalog-ecologically-images-uk">
+                        <div class="col-3" id="add-button-container"
+                             style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-success" id="btn-add-media-block">Добавити медіа</button>
+                            </div>
+                            <span class="text-center"
+                                  style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                                    Png, jpg, jpeg, mp4, avi до 10МБ
+                                </span>
+                        </div>
+                    </div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="catalog-ecologically-title-uk_"
+                                   style="font-size: small;font-weight: bold">Заголовок:</label>
+                            <input class="form-control" id="catalog-ecologically-title-uk_"
+                                   data-name="catalogEcologicallyTitleUk" data-error="requestEcologicallyForAdd.catalogEcologicallyTitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="catalog-ecologically-subtitle-uk_"
+                                   style="font-size: small;font-weight: bold">Підзаголовок:</label>
+                            <input class="form-control" id="catalog-ecologically-subtitle-uk_"
+                                   data-name="catalogEcologicallySubtitleUk" data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleUk">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="edit-description-ecologically-uk"
+                                   style="font-size: small;font-weight: bold">Опис:</label>
+                            <div id="edit-description-ecologically-uk" class="editor-realise" data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionUk"
+                                 style="min-height: 100px; border: 1px solid #ccc;"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Максимум: 3500 символів</label>
+                            <div type="hidden" id="hidden-edit-description-ecologically-uk"
+                                 data-name="catalogEcologicallyDescriptionUk"
+                                 style="display: none;" class="editors"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div id="save-block-uk"></div>
+            </div>
+            <!--/ UK Form -->
+
+            <!-- EN Form -->
+            <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>Banner - Catalog</h4>
+                        </div>
+                        <div class="col-6" id="status-catalog-banner-en"></div>
+                    </div>
+                    <div class="col-12" id="image-catalog-banner-block-en"></div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row mt-2">
+                    <div class="col-12 row">
+                        <div class="col-7 text-end">
+                            <h4>Ecologically pure walnut</h4>
+                        </div>
+                        <div class="col-4" id="status-ecologically-block-en"></div>
+                    </div>
+                    <div class="row" id="container-catalog-ecologically-images-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="catalog-ecologically-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="catalog-ecologically-title-en_"
+                                   data-name="catalogEcologicallyTitleEn" data-error="requestEcologicallyForAdd.catalogEcologicallyTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="catalog-ecologically-subtitle-en_"
+                                   style="font-size: small;font-weight: bold">Subtitle:</label>
+                            <input class="form-control" id="catalog-ecologically-subtitle-en_"
+                                   data-name="catalogEcologicallySubtitleEn" data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="edit-description-ecologically-en"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <div id="edit-description-ecologically-en" class="editor-realise"
+                                 style="min-height: 100px; border: 1px solid #ccc;" data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionEn"></div>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 3500 characters</label>
+                            <div type="hidden" id="hidden-edit-description-ecologically-en"
+                                 data-name="catalogEcologicallyDescriptionEn" style="display: none;" class="editors"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div id="save-block-en"></div>
+            </div>
+            <!--/ EN Form -->
+
+            <!-- Input hidden -->
+            <input type="hidden" id="catalogBannerId_" data-name="catalogBannerId">
+            <input type="hidden" id="catalogEcologicallyId_" data-name="catalogEcologicallyId">
+            <input type="file" id="file-catalogBannerFile" data-type="catalogBannerFile" class="files"
+                   accept="image/*" style="display: none;">
+            <input type="hidden" data-name="catalogBannerPathToImage" class="files" data-image="catalogBannerFile">
+
+            <!-- Input Medias hidden -->
+            <div id="container-inputs"></div>
+            <!--/ Input Medias hidden -->
+
+            <!--/ Input hidden -->
+
+            <!-- Status Catalog Banner Base -->
+            <div id="shared-status-catalog-banner" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-catalog-banner" data-name="catalogBannerIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Status Catalog Banner Base -->
+
+            <!-- Status Ecologically Base -->
+            <div id="shared-status-catalog-ecologically" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-catalog-ecologically" data-name="catalogEcologicallyIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Status Ecologically Base -->
+
+            <!-- Image Catalog Base -->
+            <div id="shared-image-catalog-banner" style="display: none;">
+                <div class="position-relative">
+                    <img id="catalogBannerFile" data-name="catalogBannerFile"
+                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
+                         data-error="requestBannerForAdd.catalogBannerFile">
+                    <button type="button" data-type="catalogBannerFile"
+                            class="btn btn-outline-success btn-select"
+                            style="left: 13%;top:25%;position: absolute;width: 35%;">
+                        Змінити банер
+                    </button>
+                    <button type="button" data-type="catalogBannerFile"
+                            class="btn btn-outline-success btn-delete"
+                            style="right: 13%;top:25%;position: absolute;width: 35%;">
+                        Видалити
+                    </button>
+                    <span class="text-center"
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                    png, jpg, jpeg, mp4 до 15 МБ</span>
+                </div>
+            </div>
+            <!--/ Image Catalog Base -->
+
+            <!-- Button save Base -->
+            <div id="shared-save" style="display: none;">
+                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+            </div>
+            <!--/ Button save Base -->
+
+            <!--            &lt;!&ndash; Images Base &ndash;&gt;-->
+            <!--            <div id="container-catalog-ecologically-images"></div>-->
+            <!--            &lt;!&ndash;/ Images Base &ndash;&gt;-->
+
+
+            <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+            <script th:src="@{/js/image.js}"></script>
+            <script th:src="@{/js/validator.js}"></script>
+            <script th:src="@{/js/copy.js}"></script>
+            <script th:src="@{/js/event-listener.js}"></script>
+
+            <script>
+                function copyHTMLBlockImage(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    addEventListenersImage2();
+                    clearBlock(fromElementId);
+                }
+
+                function copyHTMLBlockSave(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    document.getElementById('btn-save_').addEventListener('click', function () {
+                        console.log('button save was clicked!')
+                        saveRequest(urlCatalogBlock);
+                    });
+                    clearBlock(fromElementId);
+                }
+            </script>
+            <script>
+                function getFroalaEditor(idElementEditor) {
+                    return new FroalaEditor(`#${idElementEditor}`, {
+                        height: 12 * 10,
+                        width: 700,
+                        scrollableContainer: `#${idElementEditor}`,
+                        events: {
+                            'initialized': function () {
+                                let element = $(`#hidden-${idElementEditor}`);
+                                // console.log(element.html());
+                                this.html.set(element.html() || '');
+                            },
+                            'contentChanged': function () {
+                                const html = this.html.get();
+                                // console.log(html);
+                                $(`#hidden-${idElementEditor}`).html(html);
+                            }
+                        }
+                    });
+                }
+            </script>
+            <script>
+                document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                    tab.addEventListener('shown.bs.tab', function (event) {
+                        const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
+                        let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+
+                        // console.log(`Switched to tab: ${activatedTabId}`);
+                        // console.log(`Previous: ${previousActiveTab}`);
+                        // console.log(`Active: ${activatedTabId}`);
+
+                        if (previousActiveTab) {
+                            copyHTMLBlockImage(`image-catalog-banner-block-${previousActiveTab}`, 'shared-image-catalog-banner');
+                            copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
+                            copyHTMLBlockSwitch(`status-catalog-banner-${previousActiveTab}`, 'shared-status-catalog-banner');
+                            copyHTMLBlockSwitch(`status-ecologically-block-${previousActiveTab}`, 'shared-status-catalog-ecologically');
+                        }
+
+                        if (activatedTabId) {
+                            copyHTMLBlockImage('shared-image-catalog-banner', `image-catalog-banner-block-${activatedTabId}`);
+                            copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-catalog-banner', `status-catalog-banner-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-catalog-ecologically', `status-ecologically-block-${activatedTabId}`);
+                        }
+
+                        copyHTMLBlockImage(`container-catalog-ecologically-images-${previousActiveTab}`, `container-catalog-ecologically-images-${activatedTabId}`);
+                        addEventListenerForMediaFiles(activatedTabId);
+                    });
+                });
+
+                $(document).ready(function () {
+                    let activeLang = getActiveLangTab();
+                    copyHTMLBlockImage('shared-image-catalog-banner', `image-catalog-banner-block-${activeLang}`);
+                    copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-catalog-banner', `status-catalog-banner-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-catalog-ecologically', `status-ecologically-block-${activeLang}`);
+                    requestGetData();
+                    addEventListenerForMediaFiles(activeLang);
+                });
+
+                const urlCatalogBlock = `${contextPath}admin/page/catalog/save`;
+
+                function addEventListenerForMediaFiles(langActive) {
+                    const container = "#container-catalog-ecologically-images-" + langActive;
+
+                    $(container).on('click', '.btn-select', function () {
+                        let attribute = $(this).attr('data-type');
+                        console.log('Edit button clicked:', attribute);
+                        $("#file-" + attribute).click();
+                    });
+                    $('#container-inputs').on('change', '.files', function (event) {
+                        console.log(1);
+                        let attribute = $(this).data('type');
+                        console.log(attribute);
+                        const file = event.target.files[0];
+                        if (!file) return;
+
+                        const imageElement = $("#" + attribute);
+                        imageElement.attr('src', URL.createObjectURL(file));
+                        $(`input[data-image="${attribute}"]`).val('');
+                    });
+                    $(container).on('click', '.btn-delete', function () {
+                        console.log($(this)[0])
+                        let value = $(this).data('type');
+                        $(`#file-${value}`).remove();
+                        $(`input[data-image="${value}"]`).remove();
+                        // console.log($file[0]);
+                        // console.log($pathToImage[0]);
+                        $(this).parent().parent().remove();
+                    });
+
+                    $('#btn-add-media-block').on('click', function () {
+                        addMediaImageBlock('new');
+                    });
+                }
+
+                function getActiveLangTab() {
+                    return document.querySelector('button.nav-link.active').getAttribute('data-lang');
+                }
+            </script>
+            <script>
+                function saveRequest(url) {
+                    let formData = getFormCatalog();
+
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function () {
+                            console.log('success save');
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            clearValid();
+                            let data = JSON.parse(error.responseText);
+                            console.log(data);
+                            validate3(data);
+                            console.log("Error submitting form:", error);
+                        }
+                    });
+                }
+
+                function getFormCatalog() {
+                    let resForm = new FormData();
+                    resForm.append('requestBannerForAdd.catalogBannerId', $("#catalogBannerId_").val());
+                    resForm.append("requestBannerForAdd.catalogBannerIsActive", $("#status-catalog-banner").prop('checked'));
+                    resForm.append("requestBannerForAdd.catalogBannerPathToImage", $('input[data-name="catalogBannerPathToImage"]').val());
+                    let catalogBannerFile = $('#file-catalogBannerFile')[0].files[0];
+                    if (catalogBannerFile) {
+                        resForm.append('requestBannerForAdd.catalogBannerFile', catalogBannerFile);
+                    }
+
+                    let langActive = getActiveLangTab();
+                    let $containerFactoryImages = $(`#container-catalog-ecologically-images-${langActive} .col-3`);
+                    let counter = 0;
+                    $containerFactoryImages.each(function () {
+                        let attrId = $(this).attr("data-id");
+                        let attrDataType = $(this).attr('data-type');
+                        if (attrId) {
+                            let $file = $(`input[data-type="image${attrId}"]`);
+                            let $pathToFile = $(`input[data-image="image${attrId}"]`);
+                            let file = $file[0].files[0];
+                            if (attrDataType && attrDataType !== 'new') resForm.append(`requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].id`, attrId);
+                            if ($file[0].files.length > 0) resForm.append(`requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].fileImage`, file);
+                            resForm.append(`requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].pathToImage`, $pathToFile.val() === 'undefined' ? '' : $pathToFile.val());
+                        }
+                        counter++;
+                    });
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyId`, $("#catalogEcologicallyId_").val());
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyIsActive`, $("#status-catalog-ecologically").prop('checked'));
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyTitleUk`, $('#catalog-ecologically-title-uk_').val());
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyTitleEn`, $('#catalog-ecologically-title-en_').val());
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallySubtitleUk`, $('#catalog-ecologically-subtitle-uk_').val());
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallySubtitleEn`, $('#catalog-ecologically-subtitle-en_').val());
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyDescriptionUk`, $('#hidden-edit-description-ecologically-uk').html());
+                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyDescriptionEn`, $('#hidden-edit-description-ecologically-en').html());
+                    return resForm;
+                }
+
+                function requestGetData() {
+                    let request = new XMLHttpRequest();
+                    request.open("GET", `${contextPath}admin/page/catalog/data`);
+                    request.send();
+                    request.addEventListener('load', function () {
+                        if (request.status === 200) {
+                            let data = JSON.parse(request.response);
+                            console.log(data);
+                            for (let key in data) {
+                                let nestedObject = data[key];
+                                if (typeof nestedObject === 'object' && nestedObject !== null) {
+                                    for (let nestedKey in nestedObject) {
+                                        // console.log(nestedKey);
+                                        if (nestedObject.hasOwnProperty(nestedKey)) {
+                                            // console.log(`Key: ${nestedKey} Value: ${nestedObject[nestedKey]}`);
+
+                                            let input = $(`input[data-name="${nestedKey}"], textarea[data-name="${nestedKey}"], div[data-name="${nestedKey}"]`);
+                                            // console.log(input[0]);
+                                            if (input) {
+                                                if (input.hasClass('files')) {
+                                                    let img = input.attr('data-image');
+                                                    // console.log(img);
+                                                    let $input = $(`#${img}`);
+                                                    if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
+                                                        $input.attr('src', nestedObject[nestedKey]);
+                                                        input.val(nestedObject[nestedKey]);
+                                                    }
+                                                } else if (input.hasClass('editors')) {
+                                                    // console.log(`Key: ${key} Value: ${data[key]}`);
+                                                    let $div = $(input);
+                                                    // console.log($div[0]);
+                                                    if ($div) {
+                                                        $div.html(nestedObject[nestedKey]);
+                                                        let parent = $div.parent();
+                                                        let find = parent.find('.editor-realise');
+                                                        // console.log(find[0]);
+                                                        getFroalaEditor(find[0].getAttribute('id'));
+                                                    }
+                                                } else {
+                                                    if (typeof nestedObject[nestedKey] === 'boolean') {
+                                                        let isActiveEl = $(`input[data-name="${nestedKey}"]`)[0];
+                                                        if (isActiveEl) {
+                                                            isActiveEl.checked = nestedObject[nestedKey];
+                                                        }
+                                                    } else if (nestedKey === 'catalogEcologicallyFiles') {
+                                                        console.log(nestedObject[nestedKey]);
+                                                        let array = nestedObject[nestedKey];
+                                                        if (Array.isArray(array)) {
+                                                            array.forEach(function (el) {
+                                                                console.log(el);
+                                                                addMediaImageBlock('old', el.id, el.pathToImage);
+                                                            });
+                                                        }
+                                                    } else {
+                                                        input.val(nestedObject[nestedKey]);
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                const PathToDefaultImage = contextPath + 'uploads/default/default-image.jpg';
+                let counter = 0;
+
+                function addMediaImageBlock(TYPE, ID, PATH) {
+                    const newBlock = document.createElement('div');
+                    newBlock.className = 'col-3 row text-center position-relative';
+                    let UUID = new Date().getTime();
+                    if (ID) UUID = ID;
+                    newBlock.dataset.id = UUID;
+                    newBlock.dataset.type = TYPE;
+                    newBlock.innerHTML = `
+                                    <img id="image${UUID}" data-name="image${UUID}"
+                                    src="${PATH ? PATH : PathToDefaultImage}"
+                                    alt="error" style="width: 100%; height: 167px;display: block; margin: 0 auto;"
+                                    data-error="requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].fileImage">
+                                    <div class="d-flex justify-content-center gap-3">
+                                         <button type="button" data-type="image${UUID}" class="btn btn-outline-success btn-select"
+                                            style="left: 22%;top:42%;position: absolute; width: 57%;">Змінити
+                                         </button>
+                                        <button type="button" data-type="image${UUID}" data-typedelete="delete-image"
+                                        class="btn btnTrashMyBefore position-absolute top-0 end-0 me-2 mt-2 btn-delete">
+                                         <i class="ti ti-trash" style="font-size: x-large;"></i>
+                                        </button>
+                                  </div>
+                             `;
+
+                    $('#container-inputs').append(` <input type="file" id="file-image${UUID}" data-type="image${UUID}" class="files"
+                                           accept="image/*" style="display: none;" data-error="file">
+                                    <input type="hidden" data-name="pathToImage${UUID}" data-image="image${UUID}"
+                                           class="files" data-error="pathToMediaFile" value="${PATH}">`);
+
+                    let langActive = getActiveLangTab();
+                    const container = document.getElementById('container-catalog-ecologically-images-' + langActive);
+                    const addButtonContainer = document.getElementById('add-button-container');
+                    // container.insertAdjacentElement('beforeend',newBlock);
+                    container.insertBefore(newBlock, addButtonContainer);
+                    counter++;
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<!--/ Content -->
+</body>
+</html>

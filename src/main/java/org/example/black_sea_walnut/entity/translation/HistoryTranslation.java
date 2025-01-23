@@ -53,4 +53,13 @@ public class HistoryTranslation {
         this.description4 = description4;
         this.history = history;
     }
+
+    public HistoryTranslation(Long id, LanguageCode languageCode, String title, String subtitle, String description, History history) {
+        this.id = id;
+        this.languageCode = languageCode;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.description = description;
+        this.history = history;
+    }
 }

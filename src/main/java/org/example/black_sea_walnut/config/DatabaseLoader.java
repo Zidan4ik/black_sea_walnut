@@ -8,6 +8,7 @@ import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.repository.TransactionsRepository;
 import org.example.black_sea_walnut.service.HistoryMainService;
+import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.NewService;
 import org.example.black_sea_walnut.util.FakerUtil;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +24,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private final NewService newService;
     private final TransactionsRepository transactionsRepository;
     private final ProductRepository productRepository;
-    private final HistoryMainService historyMainService;
+    private final HistoryService historyService;
+
     @Override
     public void run(String... args) throws Exception {
         if (newService.getAll().isEmpty()) {
@@ -38,14 +40,12 @@ public class DatabaseLoader implements CommandLineRunner {
 //                new_.setTranslations(List.of(eng, ukr));
 //                newService.save(new_);
             }
-        }
-        else if (transactionsRepository.findAll().isEmpty()) {
+        } else if (transactionsRepository.findAll().isEmpty()) {
             for (int i = 0; i < 3; i++) {
                 Transaction transaction = FakerUtil.fill(Transaction.class);
                 transactionsRepository.save(transaction);
             }
-        }
-        else if(productRepository.findAll().isEmpty()){
+        } else if (productRepository.findAll().isEmpty()) {
             for (int i = 0; i < 3; i++) {
                 Product product = FakerUtil.fill(Product.class);
 
@@ -64,22 +64,29 @@ public class DatabaseLoader implements CommandLineRunner {
                 productRepository.save(product);
             }
         }
-         if (historyMainService.findAll().isEmpty()){
-           History historyMain = new History(null,false, PageType.main_banner,null,null,null);
-           historyMain.setBanner(new Banner(null,null,null,historyMain));
-           History historyProduction = new History(null,false, PageType.main_production,null,null,null);
-           History historyFactory = new History(null,false, PageType.main_factory_about,null,null,null);
-           History historyNumber = new History(null,false, PageType.main_numbers,null,null,null);
-           History historyAim = new History(null,false, PageType.main_aim,null,null,null);
-             historyAim.setBanner(new Banner(null,null,null,historyAim));
-           History historyEcoProduction = new History(null,false, PageType.main_eco_production,null,null,null);
-             historyEcoProduction.setBanner(new Banner(null,null,null,historyEcoProduction));
-           historyMainService.saveHistory(historyMain);
-            historyMainService.saveHistory(historyProduction);
-            historyMainService.saveHistory(historyFactory);
-            historyMainService.saveHistory(historyNumber);
-            historyMainService.saveHistory(historyAim);
-            historyMainService.saveHistory(historyEcoProduction);
+        if (historyService.getAll().isEmpty()) {
+            History historyMain = new History(null, false, PageType.main_banner, null, null, null);
+            historyMain.setBanner(new Banner(null, null, null, historyMain));
+            History historyProduction = new History(null, false, PageType.main_production, null, null, null);
+            History historyFactory = new History(null, false, PageType.main_factory_about, null, null, null);
+            History historyNumber = new History(null, false, PageType.main_numbers, null, null, null);
+            History historyAim = new History(null, false, PageType.main_aim, null, null, null);
+            historyAim.setBanner(new Banner(null, null, null, historyAim));
+            History historyEcoProduction = new History(null, false, PageType.main_eco_production, null, null, null);
+            historyEcoProduction.setBanner(new Banner(null, null, null, historyEcoProduction));
+
+            historyService.save(historyMain);
+            historyService.save(historyProduction);
+            historyService.save(historyFactory);
+            historyService.save(historyNumber);
+            historyService.save(historyAim);
+            historyService.save(historyEcoProduction);
+
+            History catalogBanner = new History(null, false, PageType.catalog_banner, null, null, null);
+            historyMain.setBanner(new Banner(null, null, null, catalogBanner));
+            History catalogEcologically = new History(null, false, PageType.catalog_ecologically_pure_walnut, null, null, null);
+            historyService.save(catalogBanner);
+            historyService.save(catalogEcologically);
         }
     }
 }

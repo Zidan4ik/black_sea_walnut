@@ -26,8 +26,8 @@ public class History {
     private PageType pageType;
     @OneToOne(mappedBy = "history", cascade = CascadeType.ALL)
     public Banner banner;
-    @OneToMany(mappedBy = "history",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<HistoryTranslation> translations;
+    @OneToMany(mappedBy = "history",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<HistoryTranslation> translations = new ArrayList<>();
     @OneToMany(mappedBy = "history",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<HistoryMedia> historyMedia = new ArrayList<>();
 }

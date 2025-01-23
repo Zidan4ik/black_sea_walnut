@@ -2,10 +2,15 @@ package org.example.black_sea_walnut.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.black_sea_walnut.dto.pages.catalog.PageCatalogRequestForAdd;
+import org.example.black_sea_walnut.dto.pages.catalog.PageCatalogResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.catalog.response.BannerBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.catalog.response.EcologicallyBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.main.PageMainRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.main.PageMainResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.main.response.*;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.service.HistoryCatalogService;
 import org.example.black_sea_walnut.service.HistoryMainService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +30,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class HistoryController {
     private final HistoryMainService historyMainService;
+    private final HistoryCatalogService catalogService;
 
     @GetMapping("/pages")
     public ModelAndView viewPages() {
@@ -66,6 +72,35 @@ public class HistoryController {
         historyMainService.saveHistoryAimBlock(dto.getRequestAimBlockForAdd());
         historyMainService.saveHistoryEcoProductionBlock(dto.getRequestEcoProductionForAdd());
         historyMainService.saveHistoryFactoryBlock(dto.getRequestFactoryForAdd());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/page/catalog")
+    public ModelAndView viewCatalogPage() {
+        return new ModelAndView("admin/page/catalog");
+    }
+    @GetMapping("/page/catalog/data")
+    public ResponseEntity<PageCatalogResponseForAdd> getDataForPageCatalog() {
+        BannerBlockResponseForAdd bannerResponse = catalogService.getByPageTypeInResponseBannerBlock(PageType.catalog_banner);
+        EcologicallyBlockResponseForAdd ecologicallyResponse = catalogService.getByPageTypeInResponseEcologicallyBlock(PageType.catalog_ecologically_pure_walnut);
+        PageCatalogResponseForAdd response = PageCatalogResponseForAdd.builder().bannerBlockResponseForAdd(bannerResponse).ecologicallyBlockResponseForAdd(ecologicallyResponse).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/page/catalog/save")
+    public ResponseEntity<?> savePageCatalogBanner(@Valid PageCatalogRequestForAdd dto,
+                                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+            return ResponseEntity
+                    .status(HttpStatus.valueOf(400))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errors);
+        }
+        catalogService.saveHistoryBannerBlock(dto.getRequestBannerForAdd());
+        catalogService.saveHistoryEcologicallyBlock(dto.getRequestEcologicallyForAdd());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
