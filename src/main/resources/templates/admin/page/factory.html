@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-auto" style="padding-right: 5px;">Сторінка</div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;">Каталог</div>
+                <div class="col-auto" style="padding-left: 5px;">Про виробництво</div>
             </div>
         </div>
         <!--/ Header content -->
@@ -67,21 +67,36 @@
                 <div class="row">
                     <div class="col-12 row">
                         <div class="col-6 text-end">
-                            <h4>Баннер - Каталог</h4>
+                            <h4>1 блок - Баннер</h4>
                         </div>
-                        <div class="col-6" id="status-catalog-banner-uk"></div>
+                        <div class="col-6" id="status-factory-banner-uk"></div>
+                        <div class="col-6" id="image-factory-banner-block-uk"></div>
+                        <div class="col-6 row">
+                            <div class="col-12">
+                                <label class="form-label" for="factory-banner-title-uk_"
+                                       style="font-size: small;font-weight: bold">Заголовок:</label>
+                                <input class="form-control" id="factory-banner-title-uk_" data-name="factoryBannerTitleUk"
+                                       data-error="requestFactoryBannerForAdd.factoryBannerTitleUk">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="factory-banner-description-uk_"
+                                       style="font-size: small;font-weight: bold">Опис:</label>
+                                <textarea class="form-control descriptions" id="factory-banner-description-uk_" rows="3"
+                                          data-name="factoryBannerDescriptionUk" data-error="requestFactoryBannerForAdd.factoryBannerDescriptionUk"></textarea>
+                                <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12" id="image-catalog-banner-block-uk"></div>
                 </div>
                 <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
                 <div class="row mt-2">
                     <div class="col-12 row">
-                        <div class="col-8 text-end">
-                            <h4>Екологічний чистий грецький горіх</h4>
+                        <div class="col-6 text-end">
+                            <h4>2 блок</h4>
                         </div>
-                        <div class="col-4" id="status-ecologically-block-uk"></div>
+                        <div class="col-4" id="status-block-uk"></div>
                     </div>
-                    <div class="row" id="container-catalog-ecologically-images-uk">
+                    <div class="row" id="container-factory-block-images-uk">
                         <div class="col-3" id="add-button-container"
                              style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <div class="d-flex justify-content-center">
@@ -95,25 +110,19 @@
                     </div>
                     <div class="col-6 row">
                         <div class="col-12">
-                            <label class="form-label" for="catalog-ecologically-title-uk_"
+                            <label class="form-label" for="factory-block-title-uk_"
                                    style="font-size: small;font-weight: bold">Заголовок:</label>
-                            <input class="form-control" id="catalog-ecologically-title-uk_"
-                                   data-name="catalogEcologicallyTitleUk" data-error="requestEcologicallyForAdd.catalogEcologicallyTitleUk">
+                            <input class="form-control" id="factory-block-title-uk_"
+                                   data-name="factoryBlockTitleUk" data-error="requestFactoryBlockForAdd.factoryBlockTitleUk">
                         </div>
                         <div class="col-12">
-                            <label class="form-label" for="catalog-ecologically-subtitle-uk_"
-                                   style="font-size: small;font-weight: bold">Підзаголовок:</label>
-                            <input class="form-control" id="catalog-ecologically-subtitle-uk_"
-                                   data-name="catalogEcologicallySubtitleUk" data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleUk">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="edit-description-ecologically-uk"
+                            <label class="form-label" for="edit-description-block-uk"
                                    style="font-size: small;font-weight: bold">Опис:</label>
-                            <div id="edit-description-ecologically-uk" class="editor-realise" data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionUk"
+                            <div id="edit-description-block-uk" class="editor-realise" data-error="requestFactoryBlockForAdd.factoryBlockDescriptionUk"
                                  style="min-height: 100px; border: 1px solid #ccc;"></div>
                             <label class="form-label" style="color: #AAAAAA;">Максимум: 3500 символів</label>
-                            <div type="hidden" id="hidden-edit-description-ecologically-uk"
-                                 data-name="catalogEcologicallyDescriptionUk"
+                            <div type="hidden" id="hidden-edit-description-block-uk"
+                                 data-name="factoryBlockDescriptionUk"
                                  style="display: none;" class="editors"></div>
                         </div>
                     </div>
@@ -129,42 +138,51 @@
                 <div class="row">
                     <div class="col-12 row">
                         <div class="col-6 text-end">
-                            <h4>Banner - Catalog</h4>
+                            <h4>1 block - Banner</h4>
                         </div>
-                        <div class="col-6" id="status-catalog-banner-en"></div>
+                        <div class="col-6" id="status-factory-banner-en"></div>
                     </div>
-                    <div class="col-12" id="image-catalog-banner-block-en"></div>
+                    <div class="col-6" id="image-factory-banner-block-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="factory-banner-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="factory-banner-title-en_" data-name="factoryBannerTitleEn"
+                                   data-error="requestFactoryBannerForAdd.factoryBannerTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="factory-banner-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="factory-banner-description-en_" rows="3"
+                                      data-name="factoryBannerDescriptionEn" data-error="requestFactoryBannerForAdd.factoryBannerDescriptionEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
+                        </div>
+                    </div>
                 </div>
                 <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
                 <div class="row mt-2">
                     <div class="col-12 row">
-                        <div class="col-7 text-end">
-                            <h4>Ecologically pure walnut</h4>
+                        <div class="col-6 text-end">
+                            <h4>2 block</h4>
                         </div>
-                        <div class="col-4" id="status-ecologically-block-en"></div>
+                        <div class="col-4" id="status-block-en"></div>
                     </div>
-                    <div class="row" id="container-catalog-ecologically-images-en"></div>
+                    <div class="row" id="container-factory-block-images-en"></div>
                     <div class="col-6 row">
                         <div class="col-12">
-                            <label class="form-label" for="catalog-ecologically-title-en_"
+                            <label class="form-label" for="factory-block-title-uk_en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
-                            <input class="form-control" id="catalog-ecologically-title-en_"
-                                   data-name="catalogEcologicallyTitleEn" data-error="requestEcologicallyForAdd.catalogEcologicallyTitleEn">
+                            <input class="form-control" id="factory-block-title-uk_en_"
+                                   data-name="factoryBlockTitleEn" data-error="requestFactoryBlockForAdd.factoryBlockTitleEn">
                         </div>
                         <div class="col-12">
-                            <label class="form-label" for="catalog-ecologically-subtitle-en_"
-                                   style="font-size: small;font-weight: bold">Subtitle:</label>
-                            <input class="form-control" id="catalog-ecologically-subtitle-en_"
-                                   data-name="catalogEcologicallySubtitleEn" data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleEn">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="edit-description-ecologically-en"
+                            <label class="form-label" for="edit-description-block-en"
                                    style="font-size: small;font-weight: bold">Description:</label>
-                            <div id="edit-description-ecologically-en" class="editor-realise"
-                                 style="min-height: 100px; border: 1px solid #ccc;" data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionEn"></div>
+                            <div id="edit-description-block-en" class="editor-realise"
+                                 style="min-height: 100px; border: 1px solid #ccc;" data-error="requestFactoryBlockForAdd.factoryBlockDescriptionEn"></div>
                             <label class="form-label" style="color: #AAAAAA;">Max: 3500 characters</label>
-                            <div type="hidden" id="hidden-edit-description-ecologically-en"
-                                 data-name="catalogEcologicallyDescriptionEn" style="display: none;" class="editors"></div>
+                            <div type="hidden" id="hidden-edit-description-block-en"
+                                 data-name="factoryBlockDescriptionEn" style="display: none;" class="editors"></div>
                         </div>
                     </div>
                 </div>
@@ -174,11 +192,11 @@
             <!--/ EN Form -->
 
             <!-- Input hidden -->
-            <input type="hidden" id="catalogBannerId_" data-name="catalogBannerId">
-            <input type="hidden" id="catalogEcologicallyId_" data-name="catalogEcologicallyId">
-            <input type="file" id="file-catalogBannerFile" data-type="catalogBannerFile" class="files"
+            <input type="hidden" id="factoryBannerId_" data-name="factoryBannerId">
+            <input type="hidden" id="factoryBlockId_" data-name="factoryBlockId">
+            <input type="file" id="file-factoryBannerFile" data-type="factoryBannerFile" class="files"
                    accept="image/*" style="display: none;">
-            <input type="hidden" data-name="catalogBannerPathToImage" class="files" data-image="catalogBannerFile">
+            <input type="hidden" data-name="factoryBannerPathToImage" class="files" data-image="factoryBannerFile">
 
             <!-- Input Medias hidden -->
             <div id="container-inputs"></div>
@@ -189,7 +207,7 @@
             <!-- Status Catalog Banner Base -->
             <div id="shared-status-catalog-banner" style="display: none;">
                 <label class="switch switch-success mt-1">
-                    <input id="status-catalog-banner" data-name="catalogBannerIsActive" type="checkbox"
+                    <input id="status-catalog-banner" data-name="factoryBannerIsActive" type="checkbox"
                            class="switch-input">
                     <span class="switch-toggle-slider">
                                             <span class="switch-on"></span>
@@ -199,10 +217,10 @@
             </div>
             <!--/ Status Catalog Banner Base -->
 
-            <!-- Status Ecologically Base -->
-            <div id="shared-status-catalog-ecologically" style="display: none;">
+            <!-- Status Block Base -->
+            <div id="shared-status-factory-block" style="display: none;">
                 <label class="switch switch-success mt-1">
-                    <input id="status-catalog-ecologically" data-name="catalogEcologicallyIsActive" type="checkbox"
+                    <input id="status-factory-block" data-name="factoryBlockIsActive" type="checkbox"
                            class="switch-input">
                     <span class="switch-toggle-slider">
                                             <span class="switch-on"></span>
@@ -210,21 +228,21 @@
                                          </span>
                 </label>
             </div>
-            <!--/ Status Ecologically Base -->
+            <!--/ Status Block Base -->
 
             <!-- Image Catalog Base -->
-            <div id="shared-image-catalog-banner" style="display: none;">
+            <div id="shared-image-factory-banner" style="display: none;">
                 <div class="position-relative">
-                    <img id="catalogBannerFile" data-name="catalogBannerFile"
+                    <img id="factoryBannerFile" data-name="factoryBannerFile"
                          th:src="@{'/uploads/default/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
-                         data-error="requestBannerForAdd.catalogBannerFile">
-                    <button type="button" data-type="catalogBannerFile"
+                         data-error="requestFactoryBannerForAdd.factoryBannerFile">
+                    <button type="button" data-type="factoryBannerFile"
                             class="btn btn-outline-success btn-select"
                             style="left: 13%;top:25%;position: absolute;width: 35%;">
                         Змінити банер
                     </button>
-                    <button type="button" data-type="catalogBannerFile"
+                    <button type="button" data-type="factoryBannerFile"
                             class="btn btn-outline-success btn-delete"
                             style="right: 13%;top:25%;position: absolute;width: 35%;">
                         Видалити
@@ -233,6 +251,8 @@
                           style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
                     png, jpg, jpeg, mp4 до 15 МБ</span>
                 </div>
+
+
             </div>
             <!--/ Image Catalog Base -->
 
@@ -301,38 +321,38 @@
                         // console.log(`Active: ${activatedTabId}`);
 
                         if (previousActiveTab) {
-                            copyHTMLBlockImage(`image-catalog-banner-block-${previousActiveTab}`, 'shared-image-catalog-banner');
+                            copyHTMLBlockImage(`image-factory-banner-block-${previousActiveTab}`, 'shared-image-factory-banner');
                             copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
-                            copyHTMLBlockSwitch(`status-catalog-banner-${previousActiveTab}`, 'shared-status-catalog-banner');
-                            copyHTMLBlockSwitch(`status-ecologically-block-${previousActiveTab}`, 'shared-status-catalog-ecologically');
+                            copyHTMLBlockSwitch(`status-factory-banner-${previousActiveTab}`, 'shared-status-catalog-banner');
+                            copyHTMLBlockSwitch(`status-block-${previousActiveTab}`, 'shared-status-factory-block');
                         }
 
                         if (activatedTabId) {
-                            copyHTMLBlockImage('shared-image-catalog-banner', `image-catalog-banner-block-${activatedTabId}`);
+                            copyHTMLBlockImage('shared-image-factory-banner', `image-factory-banner-block-${activatedTabId}`);
                             copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
-                            copyHTMLBlockSwitch('shared-status-catalog-banner', `status-catalog-banner-${activatedTabId}`);
-                            copyHTMLBlockSwitch('shared-status-catalog-ecologically', `status-ecologically-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-catalog-banner', `status-factory-banner-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-factory-block', `status-block-${activatedTabId}`);
                         }
 
-                        copyHTMLBlockImage(`container-catalog-ecologically-images-${previousActiveTab}`, `container-catalog-ecologically-images-${activatedTabId}`);
+                        copyHTMLBlockImage(`container-factory-block-images-${previousActiveTab}`, `container-factory-block-images-${activatedTabId}`);
                         addEventListenerForMediaFiles(activatedTabId);
                     });
                 });
 
                 $(document).ready(function () {
                     let activeLang = getActiveLangTab();
-                    copyHTMLBlockImage('shared-image-catalog-banner', `image-catalog-banner-block-${activeLang}`);
+                    copyHTMLBlockImage('shared-image-factory-banner', `image-factory-banner-block-${activeLang}`);
                     copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
-                    copyHTMLBlockSwitch('shared-status-catalog-banner', `status-catalog-banner-${activeLang}`);
-                    copyHTMLBlockSwitch('shared-status-catalog-ecologically', `status-ecologically-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-catalog-banner', `status-factory-banner-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-factory-block', `status-block-${activeLang}`);
                     requestGetData();
                     addEventListenerForMediaFiles(activeLang);
                 });
 
-                const urlCatalogBlock = `${contextPath}admin/page/catalog/save`;
+                const urlCatalogBlock = `${contextPath}admin/page/factory/save`;
 
                 function addEventListenerForMediaFiles(langActive) {
-                    const container = "#container-catalog-ecologically-images-" + langActive;
+                    const container = "#container-factory-block-images-" + langActive;
 
                     $(container).on('click', '.btn-select', function () {
                         let attribute = $(this).attr('data-type');
@@ -395,16 +415,20 @@
 
                 function getFormCatalog() {
                     let resForm = new FormData();
-                    resForm.append('requestBannerForAdd.catalogBannerId', $("#catalogBannerId_").val());
-                    resForm.append("requestBannerForAdd.catalogBannerIsActive", $("#status-catalog-banner").prop('checked'));
-                    resForm.append("requestBannerForAdd.catalogBannerPathToImage", $('input[data-name="catalogBannerPathToImage"]').val());
-                    let catalogBannerFile = $('#file-catalogBannerFile')[0].files[0];
-                    if (catalogBannerFile) {
-                        resForm.append('requestBannerForAdd.catalogBannerFile', catalogBannerFile);
+                    resForm.append('requestFactoryBannerForAdd.factoryBannerId', $("#factoryBannerId_").val());
+                    resForm.append("requestFactoryBannerForAdd.factoryBannerIsActive", $("#status-catalog-banner").prop('checked'));
+                    resForm.append("requestFactoryBannerForAdd.factoryBannerTitleUk", $("#factory-banner-title-uk_").val());
+                    resForm.append("requestFactoryBannerForAdd.factoryBannerTitleEn", $("#factory-banner-title-en_").val());
+                    resForm.append("requestFactoryBannerForAdd.factoryBannerDescriptionUk", $("#factory-banner-description-uk_").val());
+                    resForm.append("requestFactoryBannerForAdd.factoryBannerDescriptionEn", $("#factory-banner-description-en_").val());
+                    resForm.append("requestFactoryBannerForAdd.factoryBannerPathToBanner", $('input[data-name="factoryBannerPathToImage"]').val());
+                    let factoryBannerFile = $('#file-factoryBannerFile')[0].files[0];
+                    if (factoryBannerFile) {
+                        resForm.append('requestFactoryBannerForAdd.factoryBannerFile', factoryBannerFile);
                     }
 
                     let langActive = getActiveLangTab();
-                    let $containerFactoryImages = $(`#container-catalog-ecologically-images-${langActive} .col-3`);
+                    let $containerFactoryImages = $(`#container-factory-block-images-${langActive} .col-3`);
                     let counter = 0;
                     $containerFactoryImages.each(function () {
                         let attrId = $(this).attr("data-id");
@@ -413,26 +437,24 @@
                             let $file = $(`input[data-type="image${attrId}"]`);
                             let $pathToFile = $(`input[data-image="image${attrId}"]`);
                             let file = $file[0].files[0];
-                            if (attrDataType && attrDataType !== 'new') resForm.append(`requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].id`, attrId);
-                            if ($file[0].files.length > 0) resForm.append(`requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].fileImage`, file);
-                            resForm.append(`requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].pathToImage`, $pathToFile.val() === 'undefined' ? '' : $pathToFile.val());
+                            if (attrDataType && attrDataType !== 'new') resForm.append(`requestFactoryBlockForAdd.factoryBlockFiles[${counter}].id`, attrId);
+                            if ($file[0].files.length > 0) resForm.append(`requestFactoryBlockForAdd.factoryBlockFiles[${counter}].fileImage`, file);
+                            resForm.append(`requestFactoryBlockForAdd.factoryBlockFiles[${counter}].pathToImage`, $pathToFile.val() === 'undefined' ? '' : $pathToFile.val());
                         }
                         counter++;
                     });
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyId`, $("#catalogEcologicallyId_").val());
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyIsActive`, $("#status-catalog-ecologically").prop('checked'));
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyTitleUk`, $('#catalog-ecologically-title-uk_').val());
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyTitleEn`, $('#catalog-ecologically-title-en_').val());
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallySubtitleUk`, $('#catalog-ecologically-subtitle-uk_').val());
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallySubtitleEn`, $('#catalog-ecologically-subtitle-en_').val());
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyDescriptionUk`, $('#hidden-edit-description-ecologically-uk').html());
-                    resForm.append(`requestEcologicallyForAdd.catalogEcologicallyDescriptionEn`, $('#hidden-edit-description-ecologically-en').html());
+                    resForm.append(`requestFactoryBlockForAdd.factoryBlockId`, $("#factoryBlockId_").val());
+                    resForm.append(`requestFactoryBlockForAdd.factoryBlockIsActive`, $("#status-factory-block").prop('checked'));
+                    resForm.append(`requestFactoryBlockForAdd.factoryBlockTitleUk`, $('#factory-block-title-uk_').val());
+                    resForm.append(`requestFactoryBlockForAdd.factoryBlockTitleEn`, $('#factory-block-title-uk_en_').val());
+                    resForm.append(`requestFactoryBlockForAdd.factoryBlockDescriptionUk`, $('#hidden-edit-description-block-uk').html());
+                    resForm.append(`requestFactoryBlockForAdd.factoryBlockDescriptionEn`, $('#hidden-edit-description-block-en').html());
                     return resForm;
                 }
 
                 function requestGetData() {
                     let request = new XMLHttpRequest();
-                    request.open("GET", `${contextPath}admin/page/catalog/data`);
+                    request.open("GET", `${contextPath}admin/page/factory/data`);
                     request.send();
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
@@ -474,7 +496,7 @@
                                                         if (isActiveEl) {
                                                             isActiveEl.checked = nestedObject[nestedKey];
                                                         }
-                                                    } else if (nestedKey === 'catalogEcologicallyFiles') {
+                                                    } else if (nestedKey === 'factoryBlockFiles') {
                                                         console.log(nestedObject[nestedKey]);
                                                         let array = nestedObject[nestedKey];
                                                         if (Array.isArray(array)) {
@@ -511,7 +533,7 @@
                                     <img id="image${UUID}" data-name="image${UUID}"
                                     src="${PATH ? PATH : PathToDefaultImage}"
                                     alt="error" style="width: 100%; height: 167px;display: block; margin: 0 auto;"
-                                    data-error="requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].fileImage">
+                                    data-error="requestFactoryBlockForAdd.factoryBlockFiles[${counter}].fileImage">
                                     <div class="d-flex justify-content-center gap-3">
                                          <button type="button" data-type="image${UUID}" class="btn btn-outline-success btn-select"
                                             style="left: 22%;top:42%;position: absolute; width: 57%;">Змінити
@@ -529,7 +551,7 @@
                                            class="files" data-error="pathToMediaFile" value="${PATH}">`);
 
                     let langActive = getActiveLangTab();
-                    const container = document.getElementById('container-catalog-ecologically-images-' + langActive);
+                    const container = document.getElementById('container-factory-block-images-' + langActive);
                     const addButtonContainer = document.getElementById('add-button-container');
                     // container.insertAdjacentElement('beforeend',newBlock);
                     container.insertBefore(newBlock, addButtonContainer);

@@ -87,6 +87,12 @@ public class DatabaseLoader implements CommandLineRunner {
             History catalogEcologically = new History(null, false, PageType.catalog_ecologically_pure_walnut, null, null, null);
             historyService.save(catalogBanner);
             historyService.save(catalogEcologically);
+
+            History factoryBanner = new History(null, false, PageType.factory_banner, null, null, null);
+            factoryBanner.setBanner(new Banner(null, null, null, factoryBanner));
+            History catalogBlock = new History(null, false, PageType.factory_block2, null, null, null);
+            historyService.save(factoryBanner);
+            historyService.save(catalogBlock);
         }
     }
 }

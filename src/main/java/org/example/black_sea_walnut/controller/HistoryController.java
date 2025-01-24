@@ -6,11 +6,16 @@ import org.example.black_sea_walnut.dto.pages.catalog.PageCatalogRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.PageCatalogResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.BannerBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.EcologicallyBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.factory.PageFactoryRequestForAdd;
+import org.example.black_sea_walnut.dto.pages.factory.PageFactoryResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.factory.response.BlockResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.factory.response.FactoryBannerBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.main.PageMainRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.main.PageMainResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.main.response.*;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.service.HistoryCatalogService;
+import org.example.black_sea_walnut.service.HistoryFactoryService;
 import org.example.black_sea_walnut.service.HistoryMainService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +36,7 @@ import java.util.Map;
 public class HistoryController {
     private final HistoryMainService historyMainService;
     private final HistoryCatalogService catalogService;
+    private final HistoryFactoryService factoryService;
 
     @GetMapping("/pages")
     public ModelAndView viewPages() {
@@ -101,6 +107,35 @@ public class HistoryController {
         }
         catalogService.saveHistoryBannerBlock(dto.getRequestBannerForAdd());
         catalogService.saveHistoryEcologicallyBlock(dto.getRequestEcologicallyForAdd());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/page/factory")
+    public ModelAndView viewFactoryPage() {
+        return new ModelAndView("admin/page/factory");
+    }
+    @GetMapping("/page/factory/data")
+    public ResponseEntity<PageFactoryResponseForAdd> getDataForPageFactory() {
+        FactoryBannerBlockResponseForAdd bannerResponse = factoryService.getByPageTypeInResponseBannerBlock(PageType.factory_banner);
+        BlockResponseForAdd blockResponse = factoryService.getByPageTypeInResponseBlock(PageType.factory_block2);
+        PageFactoryResponseForAdd response = PageFactoryResponseForAdd.builder().responseFactoryBannerForAdd(bannerResponse).responseFactoryBlockForAdd(blockResponse).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/page/factory/save")
+    public ResponseEntity<?> savePageFactoryBanner(@Valid PageFactoryRequestForAdd dto,
+                                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+            return ResponseEntity
+                    .status(HttpStatus.valueOf(400))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errors);
+        }
+        factoryService.saveHistoryBannerBlock(dto.getRequestFactoryBannerForAdd());
+        factoryService.saveHistoryBlock(dto.getRequestFactoryBlockForAdd());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
