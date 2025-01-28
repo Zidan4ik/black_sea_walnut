@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Main Page</title>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+
+        <!-- Header content -->
+        <div class="row">
+            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
+                <div class="col-auto text-center">
+                    <a th:href="@{/admin/pages}">
+                        <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
+                    </a>
+                </div>
+                <div class="col-auto" style="padding-right: 5px;">Сторінка</div>
+                <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
+                <div class="col-auto" style="padding-left: 5px;">Оптовим та корпоративним клієнтам</div>
+            </div>
+        </div>
+        <!--/ Header content -->
+
+        <!-- Language tabs -->
+        <div class="nav-align-top">
+            <ul class="nav nav-tabs" role="tablist" style="background: none;">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" data-bs-toggle="tab"
+                            data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
+                            style="margin-left: 15px;"
+                            data-lang="uk">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" data-bs-toggle="tab"
+                            data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
+                            data-lang="en">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
+                            </span>
+                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <!--/ Language tabs -->
+
+        <div class="tab-content" id="pills-tabContent">
+            <!-- UK Form -->
+            <div class="tab-pane fade show active" id="navs-uk" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>1 блок - Баннер</h4>
+                        </div>
+                        <div class="col-6" id="status-clients-banner-uk"></div>
+                        <div class="col-6" id="image-clients-banner-block-uk"></div>
+                        <div class="col-6 row">
+                            <div class="col-12">
+                                <label class="form-label" for="clients-banner-title-uk_"
+                                       style="font-size: small;font-weight: bold">Заголовок:</label>
+                                <input class="form-control" id="clients-banner-title-uk_"
+                                       data-name="clientsBannerTitleUk"
+                                       data-error="requestClientBannerForAdd.clientsBannerTitleUk">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="clients-banner-description-uk_"
+                                       style="font-size: small;font-weight: bold">Опис:</label>
+                                <textarea class="form-control descriptions" id="clients-banner-description-uk_" rows="3"
+                                          data-name="clientsBannerDescriptionUk"
+                                          data-error="requestClientBannerForAdd.clientsBannerDescriptionUk"></textarea>
+                                <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="mt-2">
+                    <div class="text-center">
+                        <h4>2 блок - Категорія</h4>
+                    </div>
+                    <div class="row justify-content-center" id="container-clients-block-images-uk">
+                        <div class="col-3" id="add-button-container-uk"
+                             style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-success btnMediaBlock">Добавити категорію
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>3 блок - Єко продукція</h4>
+                        </div>
+                        <div class="col-6" id="status-clients-eco-production-uk"></div>
+                        <div class="col-6" id="image-clients-eco-production-block-uk"></div>
+                        <div class="col-6 row">
+                            <div class="col-12">
+                                <label class="form-label" for="clients-eco-production-title-uk_"
+                                       style="font-size: small;font-weight: bold">Заголовок:</label>
+                                <input class="form-control" id="clients-eco-production-title-uk_"
+                                       data-name="clientsEcoProductionTitleUk"
+                                       data-error="requestClientEcoProductionForAdd.clientsEcoProductionTitleUk">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="clients-banner-description-uk_"
+                                       style="font-size: small;font-weight: bold">Опис:</label>
+                                <textarea class="form-control descriptions" id="clients-eco-production-description-uk_"
+                                          rows="3"
+                                          data-name="clientsEcoProductionDescriptionUk"
+                                          data-error="requestClientEcoProductionForAdd.clientsEcoProductionDescriptionUk"></textarea>
+                                <label class="form-label" style="color: #AAAAAA;">Максимум: 150 символів</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div id="save-block-uk"></div>
+            </div>
+            <!--/ UK Form -->
+
+            <!-- EN Form -->
+            <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
+                 data-bs-toggle="tab">
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>1 block - Banner</h4>
+                        </div>
+                        <div class="col-6" id="status-clients-banner-en"></div>
+                    </div>
+                    <div class="col-6" id="image-clients-banner-block-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="clients-banner-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="clients-banner-title-en_" data-name="clientsBannerTitleEn"
+                                   data-error="requestClientBannerForAdd.clientsBannerTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="clients-banner-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="clients-banner-description-en_" rows="3"
+                                      data-name="clientsBannerDescriptionEn"
+                                      data-error="requestClientBannerForAdd.clientsBannerDescriptionEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="mt-2">
+                    <div class="text-center">
+                        <h4>2 block - Category</h4>
+                    </div>
+                    <div class="row justify-content-center" id="container-clients-block-images-en">
+                        <div class="col-3" id="add-button-container-en"
+                             style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-success btnMediaBlock">Add category
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div class="row">
+                    <div class="col-12 row">
+                        <div class="col-6 text-end">
+                            <h4>3 block - Eco production</h4>
+                        </div>
+                        <div class="col-6" id="status-clients-eco-production-en"></div>
+                    </div>
+                    <div class="col-6" id="image-clients-eco-production-block-en"></div>
+                    <div class="col-6 row">
+                        <div class="col-12">
+                            <label class="form-label" for="clients-eco-production-title-en_"
+                                   style="font-size: small;font-weight: bold">Title:</label>
+                            <input class="form-control" id="clients-eco-production-title-en_"
+                                   data-name="clientsEcoProductionTitleEn"
+                                   data-error="requestClientEcoProductionForAdd.clientsEcoProductionTitleEn">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="clients-eco-production-description-en_"
+                                   style="font-size: small;font-weight: bold">Description:</label>
+                            <textarea class="form-control descriptions" id="clients-eco-production-description-en_"
+                                      rows="3"
+                                      data-name="clientsEcoProductionDescriptionEn"
+                                      data-error="requestClientEcoProductionForAdd.clientsEcoProductionDescriptionEn"></textarea>
+                            <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
+                <div id="save-block-en"></div>
+            </div>
+            <!--/ EN Form -->
+
+            <!-- Input hidden -->
+            <input type="hidden" id="clientsBannerId_" data-name="clientsBannerId">
+            <input type="hidden" id="clientsEcoProductionId_" data-name="clientsEcoProductionId">
+            <input type="file" id="file-clientsBannerFile" data-type="clientsBannerFile" class="files"
+                   accept="image/*" style="display: none;">
+            <input type="hidden" data-name="clientsBannerPathToBanner" class="files" data-image="clientsBannerFile">
+            <input type="file" id="file-clientsEcoProductionFile" data-type="clientsEcoProductionFile" class="files"
+                   accept="image/*" style="display: none;">
+            <input type="hidden" data-name="clientsEcoProductionPathToBanner" class="files"
+                   data-image="clientsEcoProductionFile">
+            <!-- Input Medias hidden -->
+            <div id="container-inputs"></div>
+            <!--/ Input Medias hidden -->
+            <!--/ Input hidden -->
+
+            <!-- Status Clients Banner -->
+            <div id="shared-status-clients-banner" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-clients-banner" data-name="clientsBannerIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                                            <span class="switch-on"></span>
+                                            <span class="switch-off"></span>
+                                         </span>
+                </label>
+            </div>
+            <!--/ Status Clients Banner -->
+
+            <!-- Status Clients Eco Production -->
+            <div id="shared-status-clients-eco-production" style="display: none;">
+                <label class="switch switch-success mt-1">
+                    <input id="status-clients-eco-production" data-name="clientsEcoProductionIsActive" type="checkbox"
+                           class="switch-input">
+                    <span class="switch-toggle-slider">
+                        <span class="switch-on"></span>
+                        <span class="switch-off"></span>
+                    </span>
+                </label>
+            </div>
+            <!--/ Status Clients Eco Production -->
+
+            <!-- Banner Client Base -->
+            <div id="shared-image-clients-banner" style="display: none;">
+                <div class="position-relative">
+                    <img id="clientsBannerFile" data-name="clientsBannerFile"
+                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
+                         data-error="requestClientBannerForAdd.clientsBannerFile">
+                    <button type="button" data-type="clientsBannerFile"
+                            class="btn btn-outline-success btn-select"
+                            style="left: 13%;top:25%;position: absolute;width: 35%;">
+                        Змінити банер
+                    </button>
+                    <button type="button" data-type="clientsBannerFile"
+                            class="btn btn-outline-success btn-delete"
+                            style="right: 13%;top:25%;position: absolute;width: 35%;">
+                        Видалити
+                    </button>
+                    <span class="text-center"
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                    png, jpg, jpeg, mp4 до 15 МБ</span>
+                </div>
+            </div>
+            <!--/ Banner Client Base -->
+
+            <!-- Banner Client Base -->
+            <div id="shared-image-clients-eco-production" style="display: none;">
+                <div class="position-relative">
+                    <img id="clientsEcoProductionFile" data-name="clientsEcoProductionFile"
+                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
+                         data-error="requestClientEcoProductionForAdd.clientsEcoProductionFile">
+                    <button type="button" data-type="clientsEcoProductionFile"
+                            class="btn btn-outline-success btn-select"
+                            style="left: 13%;top:25%;position: absolute;width: 35%;">
+                        Змінити банер
+                    </button>
+                    <button type="button" data-type="clientsEcoProductionFile"
+                            class="btn btn-outline-success btn-delete"
+                            style="right: 13%;top:25%;position: absolute;width: 35%;">
+                        Видалити
+                    </button>
+                    <span class="text-center"
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                    png, jpg, jpeg, mp4 до 15 МБ</span>
+                </div>
+            </div>
+            <!--/ Banner Client Base -->
+
+            <!-- Button save Base -->
+            <div class="text-center" id="shared-save" style="display: none;">
+                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+            </div>
+            <!--/ Button save Base -->
+
+            <!-- Modal -->
+            <div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Are you sure to delete it?</h5>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <a type="button" id="modal-btnDelete_" class="btn btn-danger">
+                                Delete
+                            </a>
+                            <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ Modal -->
+
+            <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+            <script th:src="@{/js/image.js}"></script>
+            <script th:src="@{/js/validator.js}"></script>
+            <script th:src="@{/js/copy.js}"></script>
+            <script th:src="@{/js/event-listener.js}"></script>
+
+            <script>
+                function copyHTMLBlockImage(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    addEventListenersImage2();
+                    clearBlock(fromElementId);
+                }
+
+                function copyHTMLBlockSave(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    document.getElementById('btn-save_').addEventListener('click', function () {
+                        console.log('button save was clicked!')
+                        saveRequest(urlClientsBlock);
+                    });
+                    clearBlock(fromElementId);
+                }
+            </script>
+            <script>
+                function getFroalaEditor(idElementEditor) {
+                    return new FroalaEditor(`#${idElementEditor}`, {
+                        height: 12 * 10,
+                        width: 700,
+                        scrollableContainer: `#${idElementEditor}`,
+                        events: {
+                            'initialized': function () {
+                                let element = $(`#hidden-${idElementEditor}`);
+                                // console.log(element.html());
+                                this.html.set(element.html() || '');
+                            },
+                            'contentChanged': function () {
+                                const html = this.html.get();
+                                // console.log(html);
+                                $(`#hidden-${idElementEditor}`).html(html);
+                            }
+                        }
+                    });
+                }
+            </script>
+            <script>
+                document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                    tab.addEventListener('shown.bs.tab', function (event) {
+                        const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
+                        let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+
+                        // console.log(`Switched to tab: ${activatedTabId}`);
+                        // console.log(`Previous: ${previousActiveTab}`);
+                        // console.log(`Active: ${activatedTabId}`);
+
+                        if (previousActiveTab) {
+                            copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
+                            copyHTMLBlockImage(`image-clients-banner-block-${previousActiveTab}`, 'shared-image-clients-banner');
+                            copyHTMLBlockSwitch(`status-clients-banner-${previousActiveTab}`, 'shared-status-clients-banner');
+                            copyHTMLBlockImage(`image-clients-eco-production-block-${previousActiveTab}`, 'shared-image-clients-eco-production');
+                            copyHTMLBlockSwitch(`status-clients-eco-production-${previousActiveTab}`, 'shared-status-clients-eco-production');
+                        }
+
+                        if (activatedTabId) {
+                            copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
+                            copyHTMLBlockImage('shared-image-clients-banner', `image-clients-banner-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-clients-banner', `status-clients-banner-${activatedTabId}`);
+                            copyHTMLBlockImage('shared-image-clients-eco-production', `image-clients-eco-production-block-${activatedTabId}`);
+                            copyHTMLBlockSwitch('shared-status-clients-eco-production', `status-clients-eco-production-${activatedTabId}`);
+                        }
+
+                        // copyHTMLBlockImage(`container-clients-block-images-${previousActiveTab}`, `container-clients-block-images-${activatedTabId}`);
+                        addEventListenerForMediaFiles(activatedTabId);
+                    });
+                });
+
+                $(document).ready(function () {
+                    let activeLang = getActiveLangTab();
+                    copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
+                    copyHTMLBlockImage('shared-image-clients-banner', `image-clients-banner-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-clients-banner', `status-clients-banner-${activeLang}`);
+                    copyHTMLBlockImage('shared-image-clients-eco-production', `image-clients-eco-production-block-${activeLang}`);
+                    copyHTMLBlockSwitch('shared-status-clients-eco-production', `status-clients-eco-production-${activeLang}`);
+                    requestGetData();
+                    addEventListenerForMediaFiles(activeLang);
+                });
+
+                const urlClientsBlock = `${contextPath}admin/page/clients/save`;
+
+                function addEventListenerForMediaFiles(langActive) {
+                    const container = "#container-clients-block-images-" + langActive;
+
+                    $(container).add('#container-inputs')
+                        .off('click', '.btn-select-media')
+                        .off('change', '.files-media')
+                        .off('click', '.btn-delete-media')
+                        .off('click', '.common-switch');
+                    $('.btnMediaBlock').off('click');
+
+                    $(container).on('click', '.btn-select-media', function () {
+                        let attribute = $(this).attr('data-name');
+                        console.log('Edit button clicked:', attribute);
+                        $("#file-" + attribute).click();
+                    });
+
+                    $('#container-inputs').on('change', '.files-media', function (event) {
+                        let attribute = $(this).data('type');
+                        const file = event.target.files[0];
+                        if (!file) return;
+
+                        const imageElementUk = $(`#${attribute}-uk`);
+                        const imageElementEn = $(`#${attribute}-en`);
+
+                        imageElementUk.attr('src', URL.createObjectURL(file));
+                        imageElementEn.attr('src', URL.createObjectURL(file));
+                        $(`input[data-pathValue="${attribute}"]`).val('');
+                    });
+                    $(container).on('click', '.btn-delete-media', function () {
+                        let value = $(this).data('type');
+                        let id = $(this).data('id');
+                        if (value === 'block') {
+                            let blockParent = $(`div[data-id="${id}"]`);
+                            if (blockParent.attr('data-type') === 'old') {
+                                let val = $(`#id-${id}`).val();
+                                $('#modal-btnDelete_').attr('data-id', val);
+                                const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
+                                modal.show();
+                            }
+                            if (blockParent.attr('data-type') === 'new') {
+                                blockParent.remove();
+                                deleteBlockClient(id);
+                            }
+                        }
+                        if (value === 'image') {
+                            $(`#clientsFileImage${id}-uk`).attr('src', path_default_image);
+                            $(`#clientsFileImage${id}-en`).attr('src', path_default_image);
+                            $(`#file-clientsFileImage${id}`).val('');
+                            $(`input[data-pathValue="clientsFileImage${id}"]`).val('');
+                        }
+                    });
+                    $('#modal-btnDelete_').on('click', function () {
+                        let attrId = this.getAttribute('data-id');
+                        let request = new XMLHttpRequest();
+                        request.open("DELETE", `${contextPath}admin/client/${attrId}/delete`);
+                        request.send();
+                        request.addEventListener('load', function () {
+                            if (request.status === 200) {
+                                window.location.pathname = contextPath + 'admin/page/clients';
+                            }
+                        });
+                    });
+
+                    function deleteBlockClient(id) {
+                        $(`#file-clientsFileImage${id}`).remove();
+                        $(`#file-clientsFileSvg${id}`).remove();
+                        $(`input[data-image="clientsFileImage${id}"]`).remove();
+                        $(`input[data-image="clientsFileSvg${id}"]`).remove();
+                    }
+
+                    $('.btnMediaBlock').on('click', function () {
+                        addMediaImageBlock('new');
+                    });
+
+                    $(container).on('click', '.common-switch', function () {
+                        let isChecked = $(this).prop('checked');
+                        let commonId = $(this).attr('data-id');
+                        $(`input[data-id="${commonId}"]`).each(function () {
+                            $(this).prop('checked', isChecked);
+                        });
+                    })
+                }
+
+                function getActiveLangTab() {
+                    return document.querySelector('button.nav-link.active').getAttribute('data-lang');
+                }
+            </script>
+            <script>
+                function saveRequest(url) {
+                    let formData = getFormCatalog();
+
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function () {
+                            console.log('success save');
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            clearValid();
+                            let data = JSON.parse(error.responseText);
+                            // console.log(data);
+                            validate3(data);
+                            console.log("Error submitting form:", error);
+                        }
+                    });
+                }
+
+                function getFormCatalog() {
+                    let resForm = new FormData();
+                    resForm.append('requestClientBannerForAdd.clientsBannerId', $("#clientsBannerId_").val());
+                    resForm.append("requestClientBannerForAdd.clientsBannerIsActive", $("#status-clients-banner").prop('checked'));
+                    resForm.append("requestClientBannerForAdd.clientsBannerTitleUk", $("#clients-banner-title-uk_").val());
+                    resForm.append("requestClientBannerForAdd.clientsBannerTitleEn", $("#clients-banner-title-en_").val());
+                    resForm.append("requestClientBannerForAdd.clientsBannerDescriptionUk", $("#clients-banner-description-uk_").val());
+                    resForm.append("requestClientBannerForAdd.clientsBannerDescriptionEn", $("#clients-banner-description-en_").val());
+                    resForm.append("requestClientBannerForAdd.clientsBannerPathToBanner", $('input[data-name="clientsBannerPathToBanner"]').val());
+                    let clientsBannerFile = $('#file-clientsBannerFile')[0].files[0];
+                    if (clientsBannerFile) {
+                        resForm.append('requestClientBannerForAdd.clientsBannerFile', clientsBannerFile);
+                    }
+
+                    resForm.append('requestClientEcoProductionForAdd.clientsEcoProductionId', $("#clientsEcoProductionId_").val());
+                    resForm.append("requestClientEcoProductionForAdd.clientsEcoProductionIsActive", $("#status-clients-eco-production").prop('checked'));
+                    resForm.append("requestClientEcoProductionForAdd.clientsEcoProductionTitleUk", $("#clients-eco-production-title-uk_").val());
+                    resForm.append("requestClientEcoProductionForAdd.clientsEcoProductionTitleEn", $("#clients-eco-production-title-en_").val());
+                    resForm.append("requestClientEcoProductionForAdd.clientsEcoProductionDescriptionUk", $("#clients-eco-production-description-uk_").val());
+                    resForm.append("requestClientEcoProductionForAdd.clientsEcoProductionDescriptionEn", $("#clients-eco-production-description-en_").val());
+                    resForm.append("requestClientEcoProductionForAdd.clientsEcoProductionPathToBanner", $('input[data-name="clientsEcoProductionPathToBanner"]').val());
+                    let clientsEcoProductionFile = $('#file-clientsEcoProductionFile')[0].files[0];
+                    if (clientsEcoProductionFile) {
+                        resForm.append('requestClientEcoProductionForAdd.clientsEcoProductionFile', clientsEcoProductionFile);
+                    }
+
+                    let arrayValidCounter = [];
+                    $('#container-clients-block-images-uk').find('.row').each(function () {
+                        let id = $(this).data('id');
+                        if (id !== undefined && id !== null) {
+                            arrayValidCounter.push(id)
+                        }
+                    });
+                    let counterAppend = 0;
+                    arrayValidCounter.forEach(function (id) {
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryTitleUk`, $(`#clients-block-title-uk-${id}`).val());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryTitleEn`, $(`#clients-block-title-en-${id}`).val());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategorySubtitleUk`, $(`#clients-block-subtitle-uk-${id}`).val());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategorySubtitleEn`, $(`#clients-block-subtitle-en-${id}`).val());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryIsActive`, $(`input[data-id="status-client-${id}"]`).prop('checked'));
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryDescriptionUk`, $(`#hidden-edit-description-block-uk-${id}`).html());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryDescriptionEn`, $(`#hidden-edit-description-block-en-${id}`).html());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryPathToImage`, $(`input[data-name="pathToImage${id}"]`).val());
+                        resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryPathToSvg`, $(`input[data-name="pathToSvg${id}"]`).val());
+
+                        let fileImg = $(`#file-clientsFileImage${id}`)[0].files[0];
+                        let fileSvg = $(`#file-clientsFileSvg${id}`)[0].files[0];
+                        if (fileImg)
+                            resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryFileImage`, fileImg);
+                        if (fileSvg)
+                            resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryFileSvg`, fileSvg);
+                        let idRes = $(`#id-${id}`).val();
+                        if (idRes !== undefined)
+                            resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryId`, idRes)
+                        counterAppend++;
+                    });
+                    counterAppend = 0;
+                    return resForm;
+                }
+
+                function requestGetData() {
+                    let request = new XMLHttpRequest();
+                    request.open("GET", `${contextPath}admin/page/clients/data`);
+                    request.send();
+                    request.addEventListener('load', function () {
+                        if (request.status === 200) {
+                            let data = JSON.parse(request.response);
+                            console.log(data);
+                            for (let key in data) {
+                                let nestedObject = data[key];
+                                if (Array.isArray(nestedObject)) {
+                                    nestedObject.forEach((item, index) => {
+                                        addMediaImageBlock('old', item);
+                                    });
+                                } else if (typeof nestedObject === 'object' && nestedObject !== null) {
+                                    for (let nestedKey in nestedObject) {
+                                        // console.log(`Key: ${nestedKey} Value: ${nestedObject[nestedKey]}`);
+                                        if (nestedObject.hasOwnProperty(nestedKey)) {
+                                            let input = $(`input[data-name="${nestedKey}"], textarea[data-name="${nestedKey}"], div[data-name="${nestedKey}"]`);
+                                            if (input) {
+                                                if (input.hasClass('files')) {
+                                                    let img = input.attr('data-image');
+                                                    let $input = $(`#${img}`);
+                                                    if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
+
+                                                        $input.attr('src', nestedObject[nestedKey]);
+                                                        input.val(nestedObject[nestedKey]);
+                                                    }
+                                                } else if (input.hasClass('editors')) {
+                                                    // console.log(`Key: ${key} Value: ${data[key]}`);
+                                                    let $div = $(input);
+                                                    if ($div) {
+                                                        $div.html(nestedObject[nestedKey]);
+                                                        let parent = $div.parent();
+                                                        let find = parent.find('.editor-realise');
+                                                        getFroalaEditor(find[0].getAttribute('id'));
+                                                    }
+                                                } else {
+                                                    if (typeof nestedObject[nestedKey] === 'boolean') {
+                                                        let isActiveEl = $(`input[data-name="${nestedKey}"]`)[0];
+                                                        if (isActiveEl) {
+                                                            isActiveEl.checked = nestedObject[nestedKey];
+                                                        }
+                                                    } else if (nestedKey === 'clientsBlockFiles') {
+                                                        let array = nestedObject[nestedKey];
+                                                        if (Array.isArray(array)) {
+                                                            array.forEach(function (el) {
+                                                                addMediaImageBlock('old', el.id, el.pathToImage);
+                                                            });
+                                                        }
+                                                    } else {
+                                                        input.val(nestedObject[nestedKey]);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                const PathToDefaultImage = contextPath + 'uploads/default/default-image.jpg';
+                let counter = 0;
+
+                function addMediaImageBlock(type, data) {
+                    let counterId = counter.toString();
+
+                    const generateBlock = (lang, data) => {
+                        const idDescriptionBlock = `edit-description-block-${lang}-${counter}`;
+                        let langError = lang === 'uk' ? 'Uk' : 'En';
+                        return `<div class="col-5">
+                <div class="position-relative" id="image-block-${lang}">
+                    <img id="clientsFileImage${counterId}-${lang}" data-name="clientsFileImage${counterId}"
+                         src="${data.pathToImage}"
+                         alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
+                         data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileImage">
+                    <button type="button" data-id="${counterId}" data-name="clientsFileImage${counterId}"
+                            class="btn btn-outline-success btn-select-media"
+                            style="left: 13%;top:25%;position: absolute;width: 35%;">Змінити банер</button>
+                    <button type="button" data-type="image" data-id="${counterId}"
+                            class="btn btn-outline-success btn-delete-media"
+                            style="right: 13%;top:25%;position: absolute;width: 35%;">Видалити</button>
+                    <span class="text-center" style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
+                        png, jpg, jpeg, mp4 до 15 МБ
+                    </span>
+                </div>
+            </div>
+            <div class="col-6 row">
+                <div class="col-1 d-flex align-items-center" id="status-client-category-${lang}">
+                    <label class="switch switch-success">
+                        <input data-id="status-client-${counterId}" data-name="clientsCategoryIsActive" type="checkbox" class="switch-input common-switch"
+                        checked="${data.isActive}">
+                        <span class="switch-toggle-slider">
+                            <span class="switch-on"></span>
+                            <span class="switch-off"></span>
+                        </span>
+                    </label>
+                </div>
+                <div class="col">
+                    <a type="button" data-type="block" data-id="${counterId}" class="btnTrashMyBefore btn-delete-media">
+                        <i class="ti ti-trash" style="font-size: x-large;"></i>
+                    </a>
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="clients-block-title-${lang}-${counterId}" style="font-size: small;font-weight: bold">Заголовок:</label>
+                    <input class="form-control" id="clients-block-title-${lang}-${counterId}" data-name="clientsBlockTitle${lang.toUpperCase()}"
+                           data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryTitle${langError}"
+                           value="${data.title}">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="clients-block-subtitle-${lang}-${counterId}" style="font-size: small;font-weight: bold">Підзаголовок:</label>
+                    <input class="form-control" id="clients-block-subtitle-${lang}-${counterId}" data-name="clientsBlockSubtitle${lang.toUpperCase()}"
+                           data-error="requestClientCategoryForAdd[${counterId}].clientsCategorySubtitle${langError}"
+                           value="${data.subtitle}">
+                </div>
+                <div class="col-12 mb-3 row">
+                    <label for="clientsFileSvg" class="form-label" style="color: black; font-size: large;">Іконка:</label>
+                    <div id="image-svg-block-${lang}">
+                        <img id="clientsFileSvg${counterId}-${lang}" data-name="clientsFileSvg${counterId}"
+                        src="${data.pathToSvg}" data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileSvg"
+                             alt="error" style="width: 100px;height: 60px;">
+                        <div class="row gap-3" style="margin: 3px;">
+                            <button type="button" data-name="clientsFileSvg${counterId}" class="btn btn-outline-success btn-select-media" style="width: 60%;">Змінити</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="${idDescriptionBlock}" style="font-size: small;font-weight: bold">Опис:</label>
+                    <div id="${idDescriptionBlock}" class="editor-realise" data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryDescription${langError}"
+                         style="min-height: 100px; border: 1px solid #ccc;"></div>
+                    <label class="form-label" style="color: #AAAAAA;">Максимум: 3500 символів</label>
+                    <div type="hidden" id="hidden-${idDescriptionBlock}" data-name="clientsBlockDescription${lang.toUpperCase()}"
+                         style="display: none;" class="editors"></div>
+                </div>
+            </div>`;
+                    }
+
+                    const addBlockToContainer = (lang, data) => {
+                        const container = document.getElementById(`container-clients-block-images-${lang}`);
+                        const addButtonContainer = document.getElementById(`add-button-container-${lang}`);
+                        const newBlock = document.createElement('div');
+                        newBlock.className = 'row';
+                        newBlock.dataset.id = counterId;
+                        newBlock.dataset.type = type;
+                        newBlock.innerHTML = generateBlock(lang, data);
+                        container.insertBefore(newBlock, addButtonContainer);
+                        getFroalaEditor(`edit-description-block-${lang}-${counter}`);
+                    }
+
+                    let dataUk = {
+                        title: data !== undefined ? data.clientCategoryTitleUk : '',
+                        subtitle: data !== undefined ? data.clientCategorySubtitleUk : '',
+                        description: data !== undefined ? data.clientCategoryDescriptionUk : '',
+                        isActive: data !== undefined ? data.clientCategoryIsActive : false,
+                        pathToImage: data !== undefined ? data.clientCategoryPathToImage : PathToDefaultImage,
+                        pathToSvg: data !== undefined ? data.clientCategoryPathToSvg : PathToDefaultImage
+                    };
+                    let dataEn = {
+                        title: data !== undefined ? data.clientCategoryTitleEn : '',
+                        subtitle: data !== undefined ? data.clientCategorySubtitleEn : '',
+                        description: data !== undefined ? data.clientCategoryDescriptionEn : '',
+                        isActive: data !== undefined ? data.clientCategoryIsActive : false,
+                        pathToImage: data !== undefined ? data.clientCategoryPathToImage : PathToDefaultImage,
+                        pathToSvg: data !== undefined ? data.clientCategoryPathToSvg : PathToDefaultImage
+                    };
+                    addBlockToContainer('uk', dataUk);
+                    addBlockToContainer('en', dataEn);
+
+                    const inputsContainer = document.getElementById('container-inputs');
+                    if (data) {
+                        inputsContainer.innerHTML += `
+                        <input type="text" id="id-${counterId}" value="${data.clientCategoryId}" style="display: none;">
+                        `;
+                    }
+                    inputsContainer.innerHTML += `
+        <input type="file" id="file-clientsFileImage${counterId}" data-type="clientsFileImage${counterId}" class="files-media"
+               accept="image/*" style="display: none;" data-error="file">
+        <input type="hidden" data-name="pathToImage${counterId}" data-pathValue="clientsFileImage${counterId}"
+               class="files-media" data-error="pathToMediaFile" value="${data !== undefined ? data.clientCategoryPathToImage : ''}">
+        <input type="file" id="file-clientsFileSvg${counterId}" data-type="clientsFileSvg${counterId}" class="files-media"
+               accept="image/*" style="display: none;" data-error="file">
+        <input type="hidden" data-name="pathToSvg${counterId}" data-pathValue="clientsFileSvg${counterId}"
+               class="files-media" data-error="pathToMediaFileSvg" value="${data !== undefined ? data.clientCategoryPathToSvg : ''}">`;
+                    counter++;
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<!--/ Content -->
+</body>
+</html>

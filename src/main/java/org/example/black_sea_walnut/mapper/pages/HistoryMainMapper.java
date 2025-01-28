@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.mapper;
+package org.example.black_sea_walnut.mapper.pages;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaResponseForAdd;
@@ -8,6 +8,7 @@ import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.HistoryMediaMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

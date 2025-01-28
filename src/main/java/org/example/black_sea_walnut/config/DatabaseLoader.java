@@ -83,7 +83,7 @@ public class DatabaseLoader implements CommandLineRunner {
             historyService.save(historyEcoProduction);
 
             History catalogBanner = new History(null, false, PageType.catalog_banner, null, null, null);
-            historyMain.setBanner(new Banner(null, null, null, catalogBanner));
+            catalogBanner.setBanner(new Banner(null, null, null, catalogBanner));
             History catalogEcologically = new History(null, false, PageType.catalog_ecologically_pure_walnut, null, null, null);
             historyService.save(catalogBanner);
             historyService.save(catalogEcologically);
@@ -93,6 +93,13 @@ public class DatabaseLoader implements CommandLineRunner {
             History catalogBlock = new History(null, false, PageType.factory_block2, null, null, null);
             historyService.save(factoryBanner);
             historyService.save(catalogBlock);
+
+            History clientBanner = new History(null, false, PageType.clients_banner, null, null, null);
+            clientBanner.setBanner(new Banner(null, null, null, clientBanner));
+            History clientEcoProduction = new History(null, false, PageType.clients_eco_production, null, null, null);
+            clientEcoProduction.setBanner(new Banner(null, null, null, clientEcoProduction));
+            historyService.save(clientBanner);
+            historyService.save(clientEcoProduction);
         }
     }
 }

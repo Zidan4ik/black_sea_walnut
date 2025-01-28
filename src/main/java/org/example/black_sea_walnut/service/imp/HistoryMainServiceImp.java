@@ -1,6 +1,5 @@
 package org.example.black_sea_walnut.service.imp;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaRequestForAdd;
@@ -10,7 +9,7 @@ import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.enums.PageType;
-import org.example.black_sea_walnut.mapper.HistoryMainMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.repository.HistoryRepository;
 import org.example.black_sea_walnut.service.HistoryMainService;
 import org.example.black_sea_walnut.service.HistoryService;

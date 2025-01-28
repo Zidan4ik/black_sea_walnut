@@ -10,7 +10,7 @@ import org.example.black_sea_walnut.dto.pages.factory.response.BlockResponseForA
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.enums.PageType;
-import org.example.black_sea_walnut.mapper.HistoryFactoryMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
 import org.example.black_sea_walnut.service.HistoryFactoryService;
 import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;

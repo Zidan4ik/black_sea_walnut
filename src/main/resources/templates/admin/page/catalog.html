@@ -138,7 +138,7 @@
                 <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
                 <div class="row mt-2">
                     <div class="col-12 row">
-                        <div class="col-7 text-end">
+                        <div class="col-6 text-end">
                             <h4>Ecologically pure walnut</h4>
                         </div>
                         <div class="col-4" id="status-ecologically-block-en"></div>
@@ -340,7 +340,7 @@
                         $("#file-" + attribute).click();
                     });
                     $('#container-inputs').on('change', '.files', function (event) {
-                        console.log(1);
+                        // console.log(1);
                         let attribute = $(this).data('type');
                         console.log(attribute);
                         const file = event.target.files[0];
@@ -351,12 +351,9 @@
                         $(`input[data-image="${attribute}"]`).val('');
                     });
                     $(container).on('click', '.btn-delete', function () {
-                        console.log($(this)[0])
                         let value = $(this).data('type');
                         $(`#file-${value}`).remove();
                         $(`input[data-image="${value}"]`).remove();
-                        // console.log($file[0]);
-                        // console.log($pathToImage[0]);
                         $(this).parent().parent().remove();
                     });
 
@@ -458,14 +455,11 @@
                                                         input.val(nestedObject[nestedKey]);
                                                     }
                                                 } else if (input.hasClass('editors')) {
-                                                    // console.log(`Key: ${key} Value: ${data[key]}`);
                                                     let $div = $(input);
-                                                    // console.log($div[0]);
                                                     if ($div) {
                                                         $div.html(nestedObject[nestedKey]);
                                                         let parent = $div.parent();
                                                         let find = parent.find('.editor-realise');
-                                                        // console.log(find[0]);
                                                         getFroalaEditor(find[0].getAttribute('id'));
                                                     }
                                                 } else {
@@ -475,11 +469,9 @@
                                                             isActiveEl.checked = nestedObject[nestedKey];
                                                         }
                                                     } else if (nestedKey === 'catalogEcologicallyFiles') {
-                                                        console.log(nestedObject[nestedKey]);
                                                         let array = nestedObject[nestedKey];
                                                         if (Array.isArray(array)) {
                                                             array.forEach(function (el) {
-                                                                console.log(el);
                                                                 addMediaImageBlock('old', el.id, el.pathToImage);
                                                             });
                                                         }

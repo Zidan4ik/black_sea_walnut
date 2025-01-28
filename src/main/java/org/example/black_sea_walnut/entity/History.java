@@ -23,6 +23,7 @@ public class History {
     private Long id;
     private boolean isActive;
     @Column(unique = true)
+    @Enumerated(EnumType.STRING)
     private PageType pageType;
     @OneToOne(mappedBy = "history", cascade = CascadeType.ALL)
     public Banner banner;

@@ -1,15 +1,15 @@
-package org.example.black_sea_walnut.mapper;
+package org.example.black_sea_walnut.mapper.pages;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.pages.catalog.request.BannerBlockRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.request.EcologicallyBlockRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.BannerBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.EcologicallyBlockResponseForAdd;
-import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.HistoryMediaMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

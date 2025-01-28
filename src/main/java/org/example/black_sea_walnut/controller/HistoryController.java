@@ -6,6 +6,11 @@ import org.example.black_sea_walnut.dto.pages.catalog.PageCatalogRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.PageCatalogResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.BannerBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.EcologicallyBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.clients.PageClientResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.clients.PageClientsRequestForAdd;
+import org.example.black_sea_walnut.dto.pages.clients.response.ClientBannerResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.clients.response.ClientCategoryResponseForAdd;
+import org.example.black_sea_walnut.dto.pages.clients.response.ClientEcoProductionResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.factory.PageFactoryRequestForAdd;
 import org.example.black_sea_walnut.dto.pages.factory.PageFactoryResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.factory.response.BlockResponseForAdd;
@@ -15,6 +20,7 @@ import org.example.black_sea_walnut.dto.pages.main.PageMainResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.main.response.*;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.service.HistoryCatalogService;
+import org.example.black_sea_walnut.service.HistoryClientService;
 import org.example.black_sea_walnut.service.HistoryFactoryService;
 import org.example.black_sea_walnut.service.HistoryMainService;
 import org.springframework.http.HttpStatus;
@@ -22,12 +28,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -37,6 +42,7 @@ public class HistoryController {
     private final HistoryMainService historyMainService;
     private final HistoryCatalogService catalogService;
     private final HistoryFactoryService factoryService;
+    private final HistoryClientService clientService;
 
     @GetMapping("/pages")
     public ModelAndView viewPages() {
@@ -85,6 +91,7 @@ public class HistoryController {
     public ModelAndView viewCatalogPage() {
         return new ModelAndView("admin/page/catalog");
     }
+
     @GetMapping("/page/catalog/data")
     public ResponseEntity<PageCatalogResponseForAdd> getDataForPageCatalog() {
         BannerBlockResponseForAdd bannerResponse = catalogService.getByPageTypeInResponseBannerBlock(PageType.catalog_banner);
@@ -114,6 +121,7 @@ public class HistoryController {
     public ModelAndView viewFactoryPage() {
         return new ModelAndView("admin/page/factory");
     }
+
     @GetMapping("/page/factory/data")
     public ResponseEntity<PageFactoryResponseForAdd> getDataForPageFactory() {
         FactoryBannerBlockResponseForAdd bannerResponse = factoryService.getByPageTypeInResponseBannerBlock(PageType.factory_banner);
@@ -136,6 +144,44 @@ public class HistoryController {
         }
         factoryService.saveHistoryBannerBlock(dto.getRequestFactoryBannerForAdd());
         factoryService.saveHistoryBlock(dto.getRequestFactoryBlockForAdd());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/page/clients")
+    public ModelAndView viewClientsPage() {
+        return new ModelAndView("admin/page/clients");
+    }
+
+    @GetMapping("/page/clients/data")
+    public ResponseEntity<PageClientResponseForAdd> getDataForPageClients() {
+        ClientBannerResponseForAdd banner = clientService.getByPageTypeInResponseBannerBlock(PageType.clients_banner);
+        ClientEcoProductionResponseForAdd ecoProduction = clientService.getByPageTypeInResponseEcoProductionBlock(PageType.clients_eco_production);
+        List<ClientCategoryResponseForAdd> categories = clientService.getAllInResponseCategoryBlock();
+        PageClientResponseForAdd dto = PageClientResponseForAdd.builder().responseClientBannerForAdd(banner).responseClientCategoryForAdd(categories).responseClientEcoProductionForAdd(ecoProduction).build();
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping("/page/clients/save")
+    public ResponseEntity<?> savePageClients(@Valid PageClientsRequestForAdd dto,
+                                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+            return ResponseEntity
+                    .status(HttpStatus.valueOf(400))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errors);
+        }
+        clientService.saveHistoryBannerBlock(dto.getRequestClientBannerForAdd());
+        clientService.saveHistoryCategoryBlock(dto.getRequestClientCategoryForAdd());
+        clientService.saveHistoryEcoProductionBlock(dto.getRequestClientEcoProductionForAdd());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/client/{id}/delete")
+    public ResponseEntity<?> deleteClient(@PathVariable Long id) {
+        clientService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -19,6 +19,7 @@ public class Banner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String pathToMedia;
+    @Enumerated(EnumType.STRING)
     private MediaType mediaType;
     @OneToOne
     @JoinColumn(name = "history_id")
