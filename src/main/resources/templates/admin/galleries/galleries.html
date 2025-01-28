@@ -62,7 +62,8 @@
                 $("#file-" + attribute).val('');
                 let element = $(this).closest('.row')[0];
                 $(`input[data-name="pathToImage${element.getAttribute('data-id')}"]`).val('');
-                handleInputChange(element);
+                let block = $(this).parent().parent().parent();
+                validate(block,block.attr('data-id'))
             });
 
             $(container).on('change', '.files', function (event) {
@@ -114,7 +115,6 @@
     </script>
     <script>
         let timeOutId;
-
         function handleInputChange(element) {
             clearTimeout(timeOutId);
             timeOutId = setTimeout(() => {
@@ -141,18 +141,67 @@
                 resForm.append('pathToMediaFile', pathEl[1].value);
 
                 sendRequestSave(resForm, element);
-                // if(!attrType && attrType !== 'new') console.log(`ID: ${attrId}`);
-                // console.log('Заголовок:', titleEl.val());
-                // console.log('Заголовок:', titleEl.val());
-                // console.log('Опис:', descriptionEl.val());
-                // console.log('Статус:', statusEl.is(':checked'));
-                // console.log('PathToImage:', pathEl[1].value);
-            }, 1500);
+            }, 3000);
         }
 
         $('#container-gallery').on('input', '.row', function () {
-            handleInputChange(this);
+            let idBlock = $(this).data('id');
+            validate($(this), idBlock);
         });
+
+        function validate(rowElement, idBlock){
+            let title = rowElement.find(`input[data-error="title"]`);
+            let description = rowElement.find(`textarea[data-error="description"]`);
+
+            let imageBlock = rowElement.find(`#image${idBlock}`).parent();
+            let fileInput = rowElement.find(`#file-image${idBlock}`)[0];
+            console.log(idBlock);
+            const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+            const isTitleFilled = title.val() !== '';
+            const isDescriptionFilled = description.val() !== '';
+
+            if (!isTitleFilled) {
+                showError(title, 'The title should not be empty!');
+            } else {
+                removeError(title);
+            }
+
+            if (!isDescriptionFilled) {
+                showError(description, 'The description should not be empty!');
+            } else if (description.val().length > 600) {
+                showError(description, 'The description does not should be more than 600 characters');
+            } else {
+                removeError(description);
+            }
+
+            let file = fileInput.files[0];
+            if (file !== undefined && !validImageTypes.includes(file.type)) {
+                imageBlock.append(`
+            <div class="error-message text-danger">
+                File should be extensions like JPEG or PNG
+            </div>`);
+            } else {
+                imageBlock.next('.error-message').remove();
+            }
+
+            if (isTitleFilled && isDescriptionFilled) {
+                handleInputChange(this);
+            }
+        }
+
+
+        function showError(element, message) {
+            element.addClass('is-invalid');
+            if (element.next('.error-message').length === 0) {
+                element.after(`<div class="error-message text-danger">${message}</div>`);
+            }
+        }
+
+        function removeError(element) {
+            element.removeClass('is-invalid');
+            element.next('.error-message').remove();
+        }
 
         function sendRequestSave(formData, el) {
             $.ajax({
