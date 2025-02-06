@@ -12,10 +12,10 @@ public class HistoryRequestPricesForProduct {
     private Long id;
     @Setter
     private Long productId;
-    @NumberNullValidation
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long newPrice;
-    @NumberNullValidation
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long oldPrice;
 }

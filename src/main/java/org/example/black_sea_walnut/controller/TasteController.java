@@ -51,4 +51,10 @@ public class TasteController {
         Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(languageCode));
         return new ResponseEntity<>(tastes, HttpStatus.OK);
     }
+
+    @DeleteMapping("/taste/{id}/delete")
+    public ResponseEntity<String> deleteTasteById(@PathVariable Long id) {
+        tasteService.deleteByCommonId(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

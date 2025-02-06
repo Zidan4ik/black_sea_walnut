@@ -22,6 +22,6 @@ public class GalleryRequestForAdd {
     private String pathToMediaFile;
     @Setter
     private MediaType mediaType;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile file;
 }

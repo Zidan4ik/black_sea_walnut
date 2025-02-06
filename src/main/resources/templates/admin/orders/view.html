@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Black sea walnut</title>
+    <title th:text="#{text.order}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
@@ -30,86 +30,88 @@
                                                  style="color: green;font-size: 30px;"></i></a>
             </div>
             <div class="col-auto text-start d-flex align-items-center">
-                <span class="title-out" style="color: darkgrey;">Orders
+                <span class="title-out" style="color: darkgrey;" th:text="#{text.orders}">
                 <i class="ti ti-arrow-right" style="font-size: small"></i>
-                    Order<span th:text="' № '+${id}"></span>
+                    <span th:text="#{text.order}' № '+${id}"></span>
                 </span>
             </div>
             <div class="mt-5">
-                <h3>Order <span th:text="' № '+${id}"></span></h3>
+                <h3><span th:text="#{text.order}+' № '+${id}"></span></h3>
                 <div class="table-responsive" style="width: 75%">
                     <table class="table table-bordered table-hover table-striped linkedRow"
                            style="table-layout: fixed; position: static; zoom: 1;">
                         <thead>
                         <tr>
-                            <th style="width: 200px">Product</th>
-                            <th style="width: 200px">Count</th>
-                            <th style="width: 137px">Price</th>
-                            <th style="width: 137px">Total count</th>
-                            <th style="width: 137px">Summa</th>
+                            <th style="width: 200px" th:text="#{table.header.product}"></th>
+                            <th style="width: 200px" th:text="#{table.header.count}"></th>
+                            <th style="width: 137px" th:text="#{table.header.price}"></th>
+                            <th style="width: 137px" th:text="#{table.header.totalCount}"></th>
+                            <th style="width: 137px" th:text="#{table.header.summa}"></th>
                         </tr>
                         </thead>
                         <tbody id="table-data-container_"></tbody>
                     </table>
-                    <span class="d-flex justify-content-end" id="total-summa_"></span>
+                    <div class="d-flex justify-content-end">
+                        <span th:text="#{table.header.totalPrice}+': '"></span><span id="total-summa_"></span>
+                    </div>
                 </div>
                 <div class="mt-4 pb-4 row" style="border-bottom: 1px solid black;">
                     <div class="col-12">
-                        <label class="form-label boldMy">Information about customer:</label>
+                        <label class="form-label boldMy" th:text="#{text.informationAboutCustomer}+':'"></label>
                         <input id="isFop_" class="form-control" value="" style="width: 23%;">
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">FIO:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.fio}+':'"></label>
                         <input id="fio_" class="form-control" value="">
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">Phone:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.phone}+':'"></label>
                         <input id="phone_" class="form-control" value="">
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">Email:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.email}+':'"></label>
                         <input id="email_" class="form-control" value="">
                     </div>
                 </div>
                 <div class="mt-2 pb-4 row" style="border-bottom: 1px solid black;">
                     <div class="col-3">
-                        <label class="form-label boldMy">Date of ordering:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.dateOfOrdering}+':'"></label>
                         <br>
                         <span id="dateOfOrdering_"></span>
                     </div>
                 </div>
                 <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
                     <div class="col-3">
-                        <label class="form-label boldMy">Type of delivery:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.typeOfDelivery}+':'"></label>
                         <input id="deliveryStatus_" class="form-control" value="" disabled>
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">Type of payment:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.typeOfPayment}+':'"></label>
                         <input id="paymentType_" class="form-control" value="" disabled>
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">Status of payment:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.statusPayment}+':'"></label>
                         <input id="orderStatus_" class="form-control" value="" disabled>
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">Status:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.status}+':'"></label>
                         <input id="isPayed_" class="form-control" value="" disabled>
                     </div>
                 </div>
                 <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
                     <div class="col-3">
-                        <label class="form-label boldMy">City:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.city}+':'"></label>
                         <input id="city_" class="form-control" value="" disabled>
                     </div>
                     <div class="col-3">
-                        <label class="form-label boldMy">Address:</label>
+                        <label class="form-label boldMy" th:text="#{table.header.address}+':'"></label>
                         <input id="addressDelivery_" class="form-control" value="" disabled>
                     </div>
                 </div>
                 <div class="mt-2 d-flex justify-content-center">
                     <a th:href="@{/admin/orders}" class="btn btn-success"
                        style="background: #334a2e !important;
-                       border-color: #334a2e !important">Back to list of orders</a>
+                       border-color: #334a2e !important" th:text="#{text.backToListOfOrders}"></a>
                 </div>
             </div>
         </div>
@@ -117,9 +119,9 @@
         <input id="id_" type="hidden" th:value="${id}">
         <script th:src="@{/js/pagination.js}"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                console.log(window.location.pathname);
+            $(document).ready(function () {
                 getData($('#id_').val());
+                selectedLanguage();
             });
 
             function getData(id) {
@@ -134,7 +136,8 @@
                         count += item.totalSumma = item.price * item.count;
                     });
                     loadTable(data.orderDetails);
-                    document.getElementById('total-summa_').textContent = 'Total price: ' + count;
+                    console.log(count);
+                    document.getElementById('total-summa_').textContent = count;
 
                     for (const key in data) {
                         if (data.hasOwnProperty(key)) {
@@ -144,7 +147,7 @@
                                     if (key === 'isPayed') {
                                         elementById.value = data[key] ? 'Payed' : 'Un payed';
                                         continue;
-                                    } else if (key === 'isFop'){
+                                    } else if (key === 'isFop') {
                                         elementById.value = data[key] ? 'Individual entrepreneur' : 'Legal entity';
                                         continue;
                                     }

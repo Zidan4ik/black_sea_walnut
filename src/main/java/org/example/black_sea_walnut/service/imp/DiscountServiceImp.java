@@ -6,12 +6,12 @@ import org.example.black_sea_walnut.dto.discount.DiscountRequestForAdd;
 import org.example.black_sea_walnut.dto.discount.DiscountResponseForAdd;
 import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.entity.Discount;
-import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.DiscountMapper;
 import org.example.black_sea_walnut.repository.DiscountRepository;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -42,13 +42,18 @@ public class DiscountServiceImp implements DiscountService {
     }
 
     @Override
-    public Set<Discount> getAllByDiscountId(Long id) {
-        return discountRepository.getAllByDiscountId(id);
+    public Set<Discount> getAllByDiscountCommonId(Long id) {
+        return discountRepository.getAllByDiscountCommonId(id);
     }
 
     @Override
-    public boolean isExistByDiscountId(Long discountId) {
-        return discountRepository.existsByDiscountId(discountId);
+    public boolean isExistByDiscountCommonId(Long discountId) {
+        return discountRepository.existsByDiscountCommonId(discountId);
+    }
+
+    @Override
+    public boolean isExistById(Long id) {
+        return discountRepository.existsById(id);
     }
 
     @Override
@@ -59,7 +64,12 @@ public class DiscountServiceImp implements DiscountService {
 
     @Override
     public DiscountResponseForAdd getByIdInResponseForAdd(Long id) {
-        return mapper.toResponseForAdd(discountRepository.getAllByDiscountId(id));
+        return mapper.toResponseForAdd(discountRepository.getAllByDiscountCommonId(id));
+    }
+
+    @Override
+    public DiscountResponseForAdd getByIdAndLanguageInResponseForAdd(Long id, LanguageCode code) {
+        return mapper.toResponseForAdd(discountRepository.getAllByDiscountCommonIdAndLanguageCode(id, code));
     }
 
     @Override
@@ -70,8 +80,14 @@ public class DiscountServiceImp implements DiscountService {
     @Override
     public void save(DiscountRequestForAdd dto) {
         List<Discount> list = mapper.toEntityFromRequest(dto);
-        for (Discount t: list){
+        for (Discount t : list) {
             save(t);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteCommonById(Long id) {
+        discountRepository.deleteAllByDiscountCommonId(id);
     }
 }

@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.ResponseNewForAdd;
-import org.example.black_sea_walnut.dto.ResponseNewForView;
+import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -26,12 +26,12 @@ public class NewMapper {
                 .build();
     }
 
-    public ResponseNewForAdd toDtoAdd(New entity) {
-        ResponseNewForAdd builder = ResponseNewForAdd.builder()
+    public NewRequestForAdd toDtoAdd(New entity) {
+        NewRequestForAdd builder = NewRequestForAdd.builder()
                 .id(entity.getId())
                 .isActive(entity.isActive())
                 .mediaType(entity.getMediaType())
-                .pathToImage(entity.getPathToMedia())
+                .pathToImage(entity.getPathToMedia()!=null?entity.getPathToMedia():"")
                 .dateOfPublication(DateUtil.toFormatDateFromDB(entity.getDateOfPublication(),"dd.MM.yyyy"))
                 .build();
 
@@ -51,7 +51,7 @@ public class NewMapper {
         return builder;
     }
 
-    public New toEntity(ResponseNewForAdd dto) {
+    public New toEntity(NewRequestForAdd dto) {
         New new_ = new New();
         new_.setId(dto.getId());
         new_.setActive(dto.isActive());

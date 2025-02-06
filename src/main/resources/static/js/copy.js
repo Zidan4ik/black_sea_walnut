@@ -36,7 +36,9 @@ function copyHTMLBlockSave(fromElementId, toElementId) {
     $(`#${toElementId}`).html($(`#${fromElementId}`).html());
     document.getElementById('btn-save_').addEventListener('click', function () {
         console.log('button save was clicked!')
-        saveRequest(url);
+        if(url){
+            saveRequest(url);
+        }
     });
     clearBlock(fromElementId);
 }

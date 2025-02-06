@@ -20,37 +20,43 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String firstName;
-    private String middleName;
-    private String lastName;
+    private String fullName;
     private String email;
     private String phone;
-    private String address;
     private String password;
     private String pathToImage;
-    private String okpo;
-    private String addressLawful;
+    private String paymentDetails;
     private LocalDate dateRegistered;
+    @Enumerated(EnumType.STRING)
     private RegisterType registerType;
-    private Boolean isFop;
+    private boolean isFop;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+    @Enumerated(EnumType.STRING)
     private Role role;
     private int department;
+    private String address;
+    private String addressAdditional;
+    private String indexAdditional;
     @ManyToOne
     private Manager manager;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Order> orders;
     @OneToOne
     private Basket basket;
     @ManyToOne
+    @Enumerated(EnumType.STRING)
     private Country country;
     @ManyToOne
+    @Enumerated(EnumType.STRING)
     private Region region;
     @ManyToOne
+    @Enumerated(EnumType.STRING)
     private City city;
     @ManyToOne
-    private Country countryLawful;
+    @Enumerated(EnumType.STRING)
+    private Region regionAdditional;
     @ManyToOne
-    private Region regionLawful;
-    @ManyToOne
-    private City cityLawful;
+    @Enumerated(EnumType.STRING)
+    private City cityAdditional;
 }

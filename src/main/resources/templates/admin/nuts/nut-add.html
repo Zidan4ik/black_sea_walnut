@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Add new nut</title>
+    <title th:text="#{text.addNewNut}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
@@ -25,9 +25,9 @@
                         <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
                     </a>
                 </div>
-                <div class="col-auto" style="padding-right: 5px;">Таблиця з горіхами</div>
+                <div class="col-auto" style="padding-right: 5px;" th:text="#{text.table.nuts}"></div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;">Добавлення горіха</div>
+                <div class="col-auto" style="padding-left: 5px;" th:text="#{text.addNut}"></div>
             </div>
         </div>
         <!--/ Header content -->
@@ -160,12 +160,12 @@
                          alt="error" style="width: 150px;height: 100px;">
                     <div class="row gap-3" style="margin: 3px;">
                         <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-select"
-                                style="width: 25%;">
-                            Змінити
+                                style="width: 25%;"
+                        th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-delete"
-                                style="width: 25%;">
-                            Видалити
+                                style="width: 25%;"
+                        th:text="#{text.button.delete}">
                         </button>
                     </div>
                 </div>
@@ -179,12 +179,12 @@
                              alt="error"
                              style="width: 100%; height: 255px; display: block; margin: 0 auto;">
                         <button type="button" data-type="fileImage" class="btn btn-success btn-image btn-select"
-                                style="left: 13%;">
-                            Редагувати
+                                style="left: 13%;"
+                        th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="fileImage" class="btn btn-success btn-image btn-delete"
-                                style="right: 13%;">
-                            Видалити
+                                style="right: 13%;"
+                        th:text="#{text.button.delete}">
                         </button>
                     </div>
                 </div>
@@ -192,7 +192,8 @@
 
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
-                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
+                    th:text="#{text.button.save}"></button>
                 </div>
                 <!--/ Button save Base -->
 
@@ -264,6 +265,7 @@
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
                         copyHTMLBlockSwitch('shared-switch', `switch-block-${activeLang}`);
+                        selectedLanguage();
                     });
                     const url = `${contextPath}admin/nut/save`;
 

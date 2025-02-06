@@ -26,6 +26,6 @@ public class EcoProductionRequestForAdd {
     private String mainEcoProductionDescriptionEn;
     @Setter
     private String mainEcoProductionPathToBanner;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile mainEcoProductionFileBanner;
 }

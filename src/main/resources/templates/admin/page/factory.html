@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="гл"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Main Page</title>
+    <title th:text="#{text.factory} + '' +#{text.page}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
@@ -25,9 +25,9 @@
                         <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
                     </a>
                 </div>
-                <div class="col-auto" style="padding-right: 5px;">Сторінка</div>
+                <div class="col-auto" style="padding-right: 5px;" th:text="#{text.page}"></div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;">Про виробництво</div>
+                <div class="col-auto" style="padding-left: 5px;" th:text="#{text.about} + ' '+#{text.factory}"></div>
             </div>
         </div>
         <!--/ Header content -->
@@ -100,11 +100,12 @@
                         <div class="col-3" id="add-button-container"
                              style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <div class="d-flex justify-content-center">
-                                <button class="btn btn-outline-success" id="btn-add-media-block">Добавити медіа</button>
+                                <button class="btn btn-outline-success" id="btn-add-media-block"
+                                th:text="#{text.button.addMedia}"></button>
                             </div>
                             <span class="text-center"
-                                  style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
-                                    Png, jpg, jpeg, mp4, avi до 10МБ
+                                  style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
+                            th:text="#{text.mediaSize10}">
                                 </span>
                         </div>
                     </div>
@@ -239,17 +240,17 @@
                          data-error="requestFactoryBannerForAdd.factoryBannerFile">
                     <button type="button" data-type="factoryBannerFile"
                             class="btn btn-outline-success btn-select"
-                            style="left: 13%;top:25%;position: absolute;width: 35%;">
-                        Змінити банер
+                            style="left: 13%;top:25%;position: absolute;width: 35%;"
+                    th:text="#{text.button.change}">
                     </button>
                     <button type="button" data-type="factoryBannerFile"
                             class="btn btn-outline-success btn-delete"
-                            style="right: 13%;top:25%;position: absolute;width: 35%;">
-                        Видалити
+                            style="right: 13%;top:25%;position: absolute;width: 35%;"
+                            th:text="#{text.button.delete}">
                     </button>
                     <span class="text-center"
-                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
-                    png, jpg, jpeg, mp4 до 15 МБ</span>
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
+                          th:text="#{text.mediaSize15}"></span>
                 </div>
 
 
@@ -258,14 +259,10 @@
 
             <!-- Button save Base -->
             <div id="shared-save" style="display: none;">
-                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
+                th:text="#{text.button.save}"></button>
             </div>
             <!--/ Button save Base -->
-
-            <!--            &lt;!&ndash; Images Base &ndash;&gt;-->
-            <!--            <div id="container-catalog-ecologically-images"></div>-->
-            <!--            &lt;!&ndash;/ Images Base &ndash;&gt;-->
-
 
             <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
             <script th:src="@{/js/image.js}"></script>
@@ -347,6 +344,7 @@
                     copyHTMLBlockSwitch('shared-status-factory-block', `status-block-${activeLang}`);
                     requestGetData();
                     addEventListenerForMediaFiles(activeLang);
+                    selectedLanguage();
                 });
 
                 const urlCatalogBlock = `${contextPath}admin/page/factory/save`;

@@ -15,21 +15,21 @@ public class TasteMapper {
     public TasteResponseForView toDTOForView(Taste entity) {
         return TasteResponseForView
                 .builder()
-                .id(entity.getTasteId())
+                .id(entity.getCommonId())
                 .name(entity.getName())
                 .build();
     }
 
     public List<Taste> toEntityFromRequest(TasteRequestForAdd dto) {
         Taste tasteUk = new Taste();
-        tasteUk.setId(dto.getId());
-        tasteUk.setTasteId(dto.getTasteId());
+        tasteUk.setId(dto.getTasteIdUk());
+        tasteUk.setCommonId(dto.getCommonId());
         tasteUk.setLanguageCode(LanguageCode.uk);
         tasteUk.setName(dto.getNameUk());
 
         Taste tasteEn = new Taste();
-        tasteEn.setId(dto.getId());
-        tasteEn.setTasteId(dto.getTasteId());
+        tasteEn.setId(dto.getTasteIdEn());
+        tasteEn.setCommonId(dto.getCommonId());
         tasteEn.setLanguageCode(LanguageCode.en);
         tasteEn.setName(dto.getNameEn());
         return List.of(tasteUk, tasteEn);
@@ -41,8 +41,9 @@ public class TasteMapper {
         if (tasteUk != null && tasteEn != null) {
             return TasteResponseForAdd
                     .builder()
-                    .id(tasteUk.getId())
-                    .tasteId(tasteUk.getTasteId())
+                    .tasteIdUk(tasteUk.getId())
+                    .tasteIdEn(tasteEn.getId())
+                    .commonId(tasteUk.getCommonId())
                     .tasteNameUk(tasteUk.getName())
                     .tasteNameEn(tasteEn.getName())
                     .build();

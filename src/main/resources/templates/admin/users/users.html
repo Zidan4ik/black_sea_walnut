@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="#{text.users}"></title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <h4 class="text-center fw-bold" th:text="#{text.table.users}"></h4>
+        <div class="card" id="card-block" style="width: 1220px;">
+            <h5 class="card-header" th:text="#{text.users}"></h5>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span th:text="#{text.show}"></span>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-size-for-pagination_"
+                                        name="size">
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5" selected>5</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select> <span th:text="#{text.entries}"></span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table class="table table-bordered table-hover linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;"
+                           id="table-data-container_">
+                        <thead>
+                        <tr>
+                            <th style="width: 100px">ID</th>
+                            <th style="width: 200px" th:text="#{table.header.fio}"></th>
+                            <th style="width: 200px" th:text="#{table.header.email}"></th>
+                            <th style="width: 200px" th:text="#{table.header.dateOfRegistry}"></th>
+                            <th style="width: 200px" th:text="#{table.header.categories}"></th>
+                            <th style="width: 200px" th:text="#{table.header.amountOrders}"></th>
+                            <th style="width: 200px" th:text="#{table.header.status}"></th>
+                            <th style="width: 200px" th:text="#{table.header.phone}"></th>
+                            <th style="width: 200px" th:text="#{table.header.functions}"></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="id"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="fio"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="email"/>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-merge">
+                                    <input type="text"
+                                           class="form-control input-card-block-spinner"
+                                           id="date_"
+                                           placeholder="dd.mm.yyyy"
+                                           name="dateOfRegistration"
+                                           autocomplete="off"/>
+                                    <span class="input-group-text">
+                                        <i class="ti ti-calendar"></i>
+                                    </span>
+                                </div>
+                            </th>
+                            <th>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-type-registry_"
+                                        name="registrationType">
+                                    <option value="" selected th:text="#{value.status.all}"></option>
+                                    <option value="legal" th:text="#{value.registration-type.legal}"></option>
+                                    <option value="individual" th:text="#{value.registration-type.individual}"></option>
+                                    <option value="fop" th:text="#{value.registration-type.fop}"></option>
+                                </select>
+                            </th>
+                            <th></th>
+                            <th>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-status-user_"
+                                        name="userStatus">
+                                    <option value="" selected th:text="#{value.status.all}"></option>
+                                    <option value="isActive" th:text="#{value.status.active}"></option>
+                                    <option value="isDeleted" th:text="#{value.status.deleted}"></option>
+                                </select>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="phone"/>
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table-pagination-container_"></div>
+                <input type="hidden" name="languageCode" value="en" id="languageCode_">
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/table.js}"></script>
+    <script>
+        const inputs = ['id', 'fio', 'email', 'dateOfRegistration', 'registrationType', 'userStatus', 'phone'];
+        let pathToTable = `${contextPath}admin/users/table/load`;
+        let pathToPagination = `${contextPath}admin/users/pagination/load`;
+        let timeoutId;
+
+        $(document).on('click', '.edit-icon', function () {
+            let id = $(this).data('id');
+            window.location.pathname = contextPath + `admin/user/${id}/edit`;
+        });
+
+        $(document).on('click', '.delete-icon', function () {
+            let id = $(this).data('id');
+            $('#modal-btnDelete_').attr('data-id', id);
+            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
+            modal.show();
+        });
+
+        function requestDelete(id) {
+            let request = new XMLHttpRequest();
+            request.open('DELETE', `${contextPath}admin/user/${id}/delete`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    invokeRequest(inputs, 0);
+                    $('#ModalForDelete').modal('hide');
+                }
+            });
+        }
+
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id === 'table-data-container_') {
+                const datePicker = $("#date_");
+                datePicker.datepicker({
+                    format: "dd.mm.yyyy"
+                }).on('changeDate', function () {
+                    htmx.trigger($("#date_")[0], 'input')
+                });
+            }
+        });
+
+        $(document).on('click', '.user-status-icon', function () {
+            console.log(this);
+            let id = $(this).attr('data-id');
+            $.ajax({
+                type: "POST",
+                url: `${contextPath}admin/user/${id}/change`,
+                success: function () {
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log("Error submitting form:", error);
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#modal-btnDelete_').on('click', function () {
+                let attrId = this.getAttribute('data-id');
+                requestDelete(attrId);
+            });
+            selectedLanguage();
+        });
+        $(document).on('change', '.switch-input', function () {
+            const formData = new FormData();
+            formData.append('id', $(this).prop('id'));
+            formData.append('isActive', $(this).is(':checked'));
+            $.ajax({
+                type: "post",
+                url: `${contextPath}admin/user/save/switch`,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    // window.location.replace(`${contextPath}admin/nuts/save/switch`);
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log("Error submitting form:", error);
+                }
+            });
+        });
+    </script>
+</div>
+<!--/ Content -->
+
+<!-- Modal -->
+<div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Are you sure to delete it?</h5>
+                <!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+            </div>
+            <div class="modal-footer justify-content-end">
+                <a type="button" id="modal-btnDelete_" class="btn btn-danger">
+                    Delete
+                </a>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    <!--    <script th:src="@{/js/pagination.js}"></script>-->
+    <!--    <script th:src="@{/js/modal.js}"></script>-->
+    <!--    <script th:src="@{/js/validator.js}"></script>-->
+    <!--    <script th:src="@{/js/image.js}"></script>-->
+</div>
+<!--/ Modal -->
+</body>
+</html>

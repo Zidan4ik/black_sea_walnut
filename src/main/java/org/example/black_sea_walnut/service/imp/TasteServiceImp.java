@@ -11,7 +11,10 @@ import org.example.black_sea_walnut.mapper.TasteMapper;
 import org.example.black_sea_walnut.repository.TasteRepository;
 import org.example.black_sea_walnut.service.TasteService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +33,10 @@ public class TasteServiceImp implements TasteService {
     @Override
     public Set<TasteResponseForView> getAllByLanguageCodeInDTO(LanguageCode code) {
         Set<Taste> tastesSet = tasteRepository.findAllByLanguageCode(code);
-        return tastesSet.stream().map(mapper::toDTOForView).collect(Collectors.toSet());
+        return tastesSet.stream().map(mapper::toDTOForView).
+                sorted(Comparator.comparing(TasteResponseForView::getId)).
+                collect(Collectors.toCollection(LinkedHashSet::new));
+
     }
 
     @Override
@@ -41,8 +47,8 @@ public class TasteServiceImp implements TasteService {
     }
 
     @Override
-    public Set<Taste> getAllByTasteId(Long id) {
-        return tasteRepository.findAllByTasteId(id);
+    public Set<Taste> getAllByCommonId(Long id) {
+        return tasteRepository.findAllByCommonId(id);
     }
 
     @Override
@@ -53,14 +59,19 @@ public class TasteServiceImp implements TasteService {
     @Override
     public void save(TasteRequestForAdd dto) {
         List<Taste> list = mapper.toEntityFromRequest(dto);
-        for (Taste t: list){
+        for (Taste t : list) {
             save(t);
         }
     }
 
     @Override
-    public boolean isExistByTasteId(Long tasteId) {
-        return tasteRepository.existsByTasteId(tasteId);
+    public boolean isExistByCommonId(Long tasteId) {
+        return tasteRepository.existsByCommonId(tasteId);
+    }
+
+    @Override
+    public boolean isExistById(Long id) {
+        return tasteRepository.existsById(id);
     }
 
     @Override
@@ -71,6 +82,12 @@ public class TasteServiceImp implements TasteService {
 
     @Override
     public TasteResponseForAdd getByIdInResponseForAdd(Long id) {
-        return mapper.toResponseForAdd(tasteRepository.findAllByTasteId(id));
+        return mapper.toResponseForAdd(tasteRepository.findAllByCommonId(id));
+    }
+
+    @Override
+    @Transactional
+    public void deleteByCommonId(Long id) {
+        tasteRepository.deleteAllByCommonId(id);
     }
 }

@@ -1,13 +1,18 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.ResponseOrderDetailForView;
-import org.example.black_sea_walnut.dto.ResponseOrderForAdd;
-import org.example.black_sea_walnut.dto.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.order.OrderUserResponseForView;
+import org.example.black_sea_walnut.dto.order.ResponseOrderDetailForView;
+import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
+import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.entity.Order;
+import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.util.DateUtil;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class OrderMapper {
     public ResponseOrderForView toDTOView(Order entity) {
         return ResponseOrderForView.builder()
@@ -44,7 +49,18 @@ public class OrderMapper {
                 .phoneDelivery(entity.getPhoneDelivery())
                 .addressDelivery(entity.getAddressDelivery())
                 .orderDetails(list)
-                .isFop(entity.getUser().getIsFop().toString())
+                .isFop(String.valueOf(entity.getUser().isFop()))
+                .build();
+    }
+
+    public OrderUserResponseForView toResponseForUserOrderView(Order entity) {
+        return OrderUserResponseForView
+                .builder()
+                .id(entity.getId())
+                .date(DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
+                .statusOrder(entity.getOrderStatus().toString())
+                .price(String.valueOf(entity.getTotalPrice()))
+                .statusPayment(entity.getPaymentType().toString())
                 .build();
     }
 }

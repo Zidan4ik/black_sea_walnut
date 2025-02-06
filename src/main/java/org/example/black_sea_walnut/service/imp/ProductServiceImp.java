@@ -8,9 +8,11 @@ import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForPro
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForView;
+import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.mapper.HistoryPricesMapper;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.service.DiscountService;
@@ -18,12 +20,17 @@ import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
+import org.example.black_sea_walnut.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +43,7 @@ public class ProductServiceImp implements ProductService {
     private final DiscountService discountService;
     private final HistoryPricesService historyPricesService;
     private final ImageServiceImp imageServiceImp;
+    private final HistoryPricesMapper historyPricesMapper;
 
     @Value("${upload.path}")
     private String contextPath;
@@ -80,6 +88,10 @@ public class ProductServiceImp implements ProductService {
                 imageServiceImp.deleteByPath(product.getPathToImagePacking());
             if (dto.getPathToImagePayment().isEmpty())
                 imageServiceImp.deleteByPath(product.getPathToImagePayment());
+            if (dto.getNewPrice() != null) {
+                product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(),LocalDateTime.now().plusDays(30),product));
+                save(product);
+            }
         }
         if (dto.getImage1() != null) {
             String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage1());
@@ -115,9 +127,9 @@ public class ProductServiceImp implements ProductService {
         }
 
         Product product = mapper.toEntityForRequestAdd(dto);
-        discountService.getAllByDiscountId(dto.getDiscountId()).stream()
+        discountService.getAllByDiscountCommonId(dto.getDiscountId()).stream()
                 .findFirst().ifPresent(discount -> product.setDiscounts(Set.of(discount)));
-        tasteService.getAllByTasteId(dto.getTasteId()).stream()
+        tasteService.getAllByCommonId(dto.getTasteId()).stream()
                 .findFirst().ifPresent(taste -> product.setTastes(Set.of(taste)));
         Product productSaved = save(product);
 

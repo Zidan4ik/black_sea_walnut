@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Main Page</title>
+    <title th:text="#{text.mainPage}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
@@ -25,9 +25,9 @@
                         <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
                     </a>
                 </div>
-                <div class="col-auto" style="padding-right: 5px;">Сторінка</div>
+                <div class="col-auto" style="padding-right: 5px;" th:text="#{text.page}"></div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;">Головна</div>
+                <div class="col-auto" style="padding-left: 5px;" th:text="#{text.main}"></div>
             </div>
         </div>
         <!--/ Header content -->
@@ -283,13 +283,14 @@
                         <div class="col-12">
                             <label class="form-label" for="main-title-en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
-                            <input class="form-control" id="main-title-en_" data-name="mainTitleEn">
+                            <input class="form-control" id="main-title-en_" data-name="mainTitleEn"
+                                   data-error="requestMainForAdd.mainTitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="main-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-description-en_" rows="3"
-                                      data-name="mainDescriptionUk"></textarea>
+                                      data-name="mainDescriptionEn" data-error="requestMainForAdd.mainDescriptionEn"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
                         </div>
                     </div>
@@ -307,13 +308,13 @@
                             <label class="form-label" for="mainProduction-title-en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
                             <input class="form-control" id="mainProduction-title-en_"
-                                   data-name="mainProductionTitleEn">
+                                   data-name="mainProductionTitleEn" data-error="requestProductionBlockForAdd.mainProductionTitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="mainProduction-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="mainProduction-description-en_" rows="3"
-                                      data-name="mainProductionDescriptionEn"></textarea>
+                                      data-name="mainProductionDescriptionEn" data-error="requestProductionBlockForAdd.mainProductionDescriptionEn"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
                         </div>
                     </div>
@@ -332,13 +333,13 @@
                             <label class="form-label" for="main-factory-title-en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
                             <input class="form-control" id="main-factory-title-en_"
-                                   data-name="mainProductionTitleEn">
+                                   data-name="mainFactoryTitleEn" data-error="requestFactoryForAdd.mainFactoryTitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="main-factory-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-factory-description-en_" rows="3"
-                                      data-name="mainFactoryDescriptionEn"></textarea>
+                                      data-name="mainFactoryDescriptionEn" data-error="requestFactoryForAdd.mainFactoryDescriptionEn"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 500 characters</label>
                         </div>
                     </div>
@@ -361,7 +362,7 @@
                             <label class="form-label" for="main-number1-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-number1-description-en_" rows="3"
-                                      data-name="mainNumberDescriptionEn1"></textarea>
+                                      data-name="mainNumberDescriptionEn1" data-error="requestNumberBlockForAdd.mainNumberDescriptionEn1"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
                         </div>
                     </div>
@@ -375,7 +376,7 @@
                             <label class="form-label" for="main-number2-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-number2-description-en_" rows="3"
-                                      data-name="mainNumberDescriptionEn2"></textarea>
+                                      data-name="mainNumberDescriptionEn2" data-error="requestNumberBlockForAdd.mainNumberDescriptionEn2"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
                         </div>
                     </div>
@@ -389,7 +390,7 @@
                             <label class="form-label" for="main-number3-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-number3-description-en_" rows="3"
-                                      data-name="mainNumberDescriptionEn3"></textarea>
+                                      data-name="mainNumberDescriptionEn3" data-error="requestNumberBlockForAdd.mainNumberDescriptionEn3"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
                         </div>
                     </div>
@@ -403,7 +404,7 @@
                             <label class="form-label" for="main-number4-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-number4-description-en_" rows="3"
-                                      data-name="mainNumberDescriptionEn4"></textarea>
+                                      data-name="mainNumberDescriptionEn4" data-error="requestNumberBlockForAdd.mainNumberDescriptionEn4"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 50 characters</label>
                         </div>
                     </div>
@@ -421,13 +422,14 @@
                         <div class="col-12">
                             <label class="form-label" for="main-aim-title-en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
-                            <input class="form-control" id="main-aim-title-en_" data-name="mainAimTitleEn">
+                            <input class="form-control" id="main-aim-title-en_" data-name="mainAimTitleEn"
+                                   data-error="requestAimBlockForAdd.mainAimTitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="main-aim-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-aim-description-en_" rows="3"
-                                      data-name="mainAimDescriptionEn"></textarea>
+                                      data-name="mainAimDescriptionEn" data-error="requestAimBlockForAdd.mainAimDescriptionEn"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 150 characters</label>
                         </div>
                     </div>
@@ -446,14 +448,14 @@
                             <label class="form-label" for="main-eco-production-title-en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
                             <input class="form-control" id="main-eco-production-title-en_"
-                                   data-name="mainEcoProductionTitleEn">
+                                   data-name="mainEcoProductionTitleEn" data-error="requestEcoProductionForAdd.mainEcoProductionTitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="main-eco-production-description-en_"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <textarea class="form-control descriptions" id="main-eco-production-description-en_"
-                                      rows="3"
-                                      data-name="mainEcoProductionTitleEn"></textarea>
+                                      rows="3" data-name="mainEcoProductionTitleEn"
+                                      data-error="requestEcoProductionForAdd.mainEcoProductionDescriptionEn"></textarea>
                             <label class="form-label" style="color: #AAAAAA;">Max: 150 character</label>
                         </div>
                     </div>
@@ -594,18 +596,18 @@
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"  data-error="requestMainForAdd.mainFileBanner">
                     <button type="button" data-type="mainFileBanner"
                             class="btn btn-outline-success btn-select"
-                            style="left: 13%;top:25%;position: absolute;width: 35%;">
-                        Змінити банер
+                            style="left: 13%;top:25%;position: absolute;width: 35%;"
+                            th:text="#{text.button.change}">
                     </button>
                     <button type="button" data-type="mainFileBanner"
                             class="btn btn-outline-success btn-delete"
-                            style="right: 13%;top:25%;position: absolute;width: 35%;">
-                        Видалити
+                            style="right: 13%;top:25%;position: absolute;width: 35%;"
+                    th:text="#{text.button.delete}">
                     </button>
                     <span class="text-center"
-                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
-                                    png, jpg, jpeg, mp4 до 15 МБ
-                                </span>
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
+                    th:text="#{text.mediaSize15}">
+                    </span>
                 </div>
             </div>
             <!--/ Image Main Base -->
@@ -619,17 +621,17 @@
                          data-error="requestAimBlockForAdd.mainAimFileBanner">
                     <button type="button" data-type="mainAimFileBanner"
                             class="btn btn-outline-success btn-select"
-                            style="left: 13%;top:25%;position: absolute;width: 30%;">
-                        Змінити банер
+                            style="left: 13%;top:25%;position: absolute;width: 30%;"
+                    th:text="#{text.button.change}">
                     </button>
                     <button type="button" data-type="mainAimFileBanner"
                             class="btn btn-outline-success btn-delete"
-                            style="right: 13%;top:25%;position: absolute;width: 30%;">
-                        Видалити
+                            style="right: 13%;top:25%;position: absolute;width: 30%;"
+                    th:text="#{text.button.delete}">
                     </button>
                     <span class="text-center"
-                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
-                                    png, jpg, jpeg, mp4 до 15 МБ
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
+                    th:text="#{text.mediaSize15}">
                                 </span>
                 </div>
             </div>
@@ -644,17 +646,17 @@
                          data-error="requestEcoProductionForAdd.mainEcoProductionFileBanner">
                     <button type="button" data-type="mainEcoProductionFileBanner"
                             class="btn btn-outline-success btn-select"
-                            style="left: 13%;top:25%;position: absolute;width: 30%;">
-                        Змінити банер
+                            style="left: 13%;top:25%;position: absolute;width: 30%;"
+                            th:text="#{text.button.change}">
                     </button>
                     <button type="button" data-type="mainEcoProductionFileBanner"
                             class="btn btn-outline-success btn-delete"
-                            style="right: 13%;top:25%;position: absolute;width: 30%;">
-                        Видалити
+                            style="right: 13%;top:25%;position: absolute;width: 30%;"
+                            th:text="#{text.button.delete}">
                     </button>
                     <span class="text-center"
-                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;">
-                                    png, jpg, jpeg, mp4 до 15 МБ
+                          style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
+                          th:text="#{text.mediaSize15}">
                                 </span>
                 </div>
             </div>
@@ -774,6 +776,7 @@
                     copyHTMLBlockInput('shared-title3-number', `main-number-title3-block-${activeLang}`);
                     copyHTMLBlockInput('shared-title4-number', `main-number-title4-block-${activeLang}`);
                     requestGetData();
+                    selectedLanguage();
                 });
 
                 const urlMainBlock = `${contextPath}admin/page/main/save`;

@@ -8,8 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface TasteRepository extends JpaRepository<Taste,Long> {
+public interface TasteRepository extends JpaRepository<Taste, Long> {
     Set<Taste> findAllByLanguageCode(LanguageCode languageCode);
-    Set<Taste> findAllByTasteId(Long id);
-    boolean existsByTasteId(Long tasteId);
+
+    Set<Taste> findAllByCommonId(Long id);
+
+    boolean existsByCommonId(Long commonId);
+
+    void deleteAllByCommonId(Long id);
 }

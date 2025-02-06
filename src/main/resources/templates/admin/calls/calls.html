@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{admin/blocks/layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.calls}"></title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <h4 class="text-center fw-bold" th:text="#{text.table.calls}"></h4>
+        <div class="card" id="card-block" style="width: 1220px;">
+            <h5 class="card-header" th:text="#{text.calls}">Calls</h5>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
+                                    th:text="#{text.show}"></span>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-size-for-pagination_"
+                                        name="size">
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5" selected>5</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select> <span th:text="#{text.entries}"></span></label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
+                        <a id="total-delete_" type="button">
+                            <i class="ti ti-trash btnTrashMyBefore" style="font-size: 26px;"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table class="table table-bordered table-hover linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;"
+                           id="table-data-container_">
+                        <thead>
+                        <tr>
+                            <th style="width: 200px" th:text="#{table.header.application}">№ Application</th>
+                            <th style="width: 200px" th:text="#{table.header.date}">Date</th>
+                            <th style="width: 100px" th:text="#{table.header.time}">Time</th>
+                            <th style="width: 200px" th:text="#{table.header.phone}">Phone</th>
+                            <th style="width: 200px" th:text="#{table.header.application.status}">Status of
+                                application
+                            </th>
+                            <th style="width: 200px" th:text="#{table.header.functions}">Functions</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="id"/>
+                            </th>
+                            <th>
+                                <div class="input-group input-group-merge">
+                                    <input type="text"
+                                           class="form-control input-card-block-spinner"
+                                           id="date_"
+                                           placeholder="dd.mm.yyyy"
+                                           name="date"
+                                           autocomplete="off"/>
+                                    <span class="input-group-text">
+                                        <i class="ti ti-calendar"></i>
+                                    </span>
+                                </div>
+                            </th>
+                            <th></th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="phone"/>
+                            </th>
+                            <th>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-type-registry_"
+                                        name="status">
+                                    <option value="" selected th:text="#{value.status.all}"></option>
+                                    <option value="new_" th:text="#{value.status.new}"></option>
+                                    <option value="close" th:text="#{value.status.close}"></option>
+                                </select>
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table-pagination-container_"></div>
+                <input type="hidden" name="languageCode" value="en" id="languageCode_">
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/table.js}"></script>
+    <script>
+        const inputs = ['id', 'date', 'phone', 'status'];
+        let pathToTable = `${contextPath}admin/calls/table/load`;
+        let pathToPagination = `${contextPath}admin/calls/pagination/load`;
+        let timeoutId;
+
+        $(document).on('click', '.btn-danger', function () {
+            let attr = $(this).attr('data-type');
+            if (attr === 'total') {
+                let selectedIds = [];
+                $('.selectors:checked').each(function () {
+                    let id = $(this).attr('data-id');
+                    requestDelete(id)
+                    selectedIds.push(id);
+                });
+                console.log(selectedIds);
+            } else if (attr === 'one') {
+                let attrId = this.getAttribute('data-id');
+                requestDelete(attrId);
+                console.log(attrId);
+            }
+        });
+
+        $(document).on('click', '#total-delete_', function () {
+            $(`#modal-btnDelete_`).attr('data-type', 'total');
+            let modalElement = document.getElementById('ModalForDelete');
+            let modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+
+        $(document).on('click', '.edit-icon', function () {
+            let id = $(this).data('id');
+            window.location.pathname = contextPath + `admin/user/${id}/edit`;
+        });
+
+        $(document).on('click', '.delete-icon', function () {
+            $(`#modal-btnDelete_`).attr('data-type', 'one');
+            let id = $(this).data('id');
+            $('#modal-btnDelete_').attr('data-id', id);
+            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
+            modal.show();
+        });
+
+        function requestDelete(id) {
+            let request = new XMLHttpRequest();
+            request.open('DELETE', `${contextPath}admin/call/${id}/delete`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    invokeRequest(inputs, 0);
+                    $('#ModalForDelete').modal('hide');
+                }
+            });
+        }
+
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id === 'table-data-container_') {
+                const datePicker = $("#date_");
+                datePicker.datepicker({
+                    format: "dd.mm.yyyy"
+                }).on('changeDate', function () {
+                    htmx.trigger($("#date_")[0], 'input')
+                });
+            }
+        });
+
+        $(document).on('click', '.user-status-icon', function () {
+            console.log(this);
+            let id = $(this).attr('data-id');
+            $.ajax({
+                type: "POST",
+                url: `${contextPath}admin/user/${id}/change`,
+                success: function () {
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log("Error submitting form:", error);
+                }
+            });
+        });
+
+        $(document).on('change', '.switch-input', function () {
+            const formData = new FormData();
+            formData.append('id', $(this).prop('id'));
+            formData.append('isActive', $(this).is(':checked'));
+            $.ajax({
+                type: "post",
+                url: `${contextPath}admin/user/save/switch`,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    // window.location.replace(`${contextPath}admin/nuts/save/switch`);
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.log("Error submitting form:", error);
+                }
+            });
+        });
+    </script>
+</div>
+<!--/ Content -->
+
+<!-- Modal -->
+<div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="modal-title" th:text="#{text.areYouSure}"></h5>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <a type="button" id="modal-btnDelete_" class="btn btn-danger"
+                   th:text="#{text.button.delete}">
+                </a>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal"
+                        th:text="#{value.status.cancel}">
+                </button>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    <script>
+        $(document).ready(function () {
+            selectedLanguage();
+        });
+    </script>
+</div>
+<!--/ Modal -->
+</body>
+</html>

@@ -1,6 +1,6 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.ResponseTransactionForView;
+import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.entity.Transaction;
 
 

@@ -74,7 +74,7 @@ public class HistoryClientServiceImp implements HistoryClientService {
 
     @Override
     public void saveHistoryCategoryBlock(List<ClientCategoryRequestForAdd> dto) {
-        if(dto!=null){
+        if (dto != null) {
             for (ClientCategoryRequestForAdd d : dto) {
                 clientCategoryService.save(d);
             }

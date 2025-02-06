@@ -11,12 +11,26 @@ import java.util.Set;
 
 public interface DiscountService {
     List<Discount> getAll();
+
     Set<DiscountResponseForView> getAllByLanguageCodeInDTO(LanguageCode code);
+
     String getSentence(Set<DiscountResponseForView> discounts);
-    Set<Discount> getAllByDiscountId(Long id);
-    boolean isExistByDiscountId(Long discountId);
+
+    Set<Discount> getAllByDiscountCommonId(Long id);
+
+    boolean isExistByDiscountCommonId(Long discountId);
+
+    boolean isExistById(Long tasteId);
+
     Discount getById(Long id);
+
     DiscountResponseForAdd getByIdInResponseForAdd(Long id);
+
+    DiscountResponseForAdd getByIdAndLanguageInResponseForAdd(Long id, LanguageCode code);
+
     void save(Discount discount);
+
     void save(DiscountRequestForAdd dto);
+
+    void deleteCommonById(Long id);
 }

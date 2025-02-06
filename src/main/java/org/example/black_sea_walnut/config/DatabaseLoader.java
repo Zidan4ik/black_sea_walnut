@@ -7,6 +7,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.repository.TransactionsRepository;
+import org.example.black_sea_walnut.service.ContactService;
 import org.example.black_sea_walnut.service.HistoryMainService;
 import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.NewService;
@@ -25,6 +26,7 @@ public class DatabaseLoader implements CommandLineRunner {
     private final TransactionsRepository transactionsRepository;
     private final ProductRepository productRepository;
     private final HistoryService historyService;
+    private final ContactService contactService;
 
     @Override
     public void run(String... args) throws Exception {

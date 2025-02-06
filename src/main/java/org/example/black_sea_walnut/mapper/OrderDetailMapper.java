@@ -1,6 +1,6 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.ResponseOrderDetailForView;
+import org.example.black_sea_walnut.dto.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.entity.OrderDetail;
 
 public class OrderDetailMapper {

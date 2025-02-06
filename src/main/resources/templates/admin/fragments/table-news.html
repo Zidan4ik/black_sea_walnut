@@ -15,8 +15,7 @@
   </td>
 </tr>
 <tr th:unless="${data.size()>0}">
-  <td colspan="4" style="text-align: center; color: gray; font-style: italic;">No data
-    available in table
+  <td colspan="4" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}">
   </td>
 </tr>
 </tbody>

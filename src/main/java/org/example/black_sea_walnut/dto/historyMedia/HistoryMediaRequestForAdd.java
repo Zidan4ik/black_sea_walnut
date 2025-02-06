@@ -13,6 +13,6 @@ public class HistoryMediaRequestForAdd {
     private Long id;
     private MediaType mediaType;
     private String pathToImage;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile fileImage;
 }

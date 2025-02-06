@@ -11,12 +11,24 @@ import java.util.Set;
 
 public interface TasteService {
     List<Taste> getAllByLanguageCodeInDTO();
+
     Set<TasteResponseForView> getAllByLanguageCodeInDTO(LanguageCode code);
+
     String getSentence(Set<TasteResponseForView> tastes);
-    Set<Taste> getAllByTasteId(Long id);
+
+    Set<Taste> getAllByCommonId(Long id);
+
     Taste save(Taste taste);
+
     void save(TasteRequestForAdd dto);
-    boolean isExistByTasteId(Long tasteId);
+
+    boolean isExistByCommonId(Long tasteId);
+
+    boolean isExistById(Long tasteId);
+
     Taste getById(Long id);
+
     TasteResponseForAdd getByIdInResponseForAdd(Long id);
+
+    void deleteByCommonId(Long id);
 }

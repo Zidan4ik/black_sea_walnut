@@ -21,6 +21,7 @@ public class NutTranslation {
     @Enumerated(EnumType.STRING)
     private LanguageCode languageCode;
     private String title;
+    @Lob
     private String description;
     @ManyToOne
     private Nut nut;

@@ -4,8 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.ResponseNewForAdd;
-import org.example.black_sea_walnut.dto.ResponseNewForView;
+import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.NewMapper;
@@ -46,7 +46,7 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
-    public ResponseNewForAdd getByIdLikeDTO(Long id) {
+    public NewRequestForAdd getByIdLikeDTO(Long id) {
         return mapper.toDtoAdd(getById(id));
     }
 
@@ -68,13 +68,13 @@ public class NewServiceImp implements NewService {
 
     @Override
     @Transactional
-    public New saveLikeDto(ResponseNewForAdd dto) {
+    public New saveLikeDto(NewRequestForAdd dto) {
         return save(mapper.toEntity(dto));
     }
 
     @Override
     @Transactional
-    public New saveImage(ResponseNewForAdd dto) throws IOException {
+    public New saveImage(NewRequestForAdd dto) throws IOException {
 //        LogUtil.logInfo("Saving new with file for ID: " + dtoAdd.getId());
         if (dto.getId() != null) {
             New newById = getById(dto.getId());

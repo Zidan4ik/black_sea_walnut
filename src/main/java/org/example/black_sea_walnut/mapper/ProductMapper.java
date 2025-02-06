@@ -13,6 +13,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,7 +37,7 @@ public class ProductMapper {
                 .name(translation.getName())
                 .taste(tasteName)
                 .totalCount(String.valueOf(entity.getTotalCount()))
-                .priceByUnit(String.valueOf(1))
+                .priceByUnit(entity.getPriceByUnit())
                 .discount(discountName)
                 .build();
     }
@@ -75,8 +76,8 @@ public class ProductMapper {
                 .pathToImagePayment(entity.getPathToImagePayment())
                 .pathToImageDelivery(entity.getPathToImageDelivery())
                 .build();
-        entity.getTastes().stream().findFirst().ifPresent(t -> dto.setTasteId(t.getTasteId()));
-        entity.getDiscounts().stream().findFirst().ifPresent(d -> dto.setTasteId(d.getDiscountId()));
+        entity.getTastes().stream().findFirst().ifPresent(t -> dto.setTasteId(t.getCommonId()));
+        entity.getDiscounts().stream().findFirst().ifPresent(d -> dto.setTasteId(d.getDiscountCommonId()));
         return dto;
     }
 
@@ -107,6 +108,10 @@ public class ProductMapper {
         entity.setPathToImagePacking(dto.getPathToImagePacking());
         entity.setPathToImagePayment(dto.getPathToImagePayment());
         entity.setPathToImageDelivery(dto.getPathToImageDelivery());
+        if (dto.getId() == null) {
+            entity.setHistoryPrices(List.of(new HistoryPrices(dto.getNewPrice(),LocalDateTime.now(),LocalDateTime.now().plusDays(30),entity)));
+        }
+        entity.setPriceByUnit(String.valueOf(dto.getNewPrice()));
         return entity;
     }
 }

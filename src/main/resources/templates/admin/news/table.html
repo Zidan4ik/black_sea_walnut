@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>News</title>
+    <title th:text="#{text.news}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
     <style>
@@ -19,14 +19,14 @@
 <!-- Content -->
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-        <h4 class="text-center fw-bold">Table Of News</h4>
+        <h4 class="text-center fw-bold" th:text="#{text.table.news}"></h4>
         <div class="card" id="card-block">
-            <h5 class="card-header">News</h5>
+            <h5 class="card-header" th:text="#{text.news}"></h5>
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
-                            <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span th:text="#{text.show}"></span>
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-size-for-pagination_"
                                         name="size">
@@ -35,7 +35,7 @@
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
-                                </select> entries</label>
+                                </select> <span th:text="#{text.entries}"></span></label>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 text-end">
@@ -46,9 +46,7 @@
                                     <i class="ti ti-plus"></i>
                                 </a>
                             </div>
-                            <div class="col-3 text-start" style="font-weight: bold;font-size: large;">
-                                Добавити
-                            </div>
+                            <div class="col-3 text-start" style="font-weight: bold;font-size: large;" th:text="#{text.button.add}"></div>
                         </div>
                     </div>
                 </div>
@@ -59,9 +57,9 @@
                         <thead>
                         <tr>
                             <th style="width: 100px">ID</th>
-                            <th style="width: 200px">Title</th>
-                            <th style="width: 200px">Date of publication</th>
-                            <th style="width: 200px">Actions</th>
+                            <th style="width: 200px" th:text="#{text.title}"></th>
+                            <th style="width: 200px" th:text="#{table.header.dateOfPublication}"></th>
+                            <th style="width: 200px" th:text="#{table.header.functions}"></th>
                         </tr>
                         <tr>
                             <th>
@@ -161,10 +159,11 @@
         </div>
     </div>
     <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-    <!--    <script th:src="@{/js/pagination.js}"></script>-->
-    <!--    <script th:src="@{/js/modal.js}"></script>-->
-    <!--    <script th:src="@{/js/validator.js}"></script>-->
-    <!--    <script th:src="@{/js/image.js}"></script>-->
+    <script>
+        $(document).ready(function (){
+            selectedLanguage();
+        });
+    </script>
 </div>
 <!--/ Modal -->
 </body>

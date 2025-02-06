@@ -30,8 +30,8 @@ public class ClientCategoryRequestForAdd {
     private String clientsCategoryPathToImage;
     @Setter
     private String clientsCategoryPathToSvg;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile clientsCategoryFileImage;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile clientsCategoryFileSvg;
 }

@@ -23,6 +23,6 @@ public class ClientEcoProductionRequestForAdd {
     private String clientsEcoProductionDescriptionEn;
     @Setter
     private String clientsEcoProductionPathToBanner;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile clientsEcoProductionFile;
 }

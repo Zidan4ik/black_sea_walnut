@@ -6,9 +6,10 @@ import lombok.Getter;
 @Builder
 @Getter
 public class DiscountResponseForAdd {
-    private Long id;
-    private Long discountId;
-    private String discountNameUk;
-    private String discountNameEn;
+    private Long discountIdUk;
+    private Long discountIdEn;
+    private Long discountCommonId;
+    private String nameUk2;
+    private String nameEn2;
     private Long value;
 }

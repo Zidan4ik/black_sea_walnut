@@ -7,8 +7,9 @@ import lombok.Setter;
 @Builder
 @Getter
 public class TasteResponseForAdd {
-    private Long id;
-    private Long tasteId;
+    private Long tasteIdUk;
+    private Long tasteIdEn;
+    private Long commonId;
     @Setter
     private String tasteNameUk;
     @Setter

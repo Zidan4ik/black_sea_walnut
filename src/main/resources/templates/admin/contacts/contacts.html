@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="uk"
+      layout:decorate="~{admin/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="#{text.contacts}"></title>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/css/text.css}"/>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <div class="row">
+            <h4 class="text-center" th:text="#{text.contacts}"></h4>
+            <div class="mb-3 mt-4">
+                <div class="row g-3">
+                    <div class="col-4">
+                        <h5 th:text="#{text.numberPhone}+':'"></h5>
+                        <div>
+                            <input class="form-control" id="phone1_" type="text" data-name="phone1"
+                                   placeholder="0982370190"/>
+                        </div>
+                        <div>
+                            <input class="form-control" id="phone2_" type="text" data-name="phone2"
+                                   placeholder="0982370190"/>
+                        </div>
+                        <h5 th:text="#{table.header.email}+':'"></h5>
+                        <div>
+                            <input class="form-control" id="email_" type="text" data-name="email"
+                                   placeholder="ivanivanov@gmail.com"/>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <h5 th:text="#{text.officesAndSalesDepartments}+':'"></h5>
+                        <div>
+                            <textarea class="form-control descriptions" id="addressWork_" rows="3"
+                                      data-name="addressWork"
+                                      data-error=""></textarea>
+                        </div>
+                        <h5 th:text="#{text.factory}+':'"></h5>
+                        <div>
+                            <textarea class="form-control descriptions" id="addressFactory_" rows="3"
+                                      data-name="addressFactory"
+                                      data-error=""></textarea>
+                        </div>
+                        <h5 th:text="#{text.coordinates}+':'"></h5>
+                        <div>
+                            <input class="form-control" id="coordinates_" type="text" data-name="coordinates"
+                                   placeholder="49.84441337669724, 24.026211881982103"/>
+                        </div>
+                    </div>
+                    <div class="col-4 d-flex flex-column gap-2">
+                        <h5 th:text="#{text.socialMedias}+':'"></h5>
+                        <div>
+                            <input class="form-control" id="telegram_" type="text" data-name="telegram"
+                                   th:placeholder="#{text.placeholderTelegram}"/>
+                        </div>
+                        <div>
+                            <input class="form-control" id="viber_" type="text" data-name="viber"
+                                   th:placeholder="#{text.placeholderViber}"/>
+                        </div>
+                        <div>
+                            <input class="form-control" id="watsapp_" type="text" data-name="watsapp"
+                                   th:placeholder="#{text.placeholderWatsApp}"/>
+                        </div>
+                        <div>
+                            <input class="form-control" id="facebook_" type="text" data-name="facebook"
+                                   th:placeholder="#{text.placeholderFacebook}"/>
+                        </div>
+                        <div>
+                            <input class="form-control" id="instagram_" type="text" data-name="instagram"
+                                   th:placeholder="#{text.placeholderInstagram}"/>
+                        </div>
+                        <div>
+                            <input class="form-control" id="youtube_" type="text" data-name="youtube"
+                                   th:placeholder="#{text.placeholderYoutube}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
+                th:text="#{text.button.save}">
+                </button>
+            </div>
+        </div>
+
+        <!-- Hidden Inputs-->
+        <input type="hidden" id="id_" th:value="${id}">
+        <input type="file" id="file-fileImage" data-type="fileImage" class="files"
+               accept="image/*" style="display: none;">
+        <input type="hidden" data-name="pathToImage" class="files" data-image="fileImage">
+        <!--/ Hidden Inputs-->
+
+        <script th:src="@{/js/image.js}"></script>
+        <script th:src="@{/js/validator.js}"></script>
+        <script th:src="@{/js/event-listener.js}"></script>
+        <script th:src="@{/js/modal.js}"></script>
+
+        <script>
+            $(document).ready(function () {
+                // let id = $('#id_').val();
+                requestGetContact(1);
+                saveUser();
+                selectedLanguage();
+            });
+
+            function saveUser() {
+                $(`#btn-save_`).on('click', function () {
+                    saveRequest();
+                });
+            }
+        </script>
+        <script>
+
+            function saveRequest() {
+                let formData = getFormData();
+                $.ajax({
+                    type: "post",
+                    url: `${contextPath}admin/contact/save`,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        clearValid();
+                        let data = JSON.parse(error.responseText);
+                        validate2(data);
+                        console.log("Error submitting form:", error);
+                    }
+                });
+            }
+
+            function getFormData() {
+                const resForm = new FormData();
+                resForm.append("id", $('#id_').val());
+                resForm.append("phone1", $('#phone1_').val());
+                resForm.append("phone2", $('#phone2_').val());
+                resForm.append('email', $('#email_').val());
+                resForm.append('addressWork', $('#addressWork_').val());
+                resForm.append('addressFactory', $('#addressFactory_').val());
+                resForm.append('coordinates', $('#coordinates_').val());
+                resForm.append('telegram', $('#telegram_').val());
+                resForm.append('viber', $('#viber_').val());
+                resForm.append('watsapp', $('#watsapp_').val());
+                resForm.append('facebook', $('#facebook_').val());
+                resForm.append('instagram', $('#instagram_').val());
+                resForm.append('youtube', $('#youtube_').val());
+                return resForm;
+            }
+        </script>
+
+        <script>
+            function requestGetContact(id) {
+                let request = new XMLHttpRequest();
+                let url1 = `${contextPath}admin/contact/${id}`;
+                console.log(url1);
+                request.open("GET", url1);
+                request.send();
+                request.addEventListener('load', function () {
+                    if (request.status === 200) {
+                        let data = JSON.parse(request.response);
+                        console.log(data);
+
+                        for (let key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                // console.log(`Key: ${key} Value: ${data[key]}`);
+                                let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"], select[data-name="${key}"]`);
+                                if (input) {
+                                    if (input.hasClass('files')) {
+                                        let img = input.attr('data-image');
+                                        let $input = $(`#${img}`);
+                                        if ($input && data[key] !== null) {
+                                            $input.attr('src', data[key]);
+                                            input.val(data[key]);
+                                        }
+                                    } else {
+                                        if (key === 'cityForDeliveryId') {
+                                            $('#city_').val(data[key]);
+                                        } else if (key === 'regionForDeliveryId') {
+                                            $('#region_').val(data[key]);
+                                        } else if (key === 'fullName') {
+                                            $(`span[data-text="fullName"]`).text(data[key]);
+                                            $(`div[data-text="fullName"]`).text(data[key]);
+                                            input.val(data[key]);
+                                        } else {
+                                            input.val(data[key]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            $(document).on('click', '.user-status-icon', function () {
+                console.log(this);
+                let id = $(this).attr('data-id');
+                $.ajax({
+                    type: "POST",
+                    url: `${contextPath}admin/user/${id}/change`,
+                    success: function () {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.log("Error submitting form:", error);
+                    }
+                });
+            });
+        </script>
+    </div>
+</div>
+<!--/ Content -->
+</body>
+</html>

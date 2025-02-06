@@ -3,9 +3,11 @@ package org.example.black_sea_walnut.service.imp;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.ResponseOrderForAdd;
-import org.example.black_sea_walnut.dto.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.order.OrderUserResponseForView;
+import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
+import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
 import org.example.black_sea_walnut.entity.Order;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.OrderMapper;
 import org.example.black_sea_walnut.repository.OrderRepository;
@@ -13,6 +15,7 @@ import org.example.black_sea_walnut.service.OrderService;
 import org.example.black_sea_walnut.service.specifications.OrderSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +38,11 @@ public class OrderServiceImp implements OrderService {
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));
+    }
+
+    @Override
+    public List<OrderUserResponseForView> getAllByUser(User user) {
+        return orderRepository.findAllByUser(user).stream().map(mapper::toResponseForUserOrderView).toList();
     }
 
     @Override

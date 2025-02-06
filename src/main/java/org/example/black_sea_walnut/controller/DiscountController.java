@@ -30,7 +30,6 @@ public class DiscountController {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-
             return ResponseEntity
                     .status(HttpStatus.valueOf(400))
                     .contentType(MediaType.APPLICATION_JSON)
@@ -49,5 +48,10 @@ public class DiscountController {
     public ResponseEntity<Set<DiscountResponseForView>> getTastes(@RequestParam String languageCode) {
         Set<DiscountResponseForView> discounts = discountService.getAllByLanguageCodeInDTO(LanguageCode.fromString(languageCode));
         return new ResponseEntity<>(discounts, HttpStatus.OK);
+    }
+    @DeleteMapping("/discount/{id}/delete")
+    public ResponseEntity<String> deleteTasteById(@PathVariable Long id) {
+        discountService.deleteCommonById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

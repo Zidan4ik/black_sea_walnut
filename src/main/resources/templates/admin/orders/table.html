@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Orders</title>
+    <title th:text="#{text.orders}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
     <style>
         .pointer {
@@ -18,24 +18,23 @@
 <!-- Content -->
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-        <h4 class="text-center fw-bold">Table Of Orders</h4>
+        <h4 class="text-center fw-bold" th:text="#{text.table.orders}"></h4>
         <div class="card" id="card-block">
-            <h5 class="card-header">Orders</h5>
+            <h5 class="card-header" th:text="#{text.orders}"></h5>
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
-                            <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span th:text="#{text.show}"></span>
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-size-for-pagination_"
-                                        name="size"
-                                >
+                                        name="size">
                                     <option value="1">1</option>
                                     <option value="3">3</option>
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
-                                </select> entries</label>
+                                </select> <span th:text="#{text.entries}"></span></label>
                         </div>
                     </div>
                 </div>
@@ -46,12 +45,12 @@
                         <thead>
                         <tr>
                             <th style="width: 100px">ID</th>
-                            <th style="width: 200px">Customer</th>
-                            <th style="width: 200px">Email</th>
-                            <th style="width: 137px">Total count</th>
-                            <th style="width: 137px">Total price</th>
-                            <th style="width: 200px">Date of ordering</th>
-                            <th style="width: 150px">Actions</th>
+                            <th style="width: 200px" th:text="#{table.header.customer}"></th>
+                            <th style="width: 200px" th:text="#{table.header.email}"></th>
+                            <th style="width: 137px" th:text="#{table.header.totalCount}"></th>
+                            <th style="width: 137px" th:text="#{table.header.totalPrice}"></th>
+                            <th style="width: 200px" th:text="#{table.header.dateOfOrdering}"></th>
+                            <th style="width: 150px" th:text="#{table.header.functions}"></th>
                         </tr>
                         <tr>
                             <th>
@@ -134,6 +133,10 @@
                     htmx.trigger($("#dateOfOrdering_")[0], 'input')
                 });
             }
+        });
+
+        $(document).ready(function (){
+            selectedLanguage();
         });
     </script>
 </div>

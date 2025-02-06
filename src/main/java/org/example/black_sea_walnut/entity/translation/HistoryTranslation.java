@@ -25,9 +25,13 @@ public class HistoryTranslation {
     private String title3;
     private String title4;
     private String subtitle;
+    @Lob
     private String description;
+    @Lob
     private String description2;
+    @Lob
     private String description3;
+    @Lob
     private String description4;
     @ManyToOne
     @JoinColumn(name = "history_id")

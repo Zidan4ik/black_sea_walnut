@@ -6,7 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class HistoryResponsePricesForProduct {
-    private Long id;
-    private String newPrice;
+//    private Long id;
+//    private String newPrice;
     private String oldPrice;
 }

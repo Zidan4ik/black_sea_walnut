@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en"
-      layout:decorate="~{admin/blocks/layout.html}"
-      xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns="http://www.w3.org/1999/html">
+<html
+        lang="uk"
+        layout:decorate="~{admin/blocks/layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Orders</title>
+    <title th:text="#{text.transactions}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
     <link rel="stylesheet" th:href="@{/css/table.css}"/>
     <style>
@@ -19,24 +20,24 @@
 <!-- Content -->
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-        <h4 class="text-center fw-bold">Table Of transactions</h4>
+        <h4 class="text-center fw-bold" th:text="#{text.table.transactions}"></h4>
         <div class="card" id="card-block" style="width: 1220px;">
-            <h5 class="card-header">Transactions</h5>
+            <h5 class="card-header" th:text="#{text.transactions}"></h5>
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
-                            <label for="pick-size-for-pagination_" class="d-flex align-items-center">Show
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
+                                    th:text="#{text.show}"></span>
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-size-for-pagination_"
-                                        name="size"
-                                >
+                                        name="size">
                                     <option value="1">1</option>
                                     <option value="3">3</option>
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
-                                </select> entries</label>
+                                </select> <span th:text="#{text.entries}"></span></label>
                         </div>
                     </div>
                 </div>
@@ -47,14 +48,14 @@
                         <thead>
                         <tr>
                             <th style="width: 100px">ID</th>
-                            <th style="width: 200px">Customer</th>
-                            <th style="width: 200px">Date</th>
-                            <th style="width: 200px">Time</th>
-                            <th style="width: 200px">Summa, grn</th>
-                            <th style="width: 200px">Phone</th>
-                            <th style="width: 200px">Email</th>
-                            <th style="width: 137px">Type of payment</th>
-                            <th style="width: 137px">Status payment</th>
+                            <th style="width: 200px" th:text="#{table.header.customer}"></th>
+                            <th style="width: 200px" th:text="#{table.header.date}"></th>
+                            <th style="width: 200px" th:text="#{table.header.time}"></th>
+                            <th style="width: 200px" th:text="#{table.header.summa}"></th>
+                            <th style="width: 200px" th:text="#{table.header.phone}"></th>
+                            <th style="width: 200px" th:text="#{table.header.email}"></th>
+                            <th style="width: 137px" th:text="#{table.header.typeOfPayment}"></th>
+                            <th style="width: 137px" th:text="#{table.header.statusPayment}"></th>
                         </tr>
                         <tr>
                             <th>
@@ -92,20 +93,20 @@
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-type-of-payment_"
                                         name="typeOfPayment">
-                                    <option value="" selected>All</option>
-                                    <option value="card">Card</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="invoice">Invoice</option>
+                                    <option value="" selected th:text="#{value.status.all}"></option>
+                                    <option value="card" th:text="#{value.status.card}"></option>
+                                    <option value="cash" th:text="#{value.status.cash}"></option>
+                                    <option value="invoice" th:text="#{value.status.invoice}"></option>
                                 </select>
                             </th>
                             <th>
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-status-payment_"
                                         name="statusPayment">
-                                    <option value="" selected>All</option>
-                                    <option value="payed">Payed</option>
-                                    <option value="unPayed">UnPayed</option>
-                                    <option value="inProcess">In process</option>
+                                    <option value="" selected th:text="#{value.status.all}"></option>
+                                    <option value="payed" th:text="#{value.status.payed}"></option>
+                                    <option value="unPayed" th:text="#{value.status.unPayed}"></option>
+                                    <option value="inProcess" th:text="#{value.status.inProcess}"></option>
                                 </select>
                             </th>
                         </tr>
@@ -133,6 +134,9 @@
                     htmx.trigger($("#date_")[0], 'input')
                 });
             }
+        });
+        $(document).ready(function (){
+            selectedLanguage();
         });
     </script>
 </div>

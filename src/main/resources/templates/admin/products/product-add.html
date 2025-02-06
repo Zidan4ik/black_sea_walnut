@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Black sea walnut</title>
+    <title th:text="#{table.header.product}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
@@ -26,12 +26,12 @@
                         <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
                     </a>
                 </div>
-                <div class="col-auto" style="padding-right: 5px;">Таблиця</div>
+                <div class="col-auto" style="padding-right: 5px;" th:text="#{text.table}"></div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;">Добавлення продукту</div>
+                <div class="col-auto" style="padding-left: 5px;" th:text="#{text.addProduct}"></div>
             </div>
             <div class="col-12 text-start">
-                <span class="title-out">Добавлення продукту</span>
+                <span class="title-out" th:text="#{text.addProduct}"></span>
             </div>
         </div>
         <!--/ Header content -->
@@ -99,7 +99,7 @@
                                     <div id="mass-block-uk"></div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="oldPrice_" class="form-label bold">Стара ціна:</label>
+                                    <label for="currentPrice_" class="form-label bold">Поточна ціна:</label>
                                     <div id="old-price-block-uk"></div>
                                 </div>
                                 <div class="col-6">
@@ -215,7 +215,7 @@
                                     <div id="mass-block-en"></div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="oldPrice_" class="form-label bold">Old price:</label>
+                                    <label for="currentPrice_" class="form-label bold">Current price:</label>
                                     <div id="old-price-block-en"></div>
                                 </div>
                                 <div class="col-6">
@@ -332,8 +332,8 @@
                              alt="error" style="width: 100%; height: 175px; display: block;">
                         <button type="button" data-type="image-description"
                                 class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                style="width: 55%;">
-                            Змінити
+                                style="width: 55%;"
+                        th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="image-description"
                                 class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -347,8 +347,8 @@
                 <div id="shared-image-packing" style="display: none;">
                     <div class="d-flex flex-column justify-content-center align-items-center"
                          style="flex: 1; text-align: center;">
-                                <span style="color: darkgrey; margin-top: 10px;">
-                                    png, jpg, jpeg, mp4 до 15 МБ
+                                <span style="color: darkgrey; margin-top: 10px;"
+                                      th:text="#{text.mediaSize15}">
                                 </span>
                     </div>
                     <div class="d-flex flex-column align-items-center ms-1 position-relative"
@@ -358,8 +358,8 @@
                              alt="error" style="width: 100%; height: 175px; display: block;">
                         <button type="button" data-type="image-packing"
                                 class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                style="width: 55%;">
-                            Змінити
+                                style="width: 55%;"
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="image-packing"
                                 class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -373,8 +373,8 @@
                 <div id="shared-image-payment" style="display: none;">
                     <div class="d-flex flex-column justify-content-center align-items-center"
                          style="flex: 1; text-align: center;">
-                                <span style="color: darkgrey; margin-top: 10px;">
-                                    png, jpg, jpeg, mp4 до 15 МБ
+                                <span style="color: darkgrey; margin-top: 10px;"
+                                      th:text="#{text.mediaSize15}">
                                 </span>
                     </div>
                     <div class="d-flex flex-column align-items-center ms-1 position-relative"
@@ -384,8 +384,8 @@
                              alt="error" style="width: 100%; height: 175px; display: block;">
                         <button type="button" data-type="image-payment"
                                 class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                style="width: 55%;">
-                            Змінити
+                                style="width: 55%;"
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="image-payment"
                                 class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -399,8 +399,8 @@
                 <div id="shared-image-delivery" style="display: none;">
                     <div class="d-flex flex-column justify-content-center align-items-center"
                          style="flex: 1; text-align: center;">
-                        <span style="color: darkgrey; margin-top: 10px;">
-                            png, jpg, jpeg, mp4 до 15 МБ
+                        <span style="color: darkgrey; margin-top: 10px;"
+                              th:text="#{text.mediaSize15}">
                         </span>
                     </div>
                     <div class="d-flex flex-column align-items-center ms-1 position-relative"
@@ -410,8 +410,8 @@
                              alt="error" style="width: 100%; height: 175px; display: block;">
                         <button type="button" data-type="image-delivery"
                                 class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                style="width: 55%;">
-                            Змінити
+                                style="width: 55%;"
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="image-delivery"
                                 class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -437,7 +437,7 @@
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <div class="col-3 d-flex align-items-center me-2 ms-2">
-                            <label class="form-label me-2" for="articleId_">Артикул:</label>
+                            <label class="form-label me-2" for="articleId_" th:text="#{text.article}+':'"></label>
                             <div class="input-group input-group-merge" style="width: 73%;">
                                 <input class="form-control" id="articleId_" data-name="articleId" placeholder="">
                                     <span class="input-group-text">
@@ -446,7 +446,7 @@
                             </div>
                         </div>
                         <div class="col-3 d-flex align-items-center flex-wrap">
-                            <label class="form-label me-2" for="amount_">Кількість:</label>
+                            <label class="form-label me-2" for="amount_" th:text="#{text.amount}+':'"></label>
                             <i class="ti ti-chevron-left icon-hover-arrow me-2" id="arrow-left"></i>
                             <input class="form-control text-center errorMy" id="amount_" data-name="amount"
                                    style="width: 20%;">
@@ -467,8 +467,8 @@
 
                         <button type="button" data-type="image1"
                                 class="btn btn-success btn-image position-absolute top-50 start-50 translate-middle btn-select"
-                                style="width: 55%;">
-                            Змінити
+                                style="width: 55%;"
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="image1"
                                 class="btn btnTrashMyBefore position-absolute top-0 end-0 me-2 mt-2 btn-delete">
@@ -485,8 +485,8 @@
                                  style="width: 100%; height: 110px; display: block; margin: 0 auto;">
                             <button type="button" data-type="image2"
                                     class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                    style="width: 50%">
-                                Змінити
+                                    style="width: 50%"
+                            th:text="#{text.button.change}">
                             </button>
                             <button type="button" data-type="image2"
                                     class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -500,8 +500,8 @@
                                  style="width: 100%; height: 110px; display: block; margin: 0 auto;">
                             <button type="button" data-type="image3"
                                     class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                    style="width: 50%">
-                                Змінити
+                                    style="width: 50%"
+                                    th:text="#{text.button.change}">
                             </button>
                             <button type="button" data-type="image3"
                                     class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -515,8 +515,8 @@
                                  style="width: 100%; height: 110px; display: block; margin: 0 auto;">
                             <button type="button" data-type="image4"
                                     class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
-                                    style="width: 50%">
-                                Змінити
+                                    style="width: 50%"
+                                    th:text="#{text.button.change}">
                             </button>
                             <button type="button" data-type="image4"
                                     class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -524,15 +524,16 @@
                             </button>
                         </div>
                     </div>
-                    <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;">
-                            png, jpg, jpeg, mp4 до 15 МБ
+                    <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;"
+                          th:text="#{text.mediaSize15}">
                     </span>
                 </div>
                 <!--/ Image Base -->
 
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
-                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;">Зберегти</button>
+                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
+                    th:text="#{text.button.save}"></button>
                 </div>
                 <!--/ Button save Base -->
 
@@ -550,7 +551,8 @@
 
                 <!-- Old price -->
                 <div id="shared-old-price">
-                    <input class="form-control" id="oldPrice_" data-name="oldPrice" type="text" placeholder=""/>
+                    <input class="form-control" id="currentPrice_" data-name="oldPrice" type="text" placeholder=""
+                    disabled/>
                 </div>
                 <!--/ Old price -->
 
@@ -661,7 +663,7 @@
                         addEventListenerNameManager();
                         getTastesAndDiscounts();
                         addEventListenerForSwitch();
-                        console.log(window.location.pathname);
+                        selectedLanguage();
                     });
                     const url = `${contextPath}admin/product/save`;
                     function getActiveLangTab() {
@@ -754,12 +756,7 @@
                         resForm.append("recipeEn", $('#recipe-en_').val());
                         resForm.append("conditionExploitationUk", $('#condition-exploitation-uk_').val());
                         resForm.append("conditionExploitationEn", $('#condition-exploitation-en_').val());
-
-                        resForm.append("prices", JSON.stringify({
-                            id: $('#discounts-uk_').val(),
-                            newPrice: $('#newPrice_').val(),
-                            oldPrice: $('#oldPrice_').val()
-                        }));
+                        resForm.append("newPrice", $('#newPrice_').val());
 
                         resForm.append("energyMass", $('#energyMass_').val());
                         resForm.append("mass", $('#mass_').val());
@@ -793,9 +790,7 @@
                                 resForm.append(fileObj.fieldName, file);
                             }
                         });
-
                         resForm.append("isActive", $("#status_").prop('checked'));
-
                         return resForm;
                     }
                 </script>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Black sea walnut</title>
+    <title th:text="#{text.news}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
@@ -24,7 +24,7 @@
                                                style="color: green;font-size: 30px;"></i></a>
             </div>
             <div class="col-auto text-start d-flex align-items-center">
-                <span class="title-out">Центр підтримки експорту</span>
+                <span class="title-out" th:text="#{text.exportSupportCenter}"></span>
             </div>
             <div class="col-sm-1 d-flex align-items-center">
                 <label class="switch switch-success">
@@ -46,7 +46,7 @@
                             style="margin-left: 15px;"
                             data-lang="ua">
                             <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UA
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
                             </span>
                         <i class="ti ti-planet ti-sm d-sm-none"></i>
                     </button>
@@ -56,7 +56,7 @@
                             data-bs-target="#navs-eng" aria-controls="navs-eng" aria-selected="false"
                             data-lang="eng">
                             <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>ENG
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
                             </span>
                         <i class="ti ti-planet ti-sm d-sm-none"></i>
                     </button>
@@ -88,6 +88,8 @@
                                      style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
                                 <input th:field="*{news.descriptionUA}"
                                        type="hidden" id="hidden-description-ua_" name="descriptionUA">
+                                <!--                                <div type="hidden" id="hidden-edit-description-uk" data-name="descriptionUk"-->
+                                <!--                                     style="display: none;" class="editors"></div>-->
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 mb-3 text-center">
@@ -157,26 +159,23 @@
                 <div id="shared-image" class="shared-image" style="display: none;">
                     <div class="text-center" style="position: relative; display: inline-block;">
                         <img th:src="${(!news.getPathToImage().isEmpty() && news.getPathToImage().contains('/image/')) ? news.getPathToImage():'/uploads/default/default-image.jpg'}"
-                             th:styleappend="${news.getPathToImage().contains('/image/')? '' : 'display:none;'}"
+                             th:styleappend="${news.getPathToImage().isEmpty()?'':(news.getPathToImage().contains('/image/')?'':'display:none;')}"
                              id="img_"
                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
                              alt="error"
                              style="width: 100%; height: 304px; display: block; margin: 0 auto;">
 
-                        <video th:src="${(!news.getPathToImage().isEmpty()) ? news.getPathToImage():'/uploads/default/default-image.jpg'}"
+                        <video th:src="${(news.getPathToImage() != null && !news.getPathToImage().isEmpty()) ? news.getPathToImage():'/uploads/default/default-image.jpg'}"
                                th:styleappend="${news.getPathToImage().contains('/video/')? '' : 'display:none;'}"
                                id="video_" controls
                                style="width: 345px; height: 304px; margin: 0 auto;"></video>
 
-                        <button type="button" id="btn-select_" class="btn btn-success btn-image" style="left: 13%;">
-                            Змінити
-                        </button>
-                        <button type="button" id="btn-delete_" class="btn btn-success btn-image" style="right: 13%;">
-                            Видалити
-                        </button>
-                        <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;">
-                        png, jpg, jpeg, mp4 до 15 МБ
-                        </span>
+                        <button type="button" id="btn-select_" class="btn btn-success btn-image" style="left: 13%;"
+                        th:text="#{text.button.change}"></button>
+                        <button type="button" id="btn-delete_" class="btn btn-success btn-image" style="right: 13%;"
+                        th:text="#{text.button.delete}"></button>
+                        <span style="font-size: large; color: darkgrey; display: block; margin-top: 10px;"
+                              th:text="#{text.mediaSize15}"></span>
                     </div>
                 </div>
                 <!--/ Image Base -->
@@ -194,7 +193,8 @@
 
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
-                    <button class="btn btn-green" type="submit" id="btn-save_" style="width: 25%;">Зберегти</button>
+                    <button class="btn btn-green" type="submit" id="btn-save_" style="width: 25%;"
+                    th:text="#{text.button.save}"></button>
                 </div>
                 <!--/ Button save Base -->
 
@@ -203,6 +203,7 @@
                 <script th:src="@{/js/validator.js}"></script>
                 <script th:src="@{/js/copy.js}"></script>
                 <script>
+                    const url = null;
                     document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
                         tab.addEventListener('shown.bs.tab', function (event) {
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
@@ -224,7 +225,7 @@
                         });
                     });
 
-                    document.addEventListener("DOMContentLoaded", function () {
+                    $(document).ready(function () {
                         let activeLang = getActiveLangTab();
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
                         copyHTMLBlockDate('shared-date', `date-of-publication-block-${activeLang}`);
@@ -242,8 +243,8 @@
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    // console.log('UA: ', html);
-                                    $("#hidden-description-ua_").html(html);
+                                    console.log('UA: ', html);
+                                    $("#hidden-description-ua_").val(html);
                                 }
                             }
                         });
@@ -258,10 +259,12 @@
                                 'contentChanged': function () {
                                     const html = this.html.get();
                                     console.log('EN: ', html);
-                                    $("#hidden-description-eng_").html(html);
+                                    $("#hidden-description-eng_").val(html);
                                 }
                             }
                         });
+
+                        selectedLanguage();
                     });
 
                     function getActiveLangTab() {

@@ -1,0 +1,30 @@
+<tbody>
+<tr th:if="${data.size()>0}" th:each="item : ${data}">
+    <td th:text="${item.id}"></td>
+    <td th:text="${item.date}"></td>
+    <td th:text="${item.time}"></td>
+    <td th:text="${item.phone}"></td>
+    <td th:style="${item.status.equals('close')} ? 'background-color: red;color:white;' : ''">
+        <span th:if="${item.status == 'all'}" th:text="#{value.status.all}"></span>
+        <span th:if="${item.status == 'close'}" th:text="#{value.status.close}"></span>
+        <span th:if="${item.status == 'new_'}" th:text="#{value.status.new}"></span>
+    </td>
+    <td>
+        <div class="text-center row" style="width: auto;">
+            <div class="col-6 form-check d-flex justify-content-end mt-1">
+                <input class="form-check-input selectors" type="checkbox" value="" th:data-id="${item.id}" />
+            </div>
+            <div class="col-6 mt-1">
+                <a class="delete-icon d-flex" type="button" th:data-id="${item.id}">
+                    <i class="ti ti-trash btnTrashMyBefore"></i>
+                </a>
+            </div>
+        </div>
+    </td>
+</tr>
+<tr th:unless="${data.size()>0}">
+    <td colspan="9" style="text-align: center; color: gray; font-style: italic;"
+    th:text="#{text.table.exist}">
+    </td>
+</tr>
+</tbody>

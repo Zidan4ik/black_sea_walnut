@@ -20,5 +20,6 @@ public class TabTranslation {
     @Enumerated(EnumType.STRING)
     private LanguageCode languageCode;
     private String title;
+    @Lob
     private String description;
 }

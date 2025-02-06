@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Storage</title>
+    <title th:text="#{text.storage}"></title>
     <style>
          .btn-productsMy {
              padding: 10px 30px;
@@ -41,14 +41,19 @@
         <div>
             <div class="mb-5">
                 <a class="btn btn-secondary btn-productsMy"
-                th:href="@{/admin/products/configuration}">Configuration</a>
+                th:href="@{/admin/products/configuration}" th:text="#{text.configuration}"></a>
             </div>
             <div>
                 <a class="btn btn-secondary btn-productsMy"
-                th:href="@{/admin/products}">Products</a>
+                th:href="@{/admin/products}" th:text="#{text.products}"></a>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function (){
+            selectedLanguage();
+        });
+    </script>
 </div>
 <!--/ Content -->
 </body>

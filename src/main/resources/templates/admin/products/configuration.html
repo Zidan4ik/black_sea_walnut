@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Configuration</title>
+    <title th:text="#{text.configuration}"></title>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <style>
         .icon-plus {
@@ -50,7 +50,7 @@
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <div class="row">
             <div class="col">
-                <h4 class="fw-bold">Tastes</h4>
+                <h4 class="fw-bold" th:text="#{text.tastes}"></h4>
                 <div class="icon-container" id="btnAdd-taste" data-modal="ModalForSaveTaste"
                      aria-hidden="true">
                     <span class="icon-plus">+</span>
@@ -60,31 +60,17 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Name</th>
-                            <th>Actions</th>
+                            <th th:text="#{table.header.name}"></th>
+                            <th th:text="#{table.header.functions}"></th>
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0" id="table-data-container-tastes_">
-                        <tr>
-                            <td>1</td>
-                            <td>Sweet</td>
-                            <td>
-                                <div class="text-center" style="width: auto;">
-                                    <span class="edit-icon" data-type="taste">
-                                        <i class="ti ti-pencil"></i>
-                                    </span>
-                                    <span class="delete-icon" data-type="taste">
-                                        <i class="ti ti-trash"></i>
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="col">
-                <h4 class="fw-bold">Discount</h4>
+                <h4 class="fw-bold" th:text="#{text.discount}"></h4>
                 <div class="icon-container" id="btnAdd-discount" data-modal="ModalForSaveDiscount"
                      aria-hidden="true">
                     <span class="icon-plus">+</span>
@@ -94,25 +80,12 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Name</th>
-                            <th>Actions</th>
+                            <th th:text="#{table.header.name}"></th>
+                            <th th:text="#{text.percent}"></th>
+                            <th th:text="#{table.header.functions}"></th>
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0" id="table-data-container-discounts_">
-                        <tr>
-                            <td>1</td>
-                            <td>Sweet</td>
-                            <td>
-                                <div class="text-center" style="width: auto;">
-                                    <span class="edit-icon" data-type="discount">
-                                        <i class="ti ti-pencil"></i>
-                                    </span>
-                                    <span class="delete-icon" data-type="discount">
-                                        <i class="ti ti-trash"></i>
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -157,8 +130,8 @@
                                     <div class="col-md-12">
                                         <label class="form-label" for="tasteName-uk_">Ім'я:</label>
                                         <input class="form-control fields-entity" type="text" id="tasteName-uk_"
-                                               data-name="tasteNameUk"
-                                               placeholder="Джон Дуе" style="border: 1px solid rebeccapurple;">
+                                               data-name="nameUk"
+                                               placeholder="Класичний" style="border: 1px solid rebeccapurple;">
                                     </div>
                                 </div>
                             </div>
@@ -172,8 +145,8 @@
                                     <div class="col-md-12">
                                         <label class="form-label" for="tasteName-en_">Name:</label>
                                         <input class="form-control fields-entity" type="text" id="tasteName-en_"
-                                               data-name="tasteNameEn"
-                                               placeholder="John Doe" style="border: 1px solid rebeccapurple;">
+                                               data-name="nameEn"
+                                               placeholder="Classical" style="border: 1px solid rebeccapurple;">
                                     </div>
                                 </div>
                             </div>
@@ -181,10 +154,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success float-end" id="save-taste_"
-                                style="width: 100%">
-                            Save taste
+                                style="width: 100%" th:text="#{text.button.saveTaste}">
                         </button>
                     </div>
+                    <input data-name="tasteIdUk" type="text" style="display: none;">
+                    <input data-name="tasteIdEn" type="text" style="display: none;">
                 </div>
             </div>
         </div>
@@ -230,7 +204,7 @@
                                     <div class="col-md-12">
                                         <label class="form-label" for="discountName-uk_">Ім'я:</label>
                                         <input class="form-control fields-entity" type="text"
-                                               id="discountName-uk_" data-name="discountNameUk"
+                                               id="discountName-uk_" data-name="nameUk2"
                                                placeholder="Новий" style="border: 1px solid rebeccapurple;">
                                     </div>
                                     <div id="percent-block-uk" class="col-md-12"></div>
@@ -246,7 +220,7 @@
                                     <div class="col-md-12">
                                         <label class="form-label" for="discountName-en_">Name:</label>
                                         <input class="form-control fields-entity" type="text" id="discountName-en_"
-                                               data-name="discountNameEn"
+                                               data-name="nameEn2"
                                                placeholder="New" style="border: 1px solid rebeccapurple;">
                                     </div>
                                     <div id="percent-block-en" class="col-md-12"></div>
@@ -256,11 +230,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success float-end" id="save-discount_"
-                                style="width: 100%">
-                            Save taste
+                                style="width: 100%" th:text="#{text.button.saveDiscount}">
                         </button>
                     </div>
                 </div>
+                <input data-name="discountIdUk" type="text" style="display: none;">
+                <input data-name="discountIdEn" type="text" style="display: none;">
             </div>
         </div>
     </div>
@@ -269,7 +244,7 @@
     <!-- Taste Id -->
     <div id="shared-tasteId" style="display: none;">
         <label class="form-label" for="tasteId_">Id:</label>
-        <input class="form-control" type="text" id="tasteId_" data-name="tasteId"
+        <input class="form-control" type="text" id="tasteId_" data-name="commonId"
                placeholder="1" style="border: 1px solid rebeccapurple;">
     </div>
     <!--/ Taste Id -->
@@ -277,7 +252,7 @@
     <!-- Discount Id -->
     <div id="shared-discountId" style="display: none;">
         <label class="form-label" for="discountId_">Id:</label>
-        <input class="form-control" type="text" id="discountId_" data-name="discountId"
+        <input class="form-control" type="text" id="discountId_" data-name="discountCommonId"
                placeholder="1" style="border: 1px solid rebeccapurple;">
     </div>
     <!--/ Discount Id -->
@@ -297,24 +272,24 @@
         document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
             tab.addEventListener('shown.bs.tab', function (event) {
                 let attribute = this.getAttribute('data-type');
-                console.log(attribute);
+                // console.log(attribute);
                 const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                 let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
 
                 // console.log(`Switched to tab: ${activatedTabId}`);
-                console.log(`Previous: ${previousActiveTab}`);
-                console.log(`Active: ${activatedTabId}`);
+                // console.log(`Previous: ${previousActiveTab}`);
+                // console.log(`Active: ${activatedTabId}`);
 
                 if (previousActiveTab && attribute === 'taste') {
                     copyHTMLBlockInput(`tasteId-block-${previousActiveTab}`, `shared-tasteId`);
-                }else if(previousActiveTab && attribute === 'discount'){
+                } else if (previousActiveTab && attribute === 'discount') {
                     copyHTMLBlockInput(`discountId-block-${previousActiveTab}`, `shared-discountId`);
                     copyHTMLBlockInput(`percent-block-${previousActiveTab}`, `shared-percent`);
                 }
 
                 if (activatedTabId && attribute === 'taste') {
                     copyHTMLBlockInput(`shared-tasteId`, `tasteId-block-${activatedTabId}`);
-               } else if(activatedTabId && attribute === 'discount'){
+                } else if (activatedTabId && attribute === 'discount') {
                     copyHTMLBlockInput(`shared-discountId`, `discountId-block-${activatedTabId}`);
                     copyHTMLBlockInput(`shared-percent`, `percent-block-${activatedTabId}`);
                 }
@@ -327,18 +302,26 @@
 
         function getFormDataTaste() {
             const resForm = new FormData();
-            resForm.append("tasteId", $('#tasteId_').val());
-            resForm.append("tasteNameUk", $('#tasteName-uk_').val());
-            resForm.append("tasteNameEn", $('#tasteName-en_').val());
+            // let tasteIdUk = $('input[data-name="tasteIdUk"]');
+            // let tasteIdEn = $('input[data-name="tasteIdEn"]');
+            // if (tasteIdUk && tasteIdEn) {
+            resForm.append("tasteIdUk", $('input[data-name="tasteIdUk"]').val());
+            resForm.append("tasteIdEn", $('input[data-name="tasteIdEn"]').val());
+            // }
+            resForm.append("commonId", $('#tasteId_').val());
+            resForm.append("nameUk", $('#tasteName-uk_').val());
+            resForm.append("nameEn", $('#tasteName-en_').val());
             return resForm;
         }
 
         function getFormDataDiscount() {
             const resForm = new FormData();
-            resForm.append("discountId", $('#discountId_').val());
-            resForm.append("discountNameUk", $('#discountName-uk_').val());
-            resForm.append("discountNameEN", $('#discountName-en_').val());
+            resForm.append("discountIdUk", $('input[data-name="discountIdUk"]').val());
+            resForm.append("discountIdEn", $('input[data-name="discountIdEn"]').val());
+            resForm.append("discountCommonId", $('#discountId_').val());
             resForm.append("value", $('#percent_').val());
+            resForm.append("nameUk2", $('#discountName-uk_').val());
+            resForm.append("nameEn2", $('#discountName-en_').val());
             return resForm;
         }
 
@@ -351,8 +334,7 @@
                 processData: false,
                 contentType: false,
                 success: function () {
-                    // window.location.replace(`${contextPath}admin/products/configuration`);
-
+                    window.location.reload();
                 },
                 error: function (error) {
                     clearValid();
@@ -389,20 +371,18 @@
                 let id = this.getAttribute('data-id');
                 // console.log(attribute);
                 if ($(this).hasClass('edit-icon') && attribute === 'taste') {
-                    console.log(id);
                     requestGetTaste(`${contextPath}admin/taste/${id}`);
                 } else if ($(this).hasClass('delete-icon') && attribute === 'taste') {
-                    console.log('Delete taste');
+                    deleteEntityById(`${contextPath}admin/taste/${id}/delete`);
                 }
             });
             $("#table-data-container-discounts_").on('click', '.edit-icon, .delete-icon', function () {
                 let attribute = this.getAttribute('data-type');
                 let id = this.getAttribute('data-id');
                 if ($(this).hasClass('edit-icon') && attribute === 'discount') {
-                    console.log('Edit discount')
                     requestGetDiscount(`${contextPath}admin/discount/${id}`);
                 } else if ($(this).hasClass('delete-icon') && attribute === 'discount') {
-                    console.log('Delete discount');
+                    deleteEntityById(`${contextPath}admin/discount/${id}/delete`);
                 }
             });
         }
@@ -412,16 +392,19 @@
                 $('#tasteName-uk_').val('');
                 $('#tasteName-en_').val('');
                 $('#tasteId_').val('');
+                $('input[data-name="tasteIdUk"]').val('');
+                $('input[data-name="tasteIdEn"]').val('');
                 const modal = new bootstrap.Modal(document.getElementById('ModalForSaveTaste'));
                 modal.show();
             });
 
             document.getElementById('btnAdd-discount').addEventListener('click', () => {
-                // setActiveTab('ModalForSaveDiscount');
                 $('#discountName-uk_').val('');
                 $('#discountName-en_').val('');
                 $('#discountId_').val('');
                 $('#percent_').val('');
+                $('input[data-name="discountIdUk"]').val('');
+                $('input[data-name="discountIdEn"]').val('');
                 const modal = new bootstrap.Modal(document.getElementById('ModalForSaveDiscount'));
                 modal.show();
             });
@@ -444,6 +427,7 @@
             copyHTMLBlockInput('shared-discountId', `discountId-block-${activeLang}`);
             copyHTMLBlockInput(`shared-percent`, `percent-block-${activeLang}`);
             // requestGetTaste(`${contextPath}admin/taste/${id}`);
+            selectedLanguage();
         });
 
         function requestGetTaste(url) {
@@ -453,18 +437,31 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    console.log(data);
+                    // console.log(data);
                     const modal = new bootstrap.Modal(document.querySelector("#ModalForSaveTaste"));
                     modal.show();
                     for (let key in data) {
                         if (data.hasOwnProperty(key) && data[key] !== '') {
-                            console.log(`Key: ${key} Value: ${data[key]}`);
+                            // console.log(`Key: ${key} Value: ${data[key]}`);
+                            if (key === 'id')
+                                $(`#unique-id-taste`).val(data[key]);
                             let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
                             if (input) {
                                 input.val(data[key]);
                             }
                         }
                     }
+                }
+            });
+        }
+
+        function deleteEntityById(url) {
+            let request = new XMLHttpRequest();
+            request.open("DELETE", url);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    window.location.reload();
                 }
             });
         }
@@ -476,12 +473,14 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    console.log(data);
+                    // console.log(data);
                     const modal = new bootstrap.Modal(document.querySelector("#ModalForSaveDiscount"));
                     modal.show();
                     for (let key in data) {
                         if (data.hasOwnProperty(key) && data[key] !== '') {
-                            console.log(`Key: ${key} Value: ${data[key]}`);
+                            // console.log(`Key: ${key} Value: ${data[key]}`);
+                            if (key === 'id')
+                                $(`#unique-id-discount`).val(data[key]);
                             let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
                             if (input) {
                                 input.val(data[key]);
@@ -494,7 +493,7 @@
 
         function requestGetTastes() {
             let request = new XMLHttpRequest();
-            request.open("GET", `${contextPath}admin/tastes?languageCode=${getActiveLangTab()}`);
+            request.open("GET", `${contextPath}admin/tastes?languageCode=${getCurrentLang()}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
@@ -513,14 +512,14 @@
 
         function requestGetDiscounts() {
             let request = new XMLHttpRequest();
-            request.open("GET", `${contextPath}admin/discounts?languageCode=${getActiveLangTab()}`);
+            request.open("GET", `${contextPath}admin/discounts?languageCode=${getCurrentLang()}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
                     const containerTable = document.getElementById("table-data-container-discounts_");
                     containerTable.innerHTML = '';
-                    console.log(data);
+                    // console.log(data);
                     if (data.length > 0) {
                         data.forEach(function (element) {
                             containerTable.innerHTML += getRowData2(element);

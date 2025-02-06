@@ -23,6 +23,6 @@ public class ClientBannerRequestForAdd {
     private String clientsBannerDescriptionEn;
     @Setter
     private String clientsBannerPathToBanner;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile clientsBannerFile;
 }

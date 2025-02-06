@@ -39,7 +39,7 @@ public class Order {
     private PaymentType paymentType;
     private boolean isPayed;
     private LocalDate dateOfOrdering;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
     @ManyToMany
     private List<DeliveryPrice> deliveryPrices;

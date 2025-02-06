@@ -24,6 +24,6 @@ public class AimBlockRequestForAdd {
     private String mainAimDescriptionEn;
     @Setter
     private String mainAimPathToBanner;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile mainAimFileBanner;
 }

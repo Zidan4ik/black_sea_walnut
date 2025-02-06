@@ -1,0 +1,28 @@
+<tbody>
+<tr th:if="${data.size()>0}" th:each="item : ${data}">
+    <td style="text-align: center;" th:text="${item.id}"></td>
+    <td style="text-align: center;" th:text="${item.date}"></td>
+    <td style="text-align: center;" th:text="${item.statusOrder}">
+        <span th:if="${item.statusOrder == 'inProgress'}" th:text="#{value.status.inProcess}"></span>
+        <span th:if="${item.statusOrder == 'new_'}" th:text="#{value.status.new}"></span>
+        <span th:if="${item.statusOrder == 'close'}" th:text="#{value.status.close}"></span>
+        <span th:if="${item.statusOrder == 'cancel'}" th:text="#{value.status.cancel}"></span>
+    </td>
+    <td style="text-align: center;" th:text="${item.price}"></td>
+    <td style="text-align: center;" th:text="${item.statusPayment}">
+        <span th:if="${item.statusPayment == 'payed'}" th:text="#{value.status.payed}"></span>
+        <span th:if="${item.statusPayment == 'unPayed'}" th:text="#{value.status.unPayed}"></span>
+        <span th:if="${item.statusPayment == 'inProcess'}" th:text="#{value.status.inProcess}"></span>
+    </td>
+    <td>
+        <div class="text-center" style="width: auto;">
+            <a class="edit-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-eye" style="font-size: x-large;"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+<tr th:unless="${data.size()>0}">
+    <td colspan="6" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}"></td>
+</tr>
+</tbody>

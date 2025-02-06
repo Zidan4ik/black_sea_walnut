@@ -13,16 +13,16 @@ public class HistoryPricesMapper {
     public HistoryResponsePricesForProduct toDTOForView(HistoryPrices entity) {
         return HistoryResponsePricesForProduct
                 .builder()
-                .id(entity.getId())
-                .newPrice(String.valueOf(entity.getNewPrice()))
-                .oldPrice(String.valueOf(entity.getOldPrice()))
+//                .id(entity.getId())
+//                .newPrice(String.valueOf(entity.getNewPrice()))
+                .oldPrice(String.valueOf(entity.getCurrentPrice()))
                 .build();
     }
 
     public HistoryPrices toEntityForAdd(HistoryRequestPricesForProduct dto) {
         HistoryPrices entity = new HistoryPrices();
         entity.setId(dto.getId());
-        entity.setOldPrice(dto.getOldPrice().intValue());
+        entity.setCurrentPrice(dto.getOldPrice().intValue());
         entity.setNewPrice(dto.getNewPrice().intValue());
         entity.setValidFrom(LocalDateTime.now());
         entity.setValidTo(LocalDateTime.now().plusDays(30));

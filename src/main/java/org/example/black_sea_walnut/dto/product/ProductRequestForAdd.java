@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @IsExistProductValidation
 public class ProductRequestForAdd {
     private Long id;
-    @NumberNullValidation(message = "The article id should be present!")
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long articleId;
     private Boolean isActive;
@@ -30,10 +30,10 @@ public class ProductRequestForAdd {
     private String nameUk;
     @NotBlank(message = "{error.field.empty}")
     private String nameEn;
-    @NumberNullValidation
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long energyMass;
-    @NumberNullValidation
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long mass;
     @Size(max = 500, message = "{error.field.valid.size}")
@@ -68,23 +68,23 @@ public class ProductRequestForAdd {
     private String pathToImagePacking;
     private String pathToImagePayment;
     private String pathToImageDelivery;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile image1;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile image2;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile image3;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile image4;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile imageDescription;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile imagePayment;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile imagePacking;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile imageDelivery;
-    private String prices;
     private Long tasteId;
     private Long discountId;
+    private Integer newPrice;
 }

@@ -1,8 +1,8 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.ResponseNewForAdd;
-import org.example.black_sea_walnut.dto.ResponseNewForView;
+import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
@@ -17,13 +17,13 @@ public interface NewService {
 
     New getById(Long id);
 
-    ResponseNewForAdd getByIdLikeDTO(Long id);
+    NewRequestForAdd getByIdLikeDTO(Long id);
 
     New save(New entity);
 
-    New saveLikeDto(ResponseNewForAdd dto);
+    New saveLikeDto(NewRequestForAdd dto);
 
-    New saveImage(ResponseNewForAdd dto) throws IOException;
+    New saveImage(NewRequestForAdd dto) throws IOException;
 
     void deleteById(Long id);
 }

@@ -1,6 +1,6 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.ResponseOrderDetailForView;
+import org.example.black_sea_walnut.dto.order.ResponseOrderDetailForView;
 
 import java.util.List;
 

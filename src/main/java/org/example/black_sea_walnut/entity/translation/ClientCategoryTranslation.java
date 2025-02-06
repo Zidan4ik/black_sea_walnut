@@ -22,6 +22,7 @@ public class ClientCategoryTranslation {
     private LanguageCode languageCode;
     private String title;
     private String subtitle;
+    @Lob
     private String description;
     @ManyToOne
     @JoinColumn(name = "clientCategory_id")

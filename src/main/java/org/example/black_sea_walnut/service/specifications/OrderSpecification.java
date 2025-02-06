@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service.specifications;
 
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.enums.DeliveryStatus;
 import org.example.black_sea_walnut.enums.OrderStatus;

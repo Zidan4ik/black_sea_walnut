@@ -11,14 +11,16 @@ import org.example.black_sea_walnut.validator.annotation.NumberNullValidation;
 @Getter
 @IsExistDiscountValidation
 public class DiscountRequestForAdd {
-    private Long id;
-    @NumberNullValidation(message = "The discount id should be present!")
+    private Long discountIdUk;
+    private Long discountIdEn;
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
-    private Long discountId;
+    private Long discountCommonId;
     @NotBlank(message = "{error.field.empty}")
     private String nameUk2;
     @NotBlank(message = "{error.field.empty}")
     private String nameEn2;
     @Min(value = 0, message = "{error.field.valid.min.value}")
+    @NumberNullValidation(message ="{error.field.empty.number}")
     private Long value;
 }

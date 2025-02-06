@@ -19,10 +19,17 @@ public class HistoryPrices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int newPrice;
-    private int oldPrice;
+    private int currentPrice;
     private LocalDateTime validFrom;
     private LocalDateTime validTo;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    public HistoryPrices(int currentPrice, LocalDateTime validFrom, LocalDateTime validTo, Product product) {
+        this.currentPrice = currentPrice;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
+        this.product = product;
+    }
 }

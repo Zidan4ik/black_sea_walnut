@@ -11,10 +11,11 @@ import org.example.black_sea_walnut.validator.annotation.NumberNullValidation;
 @Getter
 @IsExistTasteValidation
 public class TasteRequestForAdd {
-    private Long id;
-    @NumberNullValidation(message = "The taste id should be present!")
+    private Long tasteIdUk;
+    private Long tasteIdEn;
+    @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
-    private Long tasteId;
+    private Long commonId;
     @NotBlank(message = "{error.field.empty}")
     private String nameUk;
     @NotBlank(message = "{error.field.empty}")

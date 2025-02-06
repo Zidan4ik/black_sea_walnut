@@ -9,7 +9,7 @@ function clearValid() {
 
 function validate(data) {
     Object.entries(data).forEach(function ([field, message]) {
-        // console.log("Field:", field, "Message:", message);
+        console.log("Field:", field, "Message:", message);
         const inputField = document.getElementById(field + `_`);
         if (inputField) {
             inputField.classList.add("errorMy");
@@ -66,7 +66,7 @@ function validate3(data) {
         const inputField = document.querySelector(`[data-error=${escapedField}]`);
         // console.log(inputField);
         if (inputField) {
-            // console.log("Field:", field, "Message:", message);
+            console.log("Field:", field, "Message:", message);
             inputField.classList.add("errorMy");
             let errorMessage = document.createElement("span");
             errorMessage.className = "error-message";

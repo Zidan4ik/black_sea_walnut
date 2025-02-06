@@ -7,14 +7,17 @@
   <td th:text="${item.summa}"></td>
   <td th:text="${item.phone}"></td>
   <td th:text="${item.email}"></td>
-  <td th:text="${item.typeOfPayment}"></td>
-  <td th:if="${item.statusPayment}=='payed'"  th:text="${item.statusPayment}" class="bg-greenMy" style="background-color: green;"></td>
-  <td th:if="${item.statusPayment}=='unPayed'"  th:text="${item.statusPayment}" class="bg-redMy"></td>
-  <td th:if="${item.statusPayment}=='inProcess'"  th:text="${item.statusPayment}" class="bg-orangeMy"></td>
+  <td>
+    <span th:if="${item.typeOfPayment == 'invoice'}" th:text="#{value.status.invoice}"></span>
+    <span th:if="${item.typeOfPayment == 'card'}" th:text="#{value.status.card}"></span>
+    <span th:if="${item.typeOfPayment == 'cash'}" th:text="#{value.status.cash}"></span>
+  </td>
+  <td th:if="${item.statusPayment} == 'payed'"  th:text="#{value.status.payed}" class="bg-greenMy" style="background-color: green;"></td>
+  <td th:if="${item.statusPayment} == 'unPayed'"  th:text="#{value.status.unPayed}" class="bg-redMy"></td>
+  <td th:if="${item.statusPayment} == 'inProcess'"  th:text="#{value.status.inProcess}" class="bg-orangeMy"></td>
 </tr>
 <tr th:unless="${data.size()>0}">
-  <td colspan="9" style="text-align: center; color: gray; font-style: italic;">No data
-    available in table
+  <td colspan="9" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}">
   </td>
 </tr>
 </tbody>

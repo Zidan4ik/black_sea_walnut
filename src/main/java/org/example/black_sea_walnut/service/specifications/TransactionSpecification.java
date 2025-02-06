@@ -1,10 +1,8 @@
 package org.example.black_sea_walnut.service.specifications;
 
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.ResponseTransactionForView;
-import org.example.black_sea_walnut.entity.Order;
+import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.entity.Transaction;
-import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PaymentStatus;
 import org.example.black_sea_walnut.enums.PaymentType;
 import org.springframework.data.jpa.domain.Specification;

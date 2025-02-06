@@ -4,8 +4,8 @@ package org.example.black_sea_walnut.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.ResponseNewForAdd;
-import org.example.black_sea_walnut.dto.ResponseNewForView;
+import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.NewService;
 import org.springframework.data.domain.PageRequest;
@@ -81,7 +81,7 @@ public class NewController {
     @GetMapping("/new/edit/{id}")
     public ModelAndView editNew(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("admin/news/new-edit");
-        ResponseNewForAdd byIdLikeDTO = newService.getByIdLikeDTO(id);
+        NewRequestForAdd byIdLikeDTO = newService.getByIdLikeDTO(id);
         model.addObject("news", byIdLikeDTO);
         return model;
     }
@@ -98,7 +98,7 @@ public class NewController {
     }
 
     @PostMapping(value = "/new/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> saveNew(@ModelAttribute @Valid ResponseNewForAdd dto,
+    public ResponseEntity<?> saveNew(@ModelAttribute @Valid NewRequestForAdd dto,
                                      BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();

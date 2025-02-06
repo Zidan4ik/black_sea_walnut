@@ -24,6 +24,6 @@ public class MainBlockRequestForAdd {
     private String mainDescriptionEn;
     @Setter
     private String mainPathToBanner;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile mainFileBanner;
 }

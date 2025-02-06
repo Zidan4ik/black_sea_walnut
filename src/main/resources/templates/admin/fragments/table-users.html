@@ -1,0 +1,36 @@
+<tbody>
+<tr th:if="${data.size()>0}" th:each="item : ${data}">
+    <td th:text="${item.id}"></td>
+    <td th:text="${item.fullName}"></td>
+    <td th:text="${item.email}"></td>
+    <td th:text="${item.dateOfRegistration}"></td>
+    <td>
+        <span th:if="${item.registrationType == 'fop'}" th:text="#{value.registration-type.fop}"></span>
+        <span th:if="${item.registrationType == 'legal'}" th:text="#{value.registration-type.legal}"></span>
+        <span th:if="${item.registrationType == 'individual'}" th:text="#{value.registration-type.individual}"></span>
+    </td>
+    <td th:text="${item.amountOrders}"></td>
+    <td th:style="${item.userStatus.equals('isDeleted')} ? 'background-color: red;color:white;' : ''">
+        <span th:if="${item.userStatus == 'isActive'}" th:text="#{value.status.active}"></span>
+        <span th:if="${item.userStatus == 'isDeleted'}" th:text="#{value.status.deleted}"></span>
+    </td>
+    <td th:text="${item.phone}"></td>
+    <td>
+        <div class="text-center" style="width: auto;">
+            <a class="btn btn-sm btn-github edit-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-edit"></i>
+            </a>
+            <a th:if="${item.userStatus.equals('isDeleted')}" class="btn btn-sm btn-github user-status-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-arrow-back-up"></i>
+            </a>
+            <a th:if="${item.userStatus.equals('isActive')}" class="btn btn-sm btn-github user-status-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-forbid"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+<tr th:unless="${data.size()>0}">
+    <td colspan="9" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}">
+    </td>
+</tr>
+</tbody>

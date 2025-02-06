@@ -92,14 +92,10 @@ public class ProductController {
     @PostMapping("/product/save")
     public ResponseEntity<?> saveProduct(@Valid ProductRequestForAdd dto,
                                          BindingResult bindingResult) {
-        HistoryRequestPricesForProduct readValue = JsonUtil.parseObject(dto.getPrices(), HistoryRequestPricesForProduct.class);
-        BindingResult br = new BeanPropertyBindingResult(readValue, "prices");
-        validator.validate(readValue, br);
 
-        if (bindingResult.hasErrors() || br.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            br.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
             return ResponseEntity
                     .status(HttpStatus.valueOf(400))
@@ -107,8 +103,6 @@ public class ProductController {
                     .body(errors);
         }
         Product product = productService.save(dto);
-        readValue.setProductId(product.getId());
-        historyPricesService.save(readValue);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -131,15 +125,16 @@ public class ProductController {
     }
 
     @SneakyThrows
-    @GetMapping("/product/{id}/delete")
-    public ModelAndView deleteProduct(@PathVariable Long id) {
+    @DeleteMapping("/product/{id}/delete")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         productService.deleteById(id);
-        return new ModelAndView("redirect:/admin/products");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/product/{id}")
     @ResponseBody
     public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id){
-        return new ResponseEntity<>(productService.getByIdLikeDTOAdd(id),HttpStatus.OK);
+        ResponseEntity<ProductResponseForAdd> productResponseForAddResponseEntity = new ResponseEntity<>(productService.getByIdLikeDTOAdd(id), HttpStatus.OK);
+        return productResponseForAddResponseEntity;
     }
 
     @GetMapping("/products/configuration")

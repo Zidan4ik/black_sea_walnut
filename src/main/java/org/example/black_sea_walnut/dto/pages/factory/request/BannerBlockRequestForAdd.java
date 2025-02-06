@@ -24,6 +24,6 @@ public class BannerBlockRequestForAdd {
     private String factoryBannerDescriptionEn;
     @Setter
     private String factoryBannerPathToBanner;
-    @MediaValidation(allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile factoryBannerFile;
 }   

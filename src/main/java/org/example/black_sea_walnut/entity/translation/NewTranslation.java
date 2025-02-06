@@ -21,6 +21,7 @@ public class NewTranslation {
     @Enumerated(EnumType.STRING)
     private LanguageCode languageCode;
     private String title;
+    @Lob
     private String description;
     @ManyToOne
     @JoinColumn(name = "new_id")

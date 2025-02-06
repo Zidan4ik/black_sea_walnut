@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.dto;
+package org.example.black_sea_walnut.dto.new_;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @Getter
 @Setter
-public class ResponseNewForAdd {
+public class NewRequestForAdd {
     private Long id;
     private boolean isActive;
     @NotBlank(message = "{error.field.empty}")
@@ -23,7 +23,7 @@ public class ResponseNewForAdd {
     @NotBlank(message = "{error.field.empty}")
     private String dateOfPublication;
     private String pathToImage;
-    @MediaValidation(allowedTypes = {"image/png","image/jpg","image/jpeg","video/mp4"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg", "video/mp4"})
     private MultipartFile file;
     private MediaType mediaType;
 }
