@@ -20,6 +20,6 @@ public class Manager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String phone;
-    @OneToMany
+    @OneToMany(mappedBy = "manager",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ManagerTranslation> translations;
 }

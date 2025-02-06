@@ -1,10 +1,13 @@
 package org.example.black_sea_walnut.dto.manager;
 
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
+@Data
 @Builder
-@Getter
 public class ManagerResponseForView {
     private Long id;
+    private String name;
+    private String surname;
+    private String phone;
 }
