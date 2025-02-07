@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{admin/blocks/layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.managers}"></title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <h4 class="text-center fw-bold" th:text="#{text.table.managers}"></h4>
+        <div class="card" id="card-block" style="width: 1220px;">
+            <h5 class="card-header" th:text="#{text.managers}"></h5>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="d-flex align-items-center">
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
+                                    th:text="#{text.show}"></span>
+                                <select class="form-select mx-2 select-card-block-spinner"
+                                        id="pick-size-for-pagination_"
+                                        name="size">
+                                    <option value="1">1</option>
+                                    <option value="3">3</option>
+                                    <option value="5" selected>5</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select> <span th:text="#{text.entries}"></span></label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 text-end">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-9 text-end">
+                                <a id="btnAdd-manager" class="btn btn-green" style="border-radius: 30%;width: 1%;">
+                                    <i class="ti ti-plus" style="color: white;"></i>
+                                </a>
+                            </div>
+                            <div class="col-3 text-start" style="font-weight: bold;font-size: large;"
+                                 th:text="#{text.button.add}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table class="table table-bordered table-hover linkedRow"
+                           style="table-layout: fixed; position: static; zoom: 1;"
+                           id="table-data-container_">
+                        <thead>
+                        <tr>
+                            <th style="width: 200px">ID</th>
+                            <th style="width: 200px" th:text="#{table.header.name}"></th>
+                            <th style="width: 200px" th:text="#{table.header.surname}"></th>
+                            <th style="width: 200px" th:text="#{table.header.phone}"></th>
+                            <th style="width: 200px" th:text="#{table.header.functions}"></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control input-card-block-spinner"
+                                       name="id"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="name"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="surname"/>
+                            </th>
+                            <th>
+                                <input class="form-control input-card-block-spinner" name="phone"/>
+                            </th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div id="table-pagination-container_"></div>
+                <input type="hidden" name="languageCode" value="en" id="languageCode_">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Taste -->
+    <div class="modal fade show modal-sm" id="ModalManager" tabindex="" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="nav-align-top">
+                    <ul class="nav nav-tabs gap-3" role="tablist" style="background: none;">
+                        <li class="nav-item">
+                            <button type="button" class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
+                                    style="margin-left: 15px;" data-lang="uk" data-type="taste">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
+                            </span>
+                                <i class="ti ti-planet ti-sm d-sm-none"></i>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
+                                    data-lang="en" data-type="taste">
+                            <span class="d-none d-sm-block">
+                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
+                            </span>
+                                <i class="ti ti-planet ti-sm d-sm-none"></i>
+                            </button>
+                        </li>
+                        <input type="hidden" id="id_" data-name="id">
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="navs-uk" role="tabpanel">
+                        <div class="modal-body pt-0">
+                            <div class="row">
+                                <div class="d-flex flex-column align-items-center justify-content-center gap-4">
+                                    <div class="col-md-12">
+                                        <label class="form-label" for="phone_">Телефон:</label>
+                                        <div id="phone-block-uk" class="col-md-12">
+                                            <input class="form-control" type="text" id="phone_" data-name="phone"
+                                                   placeholder="+380666790166" style="border: 1px solid rebeccapurple;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label" for="name-uk_">Ім'я:</label>
+                                        <input class="form-control fields-entity" type="text" id="name-uk_"
+                                               data-name="nameUk"
+                                               placeholder="Дмитро" style="border: 1px solid rebeccapurple;">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label" for="name-uk_">Прізвище:</label>
+                                        <input class="form-control fields-entity" type="text" id="surname-uk_"
+                                               data-name="surnameUk"
+                                               placeholder="Іванов" style="border: 1px solid rebeccapurple;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="navs-en" role="tabpanel">
+                        <div class="modal-body pt-0">
+                            <div class="row">
+                                <div class="d-flex flex-column align-items-center justify-content-center gap-4">
+                                    <div class="col-md-12">
+                                        <label class="form-label" for="phone_">Phone:</label>
+                                        <div id="phone-block-en" class="col-md-12">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label" for="name-uk_">Name:</label>
+                                        <input class="form-control fields-entity" type="text" id="name-en_"
+                                               data-name="nameEn" placeholder="Dmytro"
+                                               style="border: 1px solid rebeccapurple;">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label" for="name-uk_">Surname:</label>
+                                        <input class="form-control fields-entity" type="text" id="surname-en_"
+                                               data-name="surnameEn" placeholder="Ivanov"
+                                               style="border: 1px solid rebeccapurple;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success float-end" id="save-manager_"
+                                style="width: 100%" th:text="#{text.button.save}">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ Modal Add Taste -->
+
+    <script th:src="@{/js/table.js}"></script>
+    <script th:src="@{/js/validator.js}"></script>
+    <script th:src="@{/js/copy.js}"></script>
+
+    <script>
+        const inputs = ['id', 'name', 'surname', 'phone'];
+        let pathToTable = `${contextPath}admin/managers/table/load`;
+        let pathToPagination = `${contextPath}admin/managers/pagination/load`;
+        let timeoutId;
+
+        $(document).on('click', '.btn-danger', function () {
+            let attr = $(this).attr('data-type');
+            if (attr === 'total') {
+                let selectedIds = [];
+                $('.selectors:checked').each(function () {
+                    let id = $(this).attr('data-id');
+                    requestDelete(id)
+                    selectedIds.push(id);
+                });
+                console.log(selectedIds);
+            } else if (attr === 'one') {
+                let attrId = this.getAttribute('data-id');
+                requestDelete(attrId);
+                console.log(attrId);
+            }
+        });
+
+        $(document).on('click', '#total-delete_', function () {
+            $(`#modal-btnDelete_`).attr('data-type', 'total');
+            let modalElement = document.getElementById('ModalForDelete');
+            let modal = new bootstrap.Modal(modalElement);
+            modal.show();
+        });
+
+        function requestGetManager(url) {
+            let request = new XMLHttpRequest();
+            request.open("GET", url);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    let data = JSON.parse(request.response);
+                    // console.log(data);
+                    const modal = new bootstrap.Modal(document.querySelector("#ModalManager"));
+                    modal.show();
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key) && data[key] !== '') {
+                            console.log(`Key: ${key} Value: ${data[key]}`);
+                            let input = $(`input[data-name="${key}"]`);
+                            if (input) {
+                                input.val(data[key]);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        $(document).on('click', '.delete-icon', function () {
+            $(`#modal-btnDelete_`).attr('data-type', 'one');
+            let id = $(this).data('id');
+            $('#modal-btnDelete_').attr('data-id', id);
+            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
+            modal.show();
+        });
+
+        function requestDelete(id) {
+            let request = new XMLHttpRequest();
+            request.open('DELETE', `${contextPath}admin/manager/${id}/delete`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    invokeRequest(inputs, 0);
+                    $('#ModalForDelete').modal('hide');
+                }
+            });
+        }
+
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id === 'table-data-container_') {
+                const datePicker = $("#date_");
+                datePicker.datepicker({
+                    format: "dd.mm.yyyy"
+                }).on('changeDate', function () {
+                    htmx.trigger($("#date_")[0], 'input')
+                });
+            }
+        });
+    </script>
+</div>
+<!--/ Content -->
+
+<!-- Modal -->
+<div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="modal-title" th:text="#{text.areYouSure}"></h5>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <a type="button" id="modal-btnDelete_" class="btn btn-danger"
+                   th:text="#{text.button.delete}">
+                </a>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal"
+                        th:text="#{value.status.cancel}">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            addEventListenerActions();
+            addEventListenerButtonAdd();
+            selectedLanguage();
+        });
+
+        function addEventListenerActions() {
+            $("#table-data-container_").on('click', '.edit-icon, .delete-icon', function () {
+                let id = this.getAttribute('data-id');
+                if ($(this).hasClass('edit-icon')) {
+                    console.log(id);
+                    requestGetManager(`${contextPath}admin/manager/${id}`);
+                }
+            });
+        }
+        
+        function addEventListenerButtonAdd() {
+            document.getElementById('btnAdd-manager').addEventListener('click', () => {
+                $('#name-uk_').val('');
+                $('#name-en_').val('');
+                $('#surname-uk_').val('');
+                $('#surname-en_').val('');
+                $('#phone_').val('');
+                $('#id_').val('');
+                const modal = new bootstrap.Modal(document.getElementById('ModalManager'));
+                modal.show();
+            });
+
+
+            $("#save-manager_").on('click', function () {
+                requestSave();
+            });
+        }
+
+        function requestSave() {
+            let formData = getFormData();
+            $.ajax({
+                type: "post",
+                url: contextPath + `admin/manager/save`,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                    window.location.reload();
+                },
+                error: function (error) {
+                    clearValid();
+                    let data = JSON.parse(error.responseText);
+                    validate2(data);
+                    console.log("Error submitting form:", error);
+                }
+            });
+        }
+
+        function requestGetManager(url) {
+            let request = new XMLHttpRequest();
+            request.open("GET", url);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    let data = JSON.parse(request.response);
+                    console.log(data);
+                    const modal = new    bootstrap.Modal(document.querySelector("#ModalManager"));
+                    modal.show();
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key) && data[key] !== '') {
+                            console.log(`Key: ${key} Value: ${data[key]}`);
+                            let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
+                            if (input) {
+                                input.val(data[key]);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function getFormData() {
+            const resForm = new FormData();
+            resForm.append("id", $('#id_').val());
+            resForm.append("phone", $('#phone_').val());
+            resForm.append("nameUk", $('#name-uk_').val());
+            resForm.append("nameEn", $('#name-en_').val());
+            resForm.append("surnameUk", $('#surname-uk_').val());
+            resForm.append("surnameEn", $('#surname-en_').val());
+            return resForm;
+        }
+
+        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function (event) {
+                let attribute = this.getAttribute('data-type');
+                const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
+                let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+                // console.log(`Switched to tab: ${activatedTabId}`);
+                // console.log(`Previous: ${previousActiveTab}`);
+                // console.log(`Active: ${activatedTabId}`);
+                copyHTMLBlockInput(`phone-block-${previousActiveTab}`, `phone-block-${activatedTabId}`);
+            });
+        });
+    </script>
+</div>
+<!--/ Modal -->
+</body>
+</html>

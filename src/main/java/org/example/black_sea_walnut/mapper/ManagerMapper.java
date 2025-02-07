@@ -13,7 +13,7 @@ import java.util.List;
 public class ManagerMapper {
     public ManagerDTO toResponseForDTO(Manager entity) {
         ManagerTranslation translationUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
-        ManagerTranslation translationEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
+        ManagerTranslation translationEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
         return ManagerDTO
                 .builder()
                 .id(entity.getId())
