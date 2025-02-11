@@ -1,15 +1,12 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.order.OrderUserResponseForView;
-import org.example.black_sea_walnut.dto.order.ResponseOrderDetailForView;
-import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
-import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
-import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
+import org.example.black_sea_walnut.dto.order.*;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -62,5 +59,29 @@ public class OrderMapper {
                 .price(String.valueOf(entity.getTotalPrice()))
                 .statusPayment(entity.getPaymentType().toString())
                 .build();
+    }
+
+    public OrderResponseForStatsProducts toResponseForStatsProducts2(OrderDetail entity) {
+        return OrderResponseForStatsProducts
+                .builder()
+                .article(String.valueOf(entity.getId()))
+                .name(entity.getProductName())
+                .count(String.valueOf(entity.getCount()))
+                .summa(String.valueOf(entity.getSummaWithDiscount()))
+                .build();
+    }
+
+    public List<OrderResponseForStatsProducts> toResponseFOrStatsProduct(List<Object[]> entities) {
+        List<OrderResponseForStatsProducts> dto = new ArrayList<>();
+        for (Object[] o : entities) {
+            dto.add(OrderResponseForStatsProducts
+                    .builder()
+                    .article(String.valueOf(o[0]))
+                    .name(String.valueOf(o[1]))
+                    .count(String.valueOf(o[2]))
+                    .summa(String.valueOf(o[3]))
+                    .build());
+        }
+        return dto;
     }
 }

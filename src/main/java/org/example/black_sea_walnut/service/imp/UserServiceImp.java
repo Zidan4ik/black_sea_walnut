@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
+import org.example.black_sea_walnut.dto.stats.UserResponseForStats;
 import org.example.black_sea_walnut.dto.user.UserResponseForView;
 import org.example.black_sea_walnut.dto.user.request.UserFopRequestForView;
 import org.example.black_sea_walnut.dto.user.request.UserIndividualRequestForAdd;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -105,19 +107,19 @@ public class UserServiceImp implements UserService {
         imageService.save(dto.getFileImage(), dto.getPathToImage());
         User userMapped = userMapper.toEntityFromRequest(dto);
         Long cityId = dto.getCityForDeliveryId();
-        if(cityId != null){
+        if (cityId != null) {
             userMapped.setCity(cityService.getById(cityId));
         }
         Long cityAdditionallyId = dto.getCityAdditionallyId();
-        if(cityAdditionallyId != null){
+        if (cityAdditionallyId != null) {
             userMapped.setCityAdditional(cityService.getById(cityAdditionallyId));
         }
         Long regionId = dto.getRegionForDeliveryId();
-        if(regionId!=null){
+        if (regionId != null) {
             userMapped.setRegion(regionService.getById(regionId));
         }
         Long regionAdditionallyId = dto.getRegionAdditionallyId();
-        if(regionAdditionallyId !=null){
+        if (regionAdditionallyId != null) {
             userMapped.setRegionAdditional(regionService.getById(regionAdditionallyId));
         }
         return save(userMapped);
@@ -171,5 +173,10 @@ public class UserServiceImp implements UserService {
         userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()));
         userMapped.setRegionAdditional(regionService.getById(dto.getRegionAdditionallyId()));
         return save(userMapped);
+    }
+
+    @Override
+    public List<UserResponseForStats> getUsersByDate(LocalDate start, LocalDate end) {
+        return userMapper.toResponseUsersForStats(userRepository.getUsersBetweenStartDayAndEndDay(start, end));
     }
 }

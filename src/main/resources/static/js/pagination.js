@@ -28,15 +28,22 @@ function getFilters(filters) {
     });
     return filters_;
 }
-function loadTable(data){
+
+function loadTable(data) {
     const containerTable = document.getElementById("table-data-container_");
     containerTable.innerHTML = '';
+    const noExistText = getCurrentLang() === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
     if (data.length > 0) {
         data.forEach(function (element) {
             containerTable.innerHTML += getRowData(element);
         });
+    } else {
+        containerTable.innerHTML += `<td colspan="4" style="text-align: center; color: gray; font-style: italic;">
+${noExistText}
+    </td>`;
     }
 }
+
 function getPageWithFilter(page, size) {
     const filterElements = $('.for-filter');
     const filters = getFilters(filterElements);
@@ -78,6 +85,7 @@ function getPageWithFilter(page, size) {
 
 function getRowData(element) {
     let row = '<tr>';
+    // console.log(element);
     Object.keys(element).forEach(field => {
         const value = element[field] !== null ? element[field] : '';
         row += `<td class="divided-text">${value}</td>`;

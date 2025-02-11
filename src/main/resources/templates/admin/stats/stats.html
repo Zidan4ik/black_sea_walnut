@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html
+        lang="uk"
+        layout:decorate="~{admin/blocks/layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="#{text.transactions}"></title>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/apex-charts/apex-charts.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
+    <!--    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>-->
+    <!--    <link rel="stylesheet" th:href="@{/css/table.css}"/>-->
+    <!--    <link rel="stylesheet" th:href="@{/css/icon.css}"/>-->
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+
+        .header-mini-table {
+            color: black !important;
+            background-color: lightgrey !important;
+            width: auto !important;
+        }
+    </style>
+    <style>
+        /* Основний стиль повзунка */
+        #scrollbar {
+            -webkit-appearance: none; /* Прибираємо стандартний стиль */
+            width: 100%;
+            height: 8px;
+            background: #dcf5dd;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity .2s;
+        }
+
+        #scrollbar:hover {
+            opacity: 1;
+        }
+
+        /* Стилізація "ручки" (повзунка) */
+        #scrollbar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: forestgreen;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #037b55;
+        }
+
+        #scrollbar::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: forestgreen;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #037b55;
+        }
+    </style>
+</head>
+<body>
+<!-- Content -->
+<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+    <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
+        <div class="row">
+            <div class="col-auto">
+                <h4 th:text="#{text.countOrdersByMonth}"></h4>
+            </div>
+            <div class="col-auto input-group input-group-merge"
+                 style="width:20%; justify-content: center; display: inline-flex; padding: 0">
+                <input id="dateAmountOrdersByMonth_" type="text" class="form-control" placeholder="dd.mm.yyyy"/>
+                <span class="input-group-text" onclick="focusInput('dateAmountOrdersByMonth_')">
+                    <i class="ti ti-calendar"></i>
+                </span>
+            </div>
+            <div id="chart"></div>
+            <input type="range" id="scrollbar" min="0" max="10" step="1" value="10"
+                   style="width: 100%; margin-top: 20px;">
+        </div>
+        <div class="mt-5">
+            <div class="d-flex justify-content-center">
+                <h4><span th:text="#{text.top}"></span>
+                    <span id="text-amount-products_">5</span>
+                    <span th:text="#{text.goods}"></span>
+                </h4>
+            </div>
+            <div class="row">
+                <div class="col-auto input-group input-group-merge"
+                     style="width:20%; justify-content: center; display: inline-flex; padding: 0">
+                    <input id="dateAmountProducts_" type="text" class="form-control input-card-block-spinner"
+                           placeholder="dd.mm.yyyy"/>
+                    <span class="input-group-text" onclick="focusInput('dateAmountProducts_')">
+                        <i class="ti ti-calendar"></i>
+                    </span>
+                </div>
+                <div class="col-auto">
+                    <select class="form-select mx-2 select-card-block-spinner"
+                            id="size-amount-products_">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 table-responsive mt-3" style="overflow-x: auto;">
+                    <div id="card-block">
+                        <table class="table table-bordered table-hover linkedRow"
+                               style="table-layout: fixed; position: static; zoom: 1;">
+                            <thead>
+                            <tr>
+                                <th class="header-mini-table" th:text="#{text.article}+'№'"></th>
+                                <th class="header-mini-table" th:text="#{table.header.name}"></th>
+                                <th class="header-mini-table" th:text="#{table.header.count}"></th>
+                                <th class="header-mini-table" th:text="#{table.header.sales}"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-data-container_" class="text-center">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--                <div id="table-pagination-container_"></div>-->
+                <div id="chart-products" class="col-6"
+                     style="min-height: 365px;width: 50%;margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="mt-5">
+            <div class="d-flex justify-content-center">
+                <h4 th:text="#{text.kindOfUsers}"></h4>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <div class="col-auto input-group input-group-merge"
+                         style="width:50%; height: 5%; justify-content: center; display: inline-flex; padding: 0">
+                        <input id="dateAmountUsers_" type="text" class="form-control" placeholder="dd.mm.yyyy"/>
+                        <span class="input-group-text" onclick="focusInput('dateAmountUsers_')">
+                    <i class="ti ti-calendar"></i>
+                </span>
+                    </div>
+                </div>
+                <div class="col" id="chart-users"></div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="languageCode" value="uk" id="languageCode_">
+    <script th:src="@{/vuexy/assets/vendor/libs/apex-charts/apexcharts.js}"></script>
+    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+    <script th:src="@{/js/pagination.js}"></script>
+
+    <script>
+        function calculatePercentage(options) {
+            var dataPoint = options.data[0].dataPoints;
+            var total = dataPoint.reduce((sum, item) => sum + item.y, 0); // Сума всіх значень
+
+            for (var i = 0; i < dataPoint.length; i++) {
+                options.data[0].dataPoints[i].percentage = ((dataPoint[i].y / total) * 100).toFixed(2);
+            }
+        }
+    </script>
+    <script>
+        function loadChartProducts(data) {
+            var options = {
+                animationEnabled: true,
+                backgroundColor: "transparent",
+                title: {
+                    text: ""
+                },
+                data: [{
+                    type: "funnel",
+                    indexLabel: "{label}",
+                    toolTipContent: "<b>{label}</b>: {y} <b>({percentage}%)</b>",
+                    neckWidth: 50,
+                    neckHeight: 0,
+                    valueRepresents: "area",
+                    dataPoints: data
+                }]
+            };
+            calculatePercentage(options);
+            $("#chart-products").html();
+            $("#chart-products").CanvasJSChart(options);
+        }
+
+        function loadChartUsers(labels, count) {
+            $("#chart-users").empty();
+            var options = {
+                series: count,
+                chart: {
+                    width: 380,
+                    type: 'pie',
+                },
+                labels: labels,
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            var chart = new ApexCharts(document.querySelector("#chart-users"), options);
+            chart.render();
+        }
+
+        function loadChartOrders(data) {
+            var visiblePoints = 7;
+            var startIndex = 0;
+            var options = {
+                series: [{
+                    name: 'TEAM A',
+                    type: 'area',
+                    data: data.slice(startIndex)
+                }],
+                chart: {
+                    height: 300,
+                    type: 'area',
+                    toolbar: {show: true},
+                    zoom: {enabled: true}
+                },
+                colors: ['#037b55'],
+                stroke: {
+                    curve: 'smooth',
+                    width: 3,
+                    colors: ['#347b3e']
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.6,
+                        opacityTo: 0.1,
+                        colorStops: [
+                            {offset: 0, color: "#77ff33", opacity: 0.7},
+                            {offset: 100, color: "#0c9068", opacity: 0.1}
+                        ]
+                    }
+                },
+                markers: {
+                    size: 5,
+                    colors: ['#54a455'],
+                    strokeColors: '#5abfaf',
+                    strokeWidth: 2
+                },
+                yaxis: [
+                    {
+                        title: {
+                            text: document.documentElement.lang === 'uk' ? 'К-сть замовлень'
+                                : (document.documentElement.lang === 'en' ? 'Amount orders' : ''),
+                        },
+                    },
+                ],
+                xaxis: {
+                    type: 'datetime',
+                    labels: {
+                        format: 'dd MMM'
+                    }
+                }
+            };
+
+            let element = document.querySelector("#chart");
+            element.innerHTML = '';
+
+            var chart = new ApexCharts(element, options);
+            var scrollbar = document.getElementById("scrollbar");
+            chart.render();
+
+            scrollbar.max = data.length - visiblePoints;
+            scrollbar.value = startIndex;
+
+            scrollbar.addEventListener("input", function () {
+                var newIndex = parseInt(scrollbar.value);
+                chart.updateSeries([{
+                    name: 'TEAM A',
+                    type: 'area',
+                    data: data.slice(newIndex, newIndex + visiblePoints)
+                }]);
+            });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            selectedLanguage();
+            $(`#dateAmountOrdersByMonth_`).datepicker({
+                format: "dd.mm.yyyy",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+
+            $(`#dateAmountProducts_`).datepicker({
+                format: "dd.mm.yyyy",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+
+            $(`#dateAmountUsers_`).datepicker({
+                format: "dd.mm.yyyy",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+
+            addListeners();
+
+            let size = $('#size-amount-products_').val();
+            let date = new Date().toLocaleDateString('uk-UA');
+            invokeBlockUI();
+            requestGetProducts(size, date);
+        });
+
+        window.onload = function () {
+            requestGetUsersByDate(new Date().toLocaleDateString('uk-UA'));
+            requestByDateOrder(new Date().toLocaleDateString('uk-UA'));
+        };
+
+        function addListeners() {
+            $(`#dateAmountProducts_`).on('change', function () {
+                let size = $('#size-amount-products_').val();
+                requestGetProducts(size, this.value);
+            });
+
+            $('#size-amount-products_').on('change', function () {
+                let size = this.value;
+                let date = $(`#dateAmountProducts_`).val();
+                $('#text-amount-products_').text(size);
+                requestGetProducts(size, date);
+            });
+
+            $('#dateAmountOrdersByMonth_').on('change', function () {
+                requestByDateOrder(this.value);
+            });
+
+            $('#dateAmountUsers_').on('change', function () {
+                requestGetUsersByDate(this.value);
+            });
+        }
+
+        function requestByDateOrder(date) {
+            let request = new XMLHttpRequest();
+            request.open("GET", contextPath + `admin/orders/getByDate?date=${date}`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    let data = JSON.parse(request.response);
+                    var outputData = data.map(function (item) {
+                        return [item.date, item.count];
+                    });
+                    // console.log(outputData);
+                    loadChartOrders(outputData);
+                }
+            });
+        }
+
+        function requestGetUsersByDate(date) {
+            let request = new XMLHttpRequest();
+            request.open("GET", contextPath + `admin/stats/users/get?date=${date}`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    let data = JSON.parse(request.response);
+                    if (!data || data.length === 0) {
+                        const noExistText = document.documentElement.lang === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
+                        $("#chart-users").html(`<h5>${noExistText}</h5>`);
+                        return;
+                    }
+                    let labels = [];
+                    let count = [];
+                    data.map(function (item) {
+                        labels.push(returnUserStatus2(item.status));
+                        count.push(item.count);
+                    });
+                    console.log(data);
+                    console.log(labels);
+                    loadChartUsers(labels, count);
+                }
+            });
+        }
+
+        let timeoutId;
+        function requestGetProducts(size, date) {
+            let lang = getCurrentLang();
+            let request = new XMLHttpRequest();
+            request.open("GET", contextPath + `admin/stats/products/get?date=${date}&size=${size}&languageCode=${lang}`);
+            request.send();
+            request.addEventListener('load', function () {
+                if (request.status === 200) {
+                    let data = JSON.parse(request.response);
+                    let array = data.map(item => ({
+                        y: parseInt(item.count),
+                        label: item.name
+                    }));
+                    loadChartProducts(array);
+                    // console.log(data);
+                    $(`#table-data-container_`).empty();
+                    clearTimeout(timeoutId);
+                    setTimeout(() => {
+                        loadTable(data);
+                    }, 1000)
+                }
+            });
+        }
+
+        function returnUserStatus2(status) {
+            let currentLang = $('#languageCode_').val();
+            console.log(currentLang);
+            if (status === 'legal') {
+                if (currentLang === 'uk') {
+                    return 'Юридичне обличчя';
+                } else if (currentLang === 'en') {
+                    return 'Legal';
+                }
+            } else if (status === 'fop') {
+                if (currentLang === 'uk') {
+                    return 'Фоп';
+                } else if (currentLang === 'en') {
+                    return 'Fop';
+                }
+            } else if (status === 'individual') {
+                if (currentLang === 'uk') {
+                    return 'Фізичне обличчя';
+                } else if (currentLang === 'en') {
+                    return 'Individual';
+                }
+            }
+        }
+    </script>
+</div>
+<!--/ Content -->
+</body>
+</html>

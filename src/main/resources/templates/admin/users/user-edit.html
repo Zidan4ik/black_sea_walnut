@@ -418,29 +418,6 @@
                 });
             }
 
-            function returnUserStatus(status) {
-                let currentLang = getCurrentLang();
-                if (status === 'legal') {
-                    if (currentLang === 'uk') {
-                        return 'Юридичне обличчя';
-                    } else if (currentLang === 'en') {
-                        return 'Legal';
-                    }
-                } else if (status === 'fop') {
-                    if (currentLang === 'uk') {
-                        return 'Адреса Фоп';
-                    } else if (currentLang === 'en') {
-                        return 'Address Fop';
-                    }
-                } else if (status === 'individual') {
-                    if (currentLang === 'uk') {
-                        return 'Фізичне обличчя';
-                    } else if (currentLang === 'en') {
-                        return 'Individual';
-                    }
-                }
-            }
-
             $(document).on('click', '.user-status-icon', function () {
                 console.log(this);
                 let id = $(this).attr('data-id');

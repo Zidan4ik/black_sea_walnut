@@ -158,15 +158,15 @@
     $(document).on("click", ".btn-card-block-spinner", function () {
         invokeBlockUI();
     });
-    $(document).on("input", ".input-card-block-spinner", function () {
+    $(document).on("change", ".input-card-block-spinner", function () {
         invokeBlockUI();
     });
     $(document).on("change", ".select-card-block-spinner", function () {
         invokeBlockUI();
     });
-    $(document).on("change", ".select-card-block-spinner", function () {
-        invokeBlockUI();
-    });
+    // $(document).on("change", ".select-card-block-spinner", function () {
+    //     invokeBlockUI();
+    // });
     $(document).ready(function () {
         invokeBlockUI();
     });
@@ -215,7 +215,28 @@
     function getCurrentLang() {
         return document.documentElement.lang;
     }
-
+    function returnUserStatus(status) {
+        let currentLang = getCurrentLang();
+        if (status === 'legal') {
+            if (currentLang === 'uk') {
+                return 'Юридичне обличчя';
+            } else if (currentLang === 'en') {
+                return 'Legal';
+            }
+        } else if (status === 'fop') {
+            if (currentLang === 'uk') {
+                return 'Адреса Фоп';
+            } else if (currentLang === 'en') {
+                return 'Address Fop';
+            }
+        } else if (status === 'individual') {
+            if (currentLang === 'uk') {
+                return 'Фізичне обличчя';
+            } else if (currentLang === 'en') {
+                return 'Individual';
+            }
+        }
+    }
 </script>
 </body>
 </html>

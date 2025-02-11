@@ -39,7 +39,7 @@ public class Order {
     private PaymentType paymentType;
     private boolean isPayed;
     private LocalDate dateOfOrdering;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetails;
     @ManyToMany
     private List<DeliveryPrice> deliveryPrices;
@@ -47,4 +47,11 @@ public class Order {
     private City city;
     @ManyToOne
     private User user;
+
+    public Order(LocalDate dateOfOrdering, boolean isPayed, int totalPrice, int countProducts) {
+        this.dateOfOrdering = dateOfOrdering;
+        this.isPayed = isPayed;
+        this.totalPrice = totalPrice;
+        this.countProducts = countProducts;
+    }
 }

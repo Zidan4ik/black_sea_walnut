@@ -7,16 +7,15 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.repository.TransactionsRepository;
-import org.example.black_sea_walnut.service.ContactService;
-import org.example.black_sea_walnut.service.HistoryMainService;
-import org.example.black_sea_walnut.service.HistoryService;
-import org.example.black_sea_walnut.service.NewService;
+import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.util.FakerUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Configuration
@@ -27,6 +26,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private final ProductRepository productRepository;
     private final HistoryService historyService;
     private final ContactService contactService;
+    private final OrderService orderService;
+    private final Random random = new Random();
 
     @Override
     public void run(String... args) throws Exception {
@@ -102,6 +103,23 @@ public class DatabaseLoader implements CommandLineRunner {
             clientEcoProduction.setBanner(new Banner(null, null, null, clientEcoProduction));
             historyService.save(clientBanner);
             historyService.save(clientEcoProduction);
+        }
+        if (orderService.getAll().isEmpty()) {
+            LocalDate startDate = LocalDate.now().minusDays(50);
+
+            for (int i = 0; i < 50; i++) {
+                int ordersPerDay = random.nextInt(1, 6);
+
+                for (int j = 0; j < ordersPerDay; j++) {
+                    Order order = new Order(
+                            startDate.plusDays(i),
+                            random.nextBoolean(),
+                            random.nextInt(500, 5000),
+                            random.nextInt(1, 10)
+                    );
+                    orderService.save(order);
+                }
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.example.black_sea_walnut.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.example.black_sea_walnut.dto.stats.UserResponseForStats;
 import org.example.black_sea_walnut.dto.user.request.UserFopRequestForView;
 import org.example.black_sea_walnut.dto.user.request.UserIndividualRequestForAdd;
 import org.example.black_sea_walnut.dto.user.request.UserLegalRequestForView;
@@ -15,11 +16,14 @@ import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
     private final OrderMapper orderMapper;
+
     public UserResponseForView toResponseForView(User entity) {
         int amountOrders = entity.getOrders().size();
         return UserResponseForView
@@ -149,5 +153,19 @@ public class UserMapper {
                 .role(entity.getRole())
                 .orders(entity.getOrders().stream().map(orderMapper::toResponseForUserOrderView).toList())
                 .build();
+    }
+
+    public List<UserResponseForStats> toResponseUsersForStats(List<Object[]> entities) {
+        List<UserResponseForStats> listDto = new ArrayList<>();
+        for (Object[] o : entities) {
+            listDto.add(
+                    UserResponseForStats
+                            .builder()
+                            .status(String.valueOf(o[0]))
+                            .count((long) o[1])
+                            .build()
+            );
+        }
+        return listDto;
     }
 }

@@ -19,10 +19,10 @@ public class Basket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int count;
-    private int price;
+    private int unitPrice;
+    private int discountUnitPrice;
     private int discountPercent;
     private int discountSumForUnit;
-    private int discountUnitPrice;
     private int summaWithoutDiscount;
     private int summaDiscount;
     private int summaWithDiscount;
