@@ -7,7 +7,9 @@
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSElOpZ5uC4yMroIDnLFlh3ofuil37lPsRzg&s"
                      width="38" height="38" alt="error" style="border-radius: 50%;">
                               </span>
-                <span class="app-brand-text fw-bold" style="color: white;">Горіх<br>Причорномор'я</span>
+                <span class="app-brand-text fw-bold" style="color: white;"><span
+                        th:text="#{text.sidebar.header1}"></span>
+                    <br><span th:text="#{text.sidebar.header2}"></span></span>
             </a>
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
                 <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle" style="color: white;"></i>
@@ -17,47 +19,63 @@
 
         <ul class="menu-inner py-1 ps ps--active-y">
             <li class="menu-item">
-                <a th:href="@{/admin/statistic}"
-                   th:class="'menu-link '+${isActiveStatistic!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-chart-arcs" style="color: white;"></i>
-                    <div style="color: white;">Statistic</div>
+                <a th:href="@{/admin/statistic}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-chart-arcs'+${isActiveStatistic!=null?' sidebar-icon-green':''}"
+                       style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveStatistic!=null?' sidebar-title':''}"
+                              th:text="#{text.sidebar.statistic}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/orders}" th:class="'menu-link '+${isActiveOrders!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-package" style="color: white;"></i>
-                    <div style="color: white;">Orders</div>
+                <a th:href="@{/admin/orders}" th:class="menu-link">
+                    <i th:class="'menu-icon ti ti-package'+${isActiveOrders!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveOrders!=null?' sidebar-title':''}"
+                              th:text="#{text.sidebar.orders}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/transactions}"
-                   th:class="'menu-link '+${isActiveTransaction!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-cash" style="color: white;"></i>
-                    <div style="color: white;">Transaction</div>
+                <a th:href="@{/admin/transactions}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-cash'+${isActiveTransactions!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveTransactions!=null?' sidebar-title':''}"
+                                th:text="#{text.sidebar.transactions}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/warehouse}"
-                   th:class="'menu-link '+${isActiveWarehouse!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-building-warehouse" style="color: white;"></i>
-                    <div style="color: white;">Warehouse with products</div>
+                <a th:href="@{/admin/warehouse}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-building-warehouse'+${isActiveWarehouse!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveWarehouse!=null?' sidebar-title':''}"
+                              th:text="#{text.sidebar.warehouse}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/news}" th:class="'menu-link '+${isActiveNews!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-news" style="color: white;"></i>
-                    <div style="color: white;">News</div>
+                <a th:href="@{/admin/news}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-news'+${isActiveNews!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span  th:class="${isActiveNews!=null?' sidebar-title':''}"
+                               th:text="#{text.sidebar.news}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/galleries}" th:class="'menu-link '+${isActiveGallery!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-photo" style="color: white;"></i>
-                    <div style="color: white;">Gallery</div>
+                <a th:href="@{/admin/galleries}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-photo'+${isActiveGallery!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveGallery!=null?' sidebar-title':''}"
+                              th:text="#{text.sidebar.galleries}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/nuts}" th:class="'menu-link '+${isActiveNuts!=null?'active-buttonMy':''}">
-                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="#000000"
+                <a th:href="@{/admin/nuts}" class="menu-link">
+                    <svg th:class="'menu-icon'+ ${isActiveNuts!=null?' sidebar-icon-green':''}" xmlns="http://www.w3.org/2000/svg" fill="#000000"
                          height="20" width="22" version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve"
                          style="fill: white;margin-right: 8px;padding-right: 1px;stroke: white;stroke-width: 15px;">
                         <g>
@@ -71,39 +89,56 @@
                             </g>
                         </g>
                     </svg>
-                    <div style="color: white;">Nuts</div>
+                    <div style="color: white;">
+                        <span th:class="${isActiveNuts!=null?' sidebar-title':''}"
+                              th:text="#{text.nuts}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/calls}" th:class="'menu-link '+${isActiveCalls!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-phone-calling" style="color: white;"></i>
-                    <div style="color: white;">Calls</div>
+                <a th:href="@{/admin/calls}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-phone-calling'+${isActiveCalls!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveCalls!=null?'sidebar-title':''}"
+                              th:text="#{text.sidebar.calls}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/contacts}" th:class="'menu-link '+${isActiveContacts!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-address-book" style="color: white;"></i>
-                    <div style="color: white;">Contacts</div>
+                <a th:href="@{/admin/contacts}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-address-book'+${isActiveContacts!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveContacts!=null?'sidebar-title':''}"
+                                th:text="#{text.sidebar.contact}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/pages}"
-                   th:class="'menu-link '+${isActiveInfoPages!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-settings" style="color: white;"></i>
-                    <div style="color: white;">Information pages</div>
+                <a th:href="@{/admin/pages}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-settings'+${isActiveInfoPages!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveInfoPages!=null?'sidebar-title':''}"
+                              th:text="#{text.sidebar.infoPages}"></span>
+                    </div>
                 </a>
             </li>
 
             <li class="menu-item">
-                <a th:href="@{/admin/users}" th:class="'menu-link '+${isActiveUsers!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-user-circle" style="color: white;"></i>
-                    <div style="color: white;">Users</div>
+                <a th:href="@{/admin/users}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-user-circle'+${isActiveUsers!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveUsers!=null?'sidebar-title':''}"
+                              th:text="#{text.sidebar.users}"></span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a th:href="@{/admin/managers}" th:class="'menu-link '+${isActiveManagers!=null?'active-buttonMy':''}">
-                    <i class="menu-icon ti ti-businessplan" style="color: white;"></i>
-                    <div style="color: white;">Managers</div>
+                <a th:href="@{/admin/managers}" class="menu-link">
+                    <i th:class="'menu-icon ti ti-businessplan'+${isActiveManagers!=null?' sidebar-icon-green':''}" style="color: white;"></i>
+                    <div style="color: white;">
+                        <span th:class="${isActiveManagers!=null?'sidebar-title':''}"
+                              th:text="#{text.sidebar.managers}"></span>
+                    </div>
                 </a>
             </li>
         </ul>

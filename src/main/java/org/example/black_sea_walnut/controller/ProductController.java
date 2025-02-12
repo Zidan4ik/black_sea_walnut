@@ -141,4 +141,8 @@ public class ProductController {
     public ModelAndView viewConfiguration(){
         return new ModelAndView("/admin/products/configuration");
     }
+    @ModelAttribute("isActiveWarehouse")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

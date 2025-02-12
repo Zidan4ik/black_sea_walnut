@@ -107,4 +107,8 @@ public class NutController {
         nutService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @ModelAttribute("isActiveNuts")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

@@ -51,4 +51,8 @@ public class CallController {
         callService.deleteById(id);
         return new ResponseEntity<>("Call was successful deleted!", HttpStatus.OK);
     }
+    @ModelAttribute("isActiveCalls")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

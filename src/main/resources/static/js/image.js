@@ -25,12 +25,14 @@ function addEventListenersImage() {
             imgElement.src = URL.createObjectURL(file);
             imgElement.style.display = 'block';
             videoElement.style.display = 'none';
-            document.getElementById('hidden-path-to-media_').value = null;
+            let elementById = document.getElementById('hidden-path-to-media_');
+            if (elementById) elementById.value = null;
         } else if (fileType.startsWith('video/')) {
             videoElement.src = URL.createObjectURL(file);
             videoElement.style.display = 'block';
             imgElement.style.display = 'none';
-            document.getElementById('hidden-path-to-media_').value = null;
+            let element = document.getElementById('hidden-path-to-media_');
+            if (element) element.value = null;
         } else {
             alert('Підтримуються лише файли зображень або відео.');
         }

@@ -78,7 +78,22 @@
         }
 
         .sk-primary .sk-rect {
-            background-color: green; /* Колір полосок */
+            background-color: green;
+        }
+
+        .sidebar-title {
+            color: #029f02 !important;
+            border-bottom: 1px solid #029f02 !important;;
+        }
+
+        .sidebar-icon-green {
+            color: #029f02 !important;
+            fill: #029f02 !important;
+            stroke: #029f02 !important;
+        }
+
+        .sidebar-icon-white {
+            color: #ffffff;
         }
 
     </style>
@@ -199,9 +214,10 @@
             const currentUrl = new URL(window.location.href);
             let lang = currentUrl.searchParams.get('lang');
             if (lang) {
+                console.log(lang);
                 document.documentElement.lang = lang;
                 let $languageCode = $(`#languageCode_`);
-                if($languageCode){
+                if ($languageCode) {
                     $languageCode.val(lang);
                 }
             }
@@ -215,6 +231,7 @@
     function getCurrentLang() {
         return document.documentElement.lang;
     }
+
     function returnUserStatus(status) {
         let currentLang = getCurrentLang();
         if (status === 'legal') {

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="uk"
       layout:decorate="~{admin/blocks/layout.html}"
       xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Nuts</title>
+    <title th:text="#{text.nuts}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
     <link rel="stylesheet" th:href="@{/css/table.css}"/>
     <link rel="stylesheet" th:href="@{/css/icon.css}"/>
@@ -93,7 +93,7 @@
                     </table>
                 </div>
                 <div id="table-pagination-container_"></div>
-                <input type="hidden" name="languageCode" value="en" id="languageCode_">
+                <input type="hidden" name="languageCode" value="uk" id="languageCode_">
             </div>
         </div>
     </div>

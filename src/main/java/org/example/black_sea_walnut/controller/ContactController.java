@@ -45,4 +45,8 @@ public class ContactController {
         contactService.save(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @ModelAttribute("isActiveContacts")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

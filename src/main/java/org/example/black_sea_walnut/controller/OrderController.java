@@ -66,4 +66,8 @@ public class OrderController {
         orderService.deleteById(id);
         return new ModelAndView("redirect:/admin/orders");
     }
+    @ModelAttribute("isActiveOrders")
+    public boolean toActiveApplications(){
+        return true;
+    }
 }

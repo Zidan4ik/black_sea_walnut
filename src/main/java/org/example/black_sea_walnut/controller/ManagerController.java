@@ -83,4 +83,9 @@ public class ManagerController {
     public ResponseEntity<ManagerDTO> getManager(@PathVariable Long id) {
         return new ResponseEntity<>(managerService.getByIdInResponseForAdd(id), HttpStatus.OK);
     }
+
+    @ModelAttribute("isActiveManagers")
+    public boolean toActiveApplications() {
+        return true;
+    }
 }

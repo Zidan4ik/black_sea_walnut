@@ -121,5 +121,8 @@ public class DatabaseLoader implements CommandLineRunner {
                 }
             }
         }
+        if(contactService.getAll().isEmpty()){
+            contactService.save(new Contact());
+        }
     }
 }

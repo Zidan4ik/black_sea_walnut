@@ -44,4 +44,9 @@ public class TransactionController {
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
+
+    @ModelAttribute("isActiveTransactions")
+    public boolean toActiveApplications() {
+        return true;
+    }
 }

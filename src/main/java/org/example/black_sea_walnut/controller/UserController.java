@@ -164,4 +164,8 @@ public class UserController {
         userService.save(userById);
         return new ResponseEntity<>("User with id:" + id + " was changed!", HttpStatus.OK);
     }
+    @ModelAttribute("isActiveUsers")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

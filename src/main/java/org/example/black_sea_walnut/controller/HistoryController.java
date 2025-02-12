@@ -184,4 +184,8 @@ public class HistoryController {
         clientService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @ModelAttribute("isActiveInfoPages")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

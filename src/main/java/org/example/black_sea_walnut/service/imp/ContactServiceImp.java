@@ -9,6 +9,8 @@ import org.example.black_sea_walnut.repository.ContactRepository;
 import org.example.black_sea_walnut.service.ContactService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ContactServiceImp implements ContactService {
@@ -33,5 +35,10 @@ public class ContactServiceImp implements ContactService {
     @Override
     public ContactDtoForAdd getByIdInDto(Long id) {
         return contactMapper.toDtoContactForAdd(getById(id));
+    }
+
+    @Override
+    public List<Contact> getAll() {
+        return contactRepository.findAll();
     }
 }

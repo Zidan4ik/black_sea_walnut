@@ -68,4 +68,8 @@ public class GalleryController {
         galleryService.deleteById(id);
         return new ResponseEntity<>("A gallery with id:" + id + " was successful deleted!", HttpStatus.OK);
     }
+    @ModelAttribute("isActiveGallery")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }

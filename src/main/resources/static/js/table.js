@@ -14,7 +14,7 @@ function invokeRequest(inputs, page) {
             });
             // console.log(page);
             params.append('page', page);
-            params.append('languageCode', $('[name=languageCode]').val());
+            params.append('languageCode', document.documentElement.lang);
             params.append('size', $('[name=size]').val());
 
             htmx.ajax('GET', `${pathToTable}?${params.toString()}`, {

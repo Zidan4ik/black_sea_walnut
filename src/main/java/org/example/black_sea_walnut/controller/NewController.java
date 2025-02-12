@@ -122,4 +122,8 @@ public class NewController {
         headers.add("HX-Redirect", "/admin/news");
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
+    @ModelAttribute("isActiveNews")
+    public boolean toActiveSidebarButton(){
+        return true;
+    }
 }
