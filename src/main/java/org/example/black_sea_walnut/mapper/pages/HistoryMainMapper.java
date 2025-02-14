@@ -18,11 +18,11 @@ import java.util.List;
 public class HistoryMainMapper {
     private final HistoryMediaMapper mediaMapper;
 
-    public MainBlockResponseForAdd toResponseMainBlockForAdd(History entity) {
+    public BlockResponseForAddInMain toResponseMainBlockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
 
-        return MainBlockResponseForAdd
+        return BlockResponseForAddInMain
                 .builder()
                 .mainId(entity.getId())
                 .mainIsActive(entity.isActive())
@@ -67,10 +67,10 @@ public class HistoryMainMapper {
         return entity;
     }
 
-    public ProductionBlockResponseForAdd toResponseProductionBlockForAdd(History entity) {
+    public ProductionResponseForAddInMain toResponseProductionBlockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
-        return ProductionBlockResponseForAdd
+        return ProductionResponseForAddInMain
                 .builder()
                 .mainProductionId(entity.getId())
                 .mainProductionIsActive(entity.isActive())
@@ -92,11 +92,11 @@ public class HistoryMainMapper {
         return entity;
     }
 
-    public FactoryBlockResponseForAdd toResponseFactoryBlockForAdd(History entity) {
+    public FactoryBlockResponseForAddInMain toResponseFactoryBlockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
         List<HistoryMediaResponseForAdd> mediaList = entity.getHistoryMedia().stream().map(mediaMapper::toResponseForAdd).toList();
-        return FactoryBlockResponseForAdd
+        return FactoryBlockResponseForAddInMain
                 .builder()
                 .mainFactoryId(entity.getId())
                 .mainFactoryIsActive(entity.isActive())
@@ -120,10 +120,10 @@ public class HistoryMainMapper {
         return entity;
     }
 
-    public NumberBlockResponseForAdd toResponseNumberBlockForAdd(History entity) {
+    public NumberBlockResponseForAddInMain toResponseNumberBlockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
-        return NumberBlockResponseForAdd
+        return NumberBlockResponseForAddInMain
                 .builder()
                 .mainNumberId(entity.getId())
                 .mainNumberIsActive(entity.isActive())
@@ -153,10 +153,10 @@ public class HistoryMainMapper {
         return entity;
     }
 
-    public AimBlockResponseForAdd toResponseAimBlockForAdd(History entity) {
+    public AimBlockResponseForAddInMain toResponseAimBlockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
-        return AimBlockResponseForAdd
+        return AimBlockResponseForAddInMain
                 .builder()
                 .mainAimId(entity.getId())
                 .mainAimIsActive(entity.isActive())
@@ -168,10 +168,10 @@ public class HistoryMainMapper {
                 .build();
     }
 
-    public EcoProductionResponseForAdd toResponseEcoProductionBLockForAdd(History entity) {
+    public EcoProductionResponseForAddInMain toResponseEcoProductionBLockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
-        return EcoProductionResponseForAdd
+        return EcoProductionResponseForAddInMain
                 .builder()
                 .mainEcoProductionId(entity.getId())
                 .mainEcoProductionIsActive(entity.isActive())

@@ -56,6 +56,11 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
+    public List<NewRequestForAdd> getAllInResponseForAdd() {
+        return getAll().stream().map(mapper::toDtoAdd).toList();
+    }
+
+    @Override
     @Transactional
     public New save(New entity) {
         if (entity.getId() != null) {

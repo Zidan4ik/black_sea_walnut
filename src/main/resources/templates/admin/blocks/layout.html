@@ -214,7 +214,6 @@
             const currentUrl = new URL(window.location.href);
             let lang = currentUrl.searchParams.get('lang');
             if (lang) {
-                console.log(lang);
                 document.documentElement.lang = lang;
                 let $languageCode = $(`#languageCode_`);
                 if ($languageCode) {

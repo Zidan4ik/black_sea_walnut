@@ -12,10 +12,18 @@ import java.util.List;
 
 public interface NutService {
     Nut getById(Long id);
+
     NutResponseForAdd getByIdInResponseDtoAdd(Long id);
+
     Nut save(Nut entity);
+
     Nut save(NutRequestForAdd dto);
+
     List<Nut> getAll();
+
+    List<NutResponseForAdd> getAllInResponseForAdd();
+
     PageResponse<NutResponseForView> getAll(NutResponseForView response, Pageable pageable, LanguageCode code);
+
     void deleteById(Long id);
 }

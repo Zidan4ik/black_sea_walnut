@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ProductionBlockResponseForAdd {
+public class ProductionResponseForAddInMain {
     private Long mainProductionId;
     private boolean mainProductionIsActive;
     private String mainProductionTitleUk;

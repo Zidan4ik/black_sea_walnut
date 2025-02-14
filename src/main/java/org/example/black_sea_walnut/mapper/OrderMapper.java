@@ -65,7 +65,7 @@ public class OrderMapper {
         return OrderResponseForStatsProducts
                 .builder()
                 .article(String.valueOf(entity.getId()))
-                .name(entity.getProductName())
+                .nameUk(entity.getProductName())
                 .count(String.valueOf(entity.getCount()))
                 .summa(String.valueOf(entity.getSummaWithDiscount()))
                 .build();
@@ -77,9 +77,10 @@ public class OrderMapper {
             dto.add(OrderResponseForStatsProducts
                     .builder()
                     .article(String.valueOf(o[0]))
-                    .name(String.valueOf(o[1]))
-                    .count(String.valueOf(o[2]))
-                    .summa(String.valueOf(o[3]))
+                    .nameUk(String.valueOf(o[1]))
+                    .nameEn(String.valueOf(o[2]))
+                    .count(String.valueOf(o[3]))
+                    .summa(String.valueOf(o[4]))
                     .build());
         }
         return dto;

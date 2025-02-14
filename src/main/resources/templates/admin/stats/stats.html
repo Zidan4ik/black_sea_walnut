@@ -78,7 +78,8 @@
                     <i class="ti ti-calendar"></i>
                 </span>
             </div>
-            <div id="chart"></div>
+            <div id="chart-orders"></div>
+            <div id="chart-orders-noExist"></div>
             <input type="range" id="scrollbar" min="0" max="10" step="1" value="10"
                    style="width: 100%; margin-top: 20px;">
         </div>
@@ -126,7 +127,6 @@
                         </table>
                     </div>
                 </div>
-                <!--                <div id="table-pagination-container_"></div>-->
                 <div id="chart-products" class="col-6"
                      style="min-height: 365px;width: 50%;margin: 0 auto;"></div>
             </div>
@@ -166,6 +166,89 @@
         }
     </script>
     <script>
+        function loadChartOrders(data) {
+            let element = document.querySelector("#chart-orders");
+
+            if (element.chart) {
+                element.chart.destroy();
+                element.chart = null;
+            }
+
+            element.innerHTML = '';
+
+            var visiblePoints = 7;
+            var startIndex = 0;
+
+            var options = {
+                series: [{
+                    name: 'TEAM A',
+                    type: 'area',
+                    data: data.slice(startIndex)
+                }],
+                chart: {
+                    height: 300,
+                    type: 'area',
+                    toolbar: {show: true},
+                    zoom: {enabled: true}
+                },
+                colors: ['#037b55'],
+                stroke: {
+                    curve: 'smooth',
+                    width: 3,
+                    colors: ['#347b3e']
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.6,
+                        opacityTo: 0.1,
+                        colorStops: [
+                            {offset: 0, color: "#77ff33", opacity: 0.7},
+                            {offset: 100, color: "#0c9068", opacity: 0.1}
+                        ]
+                    }
+                },
+                markers: {
+                    size: 5,
+                    colors: ['#54a455'],
+                    strokeColors: '#5abfaf',
+                    strokeWidth: 2
+                },
+                yaxis: [{
+                    title: {
+                        text: document.documentElement.lang === 'uk' ? 'К-сть замовлень'
+                            : (document.documentElement.lang === 'en' ? 'Amount orders' : ''),
+                    },
+                }],
+                xaxis: {
+                    type: 'datetime',
+                    labels: {
+                        format: 'dd MMM'
+                    }
+                }
+            };
+
+            let chart = new ApexCharts(element, options);
+            chart.render();
+
+            element.chart = chart;
+
+            var scrollbar = document.getElementById("scrollbar");
+            scrollbar.max = data.length - visiblePoints;
+            scrollbar.value = startIndex;
+
+            scrollbar.addEventListener("input", function () {
+                var newIndex = parseInt(scrollbar.value);
+                chart.updateSeries([{
+                    name: 'TEAM A',
+                    type: 'area',
+                    data: data.slice(newIndex, newIndex + visiblePoints)
+                }]);
+            });
+        }
+
+
         function loadChartProducts(data) {
             var options = {
                 animationEnabled: true,
@@ -173,6 +256,8 @@
                 title: {
                     text: ""
                 },
+                width: 594,
+                height: 365,
                 data: [{
                     type: "funnel",
                     indexLabel: "{label}",
@@ -213,80 +298,6 @@
             chart.render();
         }
 
-        function loadChartOrders(data) {
-            var visiblePoints = 7;
-            var startIndex = 0;
-            var options = {
-                series: [{
-                    name: 'TEAM A',
-                    type: 'area',
-                    data: data.slice(startIndex)
-                }],
-                chart: {
-                    height: 300,
-                    type: 'area',
-                    toolbar: {show: true},
-                    zoom: {enabled: true}
-                },
-                colors: ['#037b55'],
-                stroke: {
-                    curve: 'smooth',
-                    width: 3,
-                    colors: ['#347b3e']
-                },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shadeIntensity: 1,
-                        opacityFrom: 0.6,
-                        opacityTo: 0.1,
-                        colorStops: [
-                            {offset: 0, color: "#77ff33", opacity: 0.7},
-                            {offset: 100, color: "#0c9068", opacity: 0.1}
-                        ]
-                    }
-                },
-                markers: {
-                    size: 5,
-                    colors: ['#54a455'],
-                    strokeColors: '#5abfaf',
-                    strokeWidth: 2
-                },
-                yaxis: [
-                    {
-                        title: {
-                            text: document.documentElement.lang === 'uk' ? 'К-сть замовлень'
-                                : (document.documentElement.lang === 'en' ? 'Amount orders' : ''),
-                        },
-                    },
-                ],
-                xaxis: {
-                    type: 'datetime',
-                    labels: {
-                        format: 'dd MMM'
-                    }
-                }
-            };
-
-            let element = document.querySelector("#chart");
-            element.innerHTML = '';
-
-            var chart = new ApexCharts(element, options);
-            var scrollbar = document.getElementById("scrollbar");
-            chart.render();
-
-            scrollbar.max = data.length - visiblePoints;
-            scrollbar.value = startIndex;
-
-            scrollbar.addEventListener("input", function () {
-                var newIndex = parseInt(scrollbar.value);
-                chart.updateSeries([{
-                    name: 'TEAM A',
-                    type: 'area',
-                    data: data.slice(newIndex, newIndex + visiblePoints)
-                }]);
-            });
-        }
     </script>
     <script>
         $(document).ready(function () {
@@ -307,17 +318,17 @@
             }).datepicker("setDate", new Date());
 
             addListeners();
+        });
 
+        window.addEventListener('load', function () {
+            let dateNow = new Date().toLocaleDateString('uk-UA');
+            requestGetUsersByDate(dateNow);
+            requestByDateOrder(dateNow);
             let size = $('#size-amount-products_').val();
-            let date = new Date().toLocaleDateString('uk-UA');
+            let date = dateNow;
             invokeBlockUI();
             requestGetProducts(size, date);
         });
-
-        window.onload = function () {
-            requestGetUsersByDate(new Date().toLocaleDateString('uk-UA'));
-            requestByDateOrder(new Date().toLocaleDateString('uk-UA'));
-        };
 
         function addListeners() {
             $(`#dateAmountProducts_`).on('change', function () {
@@ -348,11 +359,29 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    var outputData = data.map(function (item) {
-                        return [item.date, item.count];
-                    });
-                    // console.log(outputData);
-                    loadChartOrders(outputData);
+                    console.log(data);
+                    if (!data || data.length === 0) {
+                        const noExistText = document.documentElement.lang === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
+                        $("#chart-orders-noExist").html(`<h5>${noExistText}</h5>`);
+                        $('#scrollbar').css('display', 'none');
+                        let chartElement = document.querySelector("#chart-orders");
+                        if (chartElement.chart) {
+                            chartElement.chart.destroy();
+                            chartElement.chart = null;
+                        }
+                        return;
+                    } else {
+                        var outputData = data.map(function (item) {
+                            return [item.date, item.count];
+                        });
+                        if (outputData.length <= 7) {
+                            $('#scrollbar').css('display', 'none');
+                        } else {
+                            $('#scrollbar').css('display', 'flex');
+                        }
+                        loadChartOrders(outputData);
+                        $("#chart-orders-noExist").html('');
+                    }
                 }
             });
         }
@@ -375,32 +404,41 @@
                         labels.push(returnUserStatus2(item.status));
                         count.push(item.count);
                     });
-                    console.log(data);
-                    console.log(labels);
                     loadChartUsers(labels, count);
                 }
             });
         }
 
         let timeoutId;
+
         function requestGetProducts(size, date) {
-            let lang = getCurrentLang();
             let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `admin/stats/products/get?date=${date}&size=${size}&languageCode=${lang}`);
+            request.open("GET", contextPath + `admin/stats/products/get?date=${date}&size=${size}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    let array = data.map(item => ({
+                    let arrayUnderLang = [];
+
+                    data.forEach(function (item) {
+                        arrayUnderLang.push({
+                            article: item.article,
+                            name: getCurrentLang() === 'uk' ? item.nameUk : item.nameEn,
+                            count: item.count,
+                            summa: item.summa
+                        });
+                    });
+
+                    let array = arrayUnderLang.map(item => ({
                         y: parseInt(item.count),
                         label: item.name
                     }));
+
                     loadChartProducts(array);
-                    // console.log(data);
                     $(`#table-data-container_`).empty();
                     clearTimeout(timeoutId);
                     setTimeout(() => {
-                        loadTable(data);
+                        loadTable(arrayUnderLang);
                     }, 1000)
                 }
             });
@@ -408,7 +446,6 @@
 
         function returnUserStatus2(status) {
             let currentLang = $('#languageCode_').val();
-            console.log(currentLang);
             if (status === 'legal') {
                 if (currentLang === 'uk') {
                     return 'Юридичне обличчя';

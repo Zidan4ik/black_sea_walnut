@@ -1,7 +1,7 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.service.CityService;
+import org.example.black_sea_walnut.service.RegionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class CityController {
-    private final CityService cityService;
+public class RegionController {
+    private final RegionService regionService;
 
-    @GetMapping("/cities/get")
-    public ResponseEntity<?> getCities() {
-        return new ResponseEntity<>(cityService.getAll(), HttpStatus.OK);
+    @GetMapping("/regions/get")
+    public ResponseEntity<?> getRegions() {
+        return new ResponseEntity<>(regionService.getAll(), HttpStatus.OK);
     }
 }

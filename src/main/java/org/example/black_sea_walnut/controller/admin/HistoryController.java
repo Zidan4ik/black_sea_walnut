@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +56,12 @@ public class HistoryController {
 
     @GetMapping("/page/main/data")
     public ResponseEntity<PageMainResponseForAdd> getDataForPageMain() {
-        MainBlockResponseForAdd mainBlock = historyMainService.getByPageTypeInResponseMainBlock(PageType.main_banner);
-        ProductionBlockResponseForAdd productionBlock = historyMainService.getByPageTypeInResponseProductionBlock(PageType.main_production);
-        FactoryBlockResponseForAdd factoryAboutBlock = historyMainService.getByPageTypeInResponseFactoryBlock(PageType.main_factory_about);
-        NumberBlockResponseForAdd numberBlock = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
-        AimBlockResponseForAdd aimBlock = historyMainService.getByPageTypeInResponseAimBlock(PageType.main_aim);
-        EcoProductionResponseForAdd ecoProductionBlock = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
+        BlockResponseForAddInMain mainBlock = historyMainService.getByPageTypeInResponseMainBlock(PageType.main_banner);
+        ProductionResponseForAddInMain productionBlock = historyMainService.getByPageTypeInResponseProductionBlock(PageType.main_production);
+        FactoryBlockResponseForAddInMain factoryAboutBlock = historyMainService.getByPageTypeInResponseFactoryBlock(PageType.main_factory_about);
+        NumberBlockResponseForAddInMain numberBlock = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
+        AimBlockResponseForAddInMain aimBlock = historyMainService.getByPageTypeInResponseAimBlock(PageType.main_aim);
+        EcoProductionResponseForAddInMain ecoProductionBlock = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
         PageMainResponseForAdd pageMainResponse = PageMainResponseForAdd.builder().responseMainBlock(mainBlock).responseProductionBlock(productionBlock).responseFactoryBlock(factoryAboutBlock).responseNumberBlock(numberBlock).responseAimBlock(aimBlock).responseEcoProductionBlock(ecoProductionBlock).build();
         return new ResponseEntity<>(pageMainResponse, HttpStatus.OK);
     }

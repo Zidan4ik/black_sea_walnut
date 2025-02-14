@@ -14,20 +14,25 @@ import java.util.List;
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Long> {
     @Query("""
-        SELECT p.articleId, MIN(pt.name), SUM(od.count), SUM(od.summaWithDiscount * od.count)
-        FROM OrderDetail od
-        JOIN od.order o
-        JOIN od.products p
-        JOIN ProductTranslation pt ON pt.product.articleId = p.articleId
-        WHERE o.dateOfOrdering BETWEEN :startDate AND :endDate
-        AND pt.languageCode = :languageCode
-        GROUP BY p.articleId
-        ORDER BY SUM(od.summaWithDiscount * od.count) DESC
-        """)
+    SELECT p.articleId, 
+           MIN(ukTranslation.name) AS nameUk, 
+           MIN(enTranslation.name) AS nameEn, 
+           SUM(od.count), 
+           SUM(od.summaWithDiscount * od.count)
+    FROM OrderDetail od
+    JOIN od.order o
+    JOIN od.products p
+    LEFT JOIN ProductTranslation ukTranslation ON ukTranslation.product.articleId = p.articleId 
+                                               AND ukTranslation.languageCode = 'uk'
+    LEFT JOIN ProductTranslation enTranslation ON enTranslation.product.articleId = p.articleId 
+                                               AND enTranslation.languageCode = 'en'
+    WHERE o.dateOfOrdering BETWEEN :startDate AND :endDate
+    GROUP BY p.articleId
+    ORDER BY SUM(od.summaWithDiscount * od.count) DESC
+""")
     List<Object[]> findSummaWithDiscountByProductAndDateRange(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
-            @Param("languageCode") LanguageCode languageCode,
             Pageable pageable
     );
 }

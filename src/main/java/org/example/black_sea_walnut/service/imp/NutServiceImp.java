@@ -81,6 +81,11 @@ public class NutServiceImp implements NutService {
     }
 
     @Override
+    public List<NutResponseForAdd> getAllInResponseForAdd() {
+        return getAll().stream().map(mapper::toResponseForAdd).toList();
+    }
+
+    @Override
     public PageResponse<NutResponseForView> getAll(NutResponseForView response, Pageable pageable, LanguageCode code) {
         Page<Nut> page = nutRepository.findAll(NutSpecification.getSpecification(response, code), pageable);
         List<NutResponseForView> responseDTOView = page.map(p -> mapper.toResponseForView(p, code)).stream().toList();

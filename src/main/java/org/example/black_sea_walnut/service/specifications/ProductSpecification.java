@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.service.specifications;
 
 import jakarta.persistence.criteria.*;
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.product.ProductResponseForView;
+import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @UtilityClass
 public class ProductSpecification {
-    public static Specification<Product> getSpecification(ProductResponseForView entity, LanguageCode languageCode) {
+    public static Specification<Product> getSpecification(ProductResponseForViewInProducts entity, LanguageCode languageCode) {
         Specification<Product> specification = Specification.where(null);
         if (entity.getId() != null) {
             specification = specification.and(hasId(entity.getId()));

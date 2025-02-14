@@ -1,15 +1,12 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
-import jakarta.servlet.ServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.gallery.GalleryRequestForAdd;
 import org.example.black_sea_walnut.dto.gallery.GalleryResponseForAdd;
-import org.example.black_sea_walnut.entity.Gallery;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.GalleryService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -1,9 +1,8 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.order.OrderResponseForStatsProducts;
 import org.example.black_sea_walnut.dto.stats.UserResponseForStats;
-import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.OrderService;
 import org.example.black_sea_walnut.service.UserService;
@@ -45,12 +44,11 @@ public class StatsController {
 
     @GetMapping("/stats/products/get")
     public ResponseEntity<?> getProductBySizeAndDate(@RequestParam("date") String date,
-                                                     @RequestParam("size") String size,
-                                                     @RequestParam("languageCode") LanguageCode code) {
+                                                     @RequestParam("size") String size) {
         YearMonth yearMonth = YearMonth.from(DateUtil.toFormatDateToDB(date, "dd.MM.yyyy"));
         LocalDate firstDay = yearMonth.atDay(1);
         LocalDate lastDay = yearMonth.atEndOfMonth();
-        List<OrderResponseForStatsProducts> data = orderService.getTopProductBySalesInMonth(firstDay, lastDay, Integer.parseInt(size), code);
+        List<OrderResponseForStatsProducts> data = orderService.getTopProductBySalesInMonth(firstDay, lastDay, Integer.parseInt(size));
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 

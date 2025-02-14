@@ -1,9 +1,8 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.manager.ManagerDTO;
 import org.example.black_sea_walnut.dto.manager.ManagerResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;

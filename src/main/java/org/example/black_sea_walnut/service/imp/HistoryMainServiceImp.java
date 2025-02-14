@@ -31,33 +31,33 @@ public class HistoryMainServiceImp implements HistoryMainService {
     private String contextPath;
 
     @Override
-    public MainBlockResponseForAdd getByPageTypeInResponseMainBlock(PageType type) {
+    public BlockResponseForAddInMain getByPageTypeInResponseMainBlock(PageType type) {
         return historyMainMapper.toResponseMainBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
-    public ProductionBlockResponseForAdd getByPageTypeInResponseProductionBlock(PageType type) {
+    public ProductionResponseForAddInMain getByPageTypeInResponseProductionBlock(PageType type) {
         return historyMainMapper.toResponseProductionBlockForAdd(historyService.getByPageType(type));
 
     }
 
     @Override
-    public FactoryBlockResponseForAdd getByPageTypeInResponseFactoryBlock(PageType type) {
+    public FactoryBlockResponseForAddInMain getByPageTypeInResponseFactoryBlock(PageType type) {
         return historyMainMapper.toResponseFactoryBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
-    public NumberBlockResponseForAdd getByPageTypeInResponseNumberBlock(PageType type) {
+    public NumberBlockResponseForAddInMain getByPageTypeInResponseNumberBlock(PageType type) {
         return historyMainMapper.toResponseNumberBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
-    public AimBlockResponseForAdd getByPageTypeInResponseAimBlock(PageType type) {
+    public AimBlockResponseForAddInMain getByPageTypeInResponseAimBlock(PageType type) {
         return historyMainMapper.toResponseAimBlockForAdd(historyService.getByPageType(type));
     }
 
     @Override
-    public EcoProductionResponseForAdd getByPageTypeInResponseEcoProductionBlock(PageType type) {
+    public EcoProductionResponseForAddInMain getByPageTypeInResponseEcoProductionBlock(PageType type) {
         return historyMainMapper.toResponseEcoProductionBLockForAdd(historyService.getByPageType(type));
     }
 

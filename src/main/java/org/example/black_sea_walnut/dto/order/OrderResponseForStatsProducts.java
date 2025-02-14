@@ -7,7 +7,8 @@ import lombok.Data;
 @Builder
 public class OrderResponseForStatsProducts {
     private String article;
-    private String name;
+    private String nameUk;
+    private String nameEn;
     private String count;
     private String summa;
 }

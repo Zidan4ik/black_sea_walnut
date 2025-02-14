@@ -7,12 +7,12 @@ import org.example.black_sea_walnut.enums.PageType;
 
 
 public interface HistoryMainService {
-    MainBlockResponseForAdd getByPageTypeInResponseMainBlock(PageType type);
-    ProductionBlockResponseForAdd getByPageTypeInResponseProductionBlock(PageType type);
-    FactoryBlockResponseForAdd getByPageTypeInResponseFactoryBlock(PageType type);
-    NumberBlockResponseForAdd getByPageTypeInResponseNumberBlock(PageType type);
-    AimBlockResponseForAdd getByPageTypeInResponseAimBlock(PageType type);
-    EcoProductionResponseForAdd getByPageTypeInResponseEcoProductionBlock(PageType type);
+    BlockResponseForAddInMain getByPageTypeInResponseMainBlock(PageType type);
+    ProductionResponseForAddInMain getByPageTypeInResponseProductionBlock(PageType type);
+    FactoryBlockResponseForAddInMain getByPageTypeInResponseFactoryBlock(PageType type);
+    NumberBlockResponseForAddInMain getByPageTypeInResponseNumberBlock(PageType type);
+    AimBlockResponseForAddInMain getByPageTypeInResponseAimBlock(PageType type);
+    EcoProductionResponseForAddInMain getByPageTypeInResponseEcoProductionBlock(PageType type);
     History saveHistoryMainBlock(MainBlockRequestForAdd dto);
     History saveHistoryAimBlock(AimBlockRequestForAdd dto);
     History saveHistoryEcoProductionBlock(EcoProductionRequestForAdd dto);

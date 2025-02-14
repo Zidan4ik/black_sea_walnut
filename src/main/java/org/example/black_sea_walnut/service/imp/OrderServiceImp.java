@@ -81,10 +81,10 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public List<OrderResponseForStatsProducts> getTopProductBySalesInMonth(LocalDate start, LocalDate end, int size, LanguageCode code) {
+    public List<OrderResponseForStatsProducts> getTopProductBySalesInMonth(LocalDate start, LocalDate end, int size) {
 //        return orderDetailsRepository.findTopBySummaWithDiscountAndDateRange(start, end);
         Pageable pageAble = PageRequest.of(0, size);
-        List<Object[]> entities = orderDetailsRepository.findSummaWithDiscountByProductAndDateRange(start, end, code, pageAble);
+        List<Object[]> entities = orderDetailsRepository.findSummaWithDiscountByProductAndDateRange(start, end, pageAble);
         return orderMapper.toResponseFOrStatsProduct(entities);
     }
 }

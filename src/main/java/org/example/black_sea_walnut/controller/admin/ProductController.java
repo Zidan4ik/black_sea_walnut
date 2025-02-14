@@ -1,15 +1,14 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
 import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ResponseAllDiscountsAndTastes;
-import org.example.black_sea_walnut.dto.product.ProductResponseForView;
+import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -17,13 +16,11 @@ import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
-import org.example.black_sea_walnut.util.JsonUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +51,13 @@ public class ProductController {
     }
 
     @GetMapping("/products/table/load")
-    public ModelAndView loadTable(@ModelAttribute ProductResponseForView responseProductForView,
+    public ModelAndView loadTable(@ModelAttribute ProductResponseForViewInProducts responseProductForView,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "5") int size,
                                   @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-products");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ProductResponseForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
+        PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
         model.addObject("data", pageResponse.getContent());
 
         Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
@@ -72,13 +69,13 @@ public class ProductController {
     }
 
     @GetMapping("/products/pagination/load")
-    public ModelAndView loadPagination(@ModelAttribute ProductResponseForView responseProductForView,
+    public ModelAndView loadPagination(@ModelAttribute ProductResponseForViewInProducts responseProductForView,
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "5") int size,
                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ProductResponseForView> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
+        PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }

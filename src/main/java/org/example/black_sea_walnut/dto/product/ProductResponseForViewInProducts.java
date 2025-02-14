@@ -6,7 +6,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 
 @Builder
 @Getter
-public class ProductResponseForView {
+public class ProductResponseForViewInProducts {
     private Long id;
     private LanguageCode languageCode;
     private String name;

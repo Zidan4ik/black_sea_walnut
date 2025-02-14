@@ -8,7 +8,7 @@ import java.util.List;
 
 @Builder
 @Getter
-public class FactoryBlockResponseForAdd {
+public class FactoryBlockResponseForAddInMain {
     private Long mainFactoryId;
     private boolean mainFactoryIsActive;
     private String mainFactoryTitleUk;

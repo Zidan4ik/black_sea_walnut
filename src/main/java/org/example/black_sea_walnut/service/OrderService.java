@@ -33,5 +33,5 @@ public interface OrderService {
 
     List<Map<String, Object>> getOrdersCountByDate(LocalDate start, LocalDate end);
 
-    List<OrderResponseForStatsProducts> getTopProductBySalesInMonth(LocalDate start, LocalDate end, int size, LanguageCode code);
+    List<OrderResponseForStatsProducts> getTopProductBySalesInMonth(LocalDate start, LocalDate end, int size);
 }

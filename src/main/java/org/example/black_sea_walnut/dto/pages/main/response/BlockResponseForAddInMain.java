@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class MainBlockResponseForAdd {
+public class BlockResponseForAddInMain {
     private Long mainId;
     private boolean mainIsActive;
     private String mainTitleUk;

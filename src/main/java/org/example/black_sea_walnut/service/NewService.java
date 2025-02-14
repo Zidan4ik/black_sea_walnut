@@ -15,6 +15,8 @@ public interface NewService {
 
     List<New> getAll();
 
+    List<NewRequestForAdd> getAllInResponseForAdd();
+
     New getById(Long id);
 
     NewRequestForAdd getByIdLikeDTO(Long id);

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class EcoProductionResponseForAdd {
+public class EcoProductionResponseForAddInMain {
     private Long mainEcoProductionId;
     private boolean mainEcoProductionIsActive;
     private String mainEcoProductionTitleUk;

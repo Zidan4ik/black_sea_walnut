@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.controller;
+package org.example.black_sea_walnut.controller.admin;
 
 
 import jakarta.validation.Valid;

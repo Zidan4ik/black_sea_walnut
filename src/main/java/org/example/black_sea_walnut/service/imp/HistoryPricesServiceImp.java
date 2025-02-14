@@ -3,12 +3,16 @@ package org.example.black_sea_walnut.service.imp;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
 import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
+import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryPrices;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.mapper.HistoryPricesMapper;
 import org.example.black_sea_walnut.repository.HistoryPricesRepository;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +43,10 @@ public class HistoryPricesServiceImp implements HistoryPricesService {
     @Override
     public void deleteAllByProduct(Long productId) {
         historyPricesRepository.deleteAllByProduct(productId);
+    }
+
+    @Override
+    public List<HistoryPrices> getLastTwoDataByProduct(Product product) {
+        return historyPricesRepository.getLastTwoDataProduct(product);
     }
 }

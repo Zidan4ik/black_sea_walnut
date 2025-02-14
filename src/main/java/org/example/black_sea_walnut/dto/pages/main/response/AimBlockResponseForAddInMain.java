@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class AimBlockResponseForAdd {
+public class AimBlockResponseForAddInMain {
     private Long mainAimId;
     private boolean mainAimIsActive;
     private String mainAimTitleUk;
