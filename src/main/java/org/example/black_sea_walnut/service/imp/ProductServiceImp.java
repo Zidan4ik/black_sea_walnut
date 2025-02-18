@@ -7,22 +7,21 @@ import org.example.black_sea_walnut.dto.*;
 import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
 import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
-import org.example.black_sea_walnut.dto.web.products.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
-import org.example.black_sea_walnut.mapper.HistoryPricesMapper;
 import org.example.black_sea_walnut.mapper.ProductMapper;
-import org.example.black_sea_walnut.repository.HistoryPricesRepository;
-import org.example.black_sea_walnut.repository.HistoryRepository;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
+import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +41,8 @@ public class ProductServiceImp implements ProductService {
     private final DiscountService discountService;
     private final ImageServiceImp imageServiceImp;
     private final ProductMapper productMapper;
-    private final HistoryPricesMapper historyPricesMapper;
     private final HistoryPricesService historyPricesService;
-    private final HistoryPricesRepository historyPricesRepository;
-    private final HistoryRepository historyRepository;
+
 
     @Value("${upload.path}")
     private String contextPath;
@@ -59,6 +56,15 @@ public class ProductServiceImp implements ProductService {
     public PageResponse<ProductResponseForViewInProducts> getAll(ProductResponseForViewInProducts response, Pageable pageable, LanguageCode code) {
         Page<Product> page = productRepository.findAll(ProductSpecification.getSpecification(response, code), pageable);
         List<ProductResponseForViewInProducts> responseDTOView = page.map(p -> mapper.toDTOForView(p, code)).stream().toList();
+        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
+    public PageResponse<ProductResponseForView> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code) {
+        Page<Product> page = productRepository.findAll(ProductSpecification2.getSpecification(response, code), pageable);
+        List<ProductResponseForView> responseDTOView = page.map(p -> mapper.toResponseForViewInProduction(p, code)).toList();
         return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));
@@ -91,7 +97,7 @@ public class ProductServiceImp implements ProductService {
             if (dto.getPathToImagePayment().isEmpty())
                 imageServiceImp.deleteByPath(product.getPathToImagePayment());
             if (dto.getNewPrice() != null) {
-                product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(),LocalDateTime.now().plusDays(30),product));
+                product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
                 save(product);
             }
         }
@@ -196,9 +202,14 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public List<ProductResponseForView> getRandomProductsBySize(int size, LanguageCode code) {
-            return productRepository.findRandomProducts(size).stream().map(p-> {
+        return productRepository.findRandomProducts(size).stream().map(p -> {
             p.setHistoryPrices(historyPricesService.getLastTwoDataByProduct(p));
-            return productMapper.toResponseForViewInMain(p,code);
+            return productMapper.toResponseForViewInMain(p, code);
         }).toList();
+    }
+
+    @Override
+    public List<Integer> getAllMasses() {
+        return productRepository.getAllMasses();
     }
 }

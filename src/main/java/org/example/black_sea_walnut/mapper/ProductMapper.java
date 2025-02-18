@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
-import org.example.black_sea_walnut.dto.web.products.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
@@ -14,6 +14,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -124,6 +125,35 @@ public class ProductMapper {
         Discount discount = entity.getDiscounts().stream().filter(d -> d.getLanguageCode().equals(languageCode)).findFirst().orElse(null);
 
         List<HistoryPrices> prices = entity.getHistoryPrices();
+        int priceNew = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
+        int priceOld = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
+        return ProductResponseForView
+                .builder()
+                .id(entity.getId())
+                .articleId(entity.getArticleId())
+                .name(translation.getName())
+                .taste(taste != null ? taste.getName() : "")
+                .discount(discount != null ? discount.getName() : "")
+                .mass(entity.getMass())
+                .pathToImage1(entity.getPathToImage1())
+                .pathToImage2(entity.getPathToImage2())
+                .pathToImage3(entity.getPathToImage3())
+                .pathToImage4(entity.getPathToImage4())
+                .priceNew(priceNew)
+                .priceOld(priceOld)
+                .build();
+    }
+
+    public ProductResponseForView toResponseForViewInProduction(Product entity, LanguageCode languageCode) {
+        ProductTranslation translation = entity.getProductTranslations().stream()
+                .filter(l -> l.getLanguageCode() == languageCode)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Translation not found for language code: " + languageCode));
+        Taste taste = entity.getTastes().stream().filter(t -> t.getLanguageCode().equals(languageCode)).findFirst().orElse(null);
+        Discount discount = entity.getDiscounts().stream().filter(d -> d.getLanguageCode().equals(languageCode)).findFirst().orElse(null);
+
+        List<HistoryPrices> prices = entity.getHistoryPrices().stream()
+                .sorted(Comparator.comparing(HistoryPrices::getId).reversed()).toList();
         int priceNew = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
         int priceOld = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
         return ProductResponseForView

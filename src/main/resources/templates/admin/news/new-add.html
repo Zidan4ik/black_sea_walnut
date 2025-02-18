@@ -91,8 +91,7 @@
                                     Опис:</label>
                                 <div id="description_ua"
                                      style="width: 765px; min-height: 100px; border: 1px solid #ccc;"></div>
-                                <input
-                                        type="hidden" id="hidden-description-ua_" name="descriptionUA">
+                                <input type="hidden" id="hidden-description-ua_" name="descriptionUA">
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 mb-3 text-center">
@@ -212,7 +211,7 @@
                             'contentChanged': function () {
                                 const html = this.html.get();
                                 // console.log('UA: ', html);
-                                $("#hidden-description-ua_").html(html);
+                                $("#hidden-description-ua_").val(html);
                             }
                         }
                     });
@@ -226,7 +225,7 @@
                             'contentChanged': function () {
                                 const html = this.html.get();
                                 console.log('EN: ', html);
-                                $("#hidden-description-eng_").html(html);
+                                $("#hidden-description-eng_").val(html);
                             }
                         }
                     });

@@ -3,8 +3,9 @@ package org.example.black_sea_walnut.service;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
 import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
-import org.example.black_sea_walnut.dto.web.products.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,8 @@ public interface ProductService {
     List<Product> getAll();
 
     PageResponse<ProductResponseForViewInProducts> getAll(ProductResponseForViewInProducts response, Pageable pageable, LanguageCode code);
+
+    PageResponse<ProductResponseForView> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code);
 
     Product save(Product entity);
 
@@ -32,4 +35,6 @@ public interface ProductService {
     boolean isExistById(Long id);
 
     List<ProductResponseForView> getRandomProductsBySize(int size, LanguageCode code);
+
+    List<Integer> getAllMasses();
 }

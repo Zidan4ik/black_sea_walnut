@@ -253,7 +253,7 @@
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
-                    invokeRequest(inputs, 0);
+                    invokeRequestProducts(inputs, 0);
                     $('#ModalForDelete').modal('hide');
                 }
             });

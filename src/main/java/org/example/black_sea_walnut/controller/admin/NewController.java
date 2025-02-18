@@ -86,15 +86,10 @@ public class NewController {
         return model;
     }
 
-    @GetMapping("/new/delete/{id_}")
-    public ModelAndView deleteNew(
-            @PathVariable Long id_,
-            @ModelAttribute ResponseNewForView responseNewForView,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam String languageCode) {
-        newService.deleteById(id_);
-        return loadTable(responseNewForView, page, size, languageCode);
+    @GetMapping("/new/delete/{id}")
+    public ResponseEntity<?> deleteNew(@PathVariable Long id) {
+        newService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/new/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

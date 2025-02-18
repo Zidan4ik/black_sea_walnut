@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     @NonNull
-    Page<Product> findAll(Specification<Product> specification, @NonNull Pageable pageable);
+    Page<Product> findAll(@NonNull Specification<Product> specification, @NonNull Pageable pageable);
 
     boolean existsByArticleId(Long id);
 
@@ -24,4 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT :size",nativeQuery = true)
     List<Product> findRandomProducts(@Param("size") int size);
+
+    @Query("SELECT p.mass FROM Product p GROUP BY p.mass")
+    List<Integer> getAllMasses();
 }

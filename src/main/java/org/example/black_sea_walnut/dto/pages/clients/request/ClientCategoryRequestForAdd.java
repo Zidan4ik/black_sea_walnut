@@ -22,9 +22,9 @@ public class ClientCategoryRequestForAdd {
     private String clientsCategorySubtitleUk;
     @NotBlank(message = "{error.field.empty}")
     private String clientsCategorySubtitleEn;
-    @Size(max = 150, message = "{error.field.valid.size}")
+    @Size(max = 500, message = "{error.field.valid.size}")
     private String clientsCategoryDescriptionUk;
-    @Size(max = 150, message = "{error.field.valid.size}")
+    @Size(max = 500, message = "{error.field.valid.size}")
     private String clientsCategoryDescriptionEn;
     @Setter
     private String clientsCategoryPathToImage;

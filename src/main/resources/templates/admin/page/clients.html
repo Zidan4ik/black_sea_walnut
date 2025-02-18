@@ -355,6 +355,7 @@
             </script>
             <script>
                 function getFroalaEditor(idElementEditor) {
+                    console.log('idElementEditor: ',idElementEditor);
                     return new FroalaEditor(`#${idElementEditor}`, {
                         height: 12 * 10,
                         width: 700,
@@ -602,6 +603,7 @@
                                 let nestedObject = data[key];
                                 if (Array.isArray(nestedObject)) {
                                     nestedObject.forEach((item, index) => {
+                                        console.log(item);
                                         addMediaImageBlock('old', item);
                                     });
                                 } else if (typeof nestedObject === 'object' && nestedObject !== null) {
@@ -619,7 +621,7 @@
                                                         input.val(nestedObject[nestedKey]);
                                                     }
                                                 } else if (input.hasClass('editors')) {
-                                                    // console.log(`Key: ${key} Value: ${data[key]}`);
+                                                    console.log(`Key: ${key} Value: ${data[key]}`);
                                                     let $div = $(input);
                                                     if ($div) {
                                                         $div.html(nestedObject[nestedKey]);
@@ -738,6 +740,8 @@
                         newBlock.dataset.type = type;
                         newBlock.innerHTML = generateBlock(lang, data);
                         container.insertBefore(newBlock, addButtonContainer);
+                        let editor = $(`#hidden-edit-description-block-${lang}-${counter}`);
+                        if(editor.length) editor.html(data.description || '');
                         getFroalaEditor(`edit-description-block-${lang}-${counter}`);
                     }
 

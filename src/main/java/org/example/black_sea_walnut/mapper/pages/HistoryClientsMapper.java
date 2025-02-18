@@ -87,7 +87,7 @@ public class HistoryClientsMapper {
         entity.setMediaTypeImage(dto.getMediaTypeImage());
         entity.setPathToImage(dto.getClientsCategoryPathToImage());
         entity.setPathToSvg(dto.getClientsCategoryPathToSvg());
-        ClientCategoryTranslation translationUk = new ClientCategoryTranslation(null, LanguageCode.uk, dto.getClientsCategoryTitleUk(), dto.getClientsCategorySubtitleUk(), dto.getClientsCategoryDescriptionEn(), entity);
+        ClientCategoryTranslation translationUk = new ClientCategoryTranslation(null, LanguageCode.uk, dto.getClientsCategoryTitleUk(), dto.getClientsCategorySubtitleUk(), dto.getClientsCategoryDescriptionUk(), entity);
         ClientCategoryTranslation translationEn = new ClientCategoryTranslation(null, LanguageCode.en, dto.getClientsCategoryTitleEn(), dto.getClientsCategorySubtitleEn(), dto.getClientsCategoryDescriptionEn(), entity);
         entity.setTranslations(List.of(translationUk, translationEn));
         return entity;

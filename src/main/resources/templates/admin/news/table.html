@@ -130,7 +130,7 @@
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
-                    window.location.pathname = `${contextPath}admin/new/delete/${id}`;
+                    window.location.reload();
                 }
             });
         }
