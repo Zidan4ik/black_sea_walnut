@@ -1,0 +1,258 @@
+<html lang="uk"
+	  layout:decorate="~{web/blocks/layout.html}"
+	  xmlns:layout="http://www.w3.org/1999/xhtml"
+	  xmlns="http://www.w3.org/1999/html">
+<head>
+	<title th:text="#{text.factory}"></title>
+	<script th:src="@{/js/swiperMy.js}"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+	<div class="container pr">
+		<div class="popup__cart">
+			<div class="wrap">
+				<div class="popup__cart_item">
+					<div class="row align-items-center no-gutters item_row">
+						<div class="col-md-5 col-12">
+							<div class="item_title">
+								<p>Орех соленый 80г.</p>
+							</div>
+						</div>
+						<div class="col-md-7 col-12">
+							<div class="row align-items-center no-gutters">
+								<div class="col-6">
+									<div class="item_quantity">
+										<button type="button" class="quantity_minus">
+											<i class="nut-icon icons-qty-left"></i>
+										</button>
+										<input type="text" name="quantity" value="4" class="quantity_input">
+										<button type="button" class="quantity_plus">
+											<i class="nut-icon icons-qty-right"></i>
+										</button>
+									</div>
+								</div>
+								<div class="col-5">
+									<div class="item_sum">
+										<p>100 <span>грн.</span></p>
+									</div>
+								</div>
+								<div class="col-1">
+									<div class="item_close">
+										<a href="#">
+											<i class="nut-icon icons-close-button"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="popup__cart_item">
+					<div class="row align-items-center no-gutters item_row">
+						<div class="col-md-5 col-12">
+							<div class="item_title">
+								<p>Орех сладкий 80г.</p>
+							</div>
+						</div>
+						<div class="col-md-7 col-12">
+							<div class="row align-items-center no-gutters">
+								<div class="col-6">
+									<div class="item_quantity">
+										<button type="button" class="quantity_minus">
+											<i class="nut-icon icons-qty-left"></i>
+										</button>
+										<input type="text" name="quantity" value="8" class="quantity_input">
+										<button type="button" class="quantity_plus">
+											<i class="nut-icon icons-qty-right"></i>
+										</button>
+									</div>
+								</div>
+								<div class="col-5">
+									<div class="item_sum">
+										<p>80 <span>грн.</span></p>
+									</div>
+								</div>
+								<div class="col-1">
+									<div class="item_close">
+										<a href="#">
+											<i class="nut-icon icons-close-button"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="popup__cart_sum">
+					<div class="sum_item">
+						<div class="sum_item_title">
+							<p>Всего </p>
+						</div>
+						<div class="sum_item_new">
+							<p>175 <i>грн.</i></p>
+						</div>
+					</div>
+					<div class="sum_item">
+						<div class="sum_item_button">
+							<a href="#" class="button">Перейти в корзину</a>
+						</div>
+					</div>
+				</div>
+				<!-- Если корзина пуста -->
+				<!-- <div class="popup__cart_clean">
+					<p>Ваша корзина пуста</p>
+				</div> -->
+			</div>
+		</div>
+	</div>
+
+	<section id="container-banner" class="first-section overlay" style="background-image: url(/blacksea/img/about.jpg)"></section>
+
+	<section id="factory-post" class="manufacturer"></section>
+
+	<section class="history gray_section">
+		<div class="container">
+			<div class="row no-gutters">
+				<div class="col-lg-7 col-12">
+					<div class="history__blockquote">
+						<div class="row no-gutters">
+							<div class="col-md-5">
+								<img src="/blacksea/img/men.jpg" alt="alt">
+							</div>
+							<div class="col-md-7">
+								<div class="blockquote_block">
+									<h3>Павло Тулба</h3>
+									<p>Засновник та власник підприємства “Горіх Причорномор'я”</p>
+									<blockquote>Головна наша мета – отримати максимальний прибуток із одного гектара.</blockquote>
+									<a href="#" class="button button_transparent">
+										Написати нам
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 col-12">
+					<div class="history__content">
+						<h3>Історія підприємства</h3>
+						<p>Наше підприємство засноване у 2012 році для закладення змішаного саду волоського горіха та фундуку.</p>
+						<p>На сьогодні ми вже заклали понад 100 гектарів саду та продовжуємо розширювати свої насадження. Окрім вирощування волоського горіха та фундуку, ми займаємося вирощуванням саджанців, розведенням та вирощуванням овець, а також є першою в Україні компанією, яка приступила до промислового вирощування трюфелів на коренях фундуку.</p>
+						<p>Земля, якою користується кооператив, є власністю членів нашого кооперативу.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="container-numbers" class="timer"></section>
+
+	<section class="benefit gray_section gallery_section">
+		<div class="container">
+			<div class="row align-items-center justify-content-center">
+				<div class="col-12">
+					<h2 th:text="#{text.sidebar.galleries}"></h2>
+					<p th:text="#{text.companySocialActivityStaff}"></p>
+				</div>
+			</div>
+			<div id="container-gallery" class="row justify-content-center"></div>
+			<div class="row">
+				<div class="wrapper">
+					<a th:href="@{/web/gallery}" class="button button_transparent" th:text="#{text.viewTheEntireGallery}"></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div id="banner-factory2" class="parallax" data-scrollax-parent="true"></div>
+
+	<section class="news gray_section">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-6 col-12">
+					<h2 th:text="#{text.sidebar.news}"></h2>
+					<p class="news__descr" th:text="#{text.latestNewsAndUsefulInformation}"></p>
+				</div>
+				<div class="col-md-6 col-12 d-flex justify-content-end" id="container-navigation-news">
+					<div class="nav-buttons">
+						<div class="prevArrowBtn-new" tabindex="0" role="button" aria-label="Previous slide">
+							<i class="ti ti-arrow-left"></i>
+						</div>
+						<div class="nextArrowBtn-new" tabindex="0" role="button" aria-label="Next slide">
+							<i class="ti ti-arrow-right"></i>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="news-container swiper-container row d-flex justify-content-evenly">
+						<div class="swiper">
+							<div id="container-news" class="swiper-wrapper"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				const swiper = new Swiper('.swiper', {
+					speed: 400,
+					spaceBetween: 100,
+					loop: true,
+					slidesPerView: 1,
+					slidesBetween: 30,
+					navigation: {
+						nextEl: ".nextArrowBtn-new",
+						prevEl: ".prevArrowBtn-new",
+					},
+					breakpoints: {
+						576: {
+							slidesPerView: 2,
+							spaceBetween: 20
+						},
+						768: {
+							slidesPerView: 3,
+							spaceBetween: 30
+						},
+					}
+				});
+			</script>
+
+			<div class="row">
+				<div class="wrapper">
+					<a th:href="@{/web/news}" class="button button_transparent"
+					   th:text="#{text.viewTheEntireGallery}"></a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script layout:fragment="script">
+
+	$(document).ready(function () {
+		invokeRequestFactoryData();
+	});
+
+	function invokeRequestFactoryData() {
+		let request = new XMLHttpRequest();
+		let lang = getCurrentLang();
+		request.open("GET", contextPath + `web/factory/data?lang=${lang}`)
+		request.send();
+		request.addEventListener('load', function () {
+			if (request.status === 200) {
+				let data = JSON.parse(request.response);
+				console.log(data);
+
+				buildBanner(data.banner,'container-banner');
+				buildPost(data.block,'factory-post');
+				initSwipers('manufacturer-container');
+				buildNumber(data.numbers,'container-numbers');
+				buildBannerGrid(data.gallery,'container-gallery');
+				buildBannerTwo(data.ecology,'banner-factory2');
+				buildContacts(data.contacts);
+				buildNews(data.news,'container-news');
+			}
+		});
+	}
+
+</script>
+</body>
+</html>

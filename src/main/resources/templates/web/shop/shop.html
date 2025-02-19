@@ -1,0 +1,422 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.shop}"></title>
+    <script th:src="@{/js/swiperMy.js}"></script>
+    <style>
+        .selectMy {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            height: 47px;
+            padding: 14px 16px;
+            font-family: "Montserrat", sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 18px;
+            letter-spacing: 0.01em;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container pr">
+        <div class="popup__cart">
+            <div class="wrap">
+                <div class="popup__cart_item">
+                    <div class="row align-items-center no-gutters item_row">
+                        <div class="col-md-5 col-12">
+                            <div class="item_title">
+                                <p>Орех соленый 80г.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-6">
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="4" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="item_sum">
+                                        <p>100 <span>грн.</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="item_close">
+                                        <a href="#">
+                                            <i class="nut-icon icons-close-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup__cart_item">
+                    <div class="row align-items-center no-gutters item_row">
+                        <div class="col-md-5 col-12">
+                            <div class="item_title">
+                                <p>Орех сладкий 80г.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-6">
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="8" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="item_sum">
+                                        <p>80 <span>грн.</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="item_close">
+                                        <a href="#">
+                                            <i class="nut-icon icons-close-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup__cart_sum">
+                    <div class="sum_item">
+                        <div class="sum_item_title">
+                            <p>Всего </p>
+                        </div>
+                        <div class="sum_item_new">
+                            <p>175 <i>грн.</i></p>
+                        </div>
+                    </div>
+                    <div class="sum_item">
+                        <div class="sum_item_button">
+                            <a href="#" class="button">Перейти в корзину</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Если корзина пуста -->
+
+                <!-- <div class="popup__cart_clean">
+                    <p>Ваша корзина пуста</p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <section id="container-banner" class="first-section overlay"></section>
+
+    <section class="production">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12">
+                    <div class="production__filter">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-3">
+                                        <div class="production__filter_title">
+                                            <p>Фільтр</p>
+                                            <i class="nut-icon icons-settings"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5" id="container-tasteFilter" style="margin-bottom:40px;">
+                                    </div>
+                                    <div class="col-lg-4" id="container-massFilter" style="margin-bottom:40px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 align-self-center">
+                                <div class="row">
+                                    <div class="col-lg-5 align-self-center">
+                                        <div class="production__filter_price">
+											<span>
+													Коштовність
+											</span>
+                                            <i class="nut-icon icons-arrow-down" style="font-size: large"></i>
+                                            <i class="nut-icon icons-right-top" style="font-size: large"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="production__filter_button">
+                                            <a id="button-filter" class="button">Застосувати</a>
+                                            <a class="button_close"><i class="nut-icon icons-close-button"></i><span> Скинути</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="table-data-container_" class="row justify-content-center"></div>
+            <div class="row">
+                <div class="wrapper">
+                    <a class="button button_transparent" id="getProducts">Загрузити ще</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="manufacturer" id="container-ecollogy"></section>
+</div>
+
+<script layout:fragment="script">
+    const pathToTable = contextPath + 'web/products/table/load';
+
+    function buildProducts(products) {
+        if (products.length === 0) return;
+        else if (products.length > 0) {
+            let $container = $(`#container-products`);
+            if ($container) {
+                products.forEach(function (item) {
+                    $container.append(getRowProduct(item))
+                });
+            }
+            initSwipers('products-container');
+        }
+    }
+
+    function getRowProduct(item) {
+        let classDiscount = null;
+        let marginTopTaste = '22px';
+        if (item.discount) {
+            classDiscount = (item.discount.toLowerCase() === 'new' || item.discount.toLowerCase() === 'новий')
+                ? "icons-novinka"
+                : "icons-actciya";
+        }
+        if (item.taste) {
+            marginTopTaste = null;
+        }
+        return `<div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="production__item" >
+                            ${classDiscount ? `
+                                <div class="sticker">
+                                    <i class="nut-icon ${classDiscount}"></i>
+                                    <p>${item.discount}</p>
+                                </div>
+                            ` : ''}
+                            <!-- Slider main container -->
+                            <div class="products-container swiper-container">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                    <!-- Slides -->
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage1 != null ? item.pathToImage1 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage2 != null ? item.pathToImage2 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage3 != null ? item.pathToImage3 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage4 != null ? item.pathToImage4 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                </div>
+
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                                <img class="zoom" src="/blacksea/img/zoom.svg" alt="alt">
+                            </div>
+                            <div class="wrap">
+                                <div class="production__item_title">
+                                    ${item.name}
+                                </div>
+                                <div class="production__item_art">
+                                    <span>Арт:</span> ${item.articleId}
+                                </div>
+                                <div class="production__item_descr" style="margin-top: ${marginTopTaste}">
+                                    ${item.taste}
+                                </div>
+                                <div class="production__item_weight">
+                                    <div class="weight_item">
+                                        <div class="weight_item_icon">
+                                            <i class="nut-icon icons-food-scale-tool"></i>
+                                        </div>
+                                        <div class="weight_item_descr">
+                                            <p>Масса</p>
+                                            <p><span>${item.mass}<i>г.</i></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="weight_item">
+                                        <div class="weight_item_icon">
+                                            <i class="nut-icon icons-group"></i>
+                                        </div>
+                                        <div class="weight_item_descr">
+                                            <p>Упаковка</p>
+                                            <p><span>вакуумная</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="production__item_sum">
+                                    <div class="sum_item">
+                                        <div class="sum_item_title">
+                                            <p>Цена: </p>
+                                        </div>
+                                        <div class="sum_item_new">
+                                            <p>${item.priceNew} <i>грн.</i></p>
+                                        </div>
+                                        <div class="sum_item_old">
+                                            <p>${item.priceOld} <i>грн.</i></p>
+                                        </div>
+                                    </div>
+                                    <div class="sum_item">
+                                        <div class="sum_item_button">
+                                            <a href="#" class="button">Купить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+    }
+
+    let currentPage = 0;
+    let timeoutId;
+    let inputs = ['tasteFilter', 'massFilter'];
+
+    $("#getProducts").on("click", function () {
+        invokeRequestProducts(inputs, currentPage);
+    });
+
+    $(document).ready(function () {
+        invokeRequestProducts(inputs, currentPage);
+        invokeRequestShopData();
+    });
+
+    $('#button-filter').on('click', function () {
+        currentPage = 0;
+        $('#table-data-container_').empty();
+        $('#getProducts').css('display', '');
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            invokeRequestProducts(inputs, currentPage);
+        }, 500);
+    });
+
+    $('.button_close').on('click', function () {
+        $('#tasteFilter').val('');
+        $('#massFilter').val('');
+        $('.icons-right-top').removeClass('accent');
+        $('.icons-arrow-down').removeClass('accent');
+        priceNewDirection = "ASC";
+    });
+
+    let priceNewDirection = 'ASC';
+    $('.icons-right-top').on('click', function () {
+        priceNewDirection = 'ASC'
+        $(this).addClass('accent');
+        $('.icons-arrow-down').removeClass('accent');
+    });
+    $('.icons-arrow-down').on('click', function () {
+        priceNewDirection = 'DESC'
+        $(this).addClass('accent');
+        $('.icons-right-top').removeClass('accent');
+    });
+
+    document.addEventListener("htmx:afterSwap", function (event) {
+        if (event.target.id === "table-data-container_") {
+            if ($('#totalPages').val() === String(currentPage)) {
+                $('#getProducts').css('display', 'none');
+            }
+            initSwipers('products-container');
+        }
+    });
+
+    function invokeRequestProducts(inputs, page) {
+        if (Array.isArray(inputs)) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                const params = new URLSearchParams();
+
+                inputs.forEach((name) => {
+                    const input = document.querySelector(`select[name=${name}]`);
+                    if (input) {
+                        params.append(name, input.value);
+                    }
+                });
+                params.append('page', page);
+                params.append('languageCode', document.documentElement.lang);
+                params.append('size', '3');
+                params.append('directionCost', priceNewDirection);
+
+                htmx.ajax('GET', `${pathToTable}?${params.toString()}`, {
+                    target: '#table-data-container_',
+                    swap: 'beforeend'
+                });
+            }, 0);
+        }
+        currentPage++;
+    }
+
+    function invokeRequestShopData() {
+        let request = new XMLHttpRequest();
+        let lang = getCurrentLang();
+        request.open("GET", contextPath + `web/shop/data?lang=${lang}`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+
+                const containerTastes = $('#container-tasteFilter');
+                containerTastes.append(`<select id="tasteFilter" name="tasteFilter" class="selectMy" style="width: 80%;">
+                                            <option value="">Всі</option>
+                                        </select>`);
+
+                const containerMasses = $('#container-massFilter');
+                containerMasses.append(`<select id="massFilter"  name="massFilter" class="selectMy">
+                                            <option value="">Всі</option>
+                                        </select>`);
+
+                const selectedTastes = $('#tasteFilter');
+                if (selectedTastes.length) {
+                    data.tastes.forEach(function (item) {
+                        selectedTastes.append(`<option value="${item.name}">${item.name}</option>`);
+                    });
+                }
+                const selectMasses = $('#massFilter');
+                if (selectedTastes.length) {
+                    data.masses.forEach(function (item) {
+                        selectMasses.append(`<option value="${item}">${item}</option>`);
+                    });
+                }
+
+                buildBanner(data.banner,'container-banner');
+                buildPost(data.ecologically,'container-ecollogy');
+                initSwipers('manufacturer-container');
+                buildContacts(data.contacts);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

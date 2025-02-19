@@ -1,0 +1,86 @@
+<div th:if="${data.size()>0}" th:each="item : ${data}" class="col-lg-4 col-md-6 col-12">
+    <div class="wrap">
+        <div class="production__item">
+            <div class="sticker">
+                <i th:if="${!item.discount.isEmpty()}"
+                th:classappend="${item.discount.toLowerCase() == 'новий' || item.discount.toLowerCase() == 'new'?
+                'icons-novinka':'icons-actciya'}" class="nut-icon"></i>
+                <p th:text="${item.discount}"></p>
+            </div>
+            <!-- Slider main container -->
+            <div class="products-container swiper-container">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- Slides -->
+                    <div class="swiper-slide">
+                        <a><img th:src="${item.pathToImage1 != null? item.pathToImage1 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a><img th:src="${item.pathToImage2 != null? item.pathToImage2 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a><img th:src="${item.pathToImage3 != null? item.pathToImage3 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                    </div>
+                    <div class="swiper-slide">
+                        <a><img th:src="${item.pathToImage4 != null? item.pathToImage4 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                    </div>
+                </div>
+
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+                <img class="zoom" th:src="@{/blacksea/img/zoom.svg}" alt="alt">
+            </div>
+            <div class="wrap">
+                <div class="production__item_title" th:text="${item.name}">
+                    Грецкий орех
+                </div>
+                <div class="production__item_art">
+                    <span>Арт:</span> <span th:text="${item.articleId}"></span>
+                </div>
+                <div class="production__item_descr" th:styleappend="${item.taste.isEmpty()?'margin-bottom: 23px;':''}">
+                    <span th:text="${item.taste}"></span>
+                </div>
+                <div class="production__item_weight">
+                    <div class="weight_item">
+                        <div class="weight_item_icon">
+                            <i class="nut-icon icons-food-scale-tool"></i>
+                        </div>
+                        <div class="weight_item_descr">
+                            <p>Масса</p>
+                            <p><span th:text="${item.mass}"><i>г.</i></span></p>
+                        </div>
+                    </div>
+                    <div class="weight_item">
+                        <div class="weight_item_icon">
+                            <i class="nut-icon icons-group"></i>
+                        </div>
+                        <div class="weight_item_descr">
+                            <p>Упаковка</p>
+                            <p><span>вакуумна</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="production__item_sum">
+                    <div class="sum_item">
+                        <div class="sum_item_title">
+                            <p>Ціна: </p>
+                        </div>
+                        <div class="sum_item_new">
+                            <p th:text="${item.priceNew}"><i>грн.</i></p>
+                        </div>
+                        <div th:if="${item.priceOld != 0}" class="sum_item_old">
+                            <p th:text="${item.priceOld}"><i>грн.</i></p>
+                        </div>
+                    </div>
+                    <div class="sum_item">
+                        <div class="sum_item_button">
+                            <a th:href="@{'/web/product/'+item.id}" class="button" th:text="#{text.buy}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input id="totalPages" type="hidden" th:value="${totalPages}">
+</div>

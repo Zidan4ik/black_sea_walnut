@@ -1,0 +1,514 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.main}"></title>
+    <style>
+        .wraper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .wraper .item_data,
+        .wraper h5,
+        .wraper a {
+            margin-bottom: 10px;
+        }
+
+        .wraper p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            display: block;
+            max-height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container pr">
+        <div class="popup__cart">
+            <div class="wrap">
+                <div class="popup__cart_item">
+                    <div class="row align-items-center no-gutters item_row">
+                        <div class="col-md-5 col-12">
+                            <div class="item_title">
+                                <p>Орех соленый 80г.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-6">
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="4" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="item_sum">
+                                        <p>100 <span>грн.</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="item_close">
+                                        <a href="#">
+                                            <i class="nut-icon icons-close-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup__cart_item">
+                    <div class="row align-items-center no-gutters item_row">
+                        <div class="col-md-5 col-12">
+                            <div class="item_title">
+                                <p>Орех сладкий 80г.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-6">
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="8" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="item_sum">
+                                        <p>80 <span>грн.</span></p>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="item_close">
+                                        <a href="#">
+                                            <i class="nut-icon icons-close-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup__cart_sum">
+                    <div class="sum_item">
+                        <div class="sum_item_title">
+                            <p>Всего </p>
+                        </div>
+                        <div class="sum_item_new">
+                            <p>175 <i>грн.</i></p>
+                        </div>
+                    </div>
+                    <div class="sum_item">
+                        <div class="sum_item_button">
+                            <a href="#" class="button">Перейти в корзину</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Если корзина пуста -->
+                <!-- <div class="popup__cart_clean">
+                    <p>Ваша корзина пуста</p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <section id="main-banner" class="first-section overlay"></section>
+
+    <section class="production">
+        <div class="container">
+            <div class="row align-items-center justify-content-center" id="main-production"></div>
+            <div class="row justify-content-center" id="container-products"></div>
+            <div class="row">
+                <div class="wrapper">
+                    <a th:href="@{/web/shop}" class="button button_transparent">Перейти в магазин</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="manufacturer gray_section" id="main-factory"></section>
+
+    <section class="timer" id="main-number"></section>
+
+    <div class="parallax" data-scrollax-parent="true">
+        <section id="main-aim" class="goal overlay cover" style="background-image: url(/blacksea/img/goal.jpg)"
+                 data-scrollax="properties: { translateY: '30%' }"></section>
+    </div>
+
+    <section class="benefit">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12">
+                    <h2>Про користь продукту</h2>
+                    <p>Кожен вид горіха містить свій неповторний унікальний баланс вітамінів та мікроелементів.</p>
+                </div>
+            </div>
+            <div id="container-nuts" class="row justify-content-center"></div>
+        </div>
+    </section>
+
+    <div class="parallax" data-scrollax-parent="true">
+        <section id="main-eco" class="eco overlay"
+                 data-scrollax="properties: { translateY: '30%' }"></section>
+    </div>
+
+    <section class="news gray_section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 col-12">
+                    <h2 th:text="#{text.sidebar.news}"></h2>
+                    <p class="news__descr" th:text="#{text.latestNewsAndUsefulInformation}"></p>
+                </div>
+                <div class="col-md-6 col-12 d-flex justify-content-end" id="container-navigation-news">
+                    <div class="nav-buttons">
+                        <div class="prevArrowBtn-new" tabindex="0" role="button" aria-label="Previous slide">
+                            <i class="ti ti-arrow-left"></i>
+                        </div>
+                        <div class="nextArrowBtn-new" tabindex="0" role="button" aria-label="Next slide">
+                            <i class="ti ti-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="news-container swiper-container row d-flex justify-content-evenly">
+                        <div class="swiper">
+                            <div id="container-news" class="swiper-wrapper"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                const swiper = new Swiper('.swiper', {
+                    speed: 400,
+                    spaceBetween: 100,
+                    loop: true,
+                    slidesPerView: 1,
+                    slidesBetween: 30,
+                    navigation: {
+                        nextEl: ".nextArrowBtn-new",
+                        prevEl: ".prevArrowBtn-new",
+                    },
+                    breakpoints: {
+                        576: {
+                            slidesPerView: 2,
+                            spaceBetween: 20
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 30
+                        },
+                    }
+                });
+            </script>
+
+            <div class="row">
+                <div class="wrapper">
+                    <a th:href="@{/web/news}" class="button button_transparent"
+                       th:text="#{text.viewTheEntireGallery}"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+    function requestGetProducts() {
+        let request = new XMLHttpRequest();
+        let lang = getCurrentLang();
+        request.open("GET", contextPath + `web/main/data?lang=${lang}`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+                buildProducts(data.products);
+                buildBanner(data.banner, 'main-banner');
+                buildProduction(data.production);
+                buildFactory(data.factory);
+                buildNumber(data.number, 'main-number');
+                buildAim(data.aim);
+                buildEco(data.eco);
+                buildNuts(data.nuts);
+                buildNews(data.news,'container-news');
+                buildContacts(data.contacts);
+            }
+        });
+    }
+
+    function buildProducts(products) {
+        if (products.length === 0) return;
+        else if (products.length > 0) {
+            let $container = $(`#container-products`);
+            if ($container) {
+                products.forEach(function (item) {
+                    $container.append(getRowProduct(item))
+                });
+            }
+            initSwipers('products-container');
+        }
+    }
+
+    function getRowProduct(item) {
+        let classDiscount = null;
+        let marginTopTaste = '22px';
+        if (item.discount) {
+            classDiscount = (item.discount.toLowerCase() === 'new' || item.discount.toLowerCase() === 'новий')
+                ? "icons-novinka"
+                : "icons-actciya";
+        }
+        if (item.taste) {
+            marginTopTaste = null;
+        }
+        return `<div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="production__item" >
+                            ${classDiscount ? `
+                                <div class="sticker">
+                                    <i class="nut-icon ${classDiscount}"></i>
+                                    <p>${item.discount}</p>
+                                </div>
+                            ` : ''}
+                            <!-- Slider main container -->
+                            <div class="products-container swiper-container">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                    <!-- Slides -->
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage1 != null ? item.pathToImage1 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage2 != null ? item.pathToImage2 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage3 != null ? item.pathToImage3 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage4 != null ? item.pathToImage4 : path_default_image}" alt="alt"/></a>
+                                    </div>
+                                </div>
+
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                                <img class="zoom" src="/blacksea/img/zoom.svg" alt="alt">
+                            </div>
+                            <div class="wrap">
+                                <div class="production__item_title">
+                                    ${item.name}
+                                </div>
+                                <div class="production__item_art">
+                                    <span>Арт:</span> ${item.articleId}
+                                </div>
+                                <div class="production__item_descr" style="margin-top: ${marginTopTaste}">
+                                    ${item.taste}
+                                </div>
+                                <div class="production__item_weight">
+                                    <div class="weight_item">
+                                        <div class="weight_item_icon">
+                                            <i class="nut-icon icons-food-scale-tool"></i>
+                                        </div>
+                                        <div class="weight_item_descr">
+                                            <p>Масса</p>
+                                            <p><span>${item.mass}<i>г.</i></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="weight_item">
+                                        <div class="weight_item_icon">
+                                            <i class="nut-icon icons-group"></i>
+                                        </div>
+                                        <div class="weight_item_descr">
+                                            <p>Упаковка</p>
+                                            <p><span>вакуумная</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="production__item_sum">
+                                    <div class="sum_item">
+                                        <div class="sum_item_title">
+                                            <p>Цена: </p>
+                                        </div>
+                                        <div class="sum_item_new">
+                                            <p>${item.priceNew} <i>грн.</i></p>
+                                        </div>
+                                        <div class="sum_item_old">
+                                            <p>${item.priceOld} <i>грн.</i></p>
+                                        </div>
+                                    </div>
+                                    <div class="sum_item">
+                                        <div class="sum_item_button">
+                                            <a href="#" class="button">Купить</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+    }
+
+    function buildNuts(nuts) {
+        if (nuts.length === 0) return;
+        else if (nuts.length > 0) {
+            let $container = $(`#container-nuts`);
+            if ($container) {
+                nuts.forEach(function (item) {
+                    $container.append(getRowNut(item))
+                });
+            }
+        }
+    }
+
+    function getRowNut(item) {
+        let lang = getCurrentLang();
+        const title = lang === 'uk' ? item.titleUk : (lang === 'en' ? item.titleEn : '');
+        const description = lang === 'uk' ? item.descriptionUk : (lang === 'en' ? item.descriptionEn : '');
+        return `
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="benefit__item overlay" style="background-image: url(${item.pathToImage || path_default_image})">
+                            <img src="${item.pathToSvg}">
+                            <h3>${title}</h3>
+                        </div>
+                        <div class="benefit__item item_hover overlay_green">
+                            <img src="${item.pathToSvg}">
+                            <h3>${title}</h3>
+                            <p>${description}</p>
+                        </div>
+                    </div>
+                </div>
+        `
+    }
+
+    function buildProduction(item) {
+        if (!item) return;
+        const block = $('#main-production');
+        if (block.length) {
+            const lang = getCurrentLang();
+            const title = lang === 'uk' ? item.mainProductionTitleUk : (lang === 'en' ? item.mainProductionTitleEn : '');
+            const description = lang === 'uk' ? item.mainProductionDescriptionUk : (lang === 'en' ? item.mainProductionDescriptionEn : '');
+            block.append(`
+             <div class="col-12">
+                    <h2>${title}</h2>
+                    <p>${description}</p>
+                </div>
+        `);
+        }
+    }
+
+    function buildFactory(item) {
+        if (!item) return;
+        const block = $('#main-factory');
+        if (block.length) {
+            const lang = getCurrentLang();
+            const title = lang === 'uk' ? item.mainFactoryTitleUk : (lang === 'en' ? item.mainFactoryTitleEn : '');
+            const description = lang === 'uk' ? item.mainFactoryDescriptionUk : (lang === 'en' ? item.mainFactoryDescriptionEn : '');
+            block.append(`
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <h2>${title}</h2>
+                        <p class="manufacturer__descr">
+                            ${description}</p>
+                        <a href="#" class="button button_transparent">Подробнее</a>
+                    </div>
+                    <div class="col-md-7">
+                        <!-- Swiper -->
+                        <div class="manufacturer-container swiper-container">
+                            <div id="factory-images" class="swiper-wrapper">
+
+                            </div>
+                            <!-- Add Arrows -->
+                            <div class="wrap">
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        `);
+            const images = item.mainFactoryHistories;
+            let containerImages = $('#factory-images');
+            if (images && images.length > 0) {
+                images.forEach(function (item) {
+                    containerImages.append(`
+                    <div class="swiper-slide">
+                        <div class="manufacturer__item">
+                            <img src="${item.pathToImage}" alt="alt">
+                        </div>
+                    </div>
+                    `)
+                });
+            }
+            initSwipers('manufacturer-container');
+        }
+    }
+
+
+    function buildAim(item) {
+        if (!item) return;
+        const $main = $('#main-aim');
+        if ($main.length) {
+            $main.css("background-image", `url(${item.mainAimPathToBanner || path_default_image})`);
+            const lang = getCurrentLang();
+            const title = lang === 'uk' ? item.mainAimTitleUk : (lang === 'en' ? item.mainAimTitleEn : '');
+            const description = lang === 'uk' ? item.mainAimDescriptionUk : (lang === 'en' ? item.mainAimDescriptionEn : '');
+            $main.append(`
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <a>
+                      <h1 class="banner-title text-center">${title}</h1>
+                      <p class="banner-description">${description}</p>
+                    </a>
+                </div>
+            </div>
+        `);
+        }
+    }
+
+    function buildEco(item) {
+        if (!item) return;
+        const $main = $('#main-eco');
+        if ($main.length) {
+            $main.css("background-image", `url(${item.mainEcoProductionPathToBanner || path_default_image})`);
+            const lang = getCurrentLang();
+            const title = lang === 'uk' ? item.mainEcoProductionTitleUk : (lang === 'en' ? item.mainEcoProductionTitleEn : '');
+            const description = lang === 'uk' ? item.mainEcoProductionDescriptionUk : (lang === 'en' ? item.mainEcoProductionDescriptionEn : '');
+            $main.append(`
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <a>
+                      <h1 class="banner-title text-center">${title}</h1>
+                      <p class="banner-description">${description}</p>
+                    </a>
+                </div>
+            </div>
+        `);
+        }
+    }
+
+    $(document).ready(function () {
+        requestGetProducts();
+    });
+</script>
+</body>
+</html>

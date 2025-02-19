@@ -1,0 +1,537 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout=""
+      lang="uk"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="/static/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="My description">
+    <!-- Responsive -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <!--    <meta name="apple-mobile-web-app-capable" content="yes">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="theme-color" content="#337D5A">
+
+    <link rel="shortcut icon" th:href="@{/blacksea/img/icon.ico}" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="128x128" th:href="@{/blacksea/img/apple.png}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:image:type" th:content="@{/blacksea/img/image.jpg}">
+    <meta property="og:image:width" content="500">
+    <meta property="og:image:height" content="500">
+    <meta property="og:title" content="My title">
+    <meta property="og:description" content="My description">
+
+    <!-- Touch -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+
+    <link rel="stylesheet" th:href="@{/blacksea/css/main.min.css}">
+    <link rel="stylesheet" th:href="@{/css/web/style.css}">
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/fonts/tabler-icons.css}">
+
+    <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/htmx/htmx.min.js}"></script>
+    <script th:src="@{/js/swiperMy.js}"></script>
+
+    <script th:inline="javascript">
+        const contextPath = '[[@{/}]]'.replaceAll("\"", "");
+        const path_default_image = contextPath + "uploads/default/default-image.jpg";
+        const path_default_preview_image = contextPath + "uploads/default/video-preview.jpg";
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <style>
+        .btn-request-call {
+            color: white !important;
+        }
+
+        .btn-request-call:hover {
+            color: forestgreen !important;
+        }
+    </style>
+</head>
+
+<body class="home">
+
+<th:block th:insert="web/blocks/navbar::navbar"></th:block>
+
+<div layout:fragment="content"></div>
+<div layout:fragment="script"></div>
+<th:block th:insert="web/blocks/footer::footer"></th:block>
+
+<script th:src="@{/blacksea/js/scripts.min.js}"></script>
+<script th:src="@{/vuexy/dist/js/bootstrap.js}"></script>
+
+<link rel="stylesheet" th:href="@{/leaflet/leaflet.css}" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+<script th:src="@{/leaflet/leaflet.js}" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<!--<script async defer-->
+<!--        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVofcK1JyIWtVb3kaEbvHi9WqHCteWpxI&amp;callback=initMap"></script>-->
+
+<script>
+    function selectedLanguage() {
+        $(`.button-dropdown`).on('click', function () {
+            let lang = $(this).attr('data-lang');
+            if (lang) {
+                window.location.replace('?lang=' + lang);
+            }
+        });
+        window.addEventListener('load', function () {
+            const currentUrl = new URL(window.location.href);
+            let lang = currentUrl.searchParams.get('lang');
+            if (lang) {
+                document.documentElement.lang = lang;
+                let $languageCode = $(`#languageCode_`);
+                if ($languageCode) {
+                    $languageCode.val(lang);
+                }
+            }
+            if (currentUrl.searchParams.has('lang')) {
+                currentUrl.searchParams.delete('lang');
+                window.history.replaceState(null, '', currentUrl.toString());
+            }
+        });
+    }
+
+    function getCurrentLang() {
+        return document.documentElement.lang;
+    }
+
+    function mapBannerData(item) {
+        if (!item) return null;
+        return {
+            id: item.mainId || item.catalogBannerId || item.catalogEcologicallyId || item.factoryBannerId || item.factoryBlockId || item.mainEcoProductionId || item.mainAimId || item.clientsBannerId || item.clientsEcoProductionId || item.clientCategoryId || null,
+            isActive: item.mainIsActive ?? item.catalogBannerIsActive ?? item.catalogEcologicallyIsActive ?? item.factoryBannerIsActive ?? item.factoryBlockIsActive ?? item.mainEcoProductionIsActive ?? item.mainAimIsActive ?? item.clientsBannerIsActive ?? item.clientsEcoProductionIsActive ?? item.clientCategoryIsActive ?? false,
+            titleUk: item.mainTitleUk || item.catalogEcologicallyTitleUk || item.factoryBannerTitleUk || item.factoryBlockTitleUk || item.mainEcoProductionTitleUk || item.mainAimTitleUk || item.clientsBannerTitleUk || item.clientsEcoProductionTitleUk || item.clientCategoryTitleUk || '',
+            titleEn: item.mainTitleEn || item.catalogEcologicallyTitleEn || item.factoryBannerTitleEn || item.factoryBlockTitleEn || item.mainEcoProductionTitleEn || item.mainAimTitleEn || item.clientsBannerTitleEn || item.clientsEcoProductionTitleEn || item.clientCategoryTitleEn || '',
+            subtitleUk: item.catalogEcologicallySubtitleUk || item.clientCategorySubtitleUk || null,
+            subtitleEn: item.catalogEcologicallySubtitleEn || item.clientCategorySubtitleEn || null,
+            descriptionUk: item.mainDescriptionUk || item.catalogEcologicallyDescriptionUk || item.factoryBannerDescriptionUk || item.factoryBlockDescriptionUk || item.mainEcoProductionDescriptionUk || item.mainAimDescriptionUk || item.clientsBannerDescriptionUk || item.clientsEcoProductionDescriptionUk || item.clientCategoryDescriptionUk || '',
+            descriptionEn: item.mainDescriptionEn || item.catalogEcologicallyDescriptionEn || item.factoryBannerDescriptionEn || item.factoryBlockDescriptionEn || item.mainEcoProductionDescriptionEn || item.mainAimDescriptionEn || item.clientsBannerDescriptionEn || item.clientsEcoProductionDescriptionEn || item.clientCategoryDescriptionEn || '',
+            imagePath: item.mainPathToBanner || item.catalogBannerPathToImage || item.factoryBannerPathToImage || item.mainEcoProductionPathToBanner || item.mainAimPathToBanner || item.clientsBannerPathToBanner || item.clientsEcoProductionPathToBanner || item.clientCategoryPathToImage || path_default_image,
+            svgPath: item.clientCategoryPathToSvg || null,
+            images: item.catalogEcologicallyFiles || item.factoryBlockFiles || null
+        };
+    }
+
+    function getLocalizedContent(item, key) {
+        const lang = getCurrentLang();
+        const localizedKeys = {
+            uk: item[key + 'Uk'],
+            en: item[key + 'En']
+        };
+        return localizedKeys[lang] || '';
+    }
+
+    function buildBanner(item, idContainer) {
+        const bannerData = mapBannerData(item);
+        if (!bannerData || !bannerData.isActive) return;
+        const container = $(`#${idContainer}`);
+        if (container.length) {
+            container.css("background-image", `url(${bannerData.imagePath})`);
+            const title = getLocalizedContent(bannerData, 'title');
+            const description = getLocalizedContent(bannerData, 'description');
+            container.append(`
+            <div class="container">
+                <div class="breadcrumbs">
+                    ${(document.title !== 'Головна' && document.title !== 'Main') ? `
+                    <ul>
+                        <li>
+                            <a href="${contextPath}web/main">Головна</a>
+                        </li>
+                        <li>${document.title}</li>
+                    </ul>` : ''}
+                </div>
+                <div class="row align-items-center justify-content-center">
+                   <a>
+                      <h1 class="banner-title">${title}</h1>
+                      <p class="banner-description">${description}</p>
+                    </a>
+                </div>
+            </div>
+        `);
+        }
+    }
+
+    function buildBannerTwo(item, idContainer) {
+        const bannerData = mapBannerData(item);
+        if (!bannerData || !bannerData.isActive) return;
+        const container = $(`#${idContainer}`);
+        if (container.length) {
+            const title = getLocalizedContent(bannerData, 'title');
+            const description = getLocalizedContent(bannerData, 'description');
+            container.append(`
+            		<section class="eco overlay" style="background-image: url(${bannerData.imagePath})" data-scrollax="properties: { translateY: '30%' }">
+			<div class="container">
+				<div class="row align-items-center justify-content-center">
+					<a data-scrollax="properties: { 'translateY': '5%', 'opacity': 1 }">
+						<i class="nut-icon icons-eco"></i>
+						<h2>${title}</h2>
+						<p>${description}</p>
+					</a>
+				</div>
+			</div>
+		</section>
+        `);
+        }
+    }
+
+    function buildPost(item, idContainer) {
+        const postData = mapBannerData(item);
+        if (!postData || !postData.isActive) return;
+
+        const container = $(`#${idContainer}`);
+        if (container.length) {
+            const title = getLocalizedContent(postData, 'title');
+            const subtitle = getLocalizedContent(postData, 'subtitle');
+            const description = getLocalizedContent(postData, 'description');
+            let images = postData["images"];
+            let htmlImages = images.map(function (item) {
+                let path = '';
+                if (contextPath.length > 1) {
+                    path = contextPath.replace(/\/+$/, '');
+                }
+                return `<div class="swiper-slide">
+                                                    <div class="manufacturer__item">
+                                                        <img src="${path + item.pathToImage}" alt="alt">
+                                                    </div>
+                                                </div>`
+            }).join("");
+
+            container.append(`
+                    <div class="container">
+                                <div class="row align-items-center">
+                                    <div class="col-md-5">
+                                        <h2>${title}</h2>
+                                        <div class="wrapper">
+                                            <h3>${subtitle}</h3>
+                                            <p>${description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <!-- Swiper -->
+                                        <div class="manufacturer-container swiper-container">
+                                            <div class="swiper-wrapper">
+                                               ${htmlImages}
+                                            </div>
+                                            <div class="wrap">
+                                                <div class="swiper-button-next"></div>
+                                                <div class="swiper-button-prev"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+        `);
+        }
+    }
+
+    function buildNumber(item, idContainer) {
+        if (!item || !item.mainNumberIsActive) return;
+        const container = $(`#${idContainer}`);
+        if (container.length) {
+            const lang = getCurrentLang();
+            const description1 = lang === 'uk' ? item.mainNumberDescriptionUk1 : (lang === 'en' ? item.mainNumberDescriptionEn1 : '');
+            const description2 = lang === 'uk' ? item.mainNumberDescriptionUk2 : (lang === 'en' ? item.mainNumberDescriptionEn2 : '');
+            const description3 = lang === 'uk' ? item.mainNumberDescriptionUk3 : (lang === 'en' ? item.mainNumberDescriptionEn3 : '');
+            const description4 = lang === 'uk' ? item.mainNumberDescriptionUk4 : (lang === 'en' ? item.mainNumberDescriptionEn4 : '');
+            container.append(`
+                     <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="wrap">
+                        <span class="timer__single" data-from="1" data-to="${item.mainNumberTitle1}" data-speed="3000"
+                              data-refresh-interval="50"></span>
+                        <sup>Га</sup>
+                        <div class="timer__descr">
+                            ${description1}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-12">
+                    <div class="wrap">
+                        <span class="timer__single" data-from="1" data-to="${item.mainNumberTitle2}" data-speed="3000"
+                              data-refresh-interval="50"></span>
+                        <sup>Га</sup>
+                        <div class="timer__descr">
+                            ${description2}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap">
+                        <span class="timer__single" data-from="1" data-to="${item.mainNumberTitle3}" data-speed="5000"></span>
+                        <sup>Га</sup>
+                        <div class="timer__descr">
+                            ${description3}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="wrap">
+                        <span class="timer__single" data-from="1" data-to="${item.mainNumberTitle4}" data-speed="3000"
+                              data-refresh-interval="50"></span>
+                        <sup>%</sup>
+                        <div class="timer__descr">
+                            ${description4}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        `);
+        }
+    }
+
+    function buildBannerGrid(items, containerId) {
+        if (!items || items.length === 0) return;
+
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        let html = "";
+        for (let i = 0; i < items.length; i += 6) {
+            const group = items.slice(i, i + 6);
+
+            html += `<div class="row">`;
+
+            if (group[0]) {
+                html += `
+                <div class="col-lg-7 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="benefit__item" style="background-image: url(${group[0].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green">
+                            <h3>${group[0].title}</h3>
+                            <p>${group[0].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[1]) {
+                html += `
+                <div class="col-lg-5 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="benefit__item" style="background-image: url(${group[1].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green">
+                            <h3>${group[1].title}</h3>
+                            <p>${group[1].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[2]) {
+                html += `
+                <div class="col-lg-12 col-md-12 col-12">
+                    <div class="wrap">
+                        <a class="benefit__item overlay benefit__item_video_text" style="background-image: url(${group[2].pathToMediaFile})">
+                            <h3>${group[2].title}</h3>
+                            <p>${group[2].description}</p>
+                        </a>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[3]) {
+                html += `
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap item_small">
+                        <div class="benefit__item item_small" style="background-image: url(${group[3].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green">
+                            <h3>${group[3].title}</h3>
+                            <p>${group[3].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[4] && group[5]) {
+                html += `
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap item_small">
+                        <div class="benefit__item item_small" style="background-image: url(${group[4].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green">
+                            <h3>${group[4].title}</h3>
+                            <p>${group[4].description}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap item_small">
+                        <a href="#">
+                            <span class="benefit__item item_small benefit__item_video overlay" style="background-image: url(${group[5].pathToMediaFile})"></span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            }
+
+            html += `</div>`;
+        }
+
+        container.innerHTML = html;
+    }
+
+    function buildNews(news, idContainer) {
+        if (news.length === 0) return;
+        else if (news.length > 0) {
+            let $container = $(`#${idContainer}`);
+            if ($container) {
+                let counter = 0;
+                for (let item of news) {
+                    if (counter === 5) break;
+                    $container.append(getRowNew(item));
+                    counter++;
+                }
+            }
+        }
+    }
+
+    function getRowNew(item) {
+        let lang = getCurrentLang();
+        const title = lang === 'uk' ? item.titleUA : (lang === 'en' ? item.titleENG : '');
+        const description = lang === 'uk' ? item.descriptionUA : (lang === 'en' ? item.descriptionENG : '');
+        let isImage = item.pathToImage.includes('/image/');
+
+        return `
+        <div class="swiper-slide">
+            <div class="card" style="width: 24rem;">
+                ${isImage ? `<img src="${item.pathToImage || path_default_image}" class="card-img-top" alt="error"
+                    style="width: 100%;height: 220px;">` : ''}
+                ${!isImage ? `
+                    <div class="video-container" style="position: relative; width: 100%;">
+                        <!-- Прев'ю відео -->
+                        <img src="${path_default_preview_image}" class="video-preview"
+                             style="width: 100%; height: 220px; cursor: pointer; display: block;">
+
+                        <!-- Кнопка Play -->
+                        <button class="play-button"
+                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                                       background: rgba(0, 0, 0, 0.6); color: white; border: none;
+                                       padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
+                            ▶
+                        </button>
+
+                        <!-- Відео -->
+                        <video src="${item.pathToImage || path_default_image}" class="video-player"
+                               style="width: 100%;height: 220px; display: none;" controls></video>
+                    </div>
+                ` : ''}
+                <div class="card-body">
+                    <p class="date-new-my">${item.dateOfPublication}</p>
+                    <h5 class="card-title title-new-my">${title}</h5>
+                    <span class="card-text description-new-my" style="height: 85px;">${description}</span>
+                    <a href="${contextPath + 'web/new/' + item.id}" class="item-link-new-my">
+                        Читати
+                        <i class="ti ti-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function buildCategories(categories, idContainerHeader, idContainerContent) {
+        if (categories.length === 0) return;
+        else if (categories.length > 0) {
+            for (let item of categories) {
+                getRowCategory(item, idContainerHeader, idContainerContent);
+            }
+        }
+    }
+
+    function getRowCategory(item, idContainerHeader, idContainerContent) {
+        const postData = mapBannerData(item);
+        console.log(postData);
+        if (!postData || !postData.isActive) return;
+
+        let $containerHeader = $(`#${idContainerHeader}`);
+        let $containerContent = $(`#${idContainerContent}`);
+
+        if ($containerHeader && $containerContent) {
+            const title = getLocalizedContent(postData, 'title');
+            const description = getLocalizedContent(postData, 'description');
+            const isFirst = $containerHeader.children().length === 0;
+
+            $containerHeader.append(`
+                                <li class="${isFirst ? 'active' : ''}">
+                                    <i class="nut-icon icons-supermarket"></i>
+                                    <span>${title}</span>
+                                </li>`
+            );
+
+            $containerContent.append(`
+               <div class="tabs__content ${isFirst ? 'active' : ''}">
+                    <div class="row">
+                        <div class="col-md-5 col-12 align-self-center">
+                            <div class="tabs__content_block">
+                                <ul>
+                                    <li>
+                                        <p>${description}</p>
+                                    </li>
+                                    <li>
+                                        <a id="writeUs" class="button btnWriteToUs">Написати нам</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <img src="${postData.imagePath}" class="tabs__content_img" alt="alt">
+                        </div>
+                    </div>
+                </div>`
+            );
+        }
+    }
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('video-preview') || event.target.classList.contains('play-button')) {
+            const container = event.target.closest('.video-container');
+            const preview = container.querySelector('.video-preview');
+            const button = container.querySelector('.play-button');
+            const video = container.querySelector('.video-player');
+
+            document.querySelectorAll('.video-player').forEach(v => {
+                if (v !== video) {
+                    v.pause();
+                    v.currentTime = 0;
+                    v.style.display = 'none';
+                    v.closest('.video-container').querySelector('.video-preview').style.display = 'block';
+                    v.closest('.video-container').querySelector('.play-button').style.display = 'block';
+                }
+            });
+
+            preview.style.display = 'none';
+            button.style.display = 'none';
+            video.style.display = 'block';
+            video.play();
+        }
+    });
+
+    function relocationToContainer(container, idItem, toIdContainer) {
+        let $container = $(`#${container}`);
+        $($container).on('click', `#${idItem}`, function () {
+            const targetElement = document.getElementById(toIdContainer);
+            if (targetElement) {
+                targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
+        });
+    }
+</script>
+</body>
+</html>

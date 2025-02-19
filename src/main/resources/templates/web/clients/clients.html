@@ -1,0 +1,87 @@
+<html lang="uk"
+	  layout:decorate="~{web/blocks/layout.html}"
+	  xmlns:layout="http://www.w3.org/1999/xhtml"
+	  xmlns="http://www.w3.org/1999/html">
+<head>
+	<title th:text="#{text.factory}"></title>
+	<script th:src="@{/js/swiperMy.js}"></script>
+</head>
+
+<body>
+<div class="page" layout:fragment="content">
+
+	<section id="container-banner" class="first-section overlay"></section>
+
+	<section class="customers">
+		<div class="container">
+			<div class="row no-gutters">
+				<div class="col-lg-5">
+					<div class="customers__title" th:text="#{text.wholesaleAndCorporateClients}"></div>
+				</div>
+				<div class="col-lg-7">
+					<div class="row">
+						<div class="col-md-6">
+							<p th:text="#{text.clientText1}"></p>
+							<p th:text="#{text.clientText2}"></strong></p>
+						</div>
+						<div class="col-md-6">
+							<p th:text="#{text.clientText3}"></p>
+							<p th:text="#{text.clientText4}"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="payment">
+		<div class="tabs">
+			<div class="tabs__wrap">
+				<div class="container">
+					<div class="row">
+						<ul class="tabs__caption" id="container-categories-header"></ul>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-12" id="container-categories-content"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="container-numbers" class="timer"></section>
+
+	<div id="banner-eco" class="parallax" data-scrollax-parent="true"></div>
+
+</div>
+
+<script layout:fragment="script">
+	$(document).ready(function () {
+		invokeRequestPaymentData();
+		relocationToContainer('container-categories-content','writeUs','container-contacts');
+	});
+
+	function invokeRequestPaymentData() {
+		let request = new XMLHttpRequest();
+		let lang = getCurrentLang();
+		request.open("GET", contextPath + `web/clients/data?lang=${lang}`)
+		request.send();
+		request.addEventListener('load', function () {
+			if (request.status === 200) {
+				let data = JSON.parse(request.response);
+				console.log(data);
+
+				buildBanner(data.banner,'container-banner');
+				buildNumber(data.numbers,'container-numbers');
+				buildBannerTwo(data.eco,'banner-eco');
+				buildContacts(data.contacts);
+				buildCategories(data.categories,'container-categories-header','container-categories-content');
+			}
+		});
+	}
+
+</script>
+</body>
+</html>
