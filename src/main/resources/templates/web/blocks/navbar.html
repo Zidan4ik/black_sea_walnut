@@ -5,13 +5,13 @@
                 <div class="col-lg-4 col-12 d-lg-block d-none">
                     <ul class="line_social">
                         <li>
-                            <a id="facebook-navbar"><i class="nut-icon icons-facebook"></i></a>
+                            <a class="facebook-link"><i class="nut-icon icons-facebook"></i></a>
                         </li>
                         <li>
-                            <a id="instagram-navber"><i class="nut-icon icons-instagram"></i></a>
+                            <a class="instagram-link"><i class="nut-icon icons-instagram"></i></a>
                         </li>
                         <li>
-                            <a id="youtube-navbar"><i class="nut-icon icons-youtube"></i></a>
+                            <a class="youtube-link"><i class="nut-icon icons-youtube"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -55,7 +55,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-2 d-lg-none">
-                    <div class="mobile-menu-button d-lg-none d-block"><img th:src="@{/blacksea/img/menu.svg}" alt="alt">
+                    <div class="mobile-menu-button d-lg-none d-block">
+                        <img th:src="@{/blacksea/img/menu.svg}" alt="alt">
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-3 col-8 align-self-center">
@@ -74,13 +75,13 @@
                             <div class="wrap">
                                 <ul class="logo_social">
                                     <li>
-                                        <a id="viber-navbar"><i class="nut-icon icons-viber"></i></a>
+                                        <a class="viber-link"><i class="nut-icon icons-viber"></i></a>
                                     </li>
                                     <li>
-                                        <a id="telegram-navbar"><i class="nut-icon icons-telegram"></i></a>
+                                        <a class="telegram-link"><i class="nut-icon icons-telegram"></i></a>
                                     </li>
                                     <li>
-                                        <a id="whatsapp-navbar"><i class="nut-icon icons-whatsapp"></i></a>
+                                        <a class="whatsapp-link"><i class="nut-icon icons-whatsapp"></i></a>
                                     </li>
                                 </ul>
                                 <ul class="logo_tel">
@@ -130,13 +131,13 @@
                     <div class="mobile-line d-lg-none d-flex">
                         <ul class="line_social">
                             <li>
-                                <a id="facebook-navbar3"><i class="nut-icon icons-facebook"></i></a>
+                                <a class="facebook-link"><i class="nut-icon icons-facebook"></i></a>
                             </li>
                             <li>
-                                <a id="instagram-navbar3"><i class="nut-icon icons-instagram"></i></a>
+                                <a class="instagram-link"><i class="nut-icon icons-instagram"></i></a>
                             </li>
                             <li>
-                                <a id="youtube-navbar3"><i class="nut-icon icons-youtube"></i></a>
+                                <a class="youtube-link"><i class="nut-icon icons-youtube"></i></a>
                             </li>
                         </ul>
                         <ul class="log_in d-lg-flex">
@@ -166,7 +167,7 @@
                             <a href="@{/web/news}" th:text="#{text.newsAndArticles}"></a>
                         </li>
                         <li>
-                            <a href="@{/web/contacts}" th:text="#{text.sidebar.contact}"></a>
+                            <a class="moveToContacts" th:text="#{text.sidebar.contact}"></a>
                         </li>
                     </ul>
                 </nav>

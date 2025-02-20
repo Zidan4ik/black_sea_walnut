@@ -14,7 +14,7 @@
             <div class="row align-items-center ">
                 <div class="col-lg-2">
                     <div class="wraper">
-                        <a href="/static" class="logo">
+                        <a th:href="@{/web/main}" class="logo">
                             <img th:src="@{/blacksea/img/logo.png}" alt="alt">
                             <span>
                                 <span th:text="#{text.sidebar.header1}"></span>
@@ -27,22 +27,22 @@
                 <div class="col-lg-10">
                     <ul class="menu_main_ul">
                         <li>
-                            <a href="#" th:text="#{text.shop}"></a>
+                            <a th:href="@{/web/shop}" th:text="#{text.shop}"></a>
                         </li>
                         <li>
-                            <a href="#" th:text="#{text.aboutFactory}"></a>
+                            <a th:href="@{/web/factory}" th:text="#{text.aboutFactory}"></a>
                         </li>
                         <li>
-                            <a href="#" th:text="#{text.paymentAndDelivery}"></a>
+                            <a th:href="@{/web/payment}" th:text="#{text.paymentAndDelivery}"></a>
                         </li>
                         <li>
-                            <a href="#" th:text="#{text.wholesaleAndCorporateClients}"></a>
+                            <a th:href="@{/web/clients}" th:text="#{text.wholesaleAndCorporateClients}"></a>
                         </li>
                         <li>
-                            <a href="#">Новости и статьи</a>
+                            <a th:href="@{/web/news}" >Новости и статьи</a>
                         </li>
                         <li>
-                            <a href="#">Контакты</a>
+                            <a class="moveToContacts" >Контакты</a>
                         </li>
                     </ul>
                 </div>
@@ -135,6 +135,26 @@
 
             L.marker(coords).addTo(map)
                 .openPopup();
+
+            console.log(item);
+            $('.youtube-link').each(function (){
+                $(this).attr('href',item.youtube);
+            });
+            $('.instagram-link').each(function (){
+                $(this).attr('href',item.instagram);
+            });
+            $('.facebook-link').each(function (){
+                $(this).attr('href',item.facebook);
+            });
+            $('.viber-link').each(function (){
+                $(this).attr('href',item.viber);
+            });
+            $('.telegram-link').each(function (){
+                $(this).attr('href',item.telegram);
+            });
+            $('.whatsapp-link').each(function (){
+                $(this).attr('href',item.watsapp);
+            });
         }
     </script>
 </footer>

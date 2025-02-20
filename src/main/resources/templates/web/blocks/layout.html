@@ -532,6 +532,13 @@
             }
         });
     }
+
+    $(document).on('click', `.moveToContacts`, function () {
+        const targetElement = document.getElementById('container-contacts');
+        if (targetElement) {
+            targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+    });
 </script>
 </body>
 </html>

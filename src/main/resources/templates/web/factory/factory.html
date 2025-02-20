@@ -118,16 +118,14 @@
 					<div class="history__blockquote">
 						<div class="row no-gutters">
 							<div class="col-md-5">
-								<img src="/blacksea/img/men.jpg" alt="alt">
+								<img th:src="@{/blacksea/img/men.jpg}" alt="alt">
 							</div>
 							<div class="col-md-7">
 								<div class="blockquote_block">
-									<h3>Павло Тулба</h3>
-									<p>Засновник та власник підприємства “Горіх Причорномор'я”</p>
-									<blockquote>Головна наша мета – отримати максимальний прибуток із одного гектара.</blockquote>
-									<a href="#" class="button button_transparent">
-										Написати нам
-									</a>
+									<h3 th:text="#{text.pavloFullName}"></h3>
+									<p th:text="#{text.pavloAbout}"></p>
+									<blockquote th:text="#{text.pavloSaying}"></blockquote>
+									<a class="button button_transparent moveToContacts" th:text="#{text.writeToUs}"></a>
 								</div>
 							</div>
 						</div>
@@ -135,10 +133,10 @@
 				</div>
 				<div class="col-lg-5 col-12">
 					<div class="history__content">
-						<h3>Історія підприємства</h3>
-						<p>Наше підприємство засноване у 2012 році для закладення змішаного саду волоського горіха та фундуку.</p>
-						<p>На сьогодні ми вже заклали понад 100 гектарів саду та продовжуємо розширювати свої насадження. Окрім вирощування волоського горіха та фундуку, ми займаємося вирощуванням саджанців, розведенням та вирощуванням овець, а також є першою в Україні компанією, яка приступила до промислового вирощування трюфелів на коренях фундуку.</p>
-						<p>Земля, якою користується кооператив, є власністю членів нашого кооперативу.</p>
+						<h3 th:text="#{text.historyCompanyTitle}"></h3>
+						<p th:text="#{text.historyCompanyText1}"></p>
+						<p th:text="#{text.historyCompanyText2}"></p>
+						<p th:text="#{text.historyCompanyText3}"></p>
 					</div>
 				</div>
 			</div>
