@@ -1,0 +1,183 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.new}"></title>
+    <style>
+        .wraper p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body class="page">
+<div layout:fragment="content">
+
+    <section class="no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="/static">Главная</a>
+                    </li>
+                    <li>
+                        Центр поддержки экспорта, в студии Павел Тулба
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="single-news">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <h1 id="container-new-title"></h1>
+                    <div class="single-news__data" id="container-new-date"></div>
+                </div>
+                <div class="col-lg-7"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-9 col-md-8 col-12">
+                    <main class="main" id="container-new-content"></main>
+                </div>
+                <div class="col-lg-3 col-md-4 d-none d-md-block col-12">
+                    <aside class="aside">
+                        <div class="sidebar__inner sticky">
+                            <div class="aside__title" th:text="#{text.lastPublication}"></div>
+                            <ul id="container-news"></ul>
+                            <div class="banner">
+                                <div class="banner__title"
+                                     th:text="#{text.sidebar.header1} + ' ' +#{text.sidebar.header2}"></div>
+                                <div class="banner__descr">
+                                    Приєднуйтесь до нас у соц. мережах
+                                </div>
+                                <ul class="banner__social">
+                                    <li>
+                                        <a class="facebook-link"><i class="nut-icon icons-facebook"></i></a>
+                                    </li>
+                                    <li>
+                                        <a class="instagram-link"><i class="nut-icon icons-instagram"></i></a>
+                                    </li>
+                                    <li>
+                                        <a class="youtube-link"><i class="nut-icon icons-youtube"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        invokeRequestNewData();
+    });
+
+
+    function invokeRequestNewData() {
+        let request = new XMLHttpRequest();
+        let lang = getCurrentLang();
+        let pathname = location.pathname;
+        request.open("GET", contextPath + `${pathname.substring(1, pathname.length)}/data?lang=${lang}`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+                buildContacts(data.contacts);
+                buildNewsLast(data.news, 'container-news');
+                buildNew(data.new_, 'container-new-content');
+            }
+        });
+    }
+
+    function buildNewsLast(data, idContainer) {
+        if (!Array.isArray(data) || data.length === 0) return;
+
+        let container = $(`#${idContainer}`);
+        if (container.length > 0) {
+            data.forEach(function (item) {
+                if (item.active) {
+                    let pathToImage = item.pathToImage;
+                    let isImage = pathToImage ? pathToImage.includes('/image/') : true;
+                    let media;
+                    if (isImage) {
+                        media = `<img src="${pathToImage || path_default_image}" alt="alt">`;
+                    } else {
+                        media = `
+                <div class="video-container" style="position: relative; width: 100%;">
+                                <img src="${path_default_preview_image}" class="video-preview"
+                                     style="width: 100%; height:220px; cursor: pointer; display: block;">
+                                <button class="play-button"
+                                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                                               background: rgba(0, 0, 0, 0.6); color: white; border: none;
+                                               padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
+                                    ▶</button>
+                                <video src="${pathToImage || path_default_image}" class="video-player"
+                                       style="width: 100%;height: 220px; display: none;" controls></video>
+                                        </div>`;
+                    }
+
+                    container.append(`<li>
+                                    <div class="aside__item">
+                                        <div class="aside__item_img">
+                                           ${media}
+                                        </div>
+                                        <div class="aside__item_data">
+                                            ${item.date}
+                                        </div>
+                                        <div class="aside__item_title">
+                                            ${item.title}
+                                        </div>
+                                        <a href="${contextPath}web/new/${item.id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                    </div>
+                                </li>`);
+                }
+            });
+        }
+    }
+
+    function buildNew(data, idContainer) {
+        if (data.length === 0 || !data.active) return;
+        let container = $(`#${idContainer}`);
+        if (container.length > 0) {
+            let pathToImage = data.pathToImage;
+            let isImage = pathToImage ? pathToImage.includes('/image/') : true;
+            if (isImage) {
+                container.append(`<img src="${pathToImage || path_default_image}" alt="alt">`);
+            } else {
+                container.append(`<div class="video-container" style="position: relative; width: 100%;">
+                        <img src="${path_default_preview_image}" class="video-preview"
+                             style="width: 100%; height: 526px; cursor: pointer; display: block;">
+                        <button class="play-button"
+                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                                       background: rgba(0, 0, 0, 0.6); color: white; border: none;
+                                       padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
+                            ▶
+                        </button>
+                        <video src="${pathToImage || path_default_image}" class="video-player"
+                               style="width: 100%;height: 526px; display: none;" controls></video>
+                    </div>`);
+            }
+            container.append(`${data.description}`)
+        }
+        console.log(data.title);
+        console.log(data.date);
+        $('#container-new-title').text(data.title);
+        $('#container-new-date').text(data.date);
+    }
+</script>
+</body>
+</html>
+
+

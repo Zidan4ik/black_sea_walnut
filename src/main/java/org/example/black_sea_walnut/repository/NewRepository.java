@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface NewRepository extends JpaRepository<New, Long>, JpaSpecificatio
     @NonNull
     Page<New> findAll(Specification<New> specification, @NonNull Pageable pageable);
 
-    @Query("SELECT n FROM New n ORDER BY n.id DESC LIMIT 3")
-    List<New> getNewsThreeLast();
+    @Query("SELECT n FROM New n WHERE n.id!=:currentId ORDER BY n.id DESC LIMIT :size")
+    List<New> getNewsThreeLast(@Param("size") int size,@Param("currentId") Long id);
 }

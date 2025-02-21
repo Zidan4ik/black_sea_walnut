@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
+import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -32,7 +33,7 @@ public class NewServiceImp implements NewService {
 
     @Override
     public PageResponse<ResponseNewForView> getAll(ResponseNewForView response, Pageable pageable, LanguageCode code) {
-        Page<New> page = newRepository.findAll(NewSpecification.getSpecification(response,code), pageable);
+        Page<New> page = newRepository.findAll(NewSpecification.getSpecification(response, code), pageable);
         List<ResponseNewForView> responsesDtoAdd = page.map(t -> mapper.toDtoView(t, code)).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
@@ -58,6 +59,16 @@ public class NewServiceImp implements NewService {
     @Override
     public NewRequestForAdd getByIdLikeDTO(Long id) {
         return mapper.toDtoAdd(getById(id));
+    }
+
+    @Override
+    public NewResponseInWeb getByIdInResponseForWeb(Long id, LanguageCode code) {
+        return mapper.toResponseForWeb(getById(id), code);
+    }
+
+    @Override
+    public List<NewResponseInWeb> getAllBySizeAmongLast(int size, LanguageCode code, Long id) {
+        return newRepository.getNewsThreeLast(size,id).stream().map(n -> mapper.toResponseForWeb(n, code)).toList();
     }
 
     @Override
@@ -93,7 +104,7 @@ public class NewServiceImp implements NewService {
 //        LogUtil.logInfo("Saving new with file for ID: " + dtoAdd.getId());
         if (dto.getId() != null) {
             New newById = getById(dto.getId());
-                if (dto.getPathToImage().isEmpty()) {
+            if (dto.getPathToImage().isEmpty()) {
 //                LogUtil.logInfo("Deleting old image at path: " + newById.getPathToImage());
                 imageServiceImp.deleteByPath(newById.getPathToMedia());
             }

@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.web.NewResponseForView;
+import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.ContactService;
@@ -13,11 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +31,11 @@ public class WebNewsController {
         return new ModelAndView("web/news/news");
     }
 
+    @GetMapping("/new/{id}")
+    public ModelAndView viewNewsPage(@PathVariable Long id) {
+        return new ModelAndView("web/news/one-new");
+    }
+
     @GetMapping("/news/table/load")
     public ResponseEntity<PageResponse<ResponseNewForViewInWeb>> loadTable(
             @RequestParam(defaultValue = "0") int page,
@@ -38,8 +43,6 @@ public class WebNewsController {
             @RequestParam(name = "lang") String languageCode) {
         PageRequest pageable = PageRequest.of(page, size);
         PageResponse<ResponseNewForViewInWeb> pageResponse = newService.getAll(pageable, LanguageCode.fromString(languageCode));
-//        model.addObject("data", pageResponse.getContent());
-//        model.addObject("totalPages", pageResponse.getMetadata().getTotalPages());
         return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 
@@ -49,6 +52,20 @@ public class WebNewsController {
         return new ResponseEntity<>(NewResponseForView
                 .builder()
                 .contacts(contacts)
+                .build(), HttpStatus.OK);
+    }
+
+    @GetMapping("/new/{id}/data")
+    public ResponseEntity<?> getNewsPageDate(@RequestParam(name = "lang") String code,
+                                             @PathVariable Long id) {
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
+        NewResponseInWeb new_ = newService.getByIdInResponseForWeb(id, LanguageCode.fromString(code));
+        List<NewResponseInWeb> news = newService.getAllBySizeAmongLast(3, LanguageCode.fromString(code),id);
+        return new ResponseEntity<>(NewResponseForView
+                .builder()
+                .contacts(contacts)
+                .news(news)
+                .new_(new_)
                 .build(), HttpStatus.OK);
     }
 }

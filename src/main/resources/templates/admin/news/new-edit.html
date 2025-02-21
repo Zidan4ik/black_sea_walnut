@@ -149,7 +149,7 @@
                 </div>
                 <!--/ ENG TAB -->
 
-                <input type="hidden" id="hidden-status_" name="isActive" value="false">
+                <input type="hidden" id="hidden-status_" name="isActive" th:value="${news.isActive()}">
                 <input type="file" id="file_" name="file"
                        accept="image/*,video/*" style="display: none;">
                 <input type="hidden" name="id" th:field="*{news.id}">

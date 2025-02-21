@@ -2,6 +2,7 @@ package org.example.black_sea_walnut.mapper;
 
 import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
+import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
@@ -84,5 +85,23 @@ public class NewMapper {
         new_.setTranslations(List.of(translationUA, translationEN));
         new_.setDateOfPublication(DateUtil.toFormatDateToDB(dto.getDateOfPublication(), "dd.MM.yyyy"));
         return new_;
+    }
+
+    public NewResponseInWeb toResponseForWeb(New entity, LanguageCode code) {
+        NewTranslation translation = entity.getTranslations()
+                .stream()
+                .filter(c -> c.getLanguageCode().equals(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Translation not found for language code: " + code));
+
+        return NewResponseInWeb
+                .builder()
+                .id(entity.getId())
+                .date(DateUtil.toFormatDateFromDB(entity.getDateOfPublication(), "dd.MM.yyyy"))
+                .title(translation.getTitle())
+                .isActive(entity.isActive())
+                .pathToImage(entity.getPathToMedia())
+                .description(translation.getDescription())
+                .build();
     }
 }
