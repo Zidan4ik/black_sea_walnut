@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
+import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.NewMapper;
@@ -33,6 +34,15 @@ public class NewServiceImp implements NewService {
     public PageResponse<ResponseNewForView> getAll(ResponseNewForView response, Pageable pageable, LanguageCode code) {
         Page<New> page = newRepository.findAll(NewSpecification.getSpecification(response,code), pageable);
         List<ResponseNewForView> responsesDtoAdd = page.map(t -> mapper.toDtoView(t, code)).stream().toList();
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
+    public PageResponse<ResponseNewForViewInWeb> getAll(Pageable pageable, LanguageCode code) {
+        Page<New> page = newRepository.findAll(pageable);
+        List<ResponseNewForViewInWeb> responsesDtoAdd = page.map(t -> mapper.toDtoViewForWeb(t, code)).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));

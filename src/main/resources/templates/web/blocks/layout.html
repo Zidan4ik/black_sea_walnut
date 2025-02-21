@@ -294,7 +294,7 @@
         }
     }
 
-    function buildBannerGrid(items, containerId) {
+    function buildGallery(items, containerId) {
         if (!items || items.length === 0) return;
 
         const container = document.getElementById(containerId);
@@ -381,12 +381,13 @@
                 </div>
             `;
             }
-
             html += `</div>`;
         }
 
         container.innerHTML = html;
     }
+
+
 
     function buildNews(news, idContainer) {
         if (news.length === 0) return;
