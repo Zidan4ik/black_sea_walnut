@@ -1,0 +1,271 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.shop}"></title>
+    <script th:src="@{/js/swiperMy.js}"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.cardProduct}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="product">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-lg-5 col-md-6">
+                    <div class="wrap" id="container-product">
+                        <div class="product__item">
+                            <div class="sticker">
+                                <i class="nut-icon icons-actciya"></i>
+                                <p>Акция</p>
+                            </div>
+                            <!-- Slider main container -->
+                            <div class="products-container swiper-container">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                    <!-- Slides -->
+                                    <div class="swiper-slide">
+                                        <a href="#"><img src="/blacksea/img/pic10.png" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#"><img src="/blacksea/img/pic10.png" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#"><img src="/blacksea/img/pic10.png" alt="alt"/></a>
+                                    </div>
+                                </div>
+
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                                <img class="zoom" src="/blacksea/img/zoom.svg" alt="alt">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-6">
+                    <div class="product__content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product__content_name" id="product-name">
+                                    Грецкий орех
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="product__content_art">
+                                    <span th:text="#{text.article}+':'"></span><span id="product-article"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <h1 id="product-taste">Орех соленый кондитерский очищенный</h1>
+                            </div>
+                            <div class="col-lg-3"></div>
+                            <div class="col-12">
+                                <div class="product__content_descr">
+                                    <ul>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <strong th:text="#{text.storage}+':'"></strong>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span id="product-storage">Ядро грецкого ореха, вымытого очищенного от кожуры, соль экстра (раствор 7%)</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <strong th:text="#{text.mass}+':'"></strong>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span id="product-mass"></span>
+                                                    <span th:text="#{text.gram}"></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <strong th:text="#{text.energyValue}+':'"></strong>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span id="product-energy-mass"></span>
+                                                    <span th:text="#{text.kall}"></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <strong th:text="#{text.expirationDate}"></strong>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span>12 месяцев, с даты расфасовки (указана на упаковке)</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="warning">
+                                    <i class="nut-icon icons-warning-sigh"></i>
+                                    <p id="product-instruction">Хранить в помещениях, защищенных от попадания прямых,
+                                        солнечных лучей, при
+                                        температуре от +3 °C до +20 °C, и относительной влажности воздуха не более 75
+                                        %</p>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="product__content_sum">
+                                    <div class="sum_item">
+                                        <div class="sum_item_title">
+                                            <p th:text="#{text.yourProduct}+':'"></p>
+                                        </div>
+                                        <div class="sum_item_new">
+                                            <span id="product-new-price"></span><span th:text="#{text.grn}"></span>
+                                        </div>
+                                        <div class="sum_item_old">
+                                            <span id="product-old-price"></span><span th:text="#{text.grn}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="sum_item">
+                                        <div class="sum_item_button">
+                                            <a href="#" class="button" th:text="#{text.toOrder}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="payment payment__product">
+        <div class="tabs">
+            <div class="tabs__wrap">
+                <div class="container">
+                    <div class="row">
+                        <ul class="tabs__caption">
+                            <li class="active"><span>Описание</span></li>
+                            <li><span>Упаковка</span></li>
+                            <li><span>Оплата</span></li>
+                            <li><span>Доставка</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="tabs__content active">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <img id="image-description" class="tabs__content_img" alt="alt" src="">
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-12 align-self-center">
+                                    <div class="tabs__content_product" id="container-description-desc"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabs__content">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <img id="image-packing" class="tabs__content_img" alt="alt" src="">
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-12 align-self-center">
+                                    <div class="tabs__content_product" id="container-packing-desc"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabs__content">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <img id="image-payment" class="tabs__content_img" alt="alt" src="">
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-12 align-self-center">
+                                    <div class="tabs__content_product" id="container-payment-desc"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabs__content">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <img id="image-delivery" class="tabs__content_img" alt="alt" src="">
+                                </div>
+                                <div class="col-lg-8 col-md-6 col-12 align-self-center">
+                                    <div class="tabs__content_product" id="container-delivery-desc"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+
+    $(document).ready(function () {
+        invokeRequestProductData();
+    });
+
+    function invokeRequestProductData() {
+        let request = new XMLHttpRequest();
+        let lang = getCurrentLang();
+        let pathName = location.pathname.substring(1, location.pathname.length);
+        request.open("GET", contextPath + `${pathName}/data?lang=${lang}`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+
+                // initSwipers('manufacturer-container');
+                buildProduct(data.product);
+                buildContacts(data.contacts);
+            }
+        });
+    }
+
+    function buildProduct(item) {
+        $(`#product-name`).text(item.name);
+        $(`#product-article`).text(item.articleId);
+        $(`#product-taste`).text(item.taste);
+        $(`#product-storage`).text(item.recipe);
+        $(`#product-mass`).text(item.mass);
+        $(`#product-energy-mass`).text(item.energyMass);
+        $(`#product-instruction`).text(item.conditionExploitation);
+        $(`#product-new-price`).text(item.newPrice);
+        $(`#product-old-price`).text(item.oldPrice);
+        $(`#image-description`).attr('src', item.pathToImageDescription || path_default_image);
+        $(`#image-packing`).attr('src', item.pathToImagePacking || path_default_image);
+        $(`#image-payment`).attr('src', item.pathToImagePayment || path_default_image);
+        $(`#image-delivery`).attr('src', item.pathToImageDelivery || path_default_image);
+        $(`#container-description-desc`).html(item.descriptionProduct);
+        $(`#container-packing-desc`).html(item.descriptionPacking);
+        $(`#container-payment-desc`).html(item.descriptionPayment);
+        $(`#container-delivery-desc`).html(item.descriptionDelivery);
+    }
+
+</script>
+</body>
+</html>
