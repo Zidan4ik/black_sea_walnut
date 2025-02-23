@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Builder
@@ -17,8 +18,10 @@ public class EcoProductionRequestForAdd {
     @Setter
     private MediaType mediaType;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String mainEcoProductionTitleUk;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String mainEcoProductionTitleEn;
     @Size(max = 150, message = "{error.field.valid.size}")
     private String mainEcoProductionDescriptionUk;

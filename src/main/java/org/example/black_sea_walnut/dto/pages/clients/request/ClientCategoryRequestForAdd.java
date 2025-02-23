@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
@@ -15,12 +16,16 @@ public class ClientCategoryRequestForAdd {
     private MediaType mediaTypeSvg;
     private MediaType mediaTypeImage;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String clientsCategoryTitleUk;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String clientsCategoryTitleEn;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String clientsCategorySubtitleUk;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String clientsCategorySubtitleEn;
     @Size(max = 500, message = "{error.field.valid.size}")
     private String clientsCategoryDescriptionUk;

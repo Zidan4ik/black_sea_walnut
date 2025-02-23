@@ -4,12 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class UserIndividualRequestForAdd {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String fullName;
     @NotBlank(message = "{error.field.empty}")
     private String phone;

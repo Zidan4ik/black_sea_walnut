@@ -9,7 +9,7 @@ import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
 import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
-import org.example.black_sea_walnut.dto.web.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -62,9 +62,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductResponseForView> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code) {
+    public PageResponse<ProductResponseForViewInTable> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code) {
         Page<Product> page = productRepository.findAll(ProductSpecification2.getSpecification(response, code), pageable);
-        List<ProductResponseForView> responseDTOView = page.map(p -> mapper.toResponseForViewInProduction(p, code)).toList();
+        List<ProductResponseForViewInTable> responseDTOView = page.map(p -> mapper.toResponseForViewInProduction(p, code)).toList();
         return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));
@@ -99,6 +99,8 @@ public class ProductServiceImp implements ProductService {
             if (dto.getNewPrice() != null) {
                 product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
                 save(product);
+            } else {
+                dto.setNewPrice(dto.getCurrentPrice());
             }
         }
         if (dto.getImage1() != null) {
@@ -201,7 +203,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<ProductResponseForView> getRandomProductsBySize(int size, LanguageCode code) {
+    public List<ProductResponseForViewInTable> getRandomProductsBySize(int size, LanguageCode code) {
         return productRepository.findRandomProducts(size).stream().map(p -> {
             p.setHistoryPrices(historyPricesService.getLastTwoDataByProduct(p));
             return productMapper.toResponseForViewInMain(p, code);

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Builder
@@ -15,8 +16,10 @@ public class NewRequestForAdd {
     private Long id;
     private boolean isActive;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String titleUA;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String titleENG;
     private String descriptionUA;
     private String descriptionENG;

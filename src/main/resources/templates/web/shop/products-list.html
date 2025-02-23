@@ -75,7 +75,7 @@
                     </div>
                     <div class="sum_item">
                         <div class="sum_item_button">
-                            <a th:href="@{'/web/product/'+item.id}" class="button" th:text="#{text.buy}"></a>
+                            <a th:href="@{/web/product/{id} (id=${item.id})}" class="button" th:text="#{text.buy}"></a>
                         </div>
                     </div>
                 </div>

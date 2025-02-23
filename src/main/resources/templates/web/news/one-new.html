@@ -24,9 +24,7 @@
                     <li>
                         <a href="/static">Главная</a>
                     </li>
-                    <li>
-                        Центр поддержки экспорта, в студии Павел Тулба
-                    </li>
+                    <li id="container-new-header"></li>
                 </ul>
             </div>
         </div>
@@ -76,8 +74,8 @@
     </div>
 
 </div>
-
 <script layout:fragment="script">
+    let path_default_tech = contextPath + "uploads/default/default-image-tech.jpg";
 
     $(document).ready(function () {
         invokeRequestNewData();
@@ -148,8 +146,13 @@
     }
 
     function buildNew(data, idContainer) {
-        if (data.length === 0 || !data.active) return;
         let container = $(`#${idContainer}`);
+        $('#container-new-header').text(data.title || '');
+        if (data.length === 0 || !data.active) {
+                container.append(`<img src="${path_default_tech}" alt="alt">`);
+            return;
+        }
+
         if (container.length > 0) {
             let pathToImage = data.pathToImage;
             let isImage = pathToImage ? pathToImage.includes('/image/') : true;

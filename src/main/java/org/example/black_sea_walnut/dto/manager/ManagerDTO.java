@@ -11,12 +11,16 @@ import org.hibernate.validator.constraints.Length;
 public class ManagerDTO {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String nameUk;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String nameEn;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String surnameUk;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String surnameEn;
     @PhoneFormatValidation
     @NotBlank(message = "{error.field.empty}")

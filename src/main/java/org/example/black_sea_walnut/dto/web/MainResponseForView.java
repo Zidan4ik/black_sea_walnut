@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @Data
 public class MainResponseForView {
-    private List<ProductResponseForView> products;
+    private List<ProductResponseForViewInTable> products;
     private BlockResponseForAddInMain banner;
     private ProductionResponseForAddInMain production;
     private FactoryBlockResponseForAddInMain factory;

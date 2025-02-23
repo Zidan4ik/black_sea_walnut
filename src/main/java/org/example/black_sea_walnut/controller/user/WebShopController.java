@@ -3,26 +3,26 @@ package org.example.black_sea_walnut.controller.user;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.dto.pages.catalog.response.BannerBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.catalog.response.EcologicallyBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
 import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
+import org.example.black_sea_walnut.dto.web.ProductResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ShopResponseForView;
 import org.example.black_sea_walnut.entity.Contact;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -36,6 +36,7 @@ public class WebShopController {
     private final TasteService tasteService;
     private final HistoryCatalogService historyCatalogService;
     private final ContactService contactService;
+    private final ProductMapper productMapper;
 
     @GetMapping("/shop")
     public ModelAndView viewShopPage() {
@@ -51,8 +52,8 @@ public class WebShopController {
         Sort sort = response.getDirectionCost().equals("ASC") ?
                 Sort.by(Sort.Direction.ASC, "priceByUnit") :
                 Sort.by(Sort.Direction.DESC, "priceByUnit");
-        PageRequest pageable = PageRequest.of(page, size,sort);
-        PageResponse<ProductResponseForView> pageResponse = productService.getAll(response, pageable, LanguageCode.fromString(languageCode));
+        PageRequest pageable = PageRequest.of(page, size, sort);
+        PageResponse<ProductResponseForViewInTable> pageResponse = productService.getAll(response, pageable, LanguageCode.fromString(languageCode));
         model.addObject("data", pageResponse.getContent());
         model.addObject("totalPages", pageResponse.getMetadata().getTotalPages());
         return model;
@@ -74,4 +75,22 @@ public class WebShopController {
                         .contacts(contacts)
                         .build(), HttpStatus.OK);
     }
+
+    @GetMapping("/product/{id}")
+    public ModelAndView viewProductPage(@PathVariable Long id) {
+        return new ModelAndView("web/shop/product");
+    }
+
+    @GetMapping("/product/{id}/data")
+    public ResponseEntity<ProductResponseInWeb> getDataForShopPage(@PathVariable Long id,
+                                                                   @RequestParam("lang") String lang) {
+        ProductResponseForView product = productMapper.toResponseForView(productService.getById(id), LanguageCode.fromString(lang));
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        return new ResponseEntity<>(ProductResponseInWeb
+                .builder()
+                .product(product)
+                .contacts(contacts)
+                .build(), HttpStatus.OK);
+    }
+
 }

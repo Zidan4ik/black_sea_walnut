@@ -22,8 +22,6 @@ public class ProductSpecification2 {
         if (entity.getMassFilter() != null && !entity.getMassFilter().isBlank()) {
             specification = specification.and(hasMass(entity.getMassFilter()));
         }
-//        boolean asc = entity.getDirectionCost().equals("ASC");
-//        specification = specification.and(orderByCurrentPrice(asc));
         return specification;
     }
 
@@ -49,31 +47,5 @@ public class ProductSpecification2 {
     private static Specification<Product> hasMass(String mass) {
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("mass"), mass));
-    }
-
-    public static Specification<Product> orderByCurrentPrice(boolean ascending) {
-        return (root, query, criteriaBuilder) -> {
-            // Підзапит для знаходження останньої (максимальної) дати validFrom
-            Subquery<LocalDateTime> subquery = query.subquery(LocalDateTime.class);
-            Root<HistoryPrices> subRoot = subquery.from(HistoryPrices.class);
-
-            subquery.select(criteriaBuilder.greatest(subRoot.<LocalDateTime>get("validFrom"))) // ✅ Фікс
-                    .where(criteriaBuilder.equal(subRoot.get("product"), root));
-
-            // Приєднуємо історію цін
-            Join<Product, HistoryPrices> historyPrices = root.join("historyPrices");
-
-            // Вибираємо тільки запис з останньою датою validFrom
-            Predicate lastPricePredicate = criteriaBuilder.equal(historyPrices.get("validFrom"), subquery);
-            query.where(lastPricePredicate);
-
-            // Сортуємо за останнім currentPrice
-            query.orderBy(ascending ?
-                    criteriaBuilder.asc(historyPrices.get("currentPrice")) :
-                    criteriaBuilder.desc(historyPrices.get("currentPrice"))
-            );
-
-            return criteriaBuilder.conjunction();
-        };
     }
 }

@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
@@ -116,7 +117,7 @@ public class ProductMapper {
         return entity;
     }
 
-    public ProductResponseForView toResponseForViewInMain(Product entity, LanguageCode languageCode) {
+    public ProductResponseForViewInTable toResponseForViewInMain(Product entity, LanguageCode languageCode) {
         ProductTranslation translation = entity.getProductTranslations().stream()
                 .filter(l -> l.getLanguageCode() == languageCode)
                 .findFirst()
@@ -127,7 +128,7 @@ public class ProductMapper {
         List<HistoryPrices> prices = entity.getHistoryPrices();
         int priceNew = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
         int priceOld = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
-        return ProductResponseForView
+        return ProductResponseForViewInTable
                 .builder()
                 .id(entity.getId())
                 .articleId(entity.getArticleId())
@@ -144,7 +145,48 @@ public class ProductMapper {
                 .build();
     }
 
-    public ProductResponseForView toResponseForViewInProduction(Product entity, LanguageCode languageCode) {
+    public ProductResponseForView toResponseForView(Product entity, LanguageCode languageCode) {
+        ProductTranslation translation = entity.getProductTranslations().stream()
+                .filter(l -> l.getLanguageCode() == languageCode)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Translation not found for language code: " + languageCode));
+        Taste taste = entity.getTastes().stream().filter(t -> t.getLanguageCode().equals(languageCode)).findFirst().orElse(null);
+        Discount discount = entity.getDiscounts().stream().filter(t -> t.getLanguageCode().equals(languageCode)).findFirst().orElse(null);
+
+        List<HistoryPrices> prices = entity.getHistoryPrices();
+        int priceNew = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
+        int priceOld = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
+        return ProductResponseForView
+                .builder()
+                .id(entity.getId())
+                .articleId(entity.getArticleId())
+                .amount(entity.getTotalCount())
+                .name(translation.getName())
+                .taste(taste != null ? taste.getName() : "")
+                .discount(discount != null ? discount.getName() : "")
+                .mass(String.valueOf(entity.getMass()))
+                .energyMass(String.valueOf(entity.getMassEnergy()))
+                .pathToImage1(entity.getPathToImage1())
+                .pathToImage2(entity.getPathToImage2())
+                .pathToImage3(entity.getPathToImage3())
+                .pathToImage4(entity.getPathToImage4())
+                .pathToImageDelivery(entity.getPathToImageDelivery())
+                .pathToImageDescription(entity.getPathToImageDescription())
+                .pathToImagePayment(entity.getPathToImagePayment())
+                .pathToImagePacking(entity.getPathToImagePacking())
+                .newPrice(String.valueOf(priceNew))
+                .oldPrice(String.valueOf(priceOld))
+                .descriptionProduct(translation.getDescriptionProduct())
+                .descriptionDelivery(translation.getDescriptionDelivery())
+                .descriptionPacking(translation.getDescriptionPacking())
+                .descriptionPayment(translation.getDescriptionPayment())
+                .recipe(translation.getRecipe())
+                .conditionExploitation(translation.getConditionExploitation())
+                .build();
+    }
+
+
+    public ProductResponseForViewInTable toResponseForViewInProduction(Product entity, LanguageCode languageCode) {
         ProductTranslation translation = entity.getProductTranslations().stream()
                 .filter(l -> l.getLanguageCode() == languageCode)
                 .findFirst()
@@ -156,7 +198,7 @@ public class ProductMapper {
                 .sorted(Comparator.comparing(HistoryPrices::getId).reversed()).toList();
         int priceNew = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
         int priceOld = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
-        return ProductResponseForView
+        return ProductResponseForViewInTable
                 .builder()
                 .id(entity.getId())
                 .articleId(entity.getArticleId())

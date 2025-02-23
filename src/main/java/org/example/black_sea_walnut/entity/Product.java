@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -41,8 +42,8 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "discount_id", referencedColumnName = "discountCommonId")
     )
     private Set<Discount> discounts;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductTranslation> productTranslations;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ProductTranslation> productTranslations = new ArrayList<>();
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "products_tastes",

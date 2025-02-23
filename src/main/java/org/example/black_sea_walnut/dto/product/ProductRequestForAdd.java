@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.example.black_sea_walnut.validator.annotation.IsExistProductValidation;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.example.black_sea_walnut.validator.annotation.NumberNullValidation;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -27,8 +28,10 @@ public class ProductRequestForAdd {
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long amount;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String nameUk;
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 100,message = "{error.field.valid.length.title}")
     private String nameEn;
     @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
@@ -44,21 +47,21 @@ public class ProductRequestForAdd {
     private String conditionExploitationUk;
     @Size(max = 500, message = "{error.field.valid.size}")
     private String conditionExploitationEn;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionProductUk;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionProductEn;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionPackingUk;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionPackingEn;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionPaymentUk;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionPaymentEn;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionDeliveryUk;
-    @Size(max = 2000, message = "{error.field.valid.size}")
+    @Size(max = 10000, message = "{error.field.valid.size}")
     private String descriptionDeliveryEn;
     private String pathToImage1;
     private String pathToImage2;
@@ -87,4 +90,5 @@ public class ProductRequestForAdd {
     private Long tasteId;
     private Long discountId;
     private Integer newPrice;
+    private Integer currentPrice;
 }

@@ -6,7 +6,7 @@ import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.nut.NutResponseForAdd;
 import org.example.black_sea_walnut.dto.pages.main.response.*;
 import org.example.black_sea_walnut.dto.web.MainResponseForView;
-import org.example.black_sea_walnut.dto.web.ProductResponseForView;
+import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.service.*;
@@ -37,7 +37,7 @@ public class WebMainController {
 
     @GetMapping("/main/data")
     public ResponseEntity<MainResponseForView> getDataForMainPage(@RequestParam("lang") String lang) {
-        List<ProductResponseForView> response = productService.getRandomProductsBySize(5, LanguageCode.fromString(lang));
+        List<ProductResponseForViewInTable> response = productService.getRandomProductsBySize(5, LanguageCode.fromString(lang));
         BlockResponseForAddInMain banner = historyMainService.getByPageTypeInResponseMainBlock(PageType.main_banner);
         ProductionResponseForAddInMain production = historyMainService.getByPageTypeInResponseProductionBlock(PageType.main_production);
         FactoryBlockResponseForAddInMain factory = historyMainService.getByPageTypeInResponseFactoryBlock(PageType.main_factory_about);
