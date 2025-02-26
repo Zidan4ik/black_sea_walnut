@@ -179,7 +179,6 @@
     }
 
     function loadInfo() {
-        clearListeners('container-content');
         $('#container-pagination').empty();
         htmx.ajax('GET', `${contextPath}web/info-fiz/load`, {
             target: '#container-content',
@@ -189,7 +188,6 @@
     }
 
     function loadAddress() {
-        clearListeners('container-content');
         $('#container-pagination').empty();
         htmx.ajax('GET', `${contextPath}web/address-fiz/load`, {
             target: '#container-content',
@@ -203,7 +201,6 @@
     }
 
     function loadPassword() {
-        clearListeners('container-content');
         $('#container-pagination').empty();
         htmx.ajax('GET', `${contextPath}web/password/load`, {
             target: '#container-content',
@@ -212,16 +209,16 @@
     }
 
     function addEventListenerForDirection(loadData) {
-        clearListeners('container-content');
-
-        $('#container-content').on('click', '.ti-arrow-down, .ti-arrow-up', function () {
+        $('#container-content').off('click', '.ti-arrow-down, .ti-arrow-up')
+            .on('click', '.ti-arrow-down, .ti-arrow-up', function () {
             fieldElement = $(this);
             let newDirection = fieldElement.attr('data-direction') === 'ASC' ? 'DESC' : 'ASC';
             fieldElement.attr('data-direction', newDirection);
             loadData(fieldElement, 0);
         });
 
-        $(document).on('click', '.pagination a', function () {
+        $(document)
+            .off('click', '.pagination a').on('click', '.pagination a', function (event) {
             let page = $(this).data('page');
             let parentLi = this.closest('.page-item');
             if (parentLi.classList.contains('active')) {
@@ -230,10 +227,7 @@
             }
             loadData(fieldElement, page);
         });
-    }
 
-    function clearListeners(idElement) {
-        $(`#${idElement}`).off();
     }
 
     function addEventListenerImage() {
@@ -249,6 +243,7 @@
 
     function addEventListenerHeaders() {
         $('.headers').on('click', function () {
+            fieldElement = null;
             $('.headers').removeClass('active');
             $(this).addClass('active');
             let action = $(this).data('action');
@@ -288,7 +283,6 @@
                         `);
                     });
                 }
-                // $('#select-regions');
             }
         });
     }
