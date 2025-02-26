@@ -3,14 +3,13 @@ package org.example.black_sea_walnut.service.imp;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.order.OrderResponseForStatsProducts;
-import org.example.black_sea_walnut.dto.order.OrderUserResponseForView;
-import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
-import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.order.*;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.entity.Order;
+import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.mapper.OrderDetailMapper;
 import org.example.black_sea_walnut.mapper.OrderMapper;
 import org.example.black_sea_walnut.repository.OrderDetailsRepository;
 import org.example.black_sea_walnut.repository.OrderRepository;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +40,16 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public List<ResponseOrderDetailForView> getByUserIdAndPersonalId(Long userId, Long personalId) {
+        Optional<Order> orderOptional = orderRepository.findOrderByUserAndPersonalId(userId, personalId);
+        if (orderOptional.isPresent()) {
+            List<OrderDetail> details = orderOptional.get().getOrderDetails();
+            return details.stream().map(OrderDetailMapper::toDTOView).toList();
+        }
+        return null;
+    }
+
+    @Override
     public PageResponse<ResponseOrderForView> getAll(ResponseOrderForView response, Pageable pageable, LanguageCode code) {
         Page<Order> page = orderRepository.findAll(OrderSpecification.getSpecification(response), pageable);
         List<ResponseOrderForView> responsesDtoAdd = page.map(mapper::toDTOView).stream().toList();
@@ -51,7 +61,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code) {
         Specification<Order> spec = Specification.where(null);
-        Page<Order> page = orderRepository.findAll(spec,pageable);
+        Page<Order> page = orderRepository.findAll(spec, pageable);
         List<OrderResponseForAccount> responsesDtoAdd = page.map(mapper::toResponseForAccount).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()

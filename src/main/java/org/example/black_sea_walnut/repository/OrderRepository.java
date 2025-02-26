@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
@@ -28,4 +29,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
             "GROUP BY o.dateOfOrdering ORDER BY o.dateOfOrdering")
     List<Map<String, Object>> countOrdersByMonth(@Param("startDate") LocalDate startDate,
                                                  @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT o FROM Order AS o WHERE o.user.id=:userId AND o.personalId=:personalId")
+    Optional<Order> findOrderByUserAndPersonalId(@Param("userId") Long userId, @Param("personalId") Long personalId);
 }

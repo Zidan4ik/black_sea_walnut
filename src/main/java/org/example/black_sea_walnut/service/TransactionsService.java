@@ -1,6 +1,7 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
+import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForAccount;
 import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
 import org.example.black_sea_walnut.entity.Transaction;
@@ -11,6 +12,10 @@ import java.util.List;
 
 public interface TransactionsService {
     List<Transaction> getAll();
+
+    Transaction getById(Long id);
+
+    ResponseTransactionForAccount getByIdInResponseForAccount(Long id);
 
     PageResponse<ResponseTransactionForView> getAll(ResponseTransactionForView response, Pageable pageable, LanguageCode code);
 

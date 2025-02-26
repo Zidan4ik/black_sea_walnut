@@ -1,7 +1,9 @@
 package org.example.black_sea_walnut.service.imp;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
+import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForAccount;
 import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
@@ -31,6 +33,18 @@ public class TransactionServiceImp implements TransactionsService {
     }
 
     @Override
+    public Transaction getById(Long id) {
+        return transactionsRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Transaction with id:" + id + " was not found!")
+        );
+    }
+
+    @Override
+    public ResponseTransactionForAccount getByIdInResponseForAccount(Long id) {
+        return mapper.toResponseForWeb(getById(id));
+    }
+
+    @Override
     public PageResponse<ResponseTransactionForView> getAll(ResponseTransactionForView response, Pageable pageable, LanguageCode code) {
         Page<Transaction> page = transactionsRepository.findAll(TransactionSpecification.getSpecification(response), pageable);
         List<ResponseTransactionForView> responsesDtoAdd = page.map(mapper::toDTOView).stream().toList();
@@ -42,7 +56,7 @@ public class TransactionServiceImp implements TransactionsService {
     @Override
     public PageResponse<TransactionResponseForAccount> getAll(Pageable pageable, LanguageCode code) {
         Specification<Transaction> spec = Specification.where(null);
-        Page<Transaction> page = transactionsRepository.findAll(spec,pageable);
+        Page<Transaction> page = transactionsRepository.findAll(spec, pageable);
         List<TransactionResponseForAccount> responsesDtoAdd = page.map(mapper::toResponseForAccount).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()

@@ -1,0 +1,112 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.cart}"></title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.order}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="accaunt">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h1 th:text="#{text.transaction} + ' №' + ${transaction.getId()}"></h1>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="accaunt__manager">
+                        <ul>
+                            <li>
+                                <p th:text="#{text.cartPersonalManager}"></p>
+                            </li>
+                            <li>
+                                <i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14 12</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 row">
+                    <table id="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th><span th:text="#{table.header.customer}"></span></th>
+                                <th><span th:text="#{table.header.date}"></span></th>
+                                <th><span th:text="#{table.header.typeOfPayment}"></span></th>
+                                <th><span th:text="#{table.header.statusPayment}"></span></th>
+                                <th><span th:text="#{table.header.phone}"></span></th>
+                                <th><span th:text="#{table.header.email}"></span></th>
+                                <th><span th:text="#{table.header.summa}"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${transaction.getId()}"></td>
+                            <td th:text="${transaction.getCustomer()}"></td>
+                            <td th:text="${transaction.getDate()}"></td>
+                            <td>
+                                <span th:if="${transaction.getPaymentType() == 'invoice'}" th:text="#{value.status.invoice}"></span>
+                                <span th:if="${transaction.getPaymentType() == 'card'}" th:text="#{value.status.card}"></span>
+                                <span th:if="${transaction.getPaymentType() == 'cash'}" th:text="#{value.status.cash}"></span>
+                            </td>
+                            <td th:if="${transaction.getPaymentStatus()} == 'payed'"  th:text="#{value.status.payed}" class="bg-greenMy" style="background-color: green;"></td>
+                            <td th:if="${transaction.getPaymentStatus()} == 'unPayed'"  th:text="#{value.status.unPayed}" class="bg-redMy"></td>
+                            <td th:if="${transaction.getPaymentStatus()} == 'inProcess'"  th:text="#{value.status.inProcess}" class="bg-orangeMy"></td>
+                            <td th:text="${transaction.getPhone()}"></td>
+                            <td th:text="${transaction.getEmail()}"></td>
+                            <td>
+                                <span th:text="${transaction.getSumma()}"></span>
+                                <span th:text="#{text.grn}"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        buildTotalSumma();
+        invokeData();
+    });
+
+    function buildTotalSumma() {
+        let summa = 0;
+        $('.totalSumma').each(function (item) {
+            summa += (parseInt($(this).html()));
+        });
+        $('#resSumma').text(summa);
+    }
+
+    function invokeData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                buildContacts(data);
+            }
+        });
+    }
+</script>
+</body>
+</html>

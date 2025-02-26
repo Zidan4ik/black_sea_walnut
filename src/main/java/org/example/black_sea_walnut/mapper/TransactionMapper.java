@@ -1,5 +1,6 @@
 package org.example.black_sea_walnut.mapper;
 
+import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForAccount;
 import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
 import org.example.black_sea_walnut.entity.Transaction;
@@ -27,6 +28,20 @@ public class TransactionMapper {
                 .build();
     }
 
+    public ResponseTransactionForAccount toResponseForWeb(Transaction entity) {
+        DateTimeFormatter outputDateTime = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        return ResponseTransactionForAccount
+                .builder()
+                .id(entity.getId())
+                .customer(entity.getCustomer())
+                .summa(String.valueOf(entity.getSumma()))
+                .phone(entity.getPhone())
+                .email(entity.getEmail())
+                .paymentType(entity.getPaymentType().toString())
+                .paymentStatus(entity.getPaymentStatus().toString())
+                .date(entity.getDate().format(outputDateTime))
+                .build();
+    }
     public TransactionResponseForAccount toResponseForAccount(Transaction entity) {
         return TransactionResponseForAccount
                 .builder()

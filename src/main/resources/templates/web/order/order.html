@@ -1,0 +1,123 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.cart}"></title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.order}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="accaunt">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h1 th:text="#{text.order} + ' №' + ${orderId}"></h1>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="accaunt__manager">
+                        <ul>
+                            <li>
+                                <p th:text="#{text.cartPersonalManager}"></p>
+                            </li>
+                            <li>
+                                <i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14 12</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <table id="table">
+                        <thead>
+                        <tr>
+                            <th><span th:text="#{table.header.product}"></span></th>
+                            <th><span th:text="#{text.amount}"></span></th>
+                            <th><span th:text="#{table.header.priceByProduct}"></span></th>
+                            <th><span th:text="#{table.header.totalPrice}"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order : ${orders}" th:if="${orders.size()>0}">
+                            <td th:text="${order.getProductName()}"></td>
+                            <td th:text="${order.getCount()}"></td>
+                            <td>
+                                <span th:text="${order.getPrice()}"></span>
+                                <span th:text="#{text.grn}"></span>
+                            </td>
+                            <td>
+                                <span class="totalSumma" th:text="${order.getTotalSumma()}"></span>
+                                <span th:text="#{text.grn}"></span>
+                            </td>
+                        </tr>
+                        <tr th:if="${orders == null}">
+                            <td colspan="4" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}">
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12">
+                    <div class="after_table">
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <div class="popup__cart_sum">
+                                    <div class="sum_item">
+                                        <div class="sum_item_title">
+                                            <p th:text="#{value.status.total}+ ': '"></p>
+                                        </div>
+                                        <div class="sum_item_new">
+                                            <p><span id="resSumma"></span> <i th:text="#{text.grn}"></i></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        buildTotalSumma();
+        invokeData();
+    });
+
+    function buildTotalSumma() {
+        let summa = 0;
+        $('.totalSumma').each(function (item) {
+            summa += (parseInt($(this).html()));
+        });
+        $('#resSumma').text(summa);
+    }
+
+    function invokeData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                buildContacts(data);
+            }
+        });
+    }
+</script>
+</body>
+</html>
