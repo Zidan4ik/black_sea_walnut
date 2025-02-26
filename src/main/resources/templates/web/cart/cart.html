@@ -1,0 +1,188 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.cart}"></title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="/static" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.cart}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="accaunt">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h1 th:text="#{text.cart}"></h1>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="accaunt__manager">
+                        <ul>
+                            <li><p th:text="#{text.cartPersonalManager}"></p></li>
+                            <li><i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14 12</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <table id="table">
+                        <thead>
+                        <tr>
+                            <th><span th:text="#{table.header.product}"></span></th>
+                            <th><span th:text="#{text.amount}"></span></th>
+                            <th><span th:text="#{table.header.priceByProduct}"></span></th>
+                            <th><span th:text="#{table.header.totalPrice}"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="4" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>100 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="1" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="1" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="1" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12">
+                    <div class="after_table">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a th:href="@{/web/shop}" class="button_transparent with_arrow"><i
+                                        class="nut-icon icons-left-arrow"></i>
+                                    <b th:text="#{text.continueShopping}"></b>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="popup__cart_sum">
+                                    <div class="sum_item">
+                                        <div class="sum_item_title">
+                                            <p th:text="#{value.status.total}+ ': '"></p>
+                                        </div>
+                                        <div class="sum_item_new">
+                                            <p>175 <i th:text="#{text.grn}"></i></p>
+                                        </div>
+                                    </div>
+                                    <div class="sum_item">
+                                        <div class="sum_item_button">
+                                            <a href="#" class="button" th:text="#{text.toPlaceOnOrder}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="no_log-in">
+                        <h2 th:text="#{text.toPlaceAnOrderYouNeed}"></h2>
+                        <div class="no_log-in_link">
+                            <a th:href="@{/web/login}" th:text="#{text.authorization}"></a>
+                            <span th:text="#{text.or}"></span>
+                            <a th:href="@{/web/register}" th:text="#{text.registration}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+
+    $(document).ready(function () {
+        // invokeRequestProductData();
+    });
+
+    function invokeRequestProductData() {
+        let request = new XMLHttpRequest();
+        let lang = getCurrentLang();
+        let pathName = location.pathname.substring(1, location.pathname.length);
+        request.open("GET", contextPath + `${pathName}/data?lang=${lang}`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+
+                // initSwipers('manufacturer-container');
+                buildProduct(data.product);
+                buildContacts(data.contacts);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

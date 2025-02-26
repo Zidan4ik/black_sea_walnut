@@ -1,0 +1,178 @@
+<html lang="uk"
+	  layout:decorate="~{web/blocks/layout.html}"
+	  xmlns:layout="http://www.w3.org/1999/xhtml"
+	  xmlns="http://www.w3.org/1999/html">
+<head>
+	<title th:text="#{text.cart}"></title>
+</head>
+
+<body>
+<div layout:fragment="content">
+	<section class="first-section no-bg" style="min-height: 0 !important;">
+		<div class="container">
+			<div class="breadcrumbs">
+				<ul>
+					<li>
+						<a th:href="@{/web/static}" th:text="#{text.main}"></a>
+					</li>
+					<li>
+						<a th:href="@{/web/cart}" th:text="#{text.cart}"></a>
+					</li>
+					<li th:text="#{text.placingAnOrder}"></li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="accaunt">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-md-6">
+					<h1 th:text="#{text.placingAnOrder}"></h1>
+				</div>
+				<div class="col-lg-8 col-md-6">
+					<div class="accaunt__manager">
+						<ul>
+							<li><p th:text="#{text.cartPersonalManager}"></p></li>
+							<li><i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14 12</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-12">
+					<table id="table">
+						<thead>
+						<tr>
+							<th><span th:text="#{table.header.product}"></span></th>
+							<th><span th:text="#{text.amount}"></span></th>
+							<th><span th:text="#{table.header.priceByProduct}"></span></th>
+							<th><span th:text="#{table.header.totalPrice}"></span></th>
+						</tr>
+						</thead>
+						<tbody>
+						<!--						<tr>-->
+						<!--							<td>Орех соленый 80г.</td>-->
+						<!--							<td>-->
+						<!--								<div class="item_quantity">-->
+						<!--									<button type="button" class="quantity_minus">-->
+						<!--										<i class="nut-icon icons-qty-left"></i>-->
+						<!--									</button>-->
+						<!--									<input type="text" name="quantity" value="4" class="quantity_input">-->
+						<!--									<button type="button" class="quantity_plus">-->
+						<!--										<i class="nut-icon icons-qty-right"></i>-->
+						<!--									</button>-->
+						<!--								</div>-->
+						<!--							</td>-->
+						<!--							<td>25 грн.</td>-->
+						<!--							<td>100 грн.</td>-->
+						<!--						</tr>-->
+						</tbody>
+					</table>
+				</div>
+				<div class="col-12">
+					<div class="after_table">
+						<div class="row">
+							<div class="col-md-6">
+
+							</div>
+							<div class="col-md-6">
+								<div class="popup__cart_sum">
+									<div class="sum_item">
+										<div class="sum_item_title">
+											<p th:text="#{value.status.total} + ' '"></p>
+										</div>
+										<div class="sum_item_new">
+											<p></p>
+										</div>
+									</div>
+									<div class="sum_item">
+										<!-- <div class="sum_item_button">
+											<a href="#" class="button">Оформить заказ</a>
+										</div> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="checkout_form">
+						<form action="#">
+							<div class="row">
+								<div class="col-lg-5">
+									<div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
+									<input type="text"  th:placeholder="#{text.company}+'*'">
+									<input type="text"  th:placeholder="#{text.contactPerson}+'*'">
+									<input type="text"  th:placeholder="#{table.header.fio}+'*'">
+									<input type="email"  th:placeholder="#{table.header.email}+'*'">
+									<input type="tel"  th:placeholder="#{table.header.phone}+'*'">
+									<div class="form__title" th:text="'2. '+#{table.header.typeOfDelivery}"></div>
+									<fieldset id="group1" class="radio__wrapper radio__wrapper_click">
+										<input id="radio-1" class="radio-custom" name="group1" value="new_post" type="radio" checked>
+										<label for="radio-1" class="radio-custom-label"><span th:text="#{text.checkoutDeliveryText}"></span></label>
+										<div class="new_post box">
+											<select>
+												<option value="hide" th:text="#{text.country}"></option>
+												<option value="lorem">lorem</option>
+											</select>
+											<select>
+												<option value="hide" th:text="#{text.region}"></option>
+												<option value="lorem">lorem</option>
+											</select>
+										</div>
+										<input id="radio-2" class="radio-custom" name="group1" value="adr" type="radio">
+										<label for="radio-2" class="radio-custom-label"><span th:text="#{text.checkoutCourier}"></span><span class="sticker"><i class="nut-icon icons-novinka"></i><span class="p" th:text="#{text.free}"></span></span></label>
+										<div class="adr box">
+											<input type="text"  th:placeholder="#{table.header.address}+'*'">
+										</div>
+										<input id="radio-3" class="radio-custom" name="group1" value="" type="radio">
+										<label for="radio-3" class="radio-custom-label radio-custom_last"><span th:text="#{text.pickupFromWarehouse}"></span></label>
+									</fieldset>
+									<div class="form__title" th:text="'3. '+#{text.paymentMethods}"></div>
+									<fieldset id="group2" class="radio__wrapper radio__wrapper_second">
+										<input id="radio-4" class="radio-custom" name="group2" value="" type="radio" checked>
+										<label for="radio-4" class="radio-custom-label"><span th:text="#{text.nonCashPayment}"></span></label>
+										<input id="radio-5" class="radio-custom" name="group2" value="" type="radio">
+										<label for="radio-5" class="radio-custom-label"><span>LiqPay / Приват24</span></label>
+										<input id="radio-6" class="radio-custom" name="group2" value="" type="radio">
+										<label for="radio-6" class="radio-custom-label"><span th:text="#{text.cashOnDelivery}"></span></label>
+									</fieldset>
+									<button class="button float-left" type="submit" th:text="#{text.continue}"></button>
+								</div>
+								<div class="col-lg-7"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script layout:fragment="script">
+
+
+	$(document).ready(function () {
+		// invokeRequestProductData();
+	});
+
+	function invokeRequestProductData() {
+		let request = new XMLHttpRequest();
+		let lang = getCurrentLang();
+		let pathName = location.pathname.substring(1, location.pathname.length);
+		request.open("GET", contextPath + `${pathName}/data?lang=${lang}`)
+		request.send();
+		request.addEventListener('load', function () {
+			if (request.status === 200) {
+				let data = JSON.parse(request.response);
+				console.log(data);
+
+				// initSwipers('manufacturer-container');
+				buildProduct(data.product);
+				buildContacts(data.contacts);
+			}
+		});
+	}
+
+</script>
+</body>
+</html>
