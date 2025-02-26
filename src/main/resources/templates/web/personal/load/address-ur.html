@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-md-6">
+        <form action="#">
+            <div class="form__title">
+                1. Реквизиты
+            </div>
+            <input type="text"  placeholder="ОКПО">
+            <div class="form__title" th:text="'2. '+#{table.header.address}"></div>
+            <select class="selectMy mb-2" style="position: relative;width: 100%">
+                <option value="hide" disabled selected>Країна</option>
+                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+            </select>
+            <select class="selectMy mb-2" style="position: relative;width: 100%">
+                <option value="hide" disabled selected>Міста</option>
+                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+            </select>
+            <input type="text" required="required" th:placeholder="#{table.header.city}+'*'">
+            <input type="text" th:placeholder="#{table.header.address}+'*'">
+            <div class="form__title" th:text="#{table.header.address}">
+                2. Юридический адрес
+            </div>
+            <select class="selectMy mb-2" style="position: relative;width: 100%">
+                <option value="hide" disabled selected>Країна</option>
+                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+            </select>
+            <select class="selectMy mb-2" style="position: relative;width: 100%">
+                <option value="hide" disabled selected>Міста</option>
+                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
+            </select>
+            <input type="text" required="required" th:placeholder="#{table.header.city}+'*'">
+            <input type="text"  th:placeholder="#{table.header.address}">
+            <input type="text"  th:placeholder="#{text.index}">
+            <button class="button" type="submit" th:text="#{text.button.save}"></button>
+        </form>
+    </div>
+    <div class="col-md-6 align-self-end">
+        <div class="address__img overlay" th:style="'background-image: url(' + @{/blacksea/img/28.jpg} + ')'">
+            <div class="wrap">
+                <h2 th:text="#{text.sidebar.header1} + ' ' + #{text.sidebar.header2}"></h2>
+                <p>Единственный в Украине сад совместного выращивания фундука и грецкого ореха</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-12">
+        <table id="table">
+            <thead>
+            <tr>
+                <th><span th:text="#{text.button.add}"></span><span><i
+                        th:classappend="'ti ' + (${date.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${date}" data-name="date"></i></span></th>
+                <th><span th:text="#{table.header.status}"></span><span><i
+                        th:classappend="'ti ' + (${paymentStatus.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${paymentStatus}" data-name="paymentStatus"></i></span></th>
+                <th><span th:text="#{table.header.summa}"></span><span><i
+                        th:classappend="'ti ' + (${summa.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${summa}" data-name="summa"></i></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${data.size() > 0}" th:each="item : ${data}">
+                <td th:text="${item.date}"></td>
+                <td>
+                    <th:block th:switch="${item.status}">
+                        <span th:case="'payed'" th:text="#{value.status.payed}"></span>
+                        <span th:case="'unpayed'" th:text="#{value.status.unPayed}"></span>
+                        <span th:case="'InProcess'" th:text="#{value.status.inProcess}"></span>
+                        <span th:case="*" th:text="'-'"></span>
+                    </th:block>
+                </td>
+                <td class="row justify-content-center">
+                    <span th:text="${item.summa}"></span>
+                    <div class="icons_wrap">
+                        <a th:href="@{/web/transaction/{id} (id=${item.id})}" class="tooltip" th:title="#{text.viewOrder}"><i
+                                class="nut-icon icons-view"></i></a>
+                    </div>
+                </td>
+            </tr>
+            <tr th:unless="${data.size()>0}">
+                <div class="table__message">У вас не було транзакціїв!</div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

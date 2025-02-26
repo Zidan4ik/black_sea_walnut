@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.order.OrderResponseForStatsProducts;
 import org.example.black_sea_walnut.dto.order.OrderUserResponseForView;
 import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
 import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
@@ -20,6 +21,8 @@ public interface OrderService {
     List<Order> getAll();
 
     PageResponse<ResponseOrderForView> getAll(ResponseOrderForView response, Pageable pageable, LanguageCode code);
+
+    PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code);
 
     List<OrderUserResponseForView> getAllByUser(User user);
 

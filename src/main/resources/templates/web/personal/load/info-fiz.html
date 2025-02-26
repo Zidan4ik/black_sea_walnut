@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <input type="text" th:placeholder="#{table.header.fio}+'*'">
+            <input type="email" th:placeholder="#{table.header.email}+'*'">
+            <input type="tel" th:placeholder="#{table.header.phone}+'*'">
+            <button class="button float-left" type="button" th:text="#{text.button.save}" id="info-save"></button>
+        </form>
+    </div>
+    <div class="col-md-6 align-self-center">
+        <div class="wrapper">
+            <div class="file__wrap">
+                <input type="file" name="file" id="fileMy" class="inputfile"/>
+                <label for="fileMy" class="label__photo" id="image"
+                       style="background-image: url('/blacksea/img/istockphoto-674199444-612x612.jpg');"><span>Загрузить фото</span></label>
+            </div>
+        </div>
+    </div>
+</div>

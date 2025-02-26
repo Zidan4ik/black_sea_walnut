@@ -7,8 +7,8 @@ import org.example.black_sea_walnut.dto.order.OrderResponseForStatsProducts;
 import org.example.black_sea_walnut.dto.order.OrderUserResponseForView;
 import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
 import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.entity.Order;
-import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.OrderMapper;
@@ -43,6 +43,16 @@ public class OrderServiceImp implements OrderService {
     public PageResponse<ResponseOrderForView> getAll(ResponseOrderForView response, Pageable pageable, LanguageCode code) {
         Page<Order> page = orderRepository.findAll(OrderSpecification.getSpecification(response), pageable);
         List<ResponseOrderForView> responsesDtoAdd = page.map(mapper::toDTOView).stream().toList();
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
+    public PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code) {
+        Specification<Order> spec = Specification.where(null);
+        Page<Order> page = orderRepository.findAll(spec,pageable);
+        List<OrderResponseForAccount> responsesDtoAdd = page.map(mapper::toResponseForAccount).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));
@@ -85,6 +95,6 @@ public class OrderServiceImp implements OrderService {
 //        return orderDetailsRepository.findTopBySummaWithDiscountAndDateRange(start, end);
         Pageable pageAble = PageRequest.of(0, size);
         List<Object[]> entities = orderDetailsRepository.findSummaWithDiscountByProductAndDateRange(start, end, pageAble);
-        return orderMapper.toResponseFOrStatsProduct(entities);
+        return orderMapper.toResponseForStatsProduct(entities);
     }
 }

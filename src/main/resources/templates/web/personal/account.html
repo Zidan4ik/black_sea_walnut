@@ -1,0 +1,298 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.cart}"></title>
+    <!--    <link rel="stylesheet" th:href="@{/css/table.css}"/>-->
+    <!--    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>-->
+    <style>
+        .pagination-icon {
+            background: #334A2E;
+            border: #334A2E;
+        }
+
+        .pagination-number {
+            background-color: #5C9D4F;
+            border: #5C9D4F;
+            color: white;
+        }
+
+        .pagination-icon:hover {
+            color: white;
+            background-color: #41613c;
+            border: #334A2E;
+        }
+
+        .page-item.active .page-link {
+            color: white;
+            background-color: #83e371;
+            border: #5C9D4F;
+        }
+
+        .d-flex-full {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .selectMy {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            height: 47px;
+            padding: 14px 16px;
+            font-family: "Montserrat", sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 18px;
+            letter-spacing: 0.01em;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.personalAccount}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="accaunt">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <h1 th:text="#{text.account}"></h1>
+                </div>
+                <div class="col-lg-9 col-md-6">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="accaunt__manager">
+                                <ul>
+                                    <li>
+                                        <p th:text="#{text.cartPersonalManager}"></p>
+                                    </li>
+                                    <li><i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14
+                                        12</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <span class="discount" th:text="#{text.personalDiscount}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <nav class="navigation">
+                        <p th:text="#{text.myOrders}"></p>
+                        <ul>
+                            <li><a id="orders" class="headers" data-action="loadOrders"
+                                   th:text="#{text.historyOrders}"></a></li>
+                            <li><a id="transactions" class="headers" data-action="loadTransactions"
+                                   th:text="#{text.historyTransactions}"></a></li>
+                        </ul>
+                        <p th:text="#{text.myAccount}"></p>
+                        <ul>
+                            <li><a id="contactInformation" class="headers" data-action="loadInfo"
+                                   th:text="#{text.contactInformation}"></a></li>
+                            <li><a id="password" class="headers" data-action="loadPassword"
+                                   th:text="#{text.password}"></a></li>
+                            <li><a id="address" class="headers" data-action="loadAddress"
+                                   th:text="#{table.header.address}"></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-9" id="container-content"></div>
+            </div>
+            <div id="container-pagination"></div>
+        </div>
+    </section>
+
+</div>
+<script th:src="@{/js/table.js}"></script>
+<script layout:fragment="script">
+    let fieldElement;
+
+    function loadOrders(element, page) {
+        const params = new URLSearchParams();
+        if (element) {
+            let dir = element.attr('data-direction');
+            let name = element.attr('data-name');
+            params.append('sort', `${name},${dir}`)
+        }
+
+        params.append('page', page);
+        params.append('languageCode', document.documentElement.lang);
+        params.append('size', '3');
+
+        $('#container-content').empty();
+        $('#container-pagination').empty();
+        htmx.ajax('GET', `${contextPath}web/orders/table/load?${params.toString()}`, {
+            target: '#container-content',
+            swap: 'innerHTML'
+        });
+        htmx.ajax('GET', `${contextPath}web/orders/pagination/load?${params.toString()}`, {
+            target: '#container-pagination',
+            swap: 'innerHTML'
+        });
+        addEventListenerForDirection(loadOrders);
+    }
+
+    function loadTransactions(element, page) {
+        const params = new URLSearchParams();
+        if (element) {
+            let dir = element.attr('data-direction');
+            let name = element.attr('data-name');
+            params.append('sort', `${name},${dir}`)
+            console.log(`${name},${dir}`);
+        }
+
+        params.append('page', page);
+        params.append('languageCode', document.documentElement.lang);
+        params.append('size', '3');
+
+        $('#container-content').empty();
+        $('#container-pagination').empty();
+        htmx.ajax('GET', `${contextPath}web/transactions/table/load?${params.toString()}`, {
+            target: '#container-content',
+            swap: 'innerHTML'
+        });
+        htmx.ajax('GET', `${contextPath}web/transactions/pagination/load?${params.toString()}`, {
+            target: '#container-pagination',
+            swap: 'innerHTML'
+        });
+        addEventListenerForDirection(loadTransactions);
+    }
+
+    function loadInfo() {
+        clearListeners('container-content');
+        $('#container-pagination').empty();
+        htmx.ajax('GET', `${contextPath}web/info-fiz/load`, {
+            target: '#container-content',
+            swap: 'innerHTML'
+        });
+        addEventListenerImage();
+    }
+
+    function loadAddress() {
+        clearListeners('container-content');
+        $('#container-pagination').empty();
+        htmx.ajax('GET', `${contextPath}web/address-fiz/load`, {
+            target: '#container-content',
+            swap: 'innerHTML'
+        });
+        $('#select-countries').off();
+        $('#select-countries-ur').off();
+        $('#container-content').on('change', '#select-countries', function () {
+            invokeRequestRegionsByCountry($(this).val());
+        });
+    }
+
+    function loadPassword() {
+        clearListeners('container-content');
+        $('#container-pagination').empty();
+        htmx.ajax('GET', `${contextPath}web/password/load`, {
+            target: '#container-content',
+            swap: 'innerHTML'
+        });
+    }
+
+    function addEventListenerForDirection(loadData) {
+        clearListeners('container-content');
+
+        $('#container-content').on('click', '.ti-arrow-down, .ti-arrow-up', function () {
+            fieldElement = $(this);
+            let newDirection = fieldElement.attr('data-direction') === 'ASC' ? 'DESC' : 'ASC';
+            fieldElement.attr('data-direction', newDirection);
+            loadData(fieldElement, 0);
+        });
+
+        $(document).on('click', '.pagination a', function () {
+            let page = $(this).data('page');
+            let parentLi = this.closest('.page-item');
+            if (parentLi.classList.contains('active')) {
+                event.preventDefault();
+                return;
+            }
+            loadData(fieldElement, page);
+        });
+    }
+
+    function clearListeners(idElement) {
+        $(`#${idElement}`).off();
+    }
+
+    function addEventListenerImage() {
+        $('#container-content').on('change', '#fileMy', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            let $image = $('#image');
+            if ($image) {
+                $image.css('background-image', `url(${URL.createObjectURL(file)})`);
+            }
+        });
+    }
+
+    function addEventListenerHeaders() {
+        $('.headers').on('click', function () {
+            $('.headers').removeClass('active');
+            $(this).addClass('active');
+            let action = $(this).data('action');
+            if (typeof window[action] === 'function') window[action]();
+        });
+    }
+
+    $(document).ready(function () {
+        addEventListenerHeaders();
+        invokeRequestContactsData();
+    });
+
+    function invokeRequestContactsData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`);
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                buildContacts(JSON.parse(request.response));
+            }
+        });
+    }
+
+    function invokeRequestRegionsByCountry(id) {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/regions?countryId=${id}`);
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                let $regions = $('#select-regions');
+                if ($regions) {
+                    $regions.find("option:not(:first)").remove();
+                    data.forEach(function (item) {
+                        $regions.append(`
+                            <option value="${item.id}">${item.name}</option>
+                        `);
+                    });
+                }
+                // $('#select-regions');
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

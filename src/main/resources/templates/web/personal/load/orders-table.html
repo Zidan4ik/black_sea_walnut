@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-12">
+        <table id="table">
+            <thead>
+            <tr>
+                <th><span th:text="#{table.header.application}"></span><span><i
+                        th:classappend="'ti ' + (${id.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${id}" data-name="id"></i></span></th>
+                <th><span th:text="#{table.header.date}"></span><span><i
+                        th:classappend="'ti ' + (${dateOfOrdering.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${dateOfOrdering}" data-name="dateOfOrdering"></i></span></th>
+                <th><span th:text="#{table.header.amountProducts}"></span><span><i
+                        th:classappend="'ti ' + (${countProducts.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${countProducts}" data-name="countProducts"></i></span></th>
+                <th><span th:text="#{table.header.status}"></span><span><i
+                        th:classappend="'ti ' + (${deliveryStatus.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${deliveryStatus}" data-name="deliveryStatus"></i></span></th>
+                <th><span th:text="#{table.header.price}"></span><span><i
+                        th:classappend="'ti ' + (${totalPrice.name() == 'ASC' ? 'ti-arrow-up' : 'ti-arrow-down'})"
+                        th:data-direction="${totalPrice}" data-name="totalPrice"></i></span></th>
+                <th><span th:text="#{table.header.functions}"></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${data.size() > 0}" th:each="item : ${data}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.date}"></td>
+                <td th:text="${item.amount}"></td>
+                <td th:text="${!item.status.isEmpty()?item.status:'-'}"></td>
+                <td th:text="${item.cost}"><span th:text="#{text.grn}"></span></td>
+                <td>
+                    <div class="icons_wrap">
+                        <a th:href="@{/web/order/{id} (id=${item.id})}" class="tooltip" th:title="#{text.copy}"><i
+                                class="nut-icon icons-view"></i></a>
+                        <a href="#" class="tooltip" title="Копировать"><i class="nut-icon icons-copy"></i></a>
+                    </div>
+                </td>
+            </tr>
+            <tr th:unless="${data.size()>0}">
+                <div class="table__message">У вас не було транзакціїв!</div>
+                <!--                <td colspan="5" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}"></td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

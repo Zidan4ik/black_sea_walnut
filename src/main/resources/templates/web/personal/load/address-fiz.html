@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-lg-6">
+        <form>
+            <div class="form__title" th:text="#{table.header.address}"></div>
+            <select id="select-countries" class="selectMy" style="position: relative;width: 100%;margin-bottom: 5px;">
+                <option value="hide" disabled selected>Країна</option>
+                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+            </select>
+            <select id="select-regions" class="selectMy" style="position: relative;width: 100%;margin-bottom: 5px;">
+                <option value="hide" disabled selected th:text="#{text.region}"></option>
+                <option value="hide" disabled selected th:text="#{text.region}"></option>
+            </select>
+            <input class="form-control" type="text" required="required" th:placeholder="#{table.header.city}+'*'"
+                   style="margin-bottom: 5px;">
+            <input class="form-control" type="text" th:placeholder="#{table.header.address}+'*'">
+            <button class="button" type="button" th:text="#{text.button.save}"></button>
+        </form>
+    </div>
+    <div class="col-lg-6 align-self-end"></div>
+</div>

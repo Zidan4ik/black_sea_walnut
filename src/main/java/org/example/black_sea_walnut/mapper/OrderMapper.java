@@ -1,8 +1,10 @@
 package org.example.black_sea_walnut.mapper;
 
 import org.example.black_sea_walnut.dto.order.*;
+import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
+import org.example.black_sea_walnut.enums.DeliveryStatus;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
@@ -71,7 +73,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public List<OrderResponseForStatsProducts> toResponseFOrStatsProduct(List<Object[]> entities) {
+    public List<OrderResponseForStatsProducts> toResponseForStatsProduct(List<Object[]> entities) {
         List<OrderResponseForStatsProducts> dto = new ArrayList<>();
         for (Object[] o : entities) {
             dto.add(OrderResponseForStatsProducts
@@ -84,5 +86,17 @@ public class OrderMapper {
                     .build());
         }
         return dto;
+    }
+
+    public OrderResponseForAccount toResponseForAccount(Order entity) {
+        DeliveryStatus status = entity.getDeliveryStatus();
+        return OrderResponseForAccount
+                .builder()
+                .id(entity.getId())
+                .date(DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
+                .amount(String.valueOf(entity.getCountProducts()))
+                .status(status != null ? status.toString() : "")
+                .cost(String.valueOf(entity.getTotalPrice()))
+                .build();
     }
 }

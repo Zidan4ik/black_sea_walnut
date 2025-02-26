@@ -2,6 +2,7 @@ package org.example.black_sea_walnut.service.imp;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.example.black_sea_walnut.entity.Country;
 import org.example.black_sea_walnut.entity.Region;
 import org.example.black_sea_walnut.repository.RegionRepository;
 import org.example.black_sea_walnut.service.RegionService;
@@ -22,5 +23,10 @@ public class RegionServiceImp implements RegionService {
     @Override
     public List<Region> getAll() {
         return regionRepository.findAll();
+    }
+
+    @Override
+    public List<Region> getByCountry(Country country) {
+        return regionRepository.getRegionsByCountry(country);
     }
 }
