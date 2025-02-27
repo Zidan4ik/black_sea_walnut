@@ -62,7 +62,67 @@
 <body class="home">
 
 <th:block th:insert="web/blocks/navbar::navbar"></th:block>
-
+<div class="container pr">
+    <div class="popup__cart">
+        <div class="wrap">
+            <div class="popup__cart_item">
+                <div class="row align-items-center no-gutters item_row">
+                    <div class="col-md-5 col-12">
+                        <div class="item_title">
+                            <p>Орех соленый 80г.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-12">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col-6">
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="4" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="item_sum">
+                                    <p>100 <span th:text="#{text.grn}"></span></p>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="item_close">
+                                    <a id="product-cart-delete">
+                                        <i class="nut-icon icons-close-button"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup__cart_sum">
+                <div class="sum_item">
+                    <div class="sum_item_title">
+                        <p th:text="#{text.total}"></p>
+                    </div>
+                    <div class="sum_item_new">
+                        <p>175 <i th:text="#{text.grn}"></i></p>
+                    </div>
+                </div>
+                <div class="sum_item">
+                    <div class="sum_item_button">
+                        <a th:href="@{/web/cart}" class="button" th:text="#{text.goToCart}"></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Если корзина пуста -->
+            <!-- <div class="popup__cart_clean">
+                <p>Ваша корзина пуста</p>
+            </div> -->
+        </div>
+    </div>
+</div>
 <div layout:fragment="content"></div>
 <div layout:fragment="script"></div>
 <th:block th:insert="web/blocks/footer::footer"></th:block>
@@ -74,9 +134,6 @@
       crossorigin=""/>
 <script th:src="@{/leaflet/leaflet.js}" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
-
-<!--<script async defer-->
-<!--        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVofcK1JyIWtVb3kaEbvHi9WqHCteWpxI&amp;callback=initMap"></script>-->
 
 <script>
     function selectedLanguage() {
@@ -110,17 +167,17 @@
     function mapBannerData(item) {
         if (!item) return null;
         return {
-            id: item.mainId || item.catalogBannerId || item.catalogEcologicallyId || item.factoryBannerId || item.factoryBlockId || item.mainEcoProductionId || item.mainAimId || item.clientsBannerId || item.clientsEcoProductionId || item.clientCategoryId || null,
-            isActive: item.mainIsActive ?? item.catalogBannerIsActive ?? item.catalogEcologicallyIsActive ?? item.factoryBannerIsActive ?? item.factoryBlockIsActive ?? item.mainEcoProductionIsActive ?? item.mainAimIsActive ?? item.clientsBannerIsActive ?? item.clientsEcoProductionIsActive ?? item.clientCategoryIsActive ?? false,
-            titleUk: item.mainTitleUk || item.catalogEcologicallyTitleUk || item.factoryBannerTitleUk || item.factoryBlockTitleUk || item.mainEcoProductionTitleUk || item.mainAimTitleUk || item.clientsBannerTitleUk || item.clientsEcoProductionTitleUk || item.clientCategoryTitleUk || '',
-            titleEn: item.mainTitleEn || item.catalogEcologicallyTitleEn || item.factoryBannerTitleEn || item.factoryBlockTitleEn || item.mainEcoProductionTitleEn || item.mainAimTitleEn || item.clientsBannerTitleEn || item.clientsEcoProductionTitleEn || item.clientCategoryTitleEn || '',
+            id: item.mainId || item.catalogBannerId || item.catalogEcologicallyId || item.factoryBannerId || item.factoryBlockId || item.mainEcoProductionId || item.mainAimId || item.clientsBannerId || item.clientsEcoProductionId || item.clientCategoryId || item.mainFactoryId || null,
+            isActive: item.mainIsActive ?? item.catalogBannerIsActive ?? item.catalogEcologicallyIsActive ?? item.factoryBannerIsActive ?? item.factoryBlockIsActive ?? item.mainEcoProductionIsActive ?? item.mainAimIsActive ?? item.clientsBannerIsActive ?? item.clientsEcoProductionIsActive ?? item.clientCategoryIsActive ?? item.mainFactoryIsActive ?? false,
+            titleUk: item.mainTitleUk || item.catalogEcologicallyTitleUk || item.factoryBannerTitleUk || item.factoryBlockTitleUk || item.mainEcoProductionTitleUk || item.mainAimTitleUk || item.clientsBannerTitleUk || item.clientsEcoProductionTitleUk || item.clientCategoryTitleUk || item.mainFactoryTitleUk || '',
+            titleEn: item.mainTitleEn || item.catalogEcologicallyTitleEn || item.factoryBannerTitleEn || item.factoryBlockTitleEn || item.mainEcoProductionTitleEn || item.mainAimTitleEn || item.clientsBannerTitleEn || item.clientsEcoProductionTitleEn || item.clientCategoryTitleEn || item.mainFactoryTitleEn || '',
             subtitleUk: item.catalogEcologicallySubtitleUk || item.clientCategorySubtitleUk || null,
             subtitleEn: item.catalogEcologicallySubtitleEn || item.clientCategorySubtitleEn || null,
-            descriptionUk: item.mainDescriptionUk || item.catalogEcologicallyDescriptionUk || item.factoryBannerDescriptionUk || item.factoryBlockDescriptionUk || item.mainEcoProductionDescriptionUk || item.mainAimDescriptionUk || item.clientsBannerDescriptionUk || item.clientsEcoProductionDescriptionUk || item.clientCategoryDescriptionUk || '',
-            descriptionEn: item.mainDescriptionEn || item.catalogEcologicallyDescriptionEn || item.factoryBannerDescriptionEn || item.factoryBlockDescriptionEn || item.mainEcoProductionDescriptionEn || item.mainAimDescriptionEn || item.clientsBannerDescriptionEn || item.clientsEcoProductionDescriptionEn || item.clientCategoryDescriptionEn || '',
+            descriptionUk: item.mainDescriptionUk || item.catalogEcologicallyDescriptionUk || item.factoryBannerDescriptionUk || item.factoryBlockDescriptionUk || item.mainEcoProductionDescriptionUk || item.mainAimDescriptionUk || item.clientsBannerDescriptionUk || item.clientsEcoProductionDescriptionUk || item.clientCategoryDescriptionUk || item.mainFactoryDescriptionUk || '',
+            descriptionEn: item.mainDescriptionEn || item.catalogEcologicallyDescriptionEn || item.factoryBannerDescriptionEn || item.factoryBlockDescriptionEn || item.mainEcoProductionDescriptionEn || item.mainAimDescriptionEn || item.clientsBannerDescriptionEn || item.clientsEcoProductionDescriptionEn || item.clientCategoryDescriptionEn || item.mainFactoryDescriptionEn || '',
             imagePath: item.mainPathToBanner || item.catalogBannerPathToImage || item.factoryBannerPathToImage || item.mainEcoProductionPathToBanner || item.mainAimPathToBanner || item.clientsBannerPathToBanner || item.clientsEcoProductionPathToBanner || item.clientCategoryPathToImage || path_default_image,
             svgPath: item.clientCategoryPathToSvg || null,
-            images: item.catalogEcologicallyFiles || item.factoryBlockFiles || null
+            images: item.catalogEcologicallyFiles || item.factoryBlockFiles || item.mainFactoryHistories || null
         };
     }
 
@@ -137,6 +194,7 @@
         const bannerData = mapBannerData(item);
         if (!bannerData || !bannerData.isActive) return;
         const container = $(`#${idContainer}`);
+        console.log(container.length);
         if (container.length) {
             container.css("background-image", `url(${bannerData.imagePath})`);
             const title = getLocalizedContent(bannerData, 'title');
@@ -390,6 +448,9 @@
     function buildNews(news, idContainer) {
         if (news.length === 0) return;
         else if (news.length > 0) {
+            if(news.length<=3){
+                $('.nav-buttons').remove();
+            }
             let $container = $(`#${idContainer}`);
             if ($container) {
                 let counter = 0;

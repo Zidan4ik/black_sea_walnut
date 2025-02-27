@@ -30,7 +30,7 @@
                         <div class="product__item">
                             <div class="sticker">
                                 <i class="nut-icon icons-actciya"></i>
-                                <p>Акция</p>
+                                <p id="product-discount"></p>
                             </div>
                             <!-- Slider main container -->
                             <div class="products-container swiper-container">
@@ -250,12 +250,21 @@
         $(`#product-name`).text(item.name);
         $(`#product-article`).text(item.articleId);
         $(`#product-taste`).text(item.taste);
+        if (item.discount === '') {
+            $(`#product-discount`).parent().remove();
+        } else {
+            $(`#product-discount`).text(item.discount);
+        }
         $(`#product-storage`).text(item.recipe);
         $(`#product-mass`).text(item.mass);
         $(`#product-energy-mass`).text(item.energyMass);
         $(`#product-instruction`).text(item.conditionExploitation);
         $(`#product-new-price`).text(item.newPrice);
-        $(`#product-old-price`).text(item.oldPrice);
+        if (item.oldPrice === '0') {
+            $('#product-old-price').parent().remove();
+        } else {
+            $(`#product-old-price`).text(item.oldPrice);
+        }
         $(`#image-description`).attr('src', item.pathToImageDescription || path_default_image);
         $(`#image-packing`).attr('src', item.pathToImagePacking || path_default_image);
         $(`#image-payment`).attr('src', item.pathToImagePayment || path_default_image);
