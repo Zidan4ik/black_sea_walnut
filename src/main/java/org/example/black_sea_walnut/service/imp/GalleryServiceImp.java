@@ -1,17 +1,27 @@
 package org.example.black_sea_walnut.service.imp;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.criteria.Join;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.example.black_sea_walnut.dto.PageResponse;
+import org.example.black_sea_walnut.dto.calls.CallResponseForView;
 import org.example.black_sea_walnut.dto.gallery.GalleryRequestForAdd;
 import org.example.black_sea_walnut.dto.gallery.GalleryResponseForAdd;
+import org.example.black_sea_walnut.entity.Call;
 import org.example.black_sea_walnut.entity.Gallery;
+import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.GalleryMapper;
 import org.example.black_sea_walnut.repository.GalleryRepository;
 import org.example.black_sea_walnut.service.GalleryService;
 import org.example.black_sea_walnut.service.ImageService;
+import org.example.black_sea_walnut.service.specifications.CallSpecification;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,8 +72,21 @@ public class GalleryServiceImp implements GalleryService {
     }
 
     @Override
-    public List<GalleryResponseForAdd> getAllInResponse(LanguageCode languageCoed) {
+    public List<GalleryResponseForAdd> getAllInResponseByLanguageCode(LanguageCode languageCoed) {
         return getAllByLanguageCode(languageCoed).stream().map(mapper::toResponseForAdd).toList();
+    }
+
+    @Override
+    public PageResponse<GalleryResponseForAdd> getAllInResponseByLanguageCode(Pageable pageable, LanguageCode code) {
+        Specification<Gallery> spec = Specification.where(((root, query, criteriaBuilder) -> {
+            Join<Object, Object> translations = root.join("translations");
+            return criteriaBuilder.equal(translations.get("languageCode"), code);
+        }));
+        Page<Gallery> page = galleryRepository.findAll(spec,pageable);
+        List<GalleryResponseForAdd> responsesDtoAdd = page.map(mapper::toResponseForAdd).stream().toList();
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
     }
 
     @SneakyThrows

@@ -1,0 +1,62 @@
+<div class="row justify-content-center" th:if="${gallery.size() > 0}">
+    <div class="col-lg-7 col-md-6 col-12" th:if="${gallery.size() > 0}">
+        <div class="wrap">
+            <div class="benefit__item" th:style="'background-image: url('+@{${gallery.get(0).getPathToMediaFile()}}+')'"></div>
+            <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                <h3 th:text="${gallery.get(0).getTitle()}"></h3>
+                <p th:text="${gallery.get(0).getDescription()}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 col-md-6 col-12" th:if="${gallery.size() > 1}">
+        <div class="wrap">
+            <div class="benefit__item" th:style="'background-image: url('+@{${gallery.get(1).getPathToMediaFile()}}+')'"></div>
+            <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                <h3 th:text="${gallery.get(1).getTitle()}"></h3>
+                <p th:text="${gallery.get(1).getDescription()}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 col-md-12 col-12" th:if="${gallery.size() > 2}">
+        <div class="wrap">
+            <a class="benefit__item overlay benefit__item_video_text"
+               th:style="'background-image: url('+@{${gallery.get(2).getPathToMediaFile()}}+')'">
+                <h3 th:text="${gallery.get(2).getTitle()}"></h3>
+                <p th:text="${gallery.get(2).getDescription()}"></p>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12" th:if="${gallery.size() > 3}">
+        <div class="wrap item_small">
+            <div class="benefit__item item_small" th:style="'background-image: url('+@{${gallery.get(3).getPathToMediaFile()}}+')'"></div>
+            <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                <h3 th:text="${gallery.get(3).getTitle()}"></h3>
+                <p th:text="${gallery.get(3).getDescription()}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12" th:if="${gallery.size() > 4}">
+        <div class="wrap item_small">
+            <div class="benefit__item item_small" th:style="'background-image: url('+@{${gallery.get(4).getPathToMediaFile()}}+')'"></div>
+            <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                <h3 th:text="${gallery.get(4).getTitle()}"></h3>
+                <p th:text="${gallery.get(4).getDescription()}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12" th:if="${gallery.size() > 5}">
+        <div class="wrap item_small">
+            <div class="benefit__item item_small" th:style="'background-image: url('+@{${gallery.get(5).getPathToMediaFile()}}+')'"></div>
+            <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                <h3 th:text="${gallery.get(5).getTitle()}"></h3>
+                <p th:text="${gallery.get(5).getDescription()}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="totalPages" type="hidden" th:value="${totalPages}">

@@ -303,7 +303,7 @@
         for (let i = 0; i < items.length; i += 6) {
             const group = items.slice(i, i + 6);
 
-            html += `<div class="row">`;
+            // html += `<div class="row">`;
 
             if (group[0]) {
                 html += `
@@ -374,8 +374,8 @@
 
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
-                        <a href="#">
-                            <span class="benefit__item item_small benefit__item_video overlay" style="background-image: url(${group[5].pathToMediaFile})"></span>
+                        <a>
+                            <span class="benefit__item item_small overlay" style="background-image: url(${group[5].pathToMediaFile})"></span>
                         </a>
                     </div>
                 </div>
@@ -386,8 +386,6 @@
 
         container.innerHTML = html;
     }
-
-
 
     function buildNews(news, idContainer) {
         if (news.length === 0) return;

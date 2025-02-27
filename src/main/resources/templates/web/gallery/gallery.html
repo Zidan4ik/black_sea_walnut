@@ -1,0 +1,198 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.factory}"></title>
+    <script th:src="@{/js/swiperMy.js}"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="first-section overlay" style="background-image: url(/blacksea/img/sadzhanec_shipshini.jpg)">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.sidebar.galleries}"></li>
+                </ul>
+            </div>
+            <div class="row align-items-center justify-content-center">
+                <a>
+                    <h1 th:text="#{text.sidebar.galleries}"></h1>
+                    <p th:text="#{text.companySocialActivityStaff}"></p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefit gallery_section">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-12">
+                    <h2 th:text="#{text.sidebar.galleries}"></h2>
+                    <p th:text="#{text.companySocialActivityStaff}"></p>
+                </div>
+            </div>
+            <div id="container-gallery"></div>
+            <div class="row">
+                <div class="wrapper">
+                    <a id="loadGallery" class="button button_transparent" th:text="#{text.loadMore}"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+
+    function invokeRequestFactoryData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                buildContacts(data);
+            }
+        });
+    }
+
+    function buildGallery(items, containerId) {
+        if (!items || items.length === 0) return;
+
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        let html = "";
+
+        for (let i = 0; i < items.length; i += 6) {
+            const group = items.slice(i, i + 6);
+            html += `<div class="row">`;
+
+            if (group[0]) {
+                html += `
+                <div class="col-lg-7 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="benefit__item" style="background-image: url(${group[0].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                            <h3>${group[0].title}</h3>
+                            <p>${group[0].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[1]) {
+                html += `
+                <div class="col-lg-5 col-md-6 col-12">
+                    <div class="wrap">
+                        <div class="benefit__item" style="background-image: url(${group[1].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                            <h3>${group[1].title}</h3>
+                            <p>${group[1].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[2]) {
+                html += `
+                <div class="col-lg-12 col-md-12 col-12">
+                    <div class="wrap">
+                        <a href="#" class="benefit__item overlay benefit__item_video_text" style="background-image: url(${group[2].pathToMediaFile})">
+                            <span><i class="nut-icon icons-play-icon"></i></span>
+                            <h3>${group[2].title}</h3>
+                            <p>${group[2].description}</p>
+                        </a>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[3]) {
+                html += `
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap item_small">
+                        <div class="benefit__item item_small" style="background-image: url(${group[3].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                            <h3>${group[3].title}</h3>
+                            <p>${group[3].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[4]) {
+                html += `
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap item_small">
+                        <div class="benefit__item item_small" style="background-image: url(${group[4].pathToMediaFile})"></div>
+                        <div class="benefit__item item_hover overlay_green overlay_green_bg">
+                            <h3>${group[4].title}</h3>
+                            <p>${group[4].description}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+
+            if (group[5]) {
+                html += `
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="wrap item_small">
+                        <a href="#">
+                            <span class="benefit__item item_small benefit__item_video overlay" style="background-image: url(${group[5].pathToMediaFile})"></span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            }
+
+            html += `</div>`;
+        }
+
+        container.innerHTML = html;
+    }
+
+    const pathToTable = contextPath + 'web/gallery/load';
+    let currentPage = 0;
+    let timeoutId;
+
+    function loadGallery(page) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            const params = new URLSearchParams();
+            params.append('page', page);
+            params.append('size', '6');
+            htmx.ajax('GET', `${pathToTable}?${params.toString()}`, {
+                target: '#container-gallery',
+                swap: 'beforeend'
+            });
+        }, 0);
+        currentPage++;
+    }
+
+    $(document).ready(function () {
+        invokeRequestFactoryData();
+        loadGallery(currentPage);
+        $("#loadGallery ").on("click", function () {
+            loadGallery(currentPage);
+        });
+    });
+
+    document.addEventListener("htmx:afterSwap", function (event) {
+        if (event.target.id === "container-gallery") {
+            if ($('#totalPages').val() === String(currentPage)) {
+                $('#loadGallery').css('display', 'none');
+            }
+        }
+    });
+</script>
+</body>
+</html>
