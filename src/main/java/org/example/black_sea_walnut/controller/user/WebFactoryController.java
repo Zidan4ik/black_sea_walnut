@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +45,7 @@ public class WebFactoryController {
         EcoProductionResponseForAddInMain ecology = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
         ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
         List<NewRequestForAdd> news = newService.getAllInResponseForAdd();
-        List<GalleryResponseForAdd> gallery = galleryService.getAllInResponse(LanguageCode.fromString(lang));
+        List<GalleryResponseForAdd> gallery = galleryService.getAllInResponseByLanguageCode(LanguageCode.fromString(lang));
         return new ResponseEntity<>(FactoryResponseForView
                 .builder()
                 .banner(banner)

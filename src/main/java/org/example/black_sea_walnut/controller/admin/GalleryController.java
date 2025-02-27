@@ -33,7 +33,7 @@ public class GalleryController {
     @GetMapping("/galleries/load")
     public ModelAndView loadGalleries(@RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/galleries/fragment-galleries");
-        List<GalleryResponseForAdd> galleries = galleryService.getAllInResponse(LanguageCode.fromString(languageCode));
+        List<GalleryResponseForAdd> galleries = galleryService.getAllInResponseByLanguageCode(LanguageCode.fromString(languageCode));
         model.addObject("list", galleries);
         return model;
     }
