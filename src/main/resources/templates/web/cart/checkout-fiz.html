@@ -79,7 +79,7 @@
 								<div class="popup__cart_sum">
 									<div class="sum_item">
 										<div class="sum_item_title">
-											<p th:text="#{value.status.total} + ' '"></p>
+											<p th:text="#{text.total} + ' '"></p>
 										</div>
 										<div class="sum_item_new">
 											<p></p>
@@ -151,23 +151,17 @@
 
 
 	$(document).ready(function () {
-		// invokeRequestProductData();
+		invokeRequestProductData();
 	});
 
 	function invokeRequestProductData() {
 		let request = new XMLHttpRequest();
-		let lang = getCurrentLang();
-		let pathName = location.pathname.substring(1, location.pathname.length);
-		request.open("GET", contextPath + `${pathName}/data?lang=${lang}`)
+		request.open("GET", contextPath + `web/contacts/get`)
 		request.send();
 		request.addEventListener('load', function () {
 			if (request.status === 200) {
 				let data = JSON.parse(request.response);
-				console.log(data);
-
-				// initSwipers('manufacturer-container');
-				buildProduct(data.product);
-				buildContacts(data.contacts);
+				buildContacts(data);
 			}
 		});
 	}

@@ -1,0 +1,223 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.registration}"></title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.registration}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 th:text="#{text.registration}"></h1>
+                </div>
+                <div class="col-12">
+                    <div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
+                </div>
+                <div class="tabs">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6">
+                            <div class="tabs__wrap">
+                                <ul class="tabs__caption">
+                                    <li class="active" th:text="#{value.registration-type.individual}"></li>
+                                    <li th:text="#{value.registration-type.legal}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-6"></div>
+                    </div>
+                    <div class="tabs__content active">
+                        <form>
+                            <div class="row">
+                                <div class="col-lg-5 col-md-6">
+                                    <input type="text" required="required" th:placeholder="#{table.header.fio}+'*'">
+                                    <input type="email" required="required" th:placeholder="#{table.header.email}+'*'">
+                                    <input type="tel" required="required" th:placeholder="#{table.header.phone}+'*'">
+                                    <div class="form__title" th:text="'2. '+#{table.header.address}"></div>
+                                    <select>
+                                        <option value="hide" th:text="#{text.country}"></option>
+                                    </select>
+                                    <select>
+                                        <option value="hide" th:text="#{text.region}"></option>
+                                    </select>
+                                    <select>
+                                        <option value="hide" th:text="#{table.header.city}"></option>
+                                    </select>
+                                    <input type="text" th:placeholder="#{table.header.address}">
+                                    <div class="form__title" th:text="'3. '+#{text.password}"></div>
+                                    <input type="password" required="required" th:placeholder="#{text.password}+'*'">
+                                    <input type="password" required="required"
+                                           th:placeholder="#{text.confirmPassword}+'*'">
+                                </div>
+                                <div class="col-lg-5 col-md-6 offset-lg-1">
+                                    <div class="wrapper">
+                                        <div class="file__wrap">
+                                            <input type="file" id="fileMy1" class="inputfile"/>
+                                            <label for="fileMy1"><span th:text="#{text.loadImage}"></span></label>
+                                        </div>
+                                        <div class="checkbox__wrap">
+                                            <input id="checkbox-1" class="checkbox-custom" name="checkbox-1"
+                                                   type="checkbox">
+                                            <label for="checkbox-1"
+                                                   class="checkbox-custom-label"><span th:text="#{text.iAmFop}"></span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-6">
+                                    <div class="checkbox__wrap">
+                                        <input id="checkbox-2" class="checkbox-custom" name="checkbox-1"
+                                               type="checkbox">
+                                        <label for="checkbox-2" class="checkbox-custom-label">
+                                            <span th:text="#{text.iAgreeWith}"></span>
+                                            <a th:href="@{/web/terms-of-use}"
+                                               th:text="#{text.agreeRegTermsDesc}"></a></label>
+                                    </div>
+                                    <button class="button" type="button" th:text="#{text.continue}"></button>
+                                </div>
+                                <div class="col-lg-7 col-md-6"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tabs__content">
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-6">
+                                    <input type="text" required="required" th:placeholder="#{table.header.fio}+'*'">
+                                    <input type="email" required="required" th:placeholder="#{table.header.email}+'*'">
+                                    <input type="tel" required="required" th:placeholder="#{table.header.phone}+'*'">
+                                    <div class="form__title" th:text="'2. ' + #{table.header.address}"></div>
+                                    <select>
+                                        <option value="hide" th:text="#{text.country}"></option>
+                                    </select>
+                                    <select>
+                                        <option value="hide" th:text="#{text.region}"></option>
+                                    </select>
+                                    <input type="text" required="required" th:placeholder="#{table.header.city}+'*  '">
+                                    <input type="text" th:placeholder="#{table.header.address}">
+                                    <div class="form__title" th:text="'3. '+#{text.password}"></div>
+                                    <input type="password" required="required" th:placeholder="#{text.password}+'*'">
+                                    <input type="password" required="required"
+                                           th:placeholder="#{text.confirmPassword}+'*'">
+                                </div>
+                                <div class="col-lg-5 col-md-6 offset-lg-1">
+                                    <div class="wrapper">
+                                        <div class="file__wrap">
+                                            <input type="file" id="fileMy2" class="inputfile"/>
+                                            <label for="fileMy2"><span th:text="#{text.loadImage}"></span></label>
+                                        </div>
+                                        <div class="radio__wrap">
+                                            <input id="radio-1" class="radio-custom" name="radio-group" value="ur"
+                                                   type="radio" checked>
+                                            <label for="radio-1"
+                                                   class="radio-custom-label"><span
+                                                    th:text="#{value.registration-type.legal}"></span></label>
+                                            <input id="radio-2" class="radio-custom" name="radio-group" value="fop"
+                                                   type="radio">
+                                            <label for="radio-2" class="radio-custom-label"><span
+                                                    th:text="#{value.registration-type.fop}"></span></label>
+                                        </div>
+                                        <div class="box-wrap">
+                                            <div class="ur box">
+                                                <div class="form__title" th:text="'1. '+#{text.props}"></div>
+                                                <input type="text" th:placeholder="#{text.okpo}">
+                                                <div class="form__title"
+                                                     th:text="'2. '+#{value.registration-type.legal} + ' '+#{table.header.address}"></div>
+                                                <select>
+                                                    <option value="hide" th:text="#{text.country}"></option>
+                                                </select>
+                                                <select>
+                                                    <option value="hide" th:text="#{text.region}"></option>
+                                                </select>
+                                                <input type="text" required="required"
+                                                       th:placeholder="#{table.header.city}+'*'">
+                                                <input type="text" th:placeholder="#{table.header.address}+'*'">
+                                                <input type="text" th:placeholder="#{text.index}+'*'">
+                                            </div>
+                                            <div class="fop box">
+                                                <div class="form__title" th:text="'1. '+#{text.props}"></div>
+                                                <input type="text" th:placeholder="#{text.erdpou}">
+                                                <div class="form__title"
+                                                     th:text="'2. '+#{table.header.address} + ' '+ #{value.registration-type.fop}"></div>
+                                                <select>
+                                                    <option value="hide" th:text="#{text.country}"></option>
+                                                </select>
+                                                <select>
+                                                    <option value="hide" th:text="#{text.region}"></option>
+                                                </select>
+                                                <input type="text" required="required"
+                                                       th:placeholder="#{table.header.city}+'*'">
+                                                <input type="text" th:placeholder="#{table.header.address}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-md-6">
+                                    <div class="checkbox__wrap">
+                                        <input id="checkbox-4" class="checkbox-custom" name="checkbox-1"
+                                               type="checkbox">
+                                        <label for="checkbox-4" class="checkbox-custom-label">
+                                            <span th:text="#{text.iAgreeWith}"></span>
+                                            <a th:href="@{/web/terms-of-use}"
+                                               th:text="#{text.agreeRegTermsDesc}"></a></label>
+                                    </div>
+                                    <button class="button" type="button" th:text="#{text.continue}"></button>
+                                </div>
+                                <div class="col-lg-7 col-md-6"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script layout:fragment="script">
+    function invokeData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                buildContacts(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        invokeData();
+        addEventListenerImage();
+    });
+
+    function addEventListenerImage() {
+        $('.inputfile').on('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            $('.inputfile').each(function (){
+                let label = $(this).next('label');
+                console.log(label);
+                label.css('background-image', `url(${URL.createObjectURL(file)})`);
+            })
+        });
+    }
+</script>
+</body>
+</html>
+

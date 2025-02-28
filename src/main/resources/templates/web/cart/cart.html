@@ -127,7 +127,7 @@
                                 <div class="popup__cart_sum">
                                     <div class="sum_item">
                                         <div class="sum_item_title">
-                                            <p th:text="#{value.status.total}+ ': '"></p>
+                                            <p th:text="#{text.total}+ ': '"></p>
                                         </div>
                                         <div class="sum_item_new">
                                             <p>175 <i th:text="#{text.grn}"></i></p>
@@ -135,7 +135,7 @@
                                     </div>
                                     <div class="sum_item">
                                         <div class="sum_item_button">
-                                            <a href="#" class="button" th:text="#{text.toPlaceOnOrder}"></a>
+                                            <a th:href="@{/web/checkout-fiz}" class="button" th:text="#{text.toPlaceOnOrder}"></a>
                                         </div>
                                     </div>
                                 </div>
