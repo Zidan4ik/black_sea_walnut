@@ -1,0 +1,28 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:text="#{text.error404}"></title>
+    <script th:src="@{/js/swiperMy.js}"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <section class="first-section first-section__error no-bg">
+        <div class="container">
+            <div class="row justify-content-center align-content-center">
+                <div class="col-lg-8">
+                    <div class="wrap">
+                        <h1>505</h1>
+                        <p th:text="#{text.pageNotFound}"></p>
+                        <a th:href="@{/web/main}" class="button_transparent with_arrow"><i class="nut-icon icons-left-arrow"></i> <b>Вернуться на Главную страницу</b></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
