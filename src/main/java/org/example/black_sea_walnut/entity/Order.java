@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.enums.DeliveryStatus;
+import org.example.black_sea_walnut.enums.DeliveryType;
 import org.example.black_sea_walnut.enums.OrderStatus;
 import org.example.black_sea_walnut.enums.PaymentType;
 
@@ -36,6 +37,7 @@ public class Order {
     private String addressDelivery;
     private OrderStatus orderStatus;
     private DeliveryStatus deliveryStatus;
+    private DeliveryType deliveryType;
     private PaymentType paymentType;
     private boolean isPayed;
     private LocalDate dateOfOrdering;

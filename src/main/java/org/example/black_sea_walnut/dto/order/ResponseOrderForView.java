@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.dto.order;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.black_sea_walnut.enums.DeliveryStatus;
+import org.example.black_sea_walnut.enums.DeliveryType;
 import org.example.black_sea_walnut.enums.OrderStatus;
 import org.example.black_sea_walnut.enums.PaymentType;
 
@@ -19,4 +20,5 @@ public class ResponseOrderForView {
     private Boolean isPay;
     private OrderStatus statusOrder;
     private String dateOfOrdering;
+    private DeliveryType typeOfDelivery;
 }

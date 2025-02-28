@@ -35,14 +35,19 @@
                     <span th:text="#{text.order}' № '+${id}"></span>
                 </span>
             </div>
-            <div class="mt-5">
-                <h3><span th:text="#{text.order}+' № '+${id}"></span></h3>
-                <div class="table-responsive" style="width: 75%">
+            <div class="row mt-5">
+                <h3 class="col-3 d-flex align-items-end" style="margin: 0"><span
+                        th:text="#{text.order}+' № '+${id}"></span></h3>
+                <div class="col-3">
+                    <label class="form-label boldMy" th:text="#{table.header.statusPayment}+':'"></label>
+                    <input id="orderStatus_" class="form-control" value="" disabled>
+                </div>
+                <div class="table-responsive mt-3" style="width: 75%">
                     <table class="table table-bordered table-hover table-striped linkedRow"
                            style="table-layout: fixed; position: static; zoom: 1;">
                         <thead>
                         <tr>
-                            <th style="width: 200px" th:text="#{table.header.product}"></th>
+                            <th style="width: 200px">ID</th>
                             <th style="width: 200px" th:text="#{table.header.name}"></th>
                             <th style="width: 137px" th:text="#{table.header.totalCount}"></th>
                             <th style="width: 137px" th:text="#{table.header.price}"></th>
@@ -58,7 +63,7 @@
                 <div class="mt-4 pb-4 row" style="border-bottom: 1px solid black;">
                     <div class="col-12">
                         <label class="form-label boldMy" th:text="#{text.informationAboutCustomer}+':'"></label>
-                        <input id="isFop_" class="form-control" value="" style="width: 23%;">
+                        <input id="userRegisterType_" class="form-control" value="" style="width: 23%;">
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.fio}+':'"></label>
@@ -83,15 +88,15 @@
                 <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.typeOfDelivery}+':'"></label>
+                        <input id="deliveryType_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy" th:text="#{table.header.statusDelivery}+':'"></label>
                         <input id="deliveryStatus_" class="form-control" value="" disabled>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.typeOfPayment}+':'"></label>
                         <input id="paymentType_" class="form-control" value="" disabled>
-                    </div>
-                    <div class="col-3">
-                        <label class="form-label boldMy" th:text="#{table.header.statusPayment}+':'"></label>
-                        <input id="orderStatus_" class="form-control" value="" disabled>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.status}+':'"></label>
@@ -106,6 +111,22 @@
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.address}+':'"></label>
                         <input id="addressDelivery_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy" th:text="#{text.company}+':'"></label>
+                        <input id="companyDelivery_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy" th:text="#{text.contactPerson}+':'"></label>
+                        <input id="personNameDelivery_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy" th:text="#{table.header.email}+':'"></label>
+                        <input id="emailDelivery_" class="form-control" value="" disabled>
+                    </div>
+                    <div class="col-3">
+                        <label class="form-label boldMy" th:text="#{table.header.phone}+':'"></label>
+                        <input id="phoneDelivery_" class="form-control" value="" disabled>
                     </div>
                 </div>
                 <div class="mt-2 d-flex justify-content-center">
@@ -128,7 +149,7 @@
                 let request = new XMLHttpRequest();
                 request.open('GET', `${contextPath}admin/order/${id}/data`);
                 request.send();
-                request.addEventListener('load', function () {
+                request.addEventListener('load', async function () {
                     let data = JSON.parse(request.response);
                     console.log(data);
                     let count = 0;
@@ -136,7 +157,6 @@
                         count += item.totalSumma = item.price * item.count;
                     });
                     loadTable(data.orderDetails);
-                    console.log(count);
                     document.getElementById('total-summa_').textContent = count;
 
                     for (const key in data) {
@@ -145,10 +165,78 @@
                             if (elementById) {
                                 if (elementById.tagName === 'INPUT' || elementById.tagName === 'TEXTAREA') {
                                     if (key === 'isPayed') {
-                                        elementById.value = data[key] ? 'Payed' : 'Un payed';
+                                        elementById.value = data[key] ? await changeLanguage('value.status.payed', getCurrentLang())
+                                            : await changeLanguage('value.status.unPayed', getCurrentLang());
                                         continue;
-                                    } else if (key === 'isFop') {
-                                        elementById.value = data[key] ? 'Individual entrepreneur' : 'Legal entity';
+                                    } else if (key === 'userRegisterType') {
+                                        if (data[key] === 'individual') {
+                                            elementById.value = await changeLanguage('value.registration-type.individual', getCurrentLang());
+                                        } else if (data[key] === 'legal') {
+                                            elementById.value = await changeLanguage('value.registration-type.legal', getCurrentLang());
+                                        } else if (data[key] === 'fop') {
+                                            elementById.value = await changeLanguage('value.registration-type.fop', getCurrentLang());
+                                        }
+                                        continue;
+                                    } else if (key === 'orderStatus') {
+                                        if (data[key] === 'inProgress') {
+                                            elementById.value = await changeLanguage('value.status.inProcess', getCurrentLang());
+                                        } else if (data[key] === 'new_') {
+                                            elementById.value = await changeLanguage('value.status.new', getCurrentLang());
+                                        } else if (data[key] === 'close') {
+                                            elementById.value = await changeLanguage('value.status.close', getCurrentLang());
+                                        } else if (data[key] === 'cancel') {
+                                            elementById.value = await changeLanguage('value.status.cancel', getCurrentLang());
+                                        }
+                                        continue;
+                                    } else if (key === 'paymentType') {
+                                        if (data[key] === 'invoice') {
+                                            elementById.value = await changeLanguage('value.status.invoice', getCurrentLang());
+                                        } else if (data[key] === 'card') {
+                                            elementById.value = await changeLanguage('value.status.card', getCurrentLang());
+                                        } else if (data[key] === 'cash') {
+                                            elementById.value = await changeLanguage('value.status.cash', getCurrentLang());
+                                        }
+                                        continue;
+                                    } else if (key === 'deliveryStatus') {
+                                        if (data[key] === 'sent') {
+                                            elementById.value = await changeLanguage('value.status.await', getCurrentLang());
+                                        } else if (data[key] === 'await') {
+                                            elementById.value = await changeLanguage('value.status.delivered', getCurrentLang());
+                                        } else if (data[key] === 'delivered') {
+                                            elementById.value = await changeLanguage('value.status.returned', getCurrentLang());
+                                        } else if (data[key] === 'returned') {
+                                            elementById.value = await changeLanguage('value.status.sent', getCurrentLang());
+                                        }
+                                        continue;
+                                    }
+                                    else if (key === 'deliveryStatus') {
+                                        if (data[key] === 'invoice') {
+                                            elementById.value = await changeLanguage('value.status.invoice', getCurrentLang());
+                                        } else if (data[key] === 'card') {
+                                            elementById.value = await changeLanguage('value.status.card', getCurrentLang());
+                                        } else if (data[key] === 'cash') {
+                                            elementById.value = await changeLanguage('value.status.cash', getCurrentLang());
+                                        }
+                                        continue;
+                                    } else if (key === 'deliveryType') {
+                                        if (data[key] === 'pickUp') {
+                                            elementById.value = await changeLanguage('value.status.pickUp', getCurrentLang());
+                                            $('#addressDelivery_').parent().remove();
+                                            $('#city_').parent().remove();
+                                        } else if (data[key] === 'newMail') {
+                                            elementById.value = await changeLanguage('value.status.newMail', getCurrentLang());
+                                            $('#phoneDelivery_').parent().remove();
+                                            $('#emailDelivery_').parent().remove();
+                                            $('#personNameDelivery_').parent().remove();
+                                            $('#companyDelivery_').parent().remove();
+                                        } else if (data[key] === 'courier') {
+                                            elementById.value = await changeLanguage('value.status.courierInOdessa', getCurrentLang());
+                                            $('#companyDelivery_').parent().remove();
+                                            $('#phoneDelivery_').parent().remove();
+                                            $('#emailDelivery_').parent().remove();
+                                            $('#personNameDelivery_').parent().remove();
+                                            $('#city_').parent().remove();
+                                        }
                                         continue;
                                     }
                                     elementById.value = data[key];
@@ -160,6 +248,11 @@
                         }
                     }
                 });
+            }
+
+            async function changeLanguage(key, lang) {
+                const response = await fetch(`/locale/message?key=${key}&lang=${lang}`);
+                return await response.text();
             }
         </script>
     </div>

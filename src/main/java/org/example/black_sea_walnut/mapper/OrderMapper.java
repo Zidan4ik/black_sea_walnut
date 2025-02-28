@@ -21,6 +21,7 @@ public class OrderMapper {
                 .totalCount(entity.getCountProducts())
                 .totalPrice(entity.getTotalPrice())
                 .statusDelivery(entity.getDeliveryStatus())
+                .typeOfDelivery(entity.getDeliveryType())
                 .statusOrder(entity.getOrderStatus())
                 .typePayment(entity.getPaymentType())
                 .isPay(entity.isPayed())
@@ -38,6 +39,7 @@ public class OrderMapper {
                 .email(entity.getEmail())
                 .dateOfOrdering(DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
                 .deliveryStatus(entity.getDeliveryStatus())
+                .deliveryType(entity.getDeliveryType())
                 .paymentType(entity.getPaymentType())
                 .isPayed(entity.isPayed())
                 .orderStatus(entity.getOrderStatus())
@@ -48,7 +50,8 @@ public class OrderMapper {
                 .phoneDelivery(entity.getPhoneDelivery())
                 .addressDelivery(entity.getAddressDelivery())
                 .orderDetails(list)
-                .isFop(String.valueOf(entity.getUser().isFop()))
+                .isFop(entity.getUser().isFop())
+                .userRegisterType(entity.getUser().getRegisterType().toString())
                 .build();
     }
 
