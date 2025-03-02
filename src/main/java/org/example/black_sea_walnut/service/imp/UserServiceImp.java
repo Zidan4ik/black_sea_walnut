@@ -14,6 +14,7 @@ import org.example.black_sea_walnut.dto.user.response.UserIndividualResponseForA
 import org.example.black_sea_walnut.dto.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.repository.UserRepository;
 import org.example.black_sea_walnut.service.CityService;
@@ -24,10 +25,12 @@ import org.example.black_sea_walnut.service.specifications.UserSpecification;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +40,7 @@ public class UserServiceImp implements UserService {
     private final ImageService imageService;
     private final RegionService regionService;
     private final CityService cityService;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${upload.path}")
     private String contextPath;
@@ -55,7 +58,7 @@ public class UserServiceImp implements UserService {
     @Override
     public PageResponse<UserResponseForView> getAll(UserResponseForView response, Pageable pageable) {
         Page<User> page = userRepository.findAll(UserSpecification.getSpecification(response), pageable);
-        List<UserResponseForView> responseDTOView = page.map(p -> userMapper.toResponseForView(p)).stream().toList();
+        List<UserResponseForView> responseDTOView = page.map(userMapper::toResponseForView).stream().toList();
         return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));
@@ -84,6 +87,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User save(User entity) {
+        if (entity.getId() == null && !entity.getPassword().isEmpty()) {
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+            entity.setRole(Role.USER);
+        }
         return userRepository.save(entity);
     }
 
@@ -144,8 +151,8 @@ public class UserServiceImp implements UserService {
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
         User userMapped = userMapper.toEntityFromRequest(dto);
-        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId()));
-        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()));
+//        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId()));
+//        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()));
         return save(userMapped);
     }
 
@@ -178,5 +185,10 @@ public class UserServiceImp implements UserService {
     @Override
     public List<UserResponseForStats> getUsersByDate(LocalDate start, LocalDate end) {
         return userMapper.toResponseUsersForStats(userRepository.getUsersBetweenStartDayAndEndDay(start, end));
+    }
+
+    @Override
+    public Optional<User> getByEmail(String email) {
+        return userRepository.getByEmail(email);
     }
 }

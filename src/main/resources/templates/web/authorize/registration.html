@@ -4,6 +4,22 @@
       xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="#{text.registration}"></title>
+    <style>
+        .selectMy {
+            background-color: #fff;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            height: 47px;
+            padding: 14px 16px;
+            font-family: "Montserrat", sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 18px;
+            letter-spacing: 0.01em;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,23 +62,22 @@
                         <form>
                             <div class="row">
                                 <div class="col-lg-5 col-md-6">
-                                    <input type="text" required="required" th:placeholder="#{table.header.fio}+'*'">
-                                    <input type="email" required="required" th:placeholder="#{table.header.email}+'*'">
-                                    <input type="tel" required="required" th:placeholder="#{table.header.phone}+'*'">
+                                    <input id="fiz-fio" type="text" required="required"
+                                           th:placeholder="#{table.header.fio}+'*'">
+                                    <input id="fiz-email" type="email" required="required"
+                                           th:placeholder="#{table.header.email}+'*'">
+                                    <input id="fiz-phone" type="tel" required="required"
+                                           th:placeholder="#{table.header.phone}+'*'">
                                     <div class="form__title" th:text="'2. '+#{table.header.address}"></div>
-                                    <select>
-                                        <option value="hide" th:text="#{text.country}"></option>
-                                    </select>
-                                    <select>
-                                        <option value="hide" th:text="#{text.region}"></option>
-                                    </select>
-                                    <select>
-                                        <option value="hide" th:text="#{table.header.city}"></option>
-                                    </select>
-                                    <input type="text" th:placeholder="#{table.header.address}">
+                                    <div id="fiz-selectors">
+
+                                    </div>
+                                    <input id="fiz-city" type="text" th:placeholder="#{table.header.city}">
+                                    <input id="fiz-address" type="text" th:placeholder="#{table.header.address}">
                                     <div class="form__title" th:text="'3. '+#{text.password}"></div>
-                                    <input type="password" required="required" th:placeholder="#{text.password}+'*'">
-                                    <input type="password" required="required"
+                                    <input id="fiz-password" type="password" required="required"
+                                           th:placeholder="#{text.password}+'*'">
+                                    <input id="fiz-confirm-password" type="password" required="required"
                                            th:placeholder="#{text.confirmPassword}+'*'">
                                 </div>
                                 <div class="col-lg-5 col-md-6 offset-lg-1">
@@ -72,23 +87,24 @@
                                             <label for="fileMy1"><span th:text="#{text.loadImage}"></span></label>
                                         </div>
                                         <div class="checkbox__wrap">
-                                            <input id="checkbox-1" class="checkbox-custom" name="checkbox-1"
+                                            <input id="fiz-isFop" class="checkbox-custom" name="checkbox-1"
                                                    type="checkbox">
-                                            <label for="checkbox-1"
+                                            <label for="fiz-isFop"
                                                    class="checkbox-custom-label"><span th:text="#{text.iAmFop}"></span></label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-5 col-md-6">
                                     <div class="checkbox__wrap">
-                                        <input id="checkbox-2" class="checkbox-custom" name="checkbox-1"
+                                        <input id="fiz-terms" class="checkbox-custom" name="checkbox-1"
                                                type="checkbox">
-                                        <label for="checkbox-2" class="checkbox-custom-label">
+                                        <label for="fiz-terms" class="checkbox-custom-label">
                                             <span th:text="#{text.iAgreeWith}"></span>
-                                            <a th:href="@{/web/terms-of-use}"
+                                            <a th:href="@{/terms-of-use}"
                                                th:text="#{text.agreeRegTermsDesc}"></a></label>
                                     </div>
-                                    <button class="button" type="button" th:text="#{text.continue}"></button>
+                                    <button class="button" type="button" th:text="#{text.continue}"
+                                            id="save-fiz"></button>
                                 </div>
                                 <div class="col-lg-7 col-md-6"></div>
                             </div>
@@ -98,9 +114,12 @@
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-5 col-md-6">
-                                    <input type="text" required="required" th:placeholder="#{table.header.fio}+'*'">
-                                    <input type="email" required="required" th:placeholder="#{table.header.email}+'*'">
-                                    <input type="tel" required="required" th:placeholder="#{table.header.phone}+'*'">
+                                    <input id="ur-fio" type="text" required="required"
+                                           th:placeholder="#{table.header.fio}+'*'">
+                                    <input id="ur-email" type="email" required="required"
+                                           th:placeholder="#{table.header.email}+'*'">
+                                    <input id="ur-phone" type="tel" required="required"
+                                           th:placeholder="#{table.header.phone}+'*'">
                                     <div class="form__title" th:text="'2. ' + #{table.header.address}"></div>
                                     <select>
                                         <option value="hide" th:text="#{text.country}"></option>
@@ -108,11 +127,13 @@
                                     <select>
                                         <option value="hide" th:text="#{text.region}"></option>
                                     </select>
-                                    <input type="text" required="required" th:placeholder="#{table.header.city}+'*  '">
-                                    <input type="text" th:placeholder="#{table.header.address}">
+                                    <input id="ur-city" type="text" required="required"
+                                           th:placeholder="#{table.header.city}+'*  '">
+                                    <input id="ur-address" type="text" th:placeholder="#{table.header.address}">
                                     <div class="form__title" th:text="'3. '+#{text.password}"></div>
-                                    <input type="password" required="required" th:placeholder="#{text.password}+'*'">
-                                    <input type="password" required="required"
+                                    <input id="ur-password" type="password" required="required"
+                                           th:placeholder="#{text.password}+'*'">
+                                    <input id="ur-confirm-password" type="password" required="required"
                                            th:placeholder="#{text.confirmPassword}+'*'">
                                 </div>
                                 <div class="col-lg-5 col-md-6 offset-lg-1">
@@ -173,10 +194,11 @@
                                                type="checkbox">
                                         <label for="checkbox-4" class="checkbox-custom-label">
                                             <span th:text="#{text.iAgreeWith}"></span>
-                                            <a th:href="@{/web/terms-of-use}"
+                                            <a th:href="@{/terms-of-use}"
                                                th:text="#{text.agreeRegTermsDesc}"></a></label>
                                     </div>
-                                    <button class="button" type="button" th:text="#{text.continue}"></button>
+                                    <button id="save-ur" class="button" type="button"
+                                            th:text="#{text.continue}"></button>
                                 </div>
                                 <div class="col-lg-7 col-md-6"></div>
                             </div>
@@ -191,32 +213,103 @@
 <script layout:fragment="script">
     function invokeData() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`)
+        request.open("GET", contextPath + `registration/data`)
         request.send();
-        request.addEventListener('load', function () {
+        request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                buildContacts(data);
+                console.log(data);
+                buildContacts(data.contacts);
+                let containerSelectors = $('#fiz-selectors');
+                if (containerSelectors.length > 0) {
+                    let countryLocale = await changeLanguage('text.country', getCurrentLang());
+                    let regionLocale = await changeLanguage('text.region', getCurrentLang());
+                    containerSelectors.append(`<select id="fiz-select-countries" class="selectMy">
+                                        <option value="hide" disabled selected>${countryLocale}</option>
+                                    </select>`);
+                    containerSelectors.append(`<select id="fiz-select-regions" class="selectMy">
+                                        <option value="hide" disabled selected>${regionLocale}</option>
+                                    </select>`);
+                }
+                appendOptionsToSelect(data.countries, 'fiz-select-countries');
             }
         });
+    }
+
+    function appendOptionsToSelect(data, idSelect) {
+        let container = $(`#${idSelect}`);
+        if (container.length) {
+            data.forEach(function (item) {
+                container.append(`<option value="${item.id}">${item.name}</option>`)
+            });
+        }
     }
 
     $(document).ready(function () {
         invokeData();
         addEventListenerImage();
+        $('#save-fiz').on('click', saveFiz)
     });
 
     function addEventListenerImage() {
         $('.inputfile').on('change', function (event) {
             const file = event.target.files[0];
             if (!file) return;
-            $('.inputfile').each(function (){
+            $('.inputfile').each(function () {
                 let label = $(this).next('label');
                 console.log(label);
                 label.css('background-image', `url(${URL.createObjectURL(file)})`);
             })
         });
     }
+
+    function saveFiz() {
+        let formData = getFormData();
+        $.ajax({
+            type: "post",
+            url: `${contextPath}user-fiz/save`,
+            data: formData,
+            processData: false,
+            contentType: false,
+            enctype: "multipart/form-data",
+            success: function () {
+                window.location.replace(contextPath + 'login');
+            },
+            error: function (error) {
+                // clearValid();
+                // let data = JSON.parse(error.responseText);
+                // validate2(data);
+                console.log("Error submitting form:", error);
+            }
+        });
+    }
+
+    function getFormData() {
+        const resForm = new FormData();
+        resForm.append("fullName", $('#fiz-fio').val());
+        resForm.append("phone", $("#fiz-phone").val());
+        resForm.append("email", $("#fiz-email").val());
+        resForm.append("password", $("#fiz-password").val());
+        resForm.append("passwordConfirm", $("#fiz-confirm-password").val());
+
+
+        // let files = [
+        //     {id: "#file-fileImage", fieldName: "fileImage"},
+        //     {id: "#file-fileSvg", fieldName: "fileSvg"},
+        // ];
+
+        // files.forEach(function (fileObj) {
+        //     let file = $(fileObj.id)[0].files[0];
+        //     if (file) {
+        //         resForm.append(fileObj.fieldName, file);
+        //     }
+        // });
+        return resForm;
+    }
+
+    $(document).on('change', '#fiz-select-countries', function () {
+        invokeRequestRegionsByCountry($(this).val(), 'fiz-select-regions');
+    });
 </script>
 </body>
 </html>

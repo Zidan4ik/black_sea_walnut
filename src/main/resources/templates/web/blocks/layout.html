@@ -599,6 +599,31 @@
             targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
         }
     });
+
+    function invokeRequestRegionsByCountry(id,idContainer) {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `regions?countryId=${id}`);
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                let $regions = $(`#${idContainer}`);
+                if ($regions) {
+                    $regions.find("option:not(:first)").remove();
+                    data.forEach(function (item) {
+                        $regions.append(`
+                            <option value="${item.id}">${item.name}</option>
+                        `);
+                    });
+                }
+            }
+        });
+    }
+
+    async function changeLanguage(key, lang) {
+        const response = await fetch(`/locale/message?key=${key}&lang=${lang}`);
+        return await response.text();
+    }
 </script>
 </body>
 </html>
