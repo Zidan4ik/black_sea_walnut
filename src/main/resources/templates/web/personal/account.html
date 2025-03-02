@@ -195,7 +195,7 @@
         $('#select-countries').off();
         $('#select-countries-ur').off();
         $('#container-content').on('change', '#select-countries', function () {
-            invokeRequestRegionsByCountry($(this).val());
+            invokeRequestRegionsByCountry($(this).val(), 'select-regions');
         });
     }
 
@@ -210,11 +210,11 @@
     function addEventListenerForDirection(loadData) {
         $('#container-content').off('click', '.ti-arrow-down, .ti-arrow-up')
             .on('click', '.ti-arrow-down, .ti-arrow-up', function () {
-            fieldElement = $(this);
-            let newDirection = fieldElement.attr('data-direction') === 'ASC' ? 'DESC' : 'ASC';
-            fieldElement.attr('data-direction', newDirection);
-            loadData(fieldElement, 0);
-        });
+                fieldElement = $(this);
+                let newDirection = fieldElement.attr('data-direction') === 'ASC' ? 'DESC' : 'ASC';
+                fieldElement.attr('data-direction', newDirection);
+                loadData(fieldElement, 0);
+            });
 
         $(document)
             .off('click', '.pagination a').on('click', '.pagination a', function (event) {
@@ -262,26 +262,6 @@
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 buildContacts(JSON.parse(request.response));
-            }
-        });
-    }
-
-    function invokeRequestRegionsByCountry(id) {
-        let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/regions?countryId=${id}`);
-        request.send();
-        request.addEventListener('load', function () {
-            if (request.status === 200) {
-                let data = JSON.parse(request.response);
-                let $regions = $('#select-regions');
-                if ($regions) {
-                    $regions.find("option:not(:first)").remove();
-                    data.forEach(function (item) {
-                        $regions.append(`
-                            <option value="${item.id}">${item.name}</option>
-                        `);
-                    });
-                }
             }
         });
     }

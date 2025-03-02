@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class RegionController {
+public class AdminRegionController {
     private final RegionService regionService;
 
     @GetMapping("/regions/get")
