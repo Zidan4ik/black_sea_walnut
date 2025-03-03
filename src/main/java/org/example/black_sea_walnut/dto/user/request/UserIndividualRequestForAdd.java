@@ -26,6 +26,5 @@ public class UserIndividualRequestForAdd {
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile fileImage;
     private String password;
-    private String passwordConfirm;
     private Role role;
 }

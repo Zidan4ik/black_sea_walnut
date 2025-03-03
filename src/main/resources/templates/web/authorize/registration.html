@@ -4,6 +4,7 @@
       xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="#{text.registration}"></title>
+    <script th:src="@{/js/validator.js}"></script>
     <style>
         .selectMy {
             background-color: #fff;
@@ -51,8 +52,8 @@
                         <div class="col-lg-5 col-md-6">
                             <div class="tabs__wrap">
                                 <ul class="tabs__caption">
-                                    <li class="active" th:text="#{value.registration-type.individual}"></li>
-                                    <li th:text="#{value.registration-type.legal}"></li>
+                                    <li class="tabsMy active" th:text="#{value.registration-type.individual}"></li>
+                                    <li class="tabsMy" th:text="#{value.registration-type.legal}"></li>
                                 </ul>
                             </div>
                         </div>
@@ -62,22 +63,21 @@
                         <form>
                             <div class="row">
                                 <div class="col-lg-5 col-md-6">
-                                    <input id="fiz-fio" type="text" required="required"
+                                    <input id="fiz-fio" type="text" required="required" data-error="fullName"
                                            th:placeholder="#{table.header.fio}+'*'">
-                                    <input id="fiz-email" type="email" required="required"
+                                    <input id="fiz-email" type="email" required="required" data-error="email"
                                            th:placeholder="#{table.header.email}+'*'">
-                                    <input id="fiz-phone" type="tel" required="required"
+                                    <input id="fiz-phone" type="tel" required="required" data-error="phone"
                                            th:placeholder="#{table.header.phone}+'*'">
                                     <div class="form__title" th:text="'2. '+#{table.header.address}"></div>
-                                    <div id="fiz-selectors">
-
-                                    </div>
-                                    <input id="fiz-city" type="text" th:placeholder="#{table.header.city}">
-                                    <input id="fiz-address" type="text" th:placeholder="#{table.header.address}">
+                                    <div id="fiz-selectors"></div>
+                                    <input id="fiz-address" style="display: none;" type="text"
+                                           th:placeholder="#{table.header.address}">
                                     <div class="form__title" th:text="'3. '+#{text.password}"></div>
-                                    <input id="fiz-password" type="password" required="required"
+                                    <input id="fiz-password" type="password" required="required" data-error="password"
                                            th:placeholder="#{text.password}+'*'">
                                     <input id="fiz-confirm-password" type="password" required="required"
+                                           data-error="passwordConfirm"
                                            th:placeholder="#{text.confirmPassword}+'*'">
                                 </div>
                                 <div class="col-lg-5 col-md-6 offset-lg-1">
@@ -103,8 +103,8 @@
                                             <a th:href="@{/terms-of-use}"
                                                th:text="#{text.agreeRegTermsDesc}"></a></label>
                                     </div>
-                                    <button class="button" type="button" th:text="#{text.continue}"
-                                            id="save-fiz"></button>
+                                    <button class="btn btn-success" type="button" th:text="#{text.continue}"
+                                            id="save-fiz" disabled></button>
                                 </div>
                                 <div class="col-lg-7 col-md-6"></div>
                             </div>
@@ -114,26 +114,20 @@
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-5 col-md-6">
-                                    <input id="ur-fio" type="text" required="required"
+                                    <input id="ur-fio" type="text" required="required" data-error="fullName"
                                            th:placeholder="#{table.header.fio}+'*'">
-                                    <input id="ur-email" type="email" required="required"
+                                    <input id="ur-email" type="email" required="required" data-error="email"
                                            th:placeholder="#{table.header.email}+'*'">
-                                    <input id="ur-phone" type="tel" required="required"
+                                    <input id="ur-phone" type="tel" required="required" data-error="phone"
                                            th:placeholder="#{table.header.phone}+'*'">
                                     <div class="form__title" th:text="'2. ' + #{table.header.address}"></div>
-                                    <select>
-                                        <option value="hide" th:text="#{text.country}"></option>
-                                    </select>
-                                    <select>
-                                        <option value="hide" th:text="#{text.region}"></option>
-                                    </select>
-                                    <input id="ur-city" type="text" required="required"
-                                           th:placeholder="#{table.header.city}+'*  '">
+                                    <div id="ur-selectors"></div>
                                     <input id="ur-address" type="text" th:placeholder="#{table.header.address}">
                                     <div class="form__title" th:text="'3. '+#{text.password}"></div>
-                                    <input id="ur-password" type="password" required="required"
+                                    <input id="ur-password" type="password" required="required" data-error="password"
                                            th:placeholder="#{text.password}+'*'">
                                     <input id="ur-confirm-password" type="password" required="required"
+                                           data-error="passwordConfirm"
                                            th:placeholder="#{text.confirmPassword}+'*'">
                                 </div>
                                 <div class="col-lg-5 col-md-6 offset-lg-1">
@@ -156,49 +150,37 @@
                                         <div class="box-wrap">
                                             <div class="ur box">
                                                 <div class="form__title" th:text="'1. '+#{text.props}"></div>
-                                                <input type="text" th:placeholder="#{text.okpo}">
+                                                <input id="okpo" type="text" th:placeholder="#{text.okpo}">
                                                 <div class="form__title"
                                                      th:text="'2. '+#{value.registration-type.legal} + ' '+#{table.header.address}"></div>
-                                                <select>
-                                                    <option value="hide" th:text="#{text.country}"></option>
-                                                </select>
-                                                <select>
-                                                    <option value="hide" th:text="#{text.region}"></option>
-                                                </select>
-                                                <input type="text" required="required"
-                                                       th:placeholder="#{table.header.city}+'*'">
-                                                <input type="text" th:placeholder="#{table.header.address}+'*'">
-                                                <input type="text" th:placeholder="#{text.index}+'*'">
+                                                <div id="ur2-selectors"></div>
+                                                <input id="addressLegal" type="text"
+                                                       th:placeholder="#{table.header.address}+'*'">
+                                                <input id="index" type="text" th:placeholder="#{text.index}+'*'">
                                             </div>
                                             <div class="fop box">
                                                 <div class="form__title" th:text="'1. '+#{text.props}"></div>
-                                                <input type="text" th:placeholder="#{text.erdpou}">
+                                                <input id="erdpou" type="text" th:placeholder="#{text.erdpou}">
                                                 <div class="form__title"
                                                      th:text="'2. '+#{table.header.address} + ' '+ #{value.registration-type.fop}"></div>
-                                                <select>
-                                                    <option value="hide" th:text="#{text.country}"></option>
-                                                </select>
-                                                <select>
-                                                    <option value="hide" th:text="#{text.region}"></option>
-                                                </select>
-                                                <input type="text" required="required"
-                                                       th:placeholder="#{table.header.city}+'*'">
-                                                <input type="text" th:placeholder="#{table.header.address}">
+                                                <div id="ur3-selectors"></div>
+                                                <input id="addressLegal2" type="text"
+                                                       th:placeholder="#{table.header.address}+'*'">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-5 col-md-6">
                                     <div class="checkbox__wrap">
-                                        <input id="checkbox-4" class="checkbox-custom" name="checkbox-1"
+                                        <input id="ur-terms" class="checkbox-custom" name="checkbox-1"
                                                type="checkbox">
-                                        <label for="checkbox-4" class="checkbox-custom-label">
+                                        <label for="ur-terms" class="checkbox-custom-label">
                                             <span th:text="#{text.iAgreeWith}"></span>
                                             <a th:href="@{/terms-of-use}"
                                                th:text="#{text.agreeRegTermsDesc}"></a></label>
                                     </div>
-                                    <button id="save-ur" class="button" type="button"
-                                            th:text="#{text.continue}"></button>
+                                    <button id="save-ur" class="btn btn-success" type="button"
+                                            th:text="#{text.continue}" disabled></button>
                                 </div>
                                 <div class="col-lg-7 col-md-6"></div>
                             </div>
@@ -209,7 +191,6 @@
         </div>
     </section>
 </div>
-
 <script layout:fragment="script">
     function invokeData() {
         let request = new XMLHttpRequest();
@@ -218,22 +199,44 @@
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
+                // console.log(data);
                 buildContacts(data.contacts);
-                let containerSelectors = $('#fiz-selectors');
-                if (containerSelectors.length > 0) {
-                    let countryLocale = await changeLanguage('text.country', getCurrentLang());
-                    let regionLocale = await changeLanguage('text.region', getCurrentLang());
-                    containerSelectors.append(`<select id="fiz-select-countries" class="selectMy">
-                                        <option value="hide" disabled selected>${countryLocale}</option>
-                                    </select>`);
-                    containerSelectors.append(`<select id="fiz-select-regions" class="selectMy">
-                                        <option value="hide" disabled selected>${regionLocale}</option>
-                                    </select>`);
-                }
+                await fillSelectorsByContainer('fiz-selectors', 'fiz');
+                await fillSelectorsByContainer('ur-selectors', 'ur');
+                await fillSelectorsByContainer('ur2-selectors', 'ur2');
+                await fillSelectorsByContainer('ur3-selectors', 'ur3');
+
                 appendOptionsToSelect(data.countries, 'fiz-select-countries');
+                appendOptionsToSelect(data.countries, 'ur-select-countries');
+                appendOptionsToSelect(data.countries, 'ur2-select-countries');
+                appendOptionsToSelect(data.countries, 'ur3-select-countries');
             }
         });
+    }
+
+    async function fillSelectorsByContainer(idContainer, userRole) {
+        let fizSelectorsContainer = $(`#${idContainer}`);
+        if (!fizSelectorsContainer.length) return;
+
+        const [countryLocale, regionLocale, cityLocale] = await Promise.all([
+            changeLanguage("text.country", getCurrentLang()),
+            changeLanguage("text.region", getCurrentLang()),
+            changeLanguage("table.header.city", getCurrentLang()),
+        ]);
+
+        const selects = [
+            {id: `${userRole}-select-countries`, label: countryLocale, disabled: false},
+            {id: `${userRole}-select-regions`, label: regionLocale, disabled: true},
+            {id: `${userRole}-select-cities`, label: cityLocale, disabled: true},
+        ];
+
+        fizSelectorsContainer.append(
+            selects.map(({id, label, disabled}) =>
+                `<select id="${id}" class="selectMy" ${disabled ? "disabled" : ""}>
+                <option value="" selected>${label}</option>
+            </select>`
+            ).join("")
+        );
     }
 
     function appendOptionsToSelect(data, idSelect) {
@@ -248,7 +251,26 @@
     $(document).ready(function () {
         invokeData();
         addEventListenerImage();
-        $('#save-fiz').on('click', saveFiz)
+        $('#save-fiz').on('click', function () {
+            saveFiz(getFormDataFiz());
+        });
+        $('#save-ur').on('click', function () {
+            saveFiz(getFormDataUr());
+        });
+        $('#fiz-isFop').on('change', function () {
+            $('#fiz-address').toggle($(this).prop('checked'));
+        });
+        $('#fiz-terms').on('click', function () {
+            $('#save-fiz').prop('disabled', !$(this).prop('checked'));
+        });
+        $('#ur-terms').on('click', function () {
+            $('#save-ur').prop('disabled', !$(this).prop('checked'));
+        });
+        $('.tabsMy').on('click', function () {
+            if (!$(this).hasClass('active')) {
+                clearValid();
+            }
+        });
     });
 
     function addEventListenerImage() {
@@ -263,8 +285,7 @@
         });
     }
 
-    function saveFiz() {
-        let formData = getFormData();
+    function saveFiz(formData) {
         $.ajax({
             type: "post",
             url: `${contextPath}user-fiz/save`,
@@ -273,43 +294,122 @@
             contentType: false,
             enctype: "multipart/form-data",
             success: function () {
+                sessionStorage.setItem("registrationSuccess","1");
                 window.location.replace(contextPath + 'login');
             },
             error: function (error) {
-                // clearValid();
-                // let data = JSON.parse(error.responseText);
-                // validate2(data);
+                clearValid();
+                let data = JSON.parse(error.responseText);
+                validate4(data);
                 console.log("Error submitting form:", error);
             }
         });
     }
 
-    function getFormData() {
+    function getFormDataFiz() {
         const resForm = new FormData();
-        resForm.append("fullName", $('#fiz-fio').val());
-        resForm.append("phone", $("#fiz-phone").val());
-        resForm.append("email", $("#fiz-email").val());
-        resForm.append("password", $("#fiz-password").val());
-        resForm.append("passwordConfirm", $("#fiz-confirm-password").val());
+        const commonFields = [
+            {name: "fullName", selector: '#fiz-fio'},
+            {name: "phone", selector: '#fiz-phone'},
+            {name: "email", selector: '#fiz-email'},
+            {name: "countryForDeliveryId", selector: '#fiz-select-countries'},
+            {name: "regionForDeliveryId", selector: '#fiz-select-regions'},
+            {name: "cityForDeliveryId", selector: '#fiz-select-cities'},
+            {name: "password", selector: '#fiz-password'},
+            {name: "passwordConfirm", selector: '#fiz-confirm-password'},
+        ];
+        commonFields.forEach(field => {
+            resForm.append(field.name, $(field.selector).val() || '');
+        });
 
+        let isFop = $("#fiz-isFop").prop("checked");
+        resForm.append("registrationType", isFop ? "fop" : "individual");
+        resForm.append("isFop", isFop);
 
-        // let files = [
-        //     {id: "#file-fileImage", fieldName: "fileImage"},
-        //     {id: "#file-fileSvg", fieldName: "fileSvg"},
-        // ];
+        if (isFop) {
+            let address = $("#fiz-address").val();
+            if (address) resForm.append("address", address);
+        }
 
-        // files.forEach(function (fileObj) {
-        //     let file = $(fileObj.id)[0].files[0];
-        //     if (file) {
-        //         resForm.append(fileObj.fieldName, file);
-        //     }
-        // });
+        let file = $("#fileMy1")[0].files[0];
+        if (file) resForm.append("fileImage", file);
         return resForm;
     }
 
-    $(document).on('change', '#fiz-select-countries', function () {
-        invokeRequestRegionsByCountry($(this).val(), 'fiz-select-regions');
-    });
+    function getFormDataUr() {
+        const resForm = new FormData();
+        const commonFields = [
+            {name: "fullName", selector: '#ur-fio'},
+            {name: "phone", selector: '#ur-phone'},
+            {name: "email", selector: '#ur-email'},
+            {name: "countryForDeliveryId", selector: '#ur-select-countries'},
+            {name: "regionForDeliveryId", selector: '#ur-select-regions'},
+            {name: "cityForDeliveryId", selector: '#ur-select-cities'},
+            {name: "password", selector: '#ur-password'},
+            {name: "passwordConfirm", selector: '#ur-confirm-password'},
+            {name: "address", selector: '#ur-address'},
+        ];
+
+        commonFields.forEach(field => {
+            resForm.append(field.name, $(field.selector).val() || '');
+        });
+
+        let radio = $('input[name="radio-group"]:checked').val();
+        if (radio === 'ur') {
+            resForm.append("registrationType", 'legal');
+        } else if (radio === 'fop') {
+            resForm.append("registrationType", 'fop');
+        }
+        resForm.append("isFop", radio === 'fop');
+
+        if (radio === 'ur') {
+            resForm.append("paymentDetails", $('#okpo').val());
+            resForm.append("addressLegal", $('#addressLegal').val());
+            resForm.append("index", $('#index').val());
+            addLegalFields('ur2');
+        } else if (radio === 'fop') {
+            resForm.append("paymentDetails", $('#erdpou').val());
+            resForm.append("addressLegal", $('#addressLegal2').val());
+            addLegalFields('ur3');
+        }
+
+        let file = $("#fileMy2")[0].files[0];
+        if (file) resForm.append("fileImage", file);
+
+        return resForm;
+
+        function addLegalFields(prefix) {
+            resForm.append("countryForDeliveryIdLegal", $(`#${prefix}-select-countries`).val() || '');
+            resForm.append("regionForDeliveryIdLegal", $(`#${prefix}-select-regions`).val() || '');
+            resForm.append("cityForDeliveryIdLegal", $(`#${prefix}-select-cities`).val() || '');
+        }
+    }
+
+    function handleChange(selectPrefix) {
+        $(document).on('click', `#${selectPrefix}-select-countries`, function () {
+            const countryId = $(this).val();
+            if (countryId === "") {
+                $(`#${selectPrefix}-select-regions`).prop('disabled', true).val("");
+                $(`#${selectPrefix}-select-cities`).prop('disabled', true).val("");
+            } else {
+                invokeRequestRegionsByCountry(countryId, `${selectPrefix}-select-regions`);
+                $(`#${selectPrefix}-select-cities`).val("");
+                $(`#${selectPrefix}-select-cities`).prop('disabled', true);
+            }
+        });
+
+        $(document).on('click', `#${selectPrefix}-select-regions`, function () {
+            const regionId = $(this).val();
+            if (regionId === "") {
+                $(`#${selectPrefix}-select-cities`).prop('disabled', true).val("");
+            } else {
+                invokeRequestCitiesByRegion(regionId, `${selectPrefix}-select-cities`);
+            }
+        });
+    }
+
+    ['fiz', 'ur', 'ur2', 'ur3'].forEach(prefix => handleChange(prefix));
+
 </script>
 </body>
 </html>

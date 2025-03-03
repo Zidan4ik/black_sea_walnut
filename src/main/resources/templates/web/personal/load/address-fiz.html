@@ -6,12 +6,12 @@
                 <option value="hide" disabled selected>Країна</option>
                 <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
             </select>
-            <select id="select-regions" class="selectMy" style="position: relative;width: 100%;margin-bottom: 5px;">
-                <option value="hide" disabled selected th:text="#{text.region}"></option>
-                <option value="hide" disabled selected th:text="#{text.region}"></option>
+            <select id="select-regions" class="selectMy" style="position: relative;width: 100%;margin-bottom: 5px;" disabled>
+                <option value="hide" selected th:text="#{text.region}"></option>
             </select>
-            <input class="form-control" type="text" required="required" th:placeholder="#{table.header.city}+'*'"
-                   style="margin-bottom: 5px;">
+            <select id="select-cities" class="selectMy" style="position: relative;width: 100%;margin-bottom: 5px;" disabled>
+                <option value="hide" selected th:text="#{text.cities}"></option>
+            </select>
             <input class="form-control" type="text" th:placeholder="#{table.header.address}+'*'">
             <button class="button" type="button" th:text="#{text.button.save}"></button>
         </form>

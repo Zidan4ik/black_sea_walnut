@@ -4,9 +4,10 @@ import org.example.black_sea_walnut.entity.Country;
 import org.example.black_sea_walnut.entity.Region;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RegionService {
-    Region getById(Long id);
+    Optional<Region> getById(Long id);
 
     List<Region> getAll();
 

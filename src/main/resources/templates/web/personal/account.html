@@ -194,8 +194,12 @@
         });
         $('#select-countries').off();
         $('#select-countries-ur').off();
+
         $('#container-content').on('change', '#select-countries', function () {
             invokeRequestRegionsByCountry($(this).val(), 'select-regions');
+        });
+        $('#container-content').on('change', '#select-regions', function () {
+            invokeRequestCitiesByRegion($(this).val(), 'select-cities');
         });
     }
 

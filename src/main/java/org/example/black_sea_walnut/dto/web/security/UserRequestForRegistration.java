@@ -1,36 +1,47 @@
-package org.example.black_sea_walnut.dto.user.request;
+package org.example.black_sea_walnut.dto.web.security;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 import org.example.black_sea_walnut.enums.Role;
-import org.example.black_sea_walnut.validator.annotation.MediaValidation;
+import org.example.black_sea_walnut.validator.annotation.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class UserFopRequestForView {
+@Builder
+@PasswordValidation
+public class UserRequestForRegistration {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 100,message = "{error.field.valid.length.title}")
+    @Length(max = 100, message = "{error.field.valid.length.title}")
     private String fullName;
+    @PhoneFormatValidation
     @NotBlank(message = "{error.field.empty}")
+    @Length(max = 15,message = "{error.field.phone.size}")
     private String phone;
+    @EmailValidation
     @NotBlank(message = "{error.field.empty}")
+    @IsExistEmail
     private String email;
     private Long countryForDeliveryId;
     private Long regionForDeliveryId;
     private Long cityForDeliveryId;
-    private String departmentForDelivery;
+    private Long countryForDeliveryIdLegal;
+    private Long regionForDeliveryIdLegal;
+    private Long cityForDeliveryIdLegal;
+    private String address;
+    private String addressLegal;
+    private String index;
+    private String paymentDetails;
     private String registrationType;
     private String status;
-    private String edrpou;
-    private Long regionAdditionallyId;
-    private Long cityAdditionallyId;
-    @NotBlank(message = "{error.field.empty}")
-    private String addressAdditionally;
-    private String password;
-    private Role role;
     private String pathToImage;
+    private boolean isFop;
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile fileImage;
+    @NotBlank(message = "{error.field.password.empty}")
+    private String password;
+    private String passwordConfirm;
+    private Role role;
 }

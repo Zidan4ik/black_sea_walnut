@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.service.RegionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +17,11 @@ public class RegionServiceImp implements RegionService {
     private final RegionRepository regionRepository;
 
     @Override
-    public Region getById(Long id) {
-        return regionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Region with id:" + id + " was not found!"));
+    public Optional<Region> getById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        return regionRepository.findById(id);
     }
 
     @Override

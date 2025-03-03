@@ -12,15 +12,15 @@ import org.example.black_sea_walnut.dto.user.request.UserLegalRequestForView;
 import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserLegalResponseForView;
+import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.Role;
+import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.repository.UserRepository;
-import org.example.black_sea_walnut.service.CityService;
-import org.example.black_sea_walnut.service.ImageService;
-import org.example.black_sea_walnut.service.RegionService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class UserServiceImp implements UserService {
     private final RegionService regionService;
     private final CityService cityService;
     private final PasswordEncoder passwordEncoder;
-
+    private final CountryService countryService;
     @Value("${upload.path}")
     private String contextPath;
 
@@ -115,19 +115,24 @@ public class UserServiceImp implements UserService {
         User userMapped = userMapper.toEntityFromRequest(dto);
         Long cityId = dto.getCityForDeliveryId();
         if (cityId != null) {
-            userMapped.setCity(cityService.getById(cityId));
+            userMapped.setCity(cityService.getById(cityId)
+                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + cityId + " was not found!")));
         }
         Long cityAdditionallyId = dto.getCityAdditionallyId();
         if (cityAdditionallyId != null) {
-            userMapped.setCityAdditional(cityService.getById(cityAdditionallyId));
+            userMapped.setCityAdditional(cityService.getById(cityAdditionallyId)
+                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + cityAdditionallyId + " was not found!")));
         }
         Long regionId = dto.getRegionForDeliveryId();
         if (regionId != null) {
-            userMapped.setRegion(regionService.getById(regionId));
+            userMapped.setRegion(regionService.getById(regionId).orElseThrow(
+                    () -> new EntityNotFoundException("Region with id:" + regionId + " was not found!")
+            ));
         }
         Long regionAdditionallyId = dto.getRegionAdditionallyId();
         if (regionAdditionallyId != null) {
-            userMapped.setRegionAdditional(regionService.getById(regionAdditionallyId));
+            userMapped.setRegionAdditional(regionService.getById(regionAdditionallyId)
+                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + regionAdditionallyId + " was not found!")));
         }
         return save(userMapped);
     }
@@ -151,8 +156,10 @@ public class UserServiceImp implements UserService {
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
         User userMapped = userMapper.toEntityFromRequest(dto);
-//        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId()));
-//        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()));
+        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
+                .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
+        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
+                .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
         return save(userMapped);
     }
 
@@ -175,10 +182,41 @@ public class UserServiceImp implements UserService {
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
         User userMapped = userMapper.toEntityFromRequest(dto);
-        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId()));
-        userMapped.setCityAdditional(cityService.getById(dto.getCityAdditionallyId()));
-        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()));
-        userMapped.setRegionAdditional(regionService.getById(dto.getRegionAdditionallyId()));
+        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
+                .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
+        userMapped.setCityAdditional(cityService.getById(dto.getCityAdditionallyId())
+                .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityAdditionallyId() + " was not found!")));
+        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
+                .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
+        userMapped.setRegionAdditional(regionService.getById(dto.getRegionAdditionallyId())
+                .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionAdditionallyId() + " was not found!")));
+        return save(userMapped);
+    }
+
+    @SneakyThrows
+    @Override
+    public User save(UserRequestForRegistration dto) {
+
+        if (dto.getFileImage() != null) {
+            String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
+            dto.setPathToImage(generatedPath);
+        }
+        dto.setStatus(UserStatus.isActive.toString());
+        dto.setRole(Role.USER);
+
+        imageService.save(dto.getFileImage(), dto.getPathToImage());
+        User userMapped = userMapper.toEntityForRegistration(dto);
+
+        userMapped.setCountry(countryService.getById(dto.getCountryForDeliveryId()).orElse(null));
+        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId()).orElse(null));
+        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()).orElse(null));
+
+        if (userMapped.getRegisterType().equals(RegisterType.legal)) {
+            userMapped.setCountryAdditional(countryService.getById(dto.getCountryForDeliveryId()).orElse(null));
+            userMapped.setCityAdditional(cityService.getById(dto.getCityForDeliveryId()).orElse(null));
+            userMapped.setRegionAdditional(regionService.getById(dto.getRegionForDeliveryId()).orElse(null));
+        }
+
         return save(userMapped);
     }
 
@@ -190,5 +228,10 @@ public class UserServiceImp implements UserService {
     @Override
     public Optional<User> getByEmail(String email) {
         return userRepository.getByEmail(email);
+    }
+
+    @Override
+    public boolean isExistUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

@@ -19,6 +19,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     @NonNull
     Page<User> findAll(Specification<User> specification, @NonNull Pageable pageable);
+
     @Query("""
             SELECT u.registerType, COUNT(u.registerType) 
             FROM User u
@@ -29,4 +30,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
                                                     @Param("end") LocalDate end);
 
     Optional<User> getByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

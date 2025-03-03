@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.dto.user.UserResponseForView;
 import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserLegalResponseForView;
+import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;
@@ -52,6 +53,25 @@ public class UserMapper {
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
         entity.setDateRegistered(LocalDate.now());
+        return entity;
+    }
+
+    public User toEntityForRegistration(UserRequestForRegistration dto) {
+        User entity = new User();
+        entity.setFullName(dto.getFullName());
+        entity.setEmail(dto.getEmail());
+        entity.setPhone(dto.getPhone());
+        entity.setRole(dto.getRole());
+        entity.setDateRegistered(LocalDate.now());
+        entity.setAddress(dto.getAddress());
+        entity.setAddressAdditional(dto.getAddressLegal());
+        entity.setIndexAdditional(dto.getIndex());
+        entity.setRegisterType(RegisterType.valueOf(dto.getRegistrationType()));
+        entity.setStatus(UserStatus.valueOf(dto.getStatus()));
+        entity.setPaymentDetails(dto.getPaymentDetails());
+        entity.setPathToImage(dto.getPathToImage());
+        entity.setPassword(dto.getPassword());
+        entity.setFop(dto.isFop());
         return entity;
     }
 

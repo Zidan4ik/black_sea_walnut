@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class CityController {
+public class AdminCityController {
     private final CityService cityService;
 
     @GetMapping("/cities/get")

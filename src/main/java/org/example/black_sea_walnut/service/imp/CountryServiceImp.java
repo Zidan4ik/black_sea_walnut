@@ -1,14 +1,13 @@
 package org.example.black_sea_walnut.service.imp;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.Country;
-import org.example.black_sea_walnut.entity.Region;
 import org.example.black_sea_walnut.repository.CountryRepository;
 import org.example.black_sea_walnut.service.CountryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +20,10 @@ public class CountryServiceImp implements CountryService {
     }
 
     @Override
-    public Country getById(Long id) {
-        return countryRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Country with id:" + id + " was not found!"));
+    public Optional<Country> getById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        return countryRepository.findById(id);
     }
 }

@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.dto.user.UserResponseForView;
 import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserLegalResponseForView;
+import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.User;
 import org.springframework.data.domain.Pageable;
 
@@ -39,7 +40,11 @@ public interface UserService {
 
     User save(UserLegalRequestForView dto);
 
+    User save(UserRequestForRegistration dto);
+
     List<UserResponseForStats> getUsersByDate(LocalDate start, LocalDate end);
 
     Optional<User> getByEmail(String email);
+
+    boolean isExistUserByEmail(String email);
 }

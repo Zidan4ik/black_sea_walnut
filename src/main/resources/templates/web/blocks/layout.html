@@ -449,7 +449,7 @@
     function buildNews(news, idContainer) {
         if (news.length === 0) return;
         else if (news.length > 0) {
-            if(news.length<=3){
+            if (news.length <= 3) {
                 $('.nav-buttons').remove();
             }
             let $container = $(`#${idContainer}`);
@@ -601,7 +601,7 @@
         }
     });
 
-    function invokeRequestRegionsByCountry(id,idContainer) {
+    function invokeRequestRegionsByCountry(id, idContainer) {
         let request = new XMLHttpRequest();
         request.open("GET", contextPath + `regions?countryId=${id}`);
         request.send();
@@ -609,10 +609,32 @@
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 let $regions = $(`#${idContainer}`);
+                $regions.prop('disabled', false);
                 if ($regions) {
                     $regions.find("option:not(:first)").remove();
                     data.forEach(function (item) {
                         $regions.append(`
+                            <option value="${item.id}">${item.name}</option>
+                        `);
+                    });
+                }
+            }
+        });
+    }
+
+    function invokeRequestCitiesByRegion(id, idContainer) {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `cities?regionId=${id}`);
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                let $cities = $(`#${idContainer}`);
+                $cities.prop('disabled', false);
+                if ($cities) {
+                    $cities.find("option:not(:first)").remove();
+                    data.forEach(function (item) {
+                        $cities.append(`
                             <option value="${item.id}">${item.name}</option>
                         `);
                     });

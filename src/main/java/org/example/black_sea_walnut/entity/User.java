@@ -55,6 +55,9 @@ public class User {
     private City city;
     @ManyToOne
     @Enumerated(EnumType.STRING)
+    private Country countryAdditional;
+    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private Region regionAdditional;
     @ManyToOne
     @Enumerated(EnumType.STRING)

@@ -1,26 +1,29 @@
-package org.example.black_sea_walnut.controller.user;
+package org.example.black_sea_walnut.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.dto.user.request.UserIndividualRequestForAdd;
 import org.example.black_sea_walnut.dto.web.RegistrationResponseForView;
+import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.Country;
-import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.service.ContactService;
 import org.example.black_sea_walnut.service.CountryService;
 import org.example.black_sea_walnut.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -70,9 +73,16 @@ public class AuthorizationController {
     }
 
     @PostMapping("/user-fiz/save")
-    public ResponseEntity<?> saveUser(UserIndividualRequestForAdd user) {
-        user.setRegistrationType(RegisterType.individual.toString());
-        user.setStatus(UserStatus.isActive.toString());
+    public ResponseEntity<?> saveUser(@Valid UserRequestForRegistration user,
+                                      BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity
+                    .status(HttpStatus.valueOf(400))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errors);
+        }
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

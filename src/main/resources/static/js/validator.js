@@ -32,13 +32,10 @@ function validate(data) {
 
 function validate2(data) {
     Object.entries(data).forEach(function ([field, message]) {
-        // console.log(field);
-        // console.log(message);
         const inputField = document.querySelector(`[data-name=${field}]`);
         // console.log(inputField);
         if (inputField) {
             console.log("Field:", field, "Message:", message);
-
             inputField.classList.add("errorMy");
             let errorMessage = document.createElement("span");
             errorMessage.className = "error-message";
@@ -86,6 +83,31 @@ function validate3(data) {
         }
     });
 }
+
+function validate4(data) {
+    Object.entries(data).forEach(function ([field, message]) {
+        const inputFields = document.querySelectorAll(`[data-error="${field}"]`);
+        inputFields.forEach((inputField) => {
+            console.log("Field:", field, "Message:", message);
+            inputField.classList.add("errorMy");
+
+            let div = document.createElement("div");
+            div.style.marginBottom = '5px';
+            let errorMessage = document.createElement("span");
+            errorMessage.className = "error-message";
+            errorMessage.style.fontFamily='monospace';
+            errorMessage.style.color = "red";
+            errorMessage.innerText = message;
+            div.appendChild(errorMessage);
+            if (inputField.getAttribute("class") === "files") {
+                inputField.parentNode.append(errorMessage);
+            }else {
+                inputField.after(div);
+            }
+        });
+    });
+}
+
 
 // function validateNested(data, parentKey = "") {
 //     Object.entries(data).forEach(function ([field, message]) {

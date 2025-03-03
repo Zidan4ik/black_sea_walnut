@@ -1,63 +1,74 @@
 <html lang="uk"
-	  layout:decorate="~{web/blocks/layout.html}"
-	  xmlns:layout="http://www.w3.org/1999/xhtml"
-	  xmlns="http://www.w3.org/1999/html">
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 <head>
-	<title th:text="#{text.userAgreement}"></title>
+    <title th:text="#{text.userAgreement}"></title>
 </head>
 
 <body>
 <div layout:fragment="content">
-	<section class="first-section no-bg" style="min-height: 0 !important;">
-		<div class="container">
-			<div class="breadcrumbs">
-				<ul>
-					<li>
-						<a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
-					</li>
-					<li th:text="#{text.login}"></li>
-				</ul>
-			</div>
-		</div>
-	</section>
+    <div id="successMessage" class="alert alert-success text-center" role="alert" th:text="#{text.userSuccessCreate}"
+    style="display: none;"></div>
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li th:text="#{text.login}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-	<section class="registration">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-lg-4 col-md-6">
-					<h1 class="text-center py-4" th:text="#{text.login} + ' '+ #{text.at} + ' ' + #{text.personalAccount}">Войти в личный кабинет</h1>
-					<form th:action="@{/process_login}" method="POST">
-						<input type="email" name="username" required="required"  th:placeholder="#{table.header.email}+'*'">
-						<input type="password" name="password" required="required"  th:placeholder="#{text.password}+'*'">
-						<div class="mini_link">
-							<a th:href="@{/password-recovery}" th:text="#{text.forgetYourPassword}"></a>
-						</div>
-						<button class="button" type="submit" th:text="#{text.login}"></button>
-						<div class="mini_link">
-							<a th:href="@{/registration}" th:text="#{text.registration}"></a>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="registration">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <h1 class="text-center py-4"
+                        th:text="#{text.login} + ' '+ #{text.at} + ' ' + #{text.personalAccount}">Войти в личный
+                        кабинет</h1>
+                    <form th:action="@{/process_login}" method="POST">
+                        <input type="email" name="username" required="required"
+                               th:placeholder="#{table.header.email}+'*'">
+                        <input type="password" name="password" required="required"
+                               th:placeholder="#{text.password}+'*'">
+                        <div class="mini_link">
+                            <a th:href="@{/password-recovery}" th:text="#{text.forgetYourPassword}"></a>
+                        </div>
+                        <button class="button" type="submit" th:text="#{text.login}"></button>
+                        <div class="mini_link">
+                            <a th:href="@{/registration}" th:text="#{text.registration}"></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script layout:fragment="script">
-	function invokeData() {
-		let request = new XMLHttpRequest();
-		request.open("GET", contextPath + `web/contacts/get`)
-		request.send();
-		request.addEventListener('load', function () {
-			if (request.status === 200) {
-				let data = JSON.parse(request.response);
-				buildContacts(data);
-			}
-		});
-	}
-	$(document).ready(function (){
-		invokeData();
-	});
+    function invokeData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                buildContacts(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        invokeData();
+        if (sessionStorage.getItem("registrationSuccess")) {
+            $("#successMessage").show();
+            sessionStorage.removeItem("registrationSuccess");
+        }
+    });
 </script>
 </body>
 </html>
