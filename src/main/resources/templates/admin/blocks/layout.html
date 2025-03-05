@@ -140,12 +140,10 @@
 <div class="modal fade show" id="ModalForLogout" tabindex="-1" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
-            <div class="modal-header text-center" style="font-size: 20px">
-                Are you sure you want to exit?
-            </div>
+            <div class="modal-header text-center" style="font-size: 20px" th:text="#{text.areYouSureToExit}"></div>
             <div class="modal-footer">
-                <a th:href="@{/logout}" class="btn btn-danger float-end">Logout</a>
-                <button class="btn btn-secondary float-end" data-bs-dismiss="modal">Cancel</button>
+                <a th:href="@{/logout}" class="btn btn-danger float-end" th:text="#{text.logout}"></a>
+                <button class="btn btn-secondary float-end" data-bs-dismiss="modal" th:text="#{value.status.cancel}"></button>
             </div>
         </div>
     </div>
@@ -170,7 +168,6 @@
 <script th:src="@{/js/messageLocal.js}"></script>
 
 <script>
-    // CUSTOM SPINNER
     $(document).on("click", ".btn-card-block-spinner", function () {
         invokeBlockUI();
     });
@@ -180,13 +177,16 @@
     $(document).on("change", ".select-card-block-spinner", function () {
         invokeBlockUI();
     });
-    // $(document).on("change", ".select-card-block-spinner", function () {
-    //     invokeBlockUI();
-    // });
+
     $(document).ready(function () {
         invokeBlockUI();
+        $('#btn-logout').on('click',invokeLogoutModal);
     });
 
+    function invokeLogoutModal() {
+        let modal = new bootstrap.Modal(document.querySelector("#ModalForLogout"));
+        modal.show();
+    }
 
     function invokeBlockUI() {
         $("#card-block").block({

@@ -18,8 +18,10 @@ public class Basket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String productName;
     private int count;
     private int unitPrice;
+    private int mass;
     private int discountUnitPrice;
     private int discountPercent;
     private int discountSumForUnit;
@@ -28,4 +30,6 @@ public class Basket {
     private int summaWithDiscount;
     @ManyToMany
     private List<Product> products;
+    @ManyToOne
+    private User user;
 }

@@ -22,11 +22,27 @@
                     <div class="wrap">
                         <ul class="log_in d-lg-flex d-none">
                             <li>
-                                <a th:href="@{/login}"><i class="nut-icon icons-man-user"></i><span
-                                        th:text="#{text.login}"></span></a>
+                                <a th:if="${currentUser}">
+                                    <a data-bs-toggle="dropdown" type="button" style="border: none;background:none;">
+                                        <i class="nut-icon icons-man-user" style="font-size: larger"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{/web/account}"
+                                               th:text="#{text.account}"></a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}"
+                                               th:text="#{value.status.exit}"></a></li>
+                                    </ul>
+                                </a>
+                                <a th:unless="${currentUser}" th:href="@{/login}">
+                                    <span class="loginMy" th:text="#{text.login}"
+                                          style="border-bottom: none;"></span>
+                                </a>
                             </li>
                             <li>
-                                <a th:href="@{/registration}"><span th:text="#{text.registration}"></span></a>
+                                <a th:href="@{/registration}">
+                                    <span class="registrationMy" th:text="#{text.registration}"
+                                          style="border-bottom: none;"></span>
+                                </a>
                             </li>
                         </ul>
                         <ul class="logo_tel_mobile d-lg-none d-flex">
@@ -142,11 +158,26 @@
                         </ul>
                         <ul class="log_in d-lg-flex">
                             <li>
-                                <a th:href="@{/login}"><i class="nut-icon icons-man-user"></i><span
-                                        th:text="#{text.login}"></span></a>
+                                <a th:if="${currentUser}">
+                                    <a data-bs-toggle="dropdown" type="button" style="border: none;background:none;">
+                                        <i class="nut-icon icons-man-user" style="font-size: larger"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{/web/account}"
+                                               th:text="#{text.account}"></a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}"
+                                               th:text="#{value.status.exit}"></a></li>
+                                    </ul>
+                                </a>
+                                <a th:unless="${currentUser}" th:href="@{/login}">
+                                    <span class="loginMy" th:text="#{text.login}"
+                                          style="border-bottom: none;"></span>
+                                </a>
                             </li>
                             <li>
-                                <a th:href="@{/register}"><span th:text="#{text.registration}"></span></a>
+                                <a th:href="@{/registration}">
+                                    <span class="registrationMy" th:text="#{text.registration}"
+                                          style="border-bottom: none;"></span></a>
                             </li>
                         </ul>
                     </div>
@@ -175,4 +206,16 @@
 
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            let pathname = document.location.pathname;
+            if (pathname.includes('/login')) {
+                console.log(pathname);
+                $('.loginMy').css('border-bottom', '2px solid #93B474');
+            } else if (pathname.includes('/registration')) {
+                console.log(pathname);
+                $('.registrationMy').css('border-bottom', '2px solid #93B474')
+            }
+        });
+    </script>
 </header>

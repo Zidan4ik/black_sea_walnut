@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class CitiesController {
+public class CityController {
     private final RegionService regionService;
     private final CityService cityService;
 

@@ -65,7 +65,7 @@
 <div class="container pr">
     <div class="popup__cart">
         <div class="wrap">
-            <div class="popup__cart_item">
+            <div id="container-cart" class="popup__cart_item">
                 <div class="row align-items-center no-gutters item_row">
                     <div class="col-md-5 col-12">
                         <div class="item_title">
@@ -195,7 +195,6 @@
         const bannerData = mapBannerData(item);
         if (!bannerData || !bannerData.isActive) return;
         const container = $(`#${idContainer}`);
-        console.log(container.length);
         if (container.length) {
             container.css("background-image", `url(${bannerData.imagePath})`);
             const title = getLocalizedContent(bannerData, 'title');
@@ -518,7 +517,6 @@
 
     function getRowCategory(item, idContainerHeader, idContainerContent) {
         const postData = mapBannerData(item);
-        // console.log(postData);
         if (!postData || !postData.isActive) return;
 
         let $containerHeader = $(`#${idContainerHeader}`);
@@ -641,6 +639,161 @@
                 }
             }
         });
+    }
+
+    function invokeRequestCart() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/cart/get`);
+        request.send();
+        request.addEventListener('load', async function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                let $container = $('#container-cart');
+                let gram = await changeLanguage('text.gram', getCurrentLang());
+                if ($container.length > 0) {
+                    $container.empty();
+                    data.forEach(function (item) {
+                        console.log(item);
+                        $container.append(`
+                    <div class="row align-items-center no-gutters item_row">
+                        <div class="col-md-5 col-12">
+                            <div class="item_title">
+                                <p>${item.name} ${item.mass + ' ' + gram}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-12">
+                            <div class="row align-items-center no-gutters">
+                                <div class="col-6">
+                                    <div class="item_quantity">
+                                        <button type="button" data-id="${item.id}" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="${item.amount}" class="quantity_input"
+                                        data-id="${item.id}">
+                                        <button type="button" data-id="${item.id}" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="item_sum">
+                                        <p>${item.price} <span th:text="#{text.grn}"></span></p>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="item_close" data-id="${item.id}">
+                                        <a id="product-cart-delete">
+                                            <i class="nut-icon icons-close-button"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`)
+                    });
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        invokeRequestCart();
+        addEventListenerCart();
+    });
+
+    function addEventListenerCart() {
+        $('#container-cart').on('click', '.quantity_plus, .quantity_minus, .item_close', function () {
+            let id = $(this).data('id');
+            if (!id) return;
+
+            if ($(this).hasClass('quantity_plus')) {
+                console.log(`Додати товар з ID: ${id}`);
+                incrementAmount(id);
+            } else if($(this).hasClass('quantity_minus')) {
+                console.log(`Зменшити товар з ID: ${id}`);
+                decreaseAmount(id);
+            } else if ($(this).hasClass('item_close')){
+                deleteCartItem(id);
+            }
+        });
+        $('#container-cart').on('change','.quantity_input',function (){
+            let id = $(this).data('id');
+            if (!id) return;
+            saveCartItem(id,$(this).val());
+        });
+    }
+
+    async function incrementAmount(id) {
+        try {
+            const response = await fetch(`${contextPath}web/cart/increment-amount?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            invokeRequestCart();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function decreaseAmount(id) {
+        try {
+            const response = await fetch(`${contextPath}web/cart/decrease-amount?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            invokeRequestCart();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function deleteCartItem(id) {
+        try {
+            const response = await fetch(`${contextPath}web/cart/delete?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            invokeRequestCart();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    async function saveCartItem(id,value) {
+        try {
+            const response = await fetch(`${contextPath}web/cart/save?id=${id}&value=${value}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            invokeRequestCart();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 </script>
 </body>

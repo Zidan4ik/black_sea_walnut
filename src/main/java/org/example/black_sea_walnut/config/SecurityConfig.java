@@ -1,5 +1,8 @@
 package org.example.black_sea_walnut.config;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.black_sea_walnut.auth.UserDetailsServiceImp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +12,16 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.io.IOException;
+import java.util.Collection;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +37,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
+                                .requestMatchers("/web/contacts/**").permitAll()
                                 .requestMatchers("/web/**").hasAnyAuthority("USER","ADMIN")
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .anyRequest().permitAll())
@@ -35,7 +45,7 @@ public class SecurityConfig {
                         login -> login
                                 .loginPage("/login")
                                 .loginProcessingUrl("/process_login")
-                                .defaultSuccessUrl("/web/main", true)
+                                .successHandler(authenticationSuccessHandler())
                                 .failureUrl("/login?error")
                                 .permitAll())
                 .logout(
@@ -58,6 +68,22 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                Authentication authentication) throws IOException, ServletException {
+                Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+                if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+                    response.sendRedirect("/admin/statistic");
+                } else {
+                    response.sendRedirect("/web/main");
+                }
+            }
+        };
     }
 
 //    @Bean

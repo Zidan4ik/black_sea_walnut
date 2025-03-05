@@ -142,10 +142,9 @@ public class AuthorizationController {
 
 
     @SneakyThrows
-    private String passwordResetEmailLink(User user, String applicationUrl, String passwordResetToken) {
+    private void passwordResetEmailLink(User user, String applicationUrl, String passwordResetToken) {
         String url = applicationUrl + "/password-recovery?token=" + passwordResetToken;
         eventListener.sendPasswordResetVerificationEmail(url, user);
-        return url;
     }
 
     public String applicationUrl(HttpServletRequest request) {

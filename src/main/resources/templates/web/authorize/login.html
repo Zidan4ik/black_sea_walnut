@@ -12,6 +12,8 @@
     style="display: none;"></div>
     <div id="successMessageChangedPassword" class="alert alert-success text-center" role="alert" th:text="#{text.resetPassword}"
          style="display: none;"></div>
+    <div th:if="${param.logout}" class="alert alert-success text-center" th:text="#{text.messageLogout}"></div>
+    <div th:if="${param.error}" class="alert alert-danger text-center" th:text="#{text.messageError}"></div>
     <section class="first-section no-bg" style="min-height: 0 !important;">
         <div class="container">
             <div class="breadcrumbs">
@@ -30,8 +32,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-6">
                     <h1 class="text-center py-4"
-                        th:text="#{text.login} + ' '+ #{text.at} + ' ' + #{text.personalAccount}">Войти в личный
-                        кабинет</h1>
+                        th:text="#{text.login} + ' '+ #{text.at} + ' ' + #{text.personalAccount}"></h1>
                     <form th:action="@{/process_login}" method="POST">
                         <input type="email" name="username" required="required"
                                th:placeholder="#{table.header.email}+'*'">
