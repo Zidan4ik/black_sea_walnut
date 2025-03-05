@@ -1,0 +1,12 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: roomich20031@gmail.com
+    password: lrix kloc kggz jfmm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
