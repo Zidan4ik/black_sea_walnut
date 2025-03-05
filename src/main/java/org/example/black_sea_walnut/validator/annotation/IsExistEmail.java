@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = IsExistEmailValidator.class)
 public @interface IsExistEmail {
-    public String message() default "{error.field.email.noIsExist}";
+    public String message() default "{error.field.email.isExist}";
 
     public Class<?>[] groups() default {};
 

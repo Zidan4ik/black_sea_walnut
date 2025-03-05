@@ -10,6 +10,8 @@
 <div layout:fragment="content">
     <div id="successMessage" class="alert alert-success text-center" role="alert" th:text="#{text.userSuccessCreate}"
     style="display: none;"></div>
+    <div id="successMessageChangedPassword" class="alert alert-success text-center" role="alert" th:text="#{text.resetPassword}"
+         style="display: none;"></div>
     <section class="first-section no-bg" style="min-height: 0 !important;">
         <div class="container">
             <div class="breadcrumbs">
@@ -67,6 +69,10 @@
         if (sessionStorage.getItem("registrationSuccess")) {
             $("#successMessage").show();
             sessionStorage.removeItem("registrationSuccess");
+        }
+        if (sessionStorage.getItem("changedPassword")) {
+            $("#successMessageChangedPassword").show();
+            sessionStorage.removeItem("changedPassword");
         }
     });
 </script>

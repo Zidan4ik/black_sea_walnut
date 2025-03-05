@@ -1,7 +1,6 @@
 package org.example.black_sea_walnut.auth;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

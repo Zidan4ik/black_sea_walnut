@@ -47,4 +47,16 @@ public interface UserService {
     Optional<User> getByEmail(String email);
 
     boolean isExistUserByEmail(String email);
+
+    void createPasswordResetTokenForUser(User user, String passwordToken);
+
+    public void saveUserVerificationToken(User theUser, String token);
+
+    String validatePasswordResetToken(String passwordResetToken);
+
+    User findUserByPasswordToken(String passwordResetToken);
+
+    void resetUserPassword(User user, String newPassword);
+
+    public void deleteTokenByToken(String token);
 }

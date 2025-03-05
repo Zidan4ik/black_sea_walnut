@@ -1,29 +1,30 @@
 package org.example.black_sea_walnut.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.web.RegistrationResponseForView;
 import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.Country;
-import org.example.black_sea_walnut.enums.RegisterType;
-import org.example.black_sea_walnut.enums.UserStatus;
+import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.password.PasswordResetRequest;
+import org.example.black_sea_walnut.password.event.RegistrationCompleteEventListener;
 import org.example.black_sea_walnut.service.ContactService;
 import org.example.black_sea_walnut.service.CountryService;
 import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class AuthorizationController {
     private final UserService userService;
     private final CountryService countryService;
     private final ContactService contactService;
+    private final RegistrationCompleteEventListener eventListener;
 
 
     @GetMapping("/login")
@@ -67,15 +69,10 @@ public class AuthorizationController {
         return new ModelAndView("web/thanks");
     }
 
-    @GetMapping("/password-recovery")
-    public ModelAndView viewPasswordRecovery() {
-        return new ModelAndView("web/password-recovery");
-    }
-
     @PostMapping("/user-fiz/save")
     public ResponseEntity<?> saveUser(@Valid UserRequestForRegistration user,
                                       BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
             return ResponseEntity
@@ -85,5 +82,73 @@ public class AuthorizationController {
         }
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/password-recovery")
+    public ModelAndView viewPasswordRecovery(@RequestParam(value = "token", required = false) String passwordResetToken) {
+        ModelAndView model = new ModelAndView("web/password-recovery");
+        model.addObject("isPresentToken", passwordResetToken);
+        return model;
+    }
+
+    @PostMapping("/password-reset-request")
+    public ResponseEntity<?> resetPasswordRequest(@Validated(OrderedEmailValidation.class) @ModelAttribute PasswordResetRequest passwordResetRequest,
+                                                  BindingResult bindingResult,
+                                                  final HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity
+                    .status(HttpStatus.valueOf(400))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errors);
+        }
+        String res = "";
+        Optional<User> userOptional = userService.getByEmail(passwordResetRequest.getEmail());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String passwordResetToken = UUID.randomUUID().toString();
+            userService.createPasswordResetTokenForUser(user, passwordResetToken);
+            passwordResetEmailLink(user, applicationUrl(request), passwordResetToken);
+            res = "We have sent a reset password link to your email. Please check!";
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@ModelAttribute @Valid PasswordResetRequest passwordResetRequest,
+                                           BindingResult bindingResult,
+                                           @RequestParam("token") String passwordResetToken) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity
+                    .status(HttpStatus.valueOf(400))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errors);
+        }
+        String tokenValidationResult = userService.validatePasswordResetToken(passwordResetToken);
+        if (!tokenValidationResult.equalsIgnoreCase("valid")) {
+            return new ResponseEntity<>("Invalid token password reset token", HttpStatus.BAD_REQUEST);
+        }
+        User user = userService.findUserByPasswordToken(passwordResetToken);
+        if (user != null) {
+            userService.resetUserPassword(user, passwordResetRequest.getNewPassword());
+            userService.deleteTokenByToken(passwordResetToken);
+            return new ResponseEntity<>("Password has been reset successfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Invalid password reset token", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @SneakyThrows
+    private String passwordResetEmailLink(User user, String applicationUrl, String passwordResetToken) {
+        String url = applicationUrl + "/password-recovery?token=" + passwordResetToken;
+        eventListener.sendPasswordResetVerificationEmail(url, user);
+        return url;
+    }
+
+    public String applicationUrl(HttpServletRequest request) {
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 }

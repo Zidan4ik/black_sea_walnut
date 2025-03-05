@@ -30,6 +30,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RegisterType registerType;
     private boolean isFop;
+    private boolean isEnable;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     @Enumerated(EnumType.STRING)

@@ -85,7 +85,6 @@ public class WebUserController {
     @GetMapping("/info-fiz/load")
     public ModelAndView loadInfoFiz() {
         ModelAndView model = new ModelAndView("web/personal/load/info-fiz");
-//        model.addObject("data", pageResponse.getContent());
         return model;
     }
 

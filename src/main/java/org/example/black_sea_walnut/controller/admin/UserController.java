@@ -67,12 +67,7 @@ public class UserController {
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
-
-//    @GetMapping("/user/create")
-//    public ModelAndView viewUser() {
-//        return new ModelAndView("admin/users/user-add");
-//    }
-
+    
     @GetMapping("/user/{id}/edit")
     public ModelAndView viewUser(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("admin/users/user-edit");

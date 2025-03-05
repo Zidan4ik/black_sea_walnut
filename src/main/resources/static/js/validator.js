@@ -92,7 +92,7 @@ function validate4(data) {
             inputField.classList.add("errorMy");
 
             let div = document.createElement("div");
-            div.style.marginBottom = '5px';
+            div.style.marginBottom = '10px';
             let errorMessage = document.createElement("span");
             errorMessage.className = "error-message";
             errorMessage.style.fontFamily='monospace';

@@ -19,6 +19,9 @@ import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
+import org.example.black_sea_walnut.password.PasswordResetTokenService;
+import org.example.black_sea_walnut.password.token.VerificationToken;
+import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
 import org.example.black_sea_walnut.repository.UserRepository;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
@@ -27,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -42,6 +46,9 @@ public class UserServiceImp implements UserService {
     private final CityService cityService;
     private final PasswordEncoder passwordEncoder;
     private final CountryService countryService;
+    private final PasswordResetTokenService passwordResetTokenService;
+    private final VerificationTokenRepository tokenRepository;
+
     @Value("${upload.path}")
     private String contextPath;
 
@@ -233,5 +240,38 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean isExistUserByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String passwordToken) {
+        passwordResetTokenService.createResetPasswordTokenForUser(user, passwordToken);
+    }
+
+    @Override
+    public void saveUserVerificationToken(User theUser, String token) {
+        var verificationToken = new VerificationToken(token, theUser);
+        tokenRepository.save(verificationToken);
+    }
+
+    @Override
+    public String validatePasswordResetToken(String passwordResetToken) {
+        return passwordResetTokenService.validatePasswordResetToken(passwordResetToken);
+    }
+
+    @Override
+    public User findUserByPasswordToken(String passwordResetToken) {
+        return passwordResetTokenService.findUserByPasswordToken(passwordResetToken).orElse(null);
+    }
+
+    @Override
+    public void resetUserPassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTokenByToken(String token) {
+        passwordResetTokenService.deleteTokenByToken(token);
     }
 }
