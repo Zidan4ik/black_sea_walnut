@@ -14,6 +14,7 @@ public class OrderDetailMapper {
                 .count(entity.getCount())
                 .price(entity.getUnitPrice())
                 .totalSumma(entity.getSummaWithDiscount())
+                .mass(entity.getMass())
                 .build();
     }
 }

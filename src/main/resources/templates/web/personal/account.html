@@ -54,6 +54,8 @@
             letter-spacing: 0.01em;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -121,6 +123,16 @@
         </div>
     </section>
 
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ✅ Дані скопійовані в буфер обміну!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:src="@{/js/table.js}"></script>
 <script layout:fragment="script">
@@ -148,7 +160,6 @@
             target: '#container-pagination',
             swap: 'innerHTML'
         });
-        addEventListenerForDirection(loadOrders);
     }
 
     function loadTransactions(element, page) {
@@ -174,7 +185,6 @@
             target: '#container-pagination',
             swap: 'innerHTML'
         });
-        addEventListenerForDirection(loadTransactions);
     }
 
     function loadInfo() {
@@ -211,26 +221,50 @@
         });
     }
 
-    function addEventListenerForDirection(loadData) {
-        $('#container-content').off('click', '.ti-arrow-down, .ti-arrow-up')
-            .on('click', '.ti-arrow-down, .ti-arrow-up', function () {
-                fieldElement = $(this);
-                let newDirection = fieldElement.attr('data-direction') === 'ASC' ? 'DESC' : 'ASC';
-                fieldElement.attr('data-direction', newDirection);
-                loadData(fieldElement, 0);
-            });
+    document.body.addEventListener('htmx:afterSwap', function(event) {
+        let targetId = event.detail.target.id;
+        console.log(`HTMX оновив: ${targetId}`);
 
-        $(document)
-            .off('click', '.pagination a').on('click', '.pagination a', function (event) {
-            let page = $(this).data('page');
-            let parentLi = this.closest('.page-item');
-            if (parentLi.classList.contains('active')) {
-                event.preventDefault();
-                return;
+        if (targetId === 'container-content' || targetId === 'container-pagination') {
+            // Визначаємо, що саме завантажувалось, Transactions чи Orders
+            let currentUrl = event.detail.xhr.responseURL;
+
+            if (currentUrl.includes('/transactions/')) {
+                console.log('Оновлено Transactions, викликаємо addEventListenerForDirection для Transactions');
+                addEventListenerForDirection(loadTransactions);
+            } else if (currentUrl.includes('/orders/')) {
+                console.log('Оновлено Orders, викликаємо addEventListenerForDirection для Orders');
+                addEventListenerForDirection(loadOrders);
             }
-            loadData(fieldElement, page);
-        });
+        }
+    });
 
+    function addEventListenerForDirection(loadData) {
+        let authorizedBlock = $('[data-isAuthorized]');
+        if (authorizedBlock.length) {
+            let isAuthorized = authorizedBlock.attr('data-isAuthorized');
+            console.log(isAuthorized);
+            if (isAuthorized === 'true') {
+                $('#container-content').off('click', '.ti-arrow-down, .ti-arrow-up')
+                    .on('click', '.ti-arrow-down, .ti-arrow-up', function () {
+                        fieldElement = $(this);
+                        let newDirection = fieldElement.attr('data-direction') === 'ASC' ? 'DESC' : 'ASC';
+                        fieldElement.attr('data-direction', newDirection);
+                        loadData(fieldElement, 0);
+                    });
+
+                $(document)
+                    .off('click', '.pagination a').on('click', '.pagination a', function (event) {
+                    let page = $(this).data('page');
+                    let parentLi = this.closest('.page-item');
+                    if (parentLi.classList.contains('active')) {
+                        event.preventDefault();
+                        return;
+                    }
+                    loadData(fieldElement, page);
+                });
+            }
+        }
     }
 
     function addEventListenerImage() {
@@ -259,6 +293,24 @@
         invokeRequestContactsData();
     });
 
+    $(document).on('click', '.copy-btn', async function () {
+        let row = $(this).closest('tr');
+        let rowData = row.find('td').map(function () {
+            return $(this).text().trim();
+        }).get().join('\t');
+        let keyCopy = await changeLanguage('text.copied', getCurrentLang());
+        let keyCopyDesc = await changeLanguage('text.copyDesc', getCurrentLang());
+        navigator.clipboard.writeText(rowData).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: keyCopy,
+                text: keyCopyDesc,
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }).catch(err => console.error("Error copy:", err));
+    });
+
     function invokeRequestContactsData() {
         let request = new XMLHttpRequest();
         request.open("GET", contextPath + `web/contacts/get`);
@@ -269,6 +321,11 @@
             }
         });
     }
+
+
+    /* Contact information */
+
+
 
 </script>
 </body>

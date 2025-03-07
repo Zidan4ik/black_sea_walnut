@@ -143,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
+                <div th:unless="${currentUser}" class="col-12">
                     <div class="no_log-in">
                         <h2 th:text="#{text.toPlaceAnOrderYouNeed}"></h2>
                         <div class="no_log-in_link">
@@ -162,23 +162,31 @@
 
 
     $(document).ready(function () {
-        // invokeRequestProductData();
+        invokeRequestCartData();
+        invokeRequestContacts();
     });
 
-    function invokeRequestProductData() {
+    function invokeRequestCartData() {
         let request = new XMLHttpRequest();
-        let lang = getCurrentLang();
         let pathName = location.pathname.substring(1, location.pathname.length);
-        request.open("GET", contextPath + `${pathName}/data?lang=${lang}`)
+        console.log(pathName);
+        request.open("GET", contextPath + `web/cart/get`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 console.log(data);
 
-                // initSwipers('manufacturer-container');
-                buildProduct(data.product);
-                buildContacts(data.contacts);
+            }
+        });
+    }
+    function invokeRequestContacts() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                buildContacts(JSON.parse(request.response));
             }
         });
     }

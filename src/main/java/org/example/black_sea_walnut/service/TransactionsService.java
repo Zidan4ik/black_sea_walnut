@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForAccoun
 import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
 import org.example.black_sea_walnut.entity.Transaction;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
 
@@ -20,4 +21,6 @@ public interface TransactionsService {
     PageResponse<ResponseTransactionForView> getAll(ResponseTransactionForView response, Pageable pageable, LanguageCode code);
 
     PageResponse<TransactionResponseForAccount> getAll(Pageable pageable, LanguageCode code);
+
+    PageResponse<TransactionResponseForAccount> getAll(User user,Pageable pageable, LanguageCode code);
 }

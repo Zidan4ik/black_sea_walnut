@@ -1,4 +1,4 @@
-<div class="row">
+<div th:if="${currentUser != null}"  data-isAuthorized="true" class="row">
     <div class="col-12">
         <table id="table">
             <thead>
@@ -20,7 +20,7 @@
                 <td>
                     <th:block th:switch="${item.status}">
                         <span th:case="'payed'" th:text="#{value.status.payed}"></span>
-                        <span th:case="'unpayed'" th:text="#{value.status.unPayed}"></span>
+                        <span th:case="'unPayed'" th:text="#{value.status.unPayed}"></span>
                         <span th:case="'InProcess'" th:text="#{value.status.inProcess}"></span>
                         <span th:case="*" th:text="'-'"></span>
                     </th:block>
@@ -28,7 +28,7 @@
                 <td class="row justify-content-center">
                     <span th:text="${item.summa}"></span>
                     <div class="icons_wrap">
-                        <a th:href="@{/web/transaction/{id} (id=${item.id})}" class="tooltip" th:title="#{text.viewOrder}"><i
+                        <a th:href="@{/web/transaction (id=${item.id})}" class="tooltip" th:title="#{text.viewOrder}"><i
                                 class="nut-icon icons-view"></i></a>
                     </div>
                 </td>
@@ -36,6 +36,51 @@
             <tr th:unless="${data.size()>0}">
                 <td colspan="3" th:text="#{text.table.exist}"></td>
             </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:unless="${currentUser != null}" data-isAuthorized="false" class="row">
+    <div class="col-12">
+        <table>
+            <thead>
+            <tr>
+                <th><span th:text="#{text.button.add}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.status}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.summa}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>07.03.2025</td>
+                    <td><span th:text="#{value.status.inProcess}"></span></td>
+                    <td class="row justify-content-center">
+                        <span>15000</span>
+                        <div class="icons_wrap">
+                            <a th:href="@{/web/transaction}" class="tooltip"><i class="nut-icon icons-view"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>06.03.2025</td>
+                    <td><span th:text="#{value.status.inProcess}"></span></td>
+                    <td class="row justify-content-center">
+                        <span>15000</span>
+                        <div class="icons_wrap">
+                            <a th:href="@{/web/transaction}" class="tooltip"><i class="nut-icon icons-view"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>05.03.2025</td>
+                    <td><span th:text="#{value.status.payed}"></span></td>
+                    <td class="row justify-content-center">
+                        <span>15000</span>
+                        <div class="icons_wrap">
+                            <a th:href="@{/web/transaction}" class="tooltip"><i class="nut-icon icons-view"></i></a>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

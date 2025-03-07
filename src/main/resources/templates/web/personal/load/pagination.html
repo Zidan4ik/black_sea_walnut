@@ -1,4 +1,4 @@
-<nav th:if="${pageData.totalElements>0}" class="d-flex justify-content-end align-items-end"
+<nav th:if="${currentUser != null and pageData.totalElements>0}" class="d-flex justify-content-end align-items-end"
      aria-label="Page navigation">
     <ul class="pagination mb-0">
         <li th:classappend="${pageData.page == 0} ? 'disabled' : 'pointer'"

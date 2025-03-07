@@ -37,8 +37,8 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/web/contacts/**").permitAll()
-                                .requestMatchers("/web/**").hasAnyAuthority("USER","ADMIN")
+                                .requestMatchers("/web/cart").permitAll()
+                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN")
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .anyRequest().permitAll())
                 .formLogin(

@@ -25,7 +25,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
-                    <h1 th:text="#{text.order} + ' №' + ${orderId}"></h1>
+                    <h1 id="title-order-num" th:text="#{text.order}"></h1>
                 </div>
                 <div class="col-lg-9 col-md-6">
                     <div class="accaunt__manager">
@@ -49,21 +49,40 @@
                             <th><span th:text="#{table.header.totalPrice}"></span></th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr th:each="order : ${orders}" th:if="${orders.size()>0}">
-                            <td th:text="${order.getProductName()}"></td>
-                            <td th:text="${order.getCount()}"></td>
-                            <td>
-                                <span th:text="${order.getPrice()}"></span>
-                                <span th:text="#{text.grn}"></span>
+                        <tbody id="container-orders">
+                        <tr>
+                            <td><span class="bt-content" th:text="#{text.cartProduct}"></span></td>
+                            <td><span class="bt-content">
+                                            <div class="item_quantity">
+                                                <button type="button" class="quantity_minus">
+                                                    <i class="nut-icon icons-qty-left"></i>
+                                                </button>
+                                                <input type="text" name="quantity" value="4" class="quantity_input">
+                                                <button type="button" class="quantity_plus">
+                                                    <i class="nut-icon icons-qty-right"></i>
+                                                </button>
+                                            </div>
+                                        </span></td>
+                            <td th:data-th="#{table.header.priceByProduct}">
+                                <span class="bt-content">25 <span th:text="#{text.grn}"></span></span>
                             </td>
-                            <td>
-                                <span class="totalSumma" th:text="${order.getTotalSumma()}"></span>
-                                <span th:text="#{text.grn}"></span>
-                            </td>
+                            <td><span class="bt-content">100 <span th:text="#{text.grn}"></span></span></td>
                         </tr>
-                        <tr th:if="${orders == null}">
-                            <td colspan="4" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}">
+                        <tr>
+                            <td><span class="bt-content" th:text="#{text.cartProduct}"></span></td>
+                            <td><span class="bt-content">
+                                            <div class="item_quantity">
+                                                <button type="button" class="quantity_minus">
+                                                    <i class="nut-icon icons-qty-left"></i>
+                                                </button>
+                                                <input type="text" name="quantity" value="1" class="quantity_input">
+                                                <button type="button" class="quantity_plus">
+                                                    <i class="nut-icon icons-qty-right"></i>
+                                                </button>
+                                            </div>
+                                        </span></td>
+                            <td><span class="bt-content">25 <span th:text="#{text.grn}"></span></span></td>
+                            <td><span class="bt-content">25 <span th:text="#{text.grn}"></span></span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -76,10 +95,10 @@
                                 <div class="popup__cart_sum">
                                     <div class="sum_item">
                                         <div class="sum_item_title">
-                                            <p th:text="#{value.status.total}+ ': '"></p>
+                                            <p th:text="#{text.total}+ ': '"></p>
                                         </div>
                                         <div class="sum_item_new">
-                                            <p><span id="resSumma"></span> <i th:text="#{text.grn}"></i></p>
+                                            <p><span id="resSumma">125</span> <i th:text="#{text.grn}"></i></p>
                                         </div>
                                     </div>
                                 </div>
@@ -93,21 +112,22 @@
 </div>
 
 <script layout:fragment="script">
-
-    $(document).ready(function () {
-        buildTotalSumma();
-        invokeData();
+    let urlParams = new URLSearchParams(window.location.search);
+    let orderId = urlParams.get('id');
+    $(document).ready(async function () {
+        if (orderId !== null) {
+            let titleNumOrder = $('#title-order-num');
+            if (titleNumOrder.length > 0) {
+                let key = await changeLanguage('text.order', getCurrentLang());
+                titleNumOrder.text(key + ' №' + orderId);
+            }
+            invokeDataOrderDetails(orderId);
+        }
+        invokeDataContacts();
     });
 
-    function buildTotalSumma() {
-        let summa = 0;
-        $('.totalSumma').each(function (item) {
-            summa += (parseInt($(this).html()));
-        });
-        $('#resSumma').text(summa);
-    }
 
-    function invokeData() {
+    function invokeDataContacts() {
         let request = new XMLHttpRequest();
         request.open("GET", contextPath + `web/contacts/get`)
         request.send();
@@ -115,6 +135,47 @@
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 buildContacts(data);
+            }
+        });
+    }
+
+    function invokeDataOrderDetails(id) {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/order/${id}`)
+        request.send();
+        request.addEventListener('load', async function () {
+            if (request.status === 200) {
+                const data = JSON.parse(request.response);
+                const containerOrders = $('#container-orders');
+                if (containerOrders.length) {
+                    containerOrders.empty();
+
+                    if (data.length > 0) {
+                        const key = await changeLanguage('text.gram', getCurrentLang());
+                        containerOrders.append(data.map(item => `
+                             <tr>
+                        <td><span class="bt-content">${item.productName} ${item.mass} ${key}</span></td>
+                        <td><span class="bt-content">
+                          ${item.count}
+                        </span></td>
+                        <td th:data-th="#{table.header.priceByProduct}">
+                            <span class="bt-content">${item.price}<span th:text="#{text.grn}"></span></span>
+                        </td>
+                        <td><span class="bt-content">${item.count * item.price}<span th:text="#{text.grn}"></span></span></td>
+                    </tr>`).join(''));
+                        let summaEl = $('#resSumma');
+                        if (summaEl.length) {
+                            summaEl.text(data.reduce((sum, item) => sum + (item.price * item.count), 0));
+                        }
+                    } else {
+                        let keyExist = await changeLanguage('text.table.exist', getCurrentLang());
+                        containerOrders.append(`<tr>
+                                    <td colspan="4" class="text-center">${keyExist}</td>
+                                </tr>
+                            `);
+                        $('#resSumma').parent().parent().parent().remove();
+                    }
+                }
             }
         });
     }

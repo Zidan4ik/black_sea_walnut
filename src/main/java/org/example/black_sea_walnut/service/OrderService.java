@@ -4,7 +4,6 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.order.*;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.entity.Order;
-import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +19,8 @@ public interface OrderService {
     List<ResponseOrderDetailForView> getByUserIdAndPersonalId(Long userId, Long personalId);
 
     PageResponse<ResponseOrderForView> getAll(ResponseOrderForView response, Pageable pageable, LanguageCode code);
+
+    PageResponse<OrderResponseForAccount> getAll(User user,Pageable pageable, LanguageCode code);
 
     PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code);
 

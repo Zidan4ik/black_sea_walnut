@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.Transaction;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.TransactionMapper;
 import org.example.black_sea_walnut.repository.TransactionsRepository;
@@ -56,6 +57,16 @@ public class TransactionServiceImp implements TransactionsService {
     @Override
     public PageResponse<TransactionResponseForAccount> getAll(Pageable pageable, LanguageCode code) {
         Specification<Transaction> spec = Specification.where(null);
+        Page<Transaction> page = transactionsRepository.findAll(spec, pageable);
+        List<TransactionResponseForAccount> responsesDtoAdd = page.map(mapper::toResponseForAccount).stream().toList();
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
+    public PageResponse<TransactionResponseForAccount> getAll(User user, Pageable pageable, LanguageCode code) {
+        Specification<Transaction> spec = Specification.where(TransactionSpecification.hasUser(user));
         Page<Transaction> page = transactionsRepository.findAll(spec, pageable);
         List<TransactionResponseForAccount> responsesDtoAdd = page.map(mapper::toResponseForAccount).stream().toList();
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(

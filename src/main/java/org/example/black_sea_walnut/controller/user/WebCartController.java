@@ -2,6 +2,7 @@ package org.example.black_sea_walnut.controller.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.example.black_sea_walnut.dto.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.dto.web.BasketResponseForCart;
 import org.example.black_sea_walnut.entity.Basket;
 import org.example.black_sea_walnut.entity.User;
@@ -72,6 +73,6 @@ public class WebCartController {
         Basket basket = basketService.getById(id);
         basket.setCount(value);
         basketService.save(basket);
-        return  ResponseEntity.ok().build();
+        return ResponseEntity.ok().build();
     }
 }

@@ -12,7 +12,6 @@ import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.dto.web.ProductResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ShopResponseForView;
-import org.example.black_sea_walnut.entity.Contact;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.ProductMapper;

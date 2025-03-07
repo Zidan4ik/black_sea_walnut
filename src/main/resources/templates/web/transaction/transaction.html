@@ -15,7 +15,7 @@
                     <li>
                         <a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
                     </li>
-                    <li th:text="#{text.order}"></li>
+                    <li th:text="#{text.transaction}"></li>
                 </ul>
             </div>
         </div>
@@ -25,7 +25,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6">
-                    <h1 th:text="#{text.transaction} + ' №' + ${transaction.getId()}"></h1>
+                    <h1 id="title-transaction-num" th:text="#{text.transaction}"></h1>
                 </div>
                 <div class="col-lg-9 col-md-6">
                     <div class="accaunt__manager">
@@ -42,36 +42,37 @@
                 <div class="col-12 row">
                     <table id="table">
                         <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th><span th:text="#{table.header.customer}"></span></th>
-                                <th><span th:text="#{table.header.date}"></span></th>
-                                <th><span th:text="#{table.header.typeOfPayment}"></span></th>
-                                <th><span th:text="#{table.header.statusPayment}"></span></th>
-                                <th><span th:text="#{table.header.phone}"></span></th>
-                                <th><span th:text="#{table.header.email}"></span></th>
-                                <th><span th:text="#{table.header.summa}"></span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
                         <tr>
-                            <td th:text="${transaction.getId()}"></td>
-                            <td th:text="${transaction.getCustomer()}"></td>
-                            <td th:text="${transaction.getDate()}"></td>
-                            <td>
-                                <span th:if="${transaction.getPaymentType() == 'invoice'}" th:text="#{value.status.invoice}"></span>
-                                <span th:if="${transaction.getPaymentType() == 'card'}" th:text="#{value.status.card}"></span>
-                                <span th:if="${transaction.getPaymentType() == 'cash'}" th:text="#{value.status.cash}"></span>
-                            </td>
-                            <td th:if="${transaction.getPaymentStatus()} == 'payed'"  th:text="#{value.status.payed}" class="bg-greenMy" style="background-color: green;"></td>
-                            <td th:if="${transaction.getPaymentStatus()} == 'unPayed'"  th:text="#{value.status.unPayed}" class="bg-redMy"></td>
-                            <td th:if="${transaction.getPaymentStatus()} == 'inProcess'"  th:text="#{value.status.inProcess}" class="bg-orangeMy"></td>
-                            <td th:text="${transaction.getPhone()}"></td>
-                            <td th:text="${transaction.getEmail()}"></td>
-                            <td>
-                                <span th:text="${transaction.getSumma()}"></span>
-                                <span th:text="#{text.grn}"></span>
-                            </td>
+                            <th>Id</th>
+                            <th><span th:text="#{table.header.customer}"></span></th>
+                            <th><span th:text="#{table.header.date}"></span></th>
+                            <th><span th:text="#{table.header.typeOfPayment}"></span></th>
+                            <th><span th:text="#{table.header.statusPayment}"></span></th>
+                            <th><span th:text="#{table.header.phone}"></span></th>
+                            <th><span th:text="#{table.header.email}"></span></th>
+                            <th><span th:text="#{table.header.summa}"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody id="container-transaction">
+                        <tr>
+                            <td><span class="bt-content">1</span></td>
+                            <td><span class="bt-content">Роман</span></td>
+                            <td><span class="bt-content">06.03.2025</span></td>
+                            <td><span class="bt-content">готівка</span></td>
+                            <td><span class="bt-content">в процесі</span></td>
+                            <td><span class="bt-content">0663204192</span></td>
+                            <td><span class="bt-content">roman12@gmail.com</span></td>
+                            <td><span class="bt-content">100 <span th:text="#{text.grn}"></span></span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="bt-content">2</span></td>
+                            <td><span class="bt-content">Роман</span></td>
+                            <td><span class="bt-content">04.03.2025</span></td>
+                            <td><span class="bt-content">карта</span></td>
+                            <td><span class="bt-content">опплачений</span></td>
+                            <td><span class="bt-content">0663204192</span></td>
+                            <td><span class="bt-content">roman12@gmail.com</span></td>
+                            <td><span class="bt-content">250 <span th:text="#{text.grn}"></span></span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -83,20 +84,21 @@
 
 <script layout:fragment="script">
 
-    $(document).ready(function () {
-        buildTotalSumma();
-        invokeData();
+    $(document).ready(async function () {
+        let urlSearch = new URLSearchParams(window.location.search);
+        let id = urlSearch.get('id');
+        if (id !== null) {
+            invokeDataTransactionById(id);
+            let titleNumTransaction = $('#title-transaction-num');
+            if (titleNumTransaction.length > 0) {
+                let key = await changeLanguage('text.transactions', getCurrentLang());
+                titleNumTransaction.text(key + ' №' + id);
+            }
+        }
+        invokeDataContacts();
     });
 
-    function buildTotalSumma() {
-        let summa = 0;
-        $('.totalSumma').each(function (item) {
-            summa += (parseInt($(this).html()));
-        });
-        $('#resSumma').text(summa);
-    }
-
-    function invokeData() {
+    function invokeDataContacts() {
         let request = new XMLHttpRequest();
         request.open("GET", contextPath + `web/contacts/get`)
         request.send();
@@ -104,6 +106,53 @@
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 buildContacts(data);
+            }
+        });
+    }
+
+    function invokeDataTransactionById(id) {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/transaction/${id}`)
+        request.send();
+        request.addEventListener('load', async function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+                const container = $('#container-transaction');
+                if (container.length) {
+                    container.empty();
+                    const keyGrn = await changeLanguage('text.grn', getCurrentLang());
+                    let paymentTypes = {
+                        cash: 'value.status.cash',
+                        card: 'value.status.card',
+                        invoice: 'value.status.invoice'
+                    };
+                    let paymentStatus = {
+                        payed: 'value.status.payed',
+                        unPayed: 'value.status.unPayed',
+                        inProcess: 'value.status.inProcess'
+                    };
+
+                    let keyPaymentType = data.paymentType in paymentTypes
+                        ? await changeLanguage(paymentTypes[data.paymentType], getCurrentLang())
+                        : '';
+
+                    let keyPaymentStatus = data.paymentStatus in paymentStatus
+                        ? await changeLanguage(paymentStatus[data.paymentStatus], getCurrentLang())
+                        : '';
+
+                    container.append(`<tr>
+                            <td><span class="bt-content">${data.id}</span></td>
+                            <td><span class="bt-content">${data.customer}</span></td>
+                            <td><span class="bt-content">${data.date}</span></td>
+                            <td><span class="bt-content">${keyPaymentType}</span></td>
+                            <td><span class="bt-content">${keyPaymentStatus}</span></td>
+                            <td><span class="bt-content">${data.phone}</span></td>
+                            <td><span class="bt-content">${data.email}</span></td>
+                            <td><span class="bt-content">${data.summa} <span>${keyGrn}</span></span></td>
+                        </tr>`);
+
+                }
             }
         });
     }

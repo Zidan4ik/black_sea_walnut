@@ -59,6 +59,17 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public PageResponse<OrderResponseForAccount> getAll(User user, Pageable pageable, LanguageCode code) {
+        Specification<Order> spec = Specification.where(OrderSpecification.hasUser(user));
+        Page<Order> page = orderRepository.findAll(spec, pageable);
+        List<OrderResponseForAccount> responsesDtoAdd = page.map(mapper::toResponseForAccount).stream().toList();
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+
+    @Override
     public PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code) {
         Specification<Order> spec = Specification.where(null);
         Page<Order> page = orderRepository.findAll(spec, pageable);
@@ -102,7 +113,6 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public List<OrderResponseForStatsProducts> getTopProductBySalesInMonth(LocalDate start, LocalDate end, int size) {
-//        return orderDetailsRepository.findTopBySummaWithDiscountAndDateRange(start, end);
         Pageable pageAble = PageRequest.of(0, size);
         List<Object[]> entities = orderDetailsRepository.findSummaWithDiscountByProductAndDateRange(start, end, pageAble);
         return orderMapper.toResponseForStatsProduct(entities);

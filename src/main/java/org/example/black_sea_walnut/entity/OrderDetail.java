@@ -21,6 +21,7 @@ public class OrderDetail {
     private String productName;
     private int count;
     private int unitPrice;
+    private int mass;
     private int discountUnitPrice;
     private int discountPercent;
     private int discountSumForUnit;

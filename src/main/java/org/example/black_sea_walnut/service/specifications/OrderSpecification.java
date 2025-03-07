@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.service.specifications;
 import lombok.experimental.UtilityClass;
 import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
 import org.example.black_sea_walnut.entity.Order;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.DeliveryStatus;
 import org.example.black_sea_walnut.enums.OrderStatus;
 import org.springframework.data.jpa.domain.Specification;
@@ -90,5 +91,9 @@ public class OrderSpecification {
     private static Specification<Order> hasDateOfOrdering(LocalDate date) {
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("dateOfOrdering"), date));
+    }
+
+    public static Specification<Order> hasUser(User user) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), user);
     }
 }

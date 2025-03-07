@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.service.specifications;
 import lombok.experimental.UtilityClass;
 import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.entity.Transaction;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.PaymentStatus;
 import org.example.black_sea_walnut.enums.PaymentType;
 import org.springframework.data.jpa.domain.Specification;
@@ -76,5 +77,9 @@ public class TransactionSpecification {
     private static Specification<Transaction> likeEmail(String email) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(root.get("email"), "%" + email + "%");
+    }
+    public static Specification<Transaction> hasUser(User user){
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("user"),user));
     }
 }

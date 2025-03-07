@@ -1,4 +1,4 @@
-<div class="row">
+<div th:if="${currentUser != null}"  data-isAuthorized="true" class="row">
     <div class="col-12">
         <table id="table">
             <thead>
@@ -26,18 +26,72 @@
                 <td th:text="${item.id}"></td>
                 <td th:text="${item.date}"></td>
                 <td th:text="${item.amount}"></td>
-                <td th:text="${!item.status.isEmpty()?item.status:'-'}"></td>
+                <td>
+                    <th:block th:switch="${item.status}">
+                        <span th:case="'sent'" th:text="#{value.status.sent}"></span>
+                        <span th:case="'await'" th:text="#{value.status.await}"></span>
+                        <span th:case="'delivered'" th:text="#{value.status.delivered}"></span>
+                        <span th:case="'returned'" th:text="#{value.status.returned}"></span>
+                        <span th:case="*" th:text="'-'"></span>
+                    </th:block>
+                </td>
                 <td th:text="${item.cost}"><span th:text="#{text.grn}"></span></td>
                 <td>
                     <div class="icons_wrap">
-                        <a th:href="@{/web/order/{id} (id=${item.id})}" class="tooltip" th:title="#{text.copy}"><i
+                        <a th:href="@{/web/order (id=${item.id})}" class="tooltip" th:title="#{text.copy}"><i
                                 class="nut-icon icons-view"></i></a>
-                        <a href="#" class="tooltip" title="Копировать"><i class="nut-icon icons-copy"></i></a>
+                        <a class="tooltip copy-btn"><i class="nut-icon icons-copy"></i></a>
                     </div>
                 </td>
             </tr>
             <tr th:unless="${data.size()>0}">
                 <td colspan="6" th:text="#{text.table.exist}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:unless="${currentUser != null}"  data-isAuthorized="false" class="row">
+    <div class="col-12">
+        <table>
+            <thead>
+            <tr>
+                <th><span th:text="#{table.header.application}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.date}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.amountProducts}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.status}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.price}"></span><span><i class="ti ti-arrow-up"></i></span></th>
+                <th><span th:text="#{table.header.functions}"></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>07.03.2025</td>
+                <td>15</td>
+                <td th:text="#{value.status.sent}"></td>
+                <td>300<span th:text="#{text.grn}"></span></td>
+                <td>
+                    <div class="icons_wrap">
+                        <a th:href="@{/web/order}" class="tooltip" th:title="#{text.copy}"><i
+                                class="nut-icon icons-view"></i></a>
+                        <a class="tooltip copy-btn"><i class="nut-icon icons-copy"></i></a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>07.03.2025</td>
+                <td>15</td>
+                <td th:text="#{value.status.delivered}"></td>
+                <td>550<span th:text="#{text.grn}"></span></td>
+                <td>
+                    <div class="icons_wrap">
+                        <a th:href="@{/web/order}" class="tooltip" th:title="#{text.copy}"><i
+                                class="nut-icon icons-view"></i></a>
+                        <a class="tooltip copy-btn"><i class="nut-icon icons-copy"></i></a>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>

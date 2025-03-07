@@ -1,5 +1,6 @@
 package org.example.black_sea_walnut.repository;
 
+import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
@@ -35,4 +36,6 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Long>
             @Param("endDate") LocalDate endDate,
             Pageable pageable
     );
+
+    List<OrderDetail> getAllByOrder(Order order);
 }
