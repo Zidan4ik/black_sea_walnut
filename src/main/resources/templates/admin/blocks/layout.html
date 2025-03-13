@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout=""
-      lang=""
+      lang="uk"
       dir="ltr"
       data-theme="theme-default"
       data-assets-path="/static/">
@@ -143,11 +143,13 @@
             <div class="modal-header text-center" style="font-size: 20px" th:text="#{text.areYouSureToExit}"></div>
             <div class="modal-footer">
                 <a th:href="@{/logout}" class="btn btn-danger float-end" th:text="#{text.logout}"></a>
-                <button class="btn btn-secondary float-end" data-bs-dismiss="modal" th:text="#{value.status.cancel}"></button>
+                <button class="btn btn-secondary float-end" data-bs-dismiss="modal"
+                        th:text="#{value.status.cancel}"></button>
             </div>
         </div>
     </div>
 </div>
+
 <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
 <script>
     function focusInput(inputId) {
@@ -180,7 +182,7 @@
 
     $(document).ready(function () {
         invokeBlockUI();
-        $('#btn-logout').on('click',invokeLogoutModal);
+        $('#btn-logout').on('click', invokeLogoutModal);
     });
 
     function invokeLogoutModal() {
@@ -204,26 +206,38 @@
         });
     }
 
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + "; path=/" + expires + "; SameSite=Lax";
+    }
+
+    function getCookie(name) {
+        let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
+    }
+
     function selectedLanguage() {
-        $(`.button-dropdown`).on('click', function () {
-            let lang = $(this).attr('data-lang');
+        $(".button-dropdown").on("click", function () {
+            let lang = $(this).attr("data-lang");
             if (lang) {
-                window.location.replace('?lang=' + lang);
+                setCookie("lang", lang, 30);
+                window.location.reload();
             }
         });
-        window.addEventListener('load', function () {
-            const currentUrl = new URL(window.location.href);
-            let lang = currentUrl.searchParams.get('lang');
+
+        window.addEventListener("load", function () {
+            let lang = getCookie("lang");
             if (lang) {
                 document.documentElement.lang = lang;
-                let $languageCode = $(`#languageCode_`);
+                let $languageCode = $("#languageCode_");
                 if ($languageCode) {
                     $languageCode.val(lang);
                 }
-            }
-            if (currentUrl.searchParams.has('lang')) {
-                currentUrl.searchParams.delete('lang');
-                window.history.replaceState(null, '', currentUrl.toString());
             }
         });
     }

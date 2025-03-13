@@ -13,12 +13,17 @@ import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
+import org.example.black_sea_walnut.dto.web.user.AddressDtoIndividual;
+import org.example.black_sea_walnut.dto.web.user.AddressDtoLegal;
+import org.example.black_sea_walnut.dto.web.user.UserDtoIndividual;
+import org.example.black_sea_walnut.dto.web.user.UserDtoLegal;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
+import org.example.black_sea_walnut.password.PasswordResetTokenRepository;
 import org.example.black_sea_walnut.password.PasswordResetTokenService;
 import org.example.black_sea_walnut.password.token.VerificationToken;
 import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
@@ -48,6 +53,7 @@ public class UserServiceImp implements UserService {
     private final CountryService countryService;
     private final PasswordResetTokenService passwordResetTokenService;
     private final VerificationTokenRepository tokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Value("${upload.path}")
     private String contextPath;
@@ -225,6 +231,78 @@ public class UserServiceImp implements UserService {
         }
 
         return save(userMapped);
+    }
+
+    @SneakyThrows
+    @Override
+    public void save(UserDtoLegal dto) {
+        if (dto.getId() != null) {
+            User userById = getById(dto.getId());
+            if (dto.getPathToImage().isEmpty()) {
+                imageService.deleteByPath(userById.getPathToImage());
+            }
+            if (dto.getFileImage() != null) {
+                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
+                dto.setPathToImage(generatedPath);
+            }
+            userById.setCompany(dto.getCompany());
+            userById.setFullName(dto.getFullName());
+            userById.setEmail(dto.getEmail());
+            userById.setPhone(dto.getPhone());
+            userById.setPathToImage(dto.getPathToImage());
+            imageService.save(dto.getFileImage(), dto.getPathToImage());
+            save(userById);
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    public void save(UserDtoIndividual dto) {
+        if (dto.getId() != null) {
+            User userById = getById(dto.getId());
+            if (dto.getPathToImage() != null && dto.getPathToImage().isEmpty()) {
+                imageService.deleteByPath(userById.getPathToImage());
+            }
+            if (dto.getFileImage() != null) {
+                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
+                dto.setPathToImage(generatedPath);
+            }
+            userById.setFullName(dto.getFullName());
+            userById.setEmail(dto.getEmail());
+            userById.setPhone(dto.getPhone());
+            userById.setPathToImage(dto.getPathToImage());
+            imageService.save(dto.getFileImage(), dto.getPathToImage());
+            save(userById);
+        }
+    }
+
+    @Override
+    public void save(AddressDtoIndividual dto) {
+        if (dto.getId() != null) {
+            User userById = getById(dto.getId());
+            userById.setCountry(countryService.getById(dto.getIdCountry()).orElse(null));
+            userById.setCity(cityService.getById(dto.getIdCity()).orElse(null));
+            userById.setRegion(regionService.getById(dto.getIdRegion()).orElse(null));
+            userById.setAddress(dto.getAddress());
+            save(userById);
+        }
+    }
+
+    @Override
+    public void save(AddressDtoLegal dto) {
+        if (dto.getId() != null) {
+            User userById = getById(dto.getId());
+            userById.setCountry(countryService.getById(dto.getIdCountry()).orElse(null));
+            userById.setCity(cityService.getById(dto.getIdCity()).orElse(null));
+            userById.setRegion(regionService.getById(dto.getIdRegion()).orElse(null));
+            userById.setCountryAdditional(countryService.getById(dto.getIdCountryLegal()).orElse(null));
+            userById.setCityAdditional(cityService.getById(dto.getIdCityLegal()).orElse(null));
+            userById.setRegionAdditional(regionService.getById(dto.getIdRegionLegal()).orElse(null));
+            userById.setAddress(dto.getAddress());
+            userById.setAddressAdditional(dto.getAddressLegal());
+            userById.setPaymentDetails(dto.getOkpo());
+            save(userById);
+        }
     }
 
     @Override

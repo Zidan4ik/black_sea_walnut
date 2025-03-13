@@ -150,7 +150,8 @@
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
-                    loadNews(inputs, 0);
+                    invokeBlockUI();
+                    invokeRequest(inputs,0)
                     $('#ModalForDelete').modal('hide');
                 }
             });

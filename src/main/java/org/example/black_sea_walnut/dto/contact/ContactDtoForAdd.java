@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.black_sea_walnut.validator.annotation.CoordinatesValidation;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
+import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 import org.example.black_sea_walnut.validator.annotation.PhoneFormatValidation;
+import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
 import org.hibernate.validator.constraints.Length;
 
 @Data
@@ -20,8 +22,9 @@ public class ContactDtoForAdd {
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 15,message = "{error.field.phone.size}")
     private String phone2;
-    @EmailValidation
-    @NotBlank(message = "{error.field.empty}")
+    @NotBlank(message = "{error.field.empty}", groups = EmailValidGroups.NotBlankCheck.class)
+    @EmailValidation(groups = EmailValidGroups.EmailCheck.class)
+    @IsNoExistEmail(groups = EmailValidGroups.EmailExistenceCheck.class)
     private String email;
     @NotBlank(message = "{error.field.empty}")
     private String addressWork;

@@ -10,6 +10,10 @@ import org.example.black_sea_walnut.dto.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
+import org.example.black_sea_walnut.dto.web.user.AddressDtoIndividual;
+import org.example.black_sea_walnut.dto.web.user.AddressDtoLegal;
+import org.example.black_sea_walnut.dto.web.user.UserDtoIndividual;
+import org.example.black_sea_walnut.dto.web.user.UserDtoLegal;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;
@@ -94,6 +98,7 @@ public class UserMapper {
         return entity;
     }
 
+
     public User toEntityFromRequest(UserFopRequestForView dto) {
         User entity = new User();
         entity.setId(dto.getId());
@@ -175,6 +180,50 @@ public class UserMapper {
                 .build();
     }
 
+    public UserDtoLegal toDtoForLegal(User entity) {
+        return UserDtoLegal
+                .builder()
+                .id(entity.getId())
+                .fullName(entity.getFullName())
+                .phone(entity.getPhone())
+                .email(entity.getEmail())
+                .pathToImage(entity.getPathToImage())
+                .company(entity.getCompany())
+                .build();
+    }
+
+    public UserDtoIndividual toDtoForIndividual(User entity) {
+        return UserDtoIndividual
+                .builder()
+                .id(entity.getId())
+                .fullName(entity.getFullName())
+                .phone(entity.getPhone())
+                .email(entity.getEmail())
+                .pathToImage(entity.getPathToImage())
+                .build();
+    }
+
+    public User toEntityFromDtoLegal(UserDtoLegal dto) {
+        User entity = new User();
+        entity.setId(dto.getId());
+        entity.setFullName(dto.getFullName());
+        entity.setPhone(dto.getPhone());
+        entity.setEmail(dto.getEmail());
+        entity.setCompany(dto.getCompany());
+        entity.setPathToImage(dto.getPathToImage());
+        return entity;
+    }
+
+    public User toEntityFromDtoIndividual(UserDtoIndividual dto) {
+        User entity = new User();
+        entity.setId(dto.getId());
+        entity.setFullName(dto.getFullName());
+        entity.setPhone(dto.getPhone());
+        entity.setEmail(dto.getEmail());
+        entity.setPathToImage(dto.getPathToImage());
+        return entity;
+    }
+
     public List<UserResponseForStats> toResponseUsersForStats(List<Object[]> entities) {
         List<UserResponseForStats> listDto = new ArrayList<>();
         for (Object[] o : entities) {
@@ -187,5 +236,28 @@ public class UserMapper {
             );
         }
         return listDto;
+    }
+
+    public AddressDtoIndividual toResponseForAddressIndividual(User entity) {
+        return AddressDtoIndividual.builder()
+                .idCity(entity.getCity() != null ? entity.getCity().getId() : null)
+                .idRegion(entity.getRegion() != null ? entity.getRegion().getId() : null)
+                .idCountry(entity.getCountry() != null ? entity.getCountry().getId() : null)
+                .address(entity.getAddress())
+                .build();
+    }
+    public AddressDtoLegal toResponseForAddressLegal(User entity) {
+        return AddressDtoLegal.builder()
+                .idCity(entity.getCity() != null ? entity.getCity().getId() : null)
+                .idRegion(entity.getRegion() != null ? entity.getRegion().getId() : null)
+                .idCountry(entity.getCountry() != null ? entity.getCountry().getId() : null)
+                .idCityLegal(entity.getCityAdditional() != null ? entity.getCityAdditional().getId() : null)
+                .idRegionLegal(entity.getRegionAdditional() != null ? entity.getRegionAdditional().getId() : null)
+                .idCountryLegal(entity.getCountryAdditional() != null ? entity.getCountryAdditional().getId() : null)
+                .address(entity.getAddress())
+                .addressLegal(entity.getAddressAdditional())
+                .okpo(entity.getPaymentDetails())
+                .index(entity.getIndexAdditional())
+                .build();
     }
 }

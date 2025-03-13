@@ -37,12 +37,9 @@
         }
 
         .selectMy {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
             background-color: #fff;
+            width: 100%;
+            margin-bottom: 15px;
             border: 1px solid rgba(0, 0, 0, 0.15);
             height: 47px;
             padding: 14px 16px;
@@ -122,19 +119,8 @@
             <div id="container-pagination"></div>
         </div>
     </section>
-
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="copyToast" class="toast align-items-center text-white bg-success border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body">
-                    ✅ Дані скопійовані в буфер обміну!
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    </div>
+    <script th:src="@{/js/validator.js}"></script>
 </div>
-<script th:src="@{/js/table.js}"></script>
 <script layout:fragment="script">
     let fieldElement;
 
@@ -189,7 +175,7 @@
 
     function loadInfo() {
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/info-fiz/load`, {
+        htmx.ajax('GET', `${contextPath}web/info-user/load`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
@@ -198,7 +184,7 @@
 
     function loadAddress() {
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/address-fiz/load`, {
+        htmx.ajax('GET', `${contextPath}web/address/load`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
@@ -221,20 +207,62 @@
         });
     }
 
-    document.body.addEventListener('htmx:afterSwap', function(event) {
+    document.body.addEventListener('htmx:afterSwap', async function (event) {
         let targetId = event.detail.target.id;
         console.log(`HTMX оновив: ${targetId}`);
 
         if (targetId === 'container-content' || targetId === 'container-pagination') {
-            // Визначаємо, що саме завантажувалось, Transactions чи Orders
             let currentUrl = event.detail.xhr.responseURL;
 
             if (currentUrl.includes('/transactions/')) {
-                console.log('Оновлено Transactions, викликаємо addEventListenerForDirection для Transactions');
                 addEventListenerForDirection(loadTransactions);
             } else if (currentUrl.includes('/orders/')) {
-                console.log('Оновлено Orders, викликаємо addEventListenerForDirection для Orders');
                 addEventListenerForDirection(loadOrders);
+            } else if (currentUrl.includes('/info-user/load')) {
+                let isAuthorized = $('[data-isAuthorized]');
+                let status = $('[data-status]');
+                if (isAuthorized.length && status.length) {
+                    getContactInformation();
+                }
+            } else if (currentUrl.includes('/address/load')) {
+                let isAuthorized = $('[data-isAuthorized]');
+                let status = $('[data-status]');
+                if (isAuthorized.length && status.length) {
+                    let data = await getAddress();
+                    console.log(data);
+                    let countries = await getCountriesAll();
+                    if (status.attr('data-status') === 'individual') {
+                        await fillSelectorsByContainer('fiz-selectors', 'fiz');
+                        appendOptionsToSelect(countries, 'fiz-select-countries');
+                        ['fiz'].forEach(prefix => handleChangeGeography(prefix));
+                        $('#fiz-select-countries').val(data.idCountry);
+                        await invokeRequestRegionsByCountry(data.idCountry, `fiz-select-regions`);
+                        $('#fiz-select-regions').val(data.idRegion);
+                        await invokeRequestCitiesByRegion(data.idRegion, `fiz-select-cities`);
+                        $('#fiz-select-cities').val(data.idCity);
+                        $('#address-fiz').val(data.address);
+                    } else {
+                        await fillSelectorsByContainer('ur1-selectors', 'ur1');
+                        await fillSelectorsByContainer('ur2-selectors', 'ur2');
+                        appendOptionsToSelect(countries, 'ur1-select-countries');
+                        appendOptionsToSelect(countries, 'ur2-select-countries');
+                        ['ur1', 'ur2'].forEach(prefix => handleChangeGeography(prefix));
+                        $('#ur1-select-countries').val(data.idCountry);
+                        $('#ur2-select-countries').val(data.idCountry);
+                        await invokeRequestRegionsByCountry(data.idCountry, `ur1-select-regions`);
+                        await invokeRequestRegionsByCountry(data.idCountry, `ur2-select-regions`);
+                        $('#ur1-select-regions').val(data.idRegion);
+                        $('#ur2-select-regions').val(data.idRegion);
+                        await invokeRequestCitiesByRegion(data.idRegion, `ur1-select-cities`);
+                        await invokeRequestCitiesByRegion(data.idRegion, `ur2-select-cities`);
+                        $('#ur1-select-cities').val(data.idCity);
+                        $('#ur2-select-cities').val(data.idCity);
+                        $('#address-ur1').val(data.address);
+                        $('#address-ur2').val(data.addressLegal);
+                        $('#index').val(data.index);
+                        $('#okpo').val(data.okpo);
+                    }
+                }
             }
         }
     });
@@ -275,6 +303,7 @@
             if ($image) {
                 $image.css('background-image', `url(${URL.createObjectURL(file)})`);
             }
+            $('[data-name="pathToImage"]').val('');
         });
     }
 
@@ -322,10 +351,222 @@
         });
     }
 
-
     /* Contact information */
+    async function getContactInformation() {
+        const url = contextPath + `web/info-user/get`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
 
+            const data = await response.json();
+            for (let key in data) {
+                let input = $(`input[data-name="${key}"]`);
+                if (!input.length) continue;
 
+                let value = data[key];
+                if (input.hasClass('files')) {
+                    let img = input.data('image');
+                    let $input = $(`#${img}`);
+                    if ($input.length && value) {
+                        $input.css('background-image', `url('${value}')`);
+                    }
+                }
+                input.val(value);
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    async function saveUserFiz(formData) {
+        const url = contextPath + `web/info-fiz/save`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            window.location.reload();
+        } catch (error) {
+            let data = JSON.parse(error.message);
+            console.log(data);
+            clearValid();
+            validate4(data);
+        }
+    }
+
+    async function saveUserUr(formData) {
+        const url = contextPath + `web/info-ur/save`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            window.location.reload();
+        } catch (error) {
+            let data = JSON.parse(error.message);
+            console.log(data);
+            clearValid();
+            validate4(data);
+        }
+    }
+
+    $('#container-content').on('click', '#btn-save', function () {
+        let isAuthorized = $('[data-isAuthorized]');
+        let status = $('[data-status]');
+        let assignment = $('[data-assignment]');
+        console.log(assignment);
+        console.log(assignment.length);
+        console.log(assignment.attr('data-assignment'));
+        if (isAuthorized.length) {
+            if (!assignment.length) return;
+            if (status.length) {
+                if (assignment.attr('data-assignment') === 'info-user') {
+                    console.log('info-user');
+                    const formData = new FormData();
+                    formData.append("fullName", $('[data-name="fullName"]').val());
+                    formData.append("email", $('[data-name="email"]').val());
+                    formData.append("phone", $('[data-name="phone"]').val());
+                    formData.append("pathToImage", $('[data-name="pathToImage"]').val() || "");
+                    let imageInput = document.getElementById('fileMy');
+                    if (imageInput && imageInput.files.length > 0) {
+                        formData.append("fileImage", imageInput.files[0]);
+                    }
+                    if (status.attr('data-status') === 'individual') {
+                        saveUserFiz(formData);
+                    } else if (status.attr('data-status') === 'legal') {
+                        formData.append("company", $('[data-name="company"]').val());
+                        saveUserUr(formData);
+                    }
+                } else if (assignment.attr('data-assignment') === 'address') {
+                    console.log('address');
+                    const formData = new FormData();
+                    if (status.attr('data-status') === 'individual') {
+                        formData.append("idCountry", Number($('#fiz-select-countries').val()));
+                        formData.append("idRegion", Number($('#fiz-select-regions').val()));
+                        formData.append("idCity", Number($('#fiz-select-cities').val()));
+                        formData.append("address", $('#address-fiz').val());
+                        saveAddressFiz(formData);
+                    } else if (status.attr('data-status') === 'legal') {
+                        formData.append("idCountry", Number($('#ur1-select-countries').val()));
+                        formData.append("idRegion", Number($('#ur1-select-regions').val()));
+                        formData.append("idCity", Number($('#ur1-select-cities').val()));
+                        formData.append("idCountryLegal", Number($('#ur2-select-countries').val()));
+                        formData.append("idRegionLegal", Number($('#ur2-select-regions').val()));
+                        formData.append("idCityLegal", Number($('#ur2-select-cities').val()));
+                        formData.append("address", $('#address-ur1').val());
+                        formData.append("addressLegal", $('#address-ur2').val());
+                        formData.append("index", $('#index').val());
+                        formData.append("okpo", $('#okpo').val());
+                        saveAddressUr(formData)
+                    }
+                }
+            } else if (assignment.attr('data-assignment') === 'password') {
+                console.log('password');
+                const formData = new FormData();
+                formData.append("currentPassword", $('[data-name="currentPassword"]').val());
+                formData.append("newPassword", $('[data-name="newPassword"]').val());
+                formData.append("confirmPassword", $('[data-name="confirmPassword"]').val());
+                savePassword(formData);
+            }
+        }
+    });
+
+    /* Password Save*/
+
+    async function savePassword(formData) {
+        const url = contextPath + `web/account/password-new/save`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            window.location.reload();
+        } catch (error) {
+            let data = JSON.parse(error.message);
+            console.log(data);
+            clearValid();
+            validate4(data);
+        }
+    }
+
+    /* Address Save*/
+    async function saveAddressFiz(formData) {
+        const url = contextPath + `web/address-fiz/save`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            window.location.reload();
+        } catch (error) {
+            clearValid();
+            validate4(JSON.parse(error.message));
+        }
+    }
+
+    async function saveAddressUr(formData) {
+        const url = contextPath + `web/address-ur/save`;
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            window.location.reload();
+        } catch (error) {
+            clearValid();
+            validate4(JSON.parse(error.message));
+        }
+    }
+
+    async function getAddress() {
+        const url = contextPath + `web/address/get`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data;
+            // for (let key in data) {
+            //     let input = $(`input[data-name="${key}"], select[data-name="${key}"]`);
+            //     if (!input.length) continue;
+            //
+            //     let value = data[key];
+            //
+            //     if (input.is("select")) {
+            //         input.val(value).change();
+            //     } else {
+            //         input.val(value);
+            //     }
+            // }
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
 </script>
 </body>

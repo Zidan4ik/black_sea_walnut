@@ -1,36 +1,17 @@
-<div class="row">
+<div class="row" th:data-isAuthorized="${isAuthorized}" th:data-status="${status}">
     <div class="col-md-6">
         <form action="#">
-            <div class="form__title">
-                1. Реквизиты
-            </div>
-            <input type="text"  placeholder="ОКПО">
+            <div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
+            <input id="okpo" type="text"  placeholder="ОКПО">
             <div class="form__title" th:text="'2. '+#{table.header.address}"></div>
-            <select class="selectMy mb-2" style="position: relative;width: 100%">
-                <option value="hide" disabled selected>Країна</option>
-                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
-            </select>
-            <select class="selectMy mb-2" style="position: relative;width: 100%">
-                <option value="hide" disabled selected>Міста</option>
-                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
-            </select>
-            <input type="text" required="required" th:placeholder="#{table.header.city}+'*'">
-            <input type="text" th:placeholder="#{table.header.address}+'*'">
-            <div class="form__title" th:text="#{table.header.address}">
-                2. Юридический адрес
-            </div>
-            <select class="selectMy mb-2" style="position: relative;width: 100%">
-                <option value="hide" disabled selected>Країна</option>
-                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
-            </select>
-            <select class="selectMy mb-2" style="position: relative;width: 100%">
-                <option value="hide" disabled selected>Міста</option>
-                <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
-            </select>
-            <input type="text" required="required" th:placeholder="#{table.header.city}+'*'">
-            <input type="text"  th:placeholder="#{table.header.address}">
-            <input type="text"  th:placeholder="#{text.index}">
-            <button class="button" type="submit" th:text="#{text.button.save}"></button>
+            <div id="ur1-selectors"></div>
+            <input id="address-ur1" type="text" th:placeholder="#{table.header.address}+'*'">
+            <div class="form__title" th:text="'2. '+#{text.legalAddress}"></div>
+            <div id="ur2-selectors"></div>
+            <input id="address-ur2" type="text"  th:placeholder="#{table.header.address}">
+            <input id="index" type="text"  th:placeholder="#{text.index}">
+            <button id="btn-save" data-assignment="address" class="button"
+                    type="button" th:text="#{text.button.save}"></button>
         </form>
     </div>
     <div class="col-md-6 align-self-end">

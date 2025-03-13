@@ -152,7 +152,7 @@
                                                 <div class="form__title" th:text="'1. '+#{text.props}"></div>
                                                 <input id="okpo" type="text" th:placeholder="#{text.okpo}">
                                                 <div class="form__title"
-                                                     th:text="'2. '+#{value.registration-type.legal} + ' '+#{table.header.address}"></div>
+                                                     th:text="'2. '+#{text.legalAddress}"></div>
                                                 <div id="ur2-selectors"></div>
                                                 <input id="addressLegal" type="text"
                                                        th:placeholder="#{table.header.address}+'*'">
@@ -212,40 +212,6 @@
                 appendOptionsToSelect(data.countries, 'ur3-select-countries');
             }
         });
-    }
-
-    async function fillSelectorsByContainer(idContainer, userRole) {
-        let fizSelectorsContainer = $(`#${idContainer}`);
-        if (!fizSelectorsContainer.length) return;
-
-        const [countryLocale, regionLocale, cityLocale] = await Promise.all([
-            changeLanguage("text.country", getCurrentLang()),
-            changeLanguage("text.region", getCurrentLang()),
-            changeLanguage("table.header.city", getCurrentLang()),
-        ]);
-
-        const selects = [
-            {id: `${userRole}-select-countries`, label: countryLocale, disabled: false},
-            {id: `${userRole}-select-regions`, label: regionLocale, disabled: true},
-            {id: `${userRole}-select-cities`, label: cityLocale, disabled: true},
-        ];
-
-        fizSelectorsContainer.append(
-            selects.map(({id, label, disabled}) =>
-                `<select id="${id}" class="selectMy" ${disabled ? "disabled" : ""}>
-                <option value="" selected>${label}</option>
-            </select>`
-            ).join("")
-        );
-    }
-
-    function appendOptionsToSelect(data, idSelect) {
-        let container = $(`#${idSelect}`);
-        if (container.length) {
-            data.forEach(function (item) {
-                container.append(`<option value="${item.id}">${item.name}</option>`)
-            });
-        }
     }
 
     $(document).ready(function () {
@@ -385,30 +351,8 @@
         }
     }
 
-    function handleChange(selectPrefix) {
-        $(document).on('click', `#${selectPrefix}-select-countries`, function () {
-            const countryId = $(this).val();
-            if (countryId === "") {
-                $(`#${selectPrefix}-select-regions`).prop('disabled', true).val("");
-                $(`#${selectPrefix}-select-cities`).prop('disabled', true).val("");
-            } else {
-                invokeRequestRegionsByCountry(countryId, `${selectPrefix}-select-regions`);
-                $(`#${selectPrefix}-select-cities`).val("");
-                $(`#${selectPrefix}-select-cities`).prop('disabled', true);
-            }
-        });
 
-        $(document).on('click', `#${selectPrefix}-select-regions`, function () {
-            const regionId = $(this).val();
-            if (regionId === "") {
-                $(`#${selectPrefix}-select-cities`).prop('disabled', true).val("");
-            } else {
-                invokeRequestCitiesByRegion(regionId, `${selectPrefix}-select-cities`);
-            }
-        });
-    }
-
-    ['fiz', 'ur', 'ur2', 'ur3'].forEach(prefix => handleChange(prefix));
+    ['fiz', 'ur', 'ur2', 'ur3'].forEach(prefix => handleChangeGeography(prefix));
 
 </script>
 </body>

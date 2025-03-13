@@ -22,6 +22,12 @@ public class CustomErrorController implements ErrorController {
                     return "web/errors/404";
                 } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                     return "web/errors/505";
+                } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
+                    return "web/errors/403";
+                }
+            } else if (requestUri.contains("/admin/")) {
+                if (statusCode == HttpStatus.FORBIDDEN.value()) {
+                    return "web/errors/403";
                 }
             }
         }

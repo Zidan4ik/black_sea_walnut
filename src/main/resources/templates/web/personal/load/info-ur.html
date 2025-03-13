@@ -1,7 +1,8 @@
 <div class="row" th:data-isAuthorized="${isAuthorized}" th:data-status="${status}">
     <div class="col-md-6">
         <form>
-            <input data-error="fullName" data-name="fullName" type="text" th:placeholder="#{table.header.fio}+'*'">
+            <input data-error="company" data-name="company" type="text" required="required" th:placeholder="#{text.company}+'*'">
+            <input data-error="fullName" data-name="fullName" type="text" th:placeholder="#{text.contactPerson}+'*'">
             <input data-error="email" data-name="email" type="email" th:placeholder="#{table.header.email}+'*'">
             <input data-error="phone" data-name="phone" type="tel" th:placeholder="#{table.header.phone}+'*'">
             <button id="btn-save" data-assignment="info-user" class="button float-left" type="button" th:text="#{text.button.save}"></button>
@@ -12,9 +13,10 @@
             <div class="file__wrap" data-error="fileImage">
                 <input type="file" name="file" id="fileMy" class="inputfile"/>
                 <label id="image" for="fileMy" class="label__photo"
-                       style="background-image: url('/blacksea/img/istockphoto-674199444-612x612.jpg');"><span>Загрузить фото</span></label>
+                       th:style="|background-image: url('@{/blacksea/img/istockphoto-674199444-612x612.jpg}');|">
+                    <span th:text="#{text.loadImage}"></span></label>
             </div>
-            <input type="hidden" name="file" data-name="pathToImage"  class="files" data-image="image"/>
+            <input type="hidden" name="file" data-name="pathToImage" class="files" data-image="image"/>
         </div>
     </div>
 </div>

@@ -39,4 +39,13 @@ public class PasswordResetTokenService {
         PasswordResetToken token = passwordResetTokenRepository.findByToken(thetoken);
         passwordResetTokenRepository.deleteById(token.getToken_id());
     }
+
+    @Transactional
+    public void deleteTokenByUser(User user){
+        passwordResetTokenRepository.deleteByUser(user);
+    }
+
+    public boolean isExistTokenByUser(User user){
+        return passwordResetTokenRepository.existsByUser(user);
+    }
 }

@@ -39,6 +39,7 @@ public class User {
     private String address;
     private String addressAdditional;
     private String indexAdditional;
+    private String company;
     @ManyToOne
     private Manager manager;
     @OneToMany(fetch = FetchType.LAZY)

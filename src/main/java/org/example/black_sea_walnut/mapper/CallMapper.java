@@ -2,6 +2,7 @@ package org.example.black_sea_walnut.mapper;
 
 import org.example.black_sea_walnut.dto.calls.CallResponseForView;
 import org.example.black_sea_walnut.entity.Call;
+import org.example.black_sea_walnut.enums.CallStatus;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
@@ -21,5 +22,13 @@ public class CallMapper {
                 .time(time)
                 .status(entity.getStatus().toString())
                 .build();
+    }
+
+    public Call toEntityForSaveCall(CallResponseForView dto) {
+        Call entity = new Call();
+        entity.setRegisterCall(LocalDateTime.now());
+        entity.setPhone(dto.getPhone());
+        entity.setStatus(CallStatus.new_);
+        return entity;
     }
 }

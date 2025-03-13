@@ -23,17 +23,13 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
     private final UserService userService;
     private final JavaMailSender mailSender;
     private User theUser;
+
     @Override
     public void onApplicationEvent(RegistrationCompleteEvent event) {
-        // 1. Get the newly registered user
         theUser = event.getUser();
-        //2. Create a verification token for the user
         String verificationToken = UUID.randomUUID().toString();
-        //3. Save the verification token for the user
         userService.saveUserVerificationToken(theUser, verificationToken);
-        //4 Build the verification url to be sent to the user
-        String url = event.getApplicationUrl()+"/register/verifyEmail?token="+verificationToken;
-        //5. Send the email.
+        String url = event.getApplicationUrl() + "/register/verifyEmail?token=" + verificationToken;
         try {
             sendVerificationEmail(url);
         } catch (MessagingException | UnsupportedEncodingException e) {
@@ -41,13 +37,14 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         }
         log.info("Click the link to verify your registration :  {}", url);
     }
+
     public void sendVerificationEmail(String url) throws MessagingException, UnsupportedEncodingException {
         String subject = "Email Verification";
         String senderName = "User Registration Portal Service";
-        String mailContent = "<p> Hi, "+ theUser.getFullName()+ ", </p>"+
-                "<p>Thank you for registering with us,"+"" +
-                "Please, follow the link below to complete your registration.</p>"+
-                "<a href=\"" +url+ "\">Verify your email to activate your account</a>"+
+        String mailContent = "<p> Hi, " + theUser.getFullName() + ", </p>" +
+                "<p>Thank you for registering with us," + "" +
+                "Please, follow the link below to complete your registration.</p>" +
+                "<a href=\"" + url + "\">Verify your email to activate your account</a>" +
                 "<p> Thank you <br> Users Registration Portal Service";
         MimeMessage message = mailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
@@ -61,10 +58,10 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
     public void sendPasswordResetVerificationEmail(String url, User user) throws MessagingException, UnsupportedEncodingException {
         String subject = "Password Reset Request Verification";
         String senderName = "User Registration Portal Service";
-        String mailContent = "<p> Hi, "+ user.getFullName()+ ", </p>"+
-                "<p><b>You recently requested to reset your password,</b>"+"" +
-                "Please, follow the link below to complete the action.</p>"+
-                "<a href=\"" +url+ "\">Reset password</a>"+
+        String mailContent = "<p> Hi, " + user.getFullName() + ", </p>" +
+                "<p><b>You recently requested to reset your password,</b>" + "" +
+                "Please, follow the link below to complete the action.</p>" +
+                "<a href=\"" + url + "\">Reset password</a>" +
                 "<p> Users Registration Portal Service";
         MimeMessage message = mailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);

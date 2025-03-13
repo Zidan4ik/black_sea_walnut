@@ -10,6 +10,8 @@ import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.Country;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.password.PasswordResetRequest;
+import org.example.black_sea_walnut.password.PasswordResetTokenRepository;
+import org.example.black_sea_walnut.password.PasswordResetTokenService;
 import org.example.black_sea_walnut.password.event.RegistrationCompleteEventListener;
 import org.example.black_sea_walnut.service.ContactService;
 import org.example.black_sea_walnut.service.CountryService;
@@ -34,6 +36,8 @@ public class AuthorizationController {
     private final CountryService countryService;
     private final ContactService contactService;
     private final RegistrationCompleteEventListener eventListener;
+    private final PasswordResetTokenService passwordResetTokenService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
 
     @GetMapping("/login")
@@ -107,6 +111,9 @@ public class AuthorizationController {
         Optional<User> userOptional = userService.getByEmail(passwordResetRequest.getEmail());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+            if (passwordResetTokenService.isExistTokenByUser(user)) {
+                passwordResetTokenService.deleteTokenByUser(user);
+            }
             String passwordResetToken = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, passwordResetToken);
             passwordResetEmailLink(user, applicationUrl(request), passwordResetToken);

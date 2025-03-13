@@ -38,4 +38,9 @@ public class CallServiceImp implements CallService {
     public void deleteById(Long id) {
         callRepository.deleteById(id);
     }
+
+    @Override
+    public void save(CallResponseForView dto) {
+        callRepository.save(callMapper.toEntityForSaveCall(dto));
+    }
 }

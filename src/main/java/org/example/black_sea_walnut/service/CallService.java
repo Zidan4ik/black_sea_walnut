@@ -13,4 +13,6 @@ public interface CallService {
     PageResponse<CallResponseForView> getAll(CallResponseForView response, Pageable pageable);
 
     void deleteById(Long id);
+
+    void save(CallResponseForView dto);
 }
