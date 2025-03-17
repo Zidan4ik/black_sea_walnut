@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service.specifications;
 
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.user.UserResponseForView;
+import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;

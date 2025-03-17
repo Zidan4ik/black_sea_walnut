@@ -561,7 +561,7 @@
                 <!-- Current price -->
                 <div id="shared-old-price">
                     <input class="form-control" id="currentPrice_" data-name="oldPrice" type="text" placeholder=""
-                    disabled/>
+                           disabled/>
                 </div>
                 <!--/ Current price -->
 
@@ -788,7 +788,9 @@
                         resForm.append("energyMass", $('#energyMass_').val());
                         resForm.append("mass", $('#mass_').val());
                         resForm.append("discountId", $('#discounts-uk_').val());
-                        resForm.append("tasteId", $('#tastes-uk_').val());
+                        let value = $('#tastes-uk_').val();
+                        console.log('taste id:',value);
+                        resForm.append("tasteId", value);
 
                         resForm.append("descriptionProductUk", document.getElementById("hidden-edit-description-product-uk").innerHTML);
                         resForm.append("descriptionProductEn", document.getElementById("hidden-edit-description-product-en").innerHTML);
@@ -851,7 +853,7 @@
                                                 let img = input.attr('data-image');
                                                 let $input = $(`#${img}`);
                                                 if ($input && data[key] !== null) {
-                                                    $input.attr('src', data[key]===''?path_default_image:data[key]);
+                                                    $input.attr('src', data[key] === '' ? path_default_image : data[key]);
                                                     input.val(data[key]);
                                                 }
                                             } else if (input.hasClass('editors')) {

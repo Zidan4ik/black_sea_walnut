@@ -2,8 +2,8 @@ package org.example.black_sea_walnut.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.order.ResponseOrderForAdd;
-import org.example.black_sea_walnut.dto.order.ResponseOrderForView;
+import org.example.black_sea_walnut.dto.admin.order.ResponseOrderForAdd;
+import org.example.black_sea_walnut.dto.admin.order.ResponseOrderForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.OrderService;
 import org.springframework.data.domain.PageRequest;

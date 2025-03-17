@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service.specifications;
 
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.manager.ManagerResponseForView;
+import org.example.black_sea_walnut.dto.admin.manager.ManagerResponseForView;
 import org.example.black_sea_walnut.entity.Manager;
 import org.springframework.data.jpa.domain.Specification;
 

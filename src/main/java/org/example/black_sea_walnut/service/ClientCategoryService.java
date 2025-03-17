@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.pages.clients.request.ClientCategoryRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientCategoryResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
 import org.example.black_sea_walnut.entity.ClientCategory;
 
 import java.util.List;

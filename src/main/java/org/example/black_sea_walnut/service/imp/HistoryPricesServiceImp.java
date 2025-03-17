@@ -2,13 +2,11 @@ package org.example.black_sea_walnut.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.HistoryRequestPricesForProduct;
-import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
-import org.example.black_sea_walnut.entity.History;
+import org.example.black_sea_walnut.dto.admin.historyPrice.HistoryResponsePricesForProduct;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.mapper.HistoryPricesMapper;
 import org.example.black_sea_walnut.repository.HistoryPricesRepository;
-import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,8 @@
 package org.example.black_sea_walnut.controller.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.order.OrderResponseForStatsProducts;
-import org.example.black_sea_walnut.dto.stats.UserResponseForStats;
-import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.dto.admin.order.OrderResponseForStatsProducts;
+import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
 import org.example.black_sea_walnut.service.OrderService;
 import org.example.black_sea_walnut.service.UserService;
 import org.example.black_sea_walnut.util.DateUtil;

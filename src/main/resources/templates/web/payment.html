@@ -1,0 +1,92 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Stripe</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" th:href="@{/css/stripe.css}">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h2>Pay with Stripe</h2>
+    <form id="payment-form">
+        <div class="card-box">
+            <!--            <label for="card-element">Credit or Debit Card</label>-->
+            <!--            <div id="card-element" class="card_input"></div>-->
+            <label for="card-number-element">Card number:</label>
+            <div id="card-number-element" class="card_input"></div>
+            <label for="card-expiry-element">Date expired:</label>
+            <div id="card-expiry-element" class="card_input"></div>
+            <label for="card-cvc-element">CVC:</label>
+            <div id="card-cvc-element" class="card_input"></div>
+            <div id="card-result"></div>
+            <button class="card-button" type="submit">Pay</button>
+        </div>
+    </form>
+
+    <script>
+        const stripe = Stripe('pk_test_51R2IQUJrY7tkTcm5RI5omR8c2XidVO6rMtUZyoEEa37xPGoYDrH7hYLqhJM7xjk1wAi7YsQJNgaER5CpdYtr0TE700E1y2704W'); // Use your Stripe Publishable Key
+        const paymentForm = document.getElementById('payment-form');
+        const elements = stripe.elements();
+
+        // const card = elements.create('card');
+        // card.mount('#card-element');
+        const style = {
+            base: {
+                fontSize: '14px',
+                color: "#32325d",
+                fontFamily: 'Montserrat, sans-serif',
+                "::placeholder": {
+                    color: "#767699"
+                }
+            },
+            invalid: {
+                color: "#fa755a",
+                iconColor: "#fa755a"
+            }
+        };
+
+        const cardNumber = elements.create('cardNumber', {style});
+        cardNumber.mount('#card-number-element');
+        const cardExpiry = elements.create('cardExpiry', {style});
+        cardExpiry.mount('#card-expiry-element');
+        const cardCVC = elements.create('cardCvc', {style});
+        cardCVC.mount('#card-cvc-element');
+
+        // paymentForm.addEventListener('submit', async (event) => {
+        //     event.preventDefault();
+        //     const response = await fetch('/create-payment-intent?amount=5000', {
+        //         method: 'POST',
+        //         headers: {"Content-Type": "application/json"}
+        //     });
+        //
+        //     const data = await response.json();
+        //     console.log(data);
+        //     const clientSecret = data.clientSecret;
+        //
+        //     const {error} = await stripe.confirmCardPayment(clientSecret, {
+        //         payment_method: {
+        //             card: cardNumber,
+        //             billing_details: {
+        //                 name: 'Customer Name',
+        //             },
+        //         },
+        //     });
+        //
+        //     if (error) {
+        //         console.error("Payment failed", error);
+        //         alert("Помилка оплати: " + error.message);
+        //     } else {
+        //         window.location.href = contextPath + 'thanks';
+        //     }
+        // });
+    </script>
+</div>
+
+<script layout:fragment="script">
+
+</script>
+</body>
+</html>

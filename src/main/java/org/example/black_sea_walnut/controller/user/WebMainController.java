@@ -1,10 +1,10 @@
 package org.example.black_sea_walnut.controller.user;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
-import org.example.black_sea_walnut.dto.nut.NutResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.main.response.*;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.nut.NutResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
 import org.example.black_sea_walnut.dto.web.MainResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.enums.LanguageCode;

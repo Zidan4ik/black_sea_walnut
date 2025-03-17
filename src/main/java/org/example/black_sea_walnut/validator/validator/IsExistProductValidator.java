@@ -3,7 +3,7 @@ package org.example.black_sea_walnut.validator.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.validator.annotation.IsExistProductValidation;

@@ -3,7 +3,7 @@ package org.example.black_sea_walnut.validator.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.taste.TasteRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.TasteService;

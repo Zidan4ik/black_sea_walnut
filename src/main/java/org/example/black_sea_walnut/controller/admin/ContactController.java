@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.service.ContactService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -87,6 +87,7 @@ function validate3(data) {
 function validate4(data) {
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-error="${field}"]`);
+        console.log(inputFields);
         inputFields.forEach((inputField) => {
             console.log("Field:", field, "Message:", message);
             inputField.classList.add("errorMy");

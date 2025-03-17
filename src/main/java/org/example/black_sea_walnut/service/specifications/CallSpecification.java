@@ -1,9 +1,8 @@
 package org.example.black_sea_walnut.service.specifications;
 
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.calls.CallResponseForView;
+import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.entity.Call;
-import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.enums.CallStatus;
 import org.springframework.data.jpa.domain.Specification;
 

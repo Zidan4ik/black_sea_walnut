@@ -2,11 +2,11 @@ package org.example.black_sea_walnut.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.factory.request.BannerBlockRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.factory.request.BlockRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.factory.response.FactoryBannerBlockResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.factory.response.BlockResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.factory.request.BannerBlockRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.factory.request.BlockRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.factory.response.FactoryBannerBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.factory.response.BlockResponseForAdd;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.enums.PageType;

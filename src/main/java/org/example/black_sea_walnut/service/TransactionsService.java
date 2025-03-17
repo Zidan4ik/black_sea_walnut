@@ -1,8 +1,8 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForAccount;
-import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
+import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForAccount;
+import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
 import org.example.black_sea_walnut.entity.Transaction;
 import org.example.black_sea_walnut.entity.User;

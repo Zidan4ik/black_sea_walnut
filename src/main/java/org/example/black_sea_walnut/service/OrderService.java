@@ -1,8 +1,9 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.order.*;
+import org.example.black_sea_walnut.dto.admin.order.*;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
+import org.example.black_sea_walnut.dto.web.checkout.CheckoutUser;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -20,7 +21,7 @@ public interface OrderService {
 
     PageResponse<ResponseOrderForView> getAll(ResponseOrderForView response, Pageable pageable, LanguageCode code);
 
-    PageResponse<OrderResponseForAccount> getAll(User user,Pageable pageable, LanguageCode code);
+    PageResponse<OrderResponseForAccount> getAll(User user, Pageable pageable, LanguageCode code);
 
     PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code);
 
@@ -33,6 +34,8 @@ public interface OrderService {
     void deleteById(Long id);
 
     void save(Order entity);
+
+    void saveAfterPayment(CheckoutUser order);
 
     List<Map<String, Object>> getOrdersCountByDate(LocalDate start, LocalDate end);
 

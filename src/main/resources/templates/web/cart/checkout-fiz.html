@@ -1,171 +1,394 @@
 <html lang="uk"
-	  layout:decorate="~{web/blocks/layout.html}"
-	  xmlns:layout="http://www.w3.org/1999/xhtml"
-	  xmlns="http://www.w3.org/1999/html">
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
 <head>
-	<title th:text="#{text.cart}"></title>
+    <title th:text="#{text.cart}"></title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" th:href="@{/css/stripe.css}">
+    <style>
+        #card-block {
+            display: flex;
+        }
+
+        .hide-block {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content">
 
-	<section class="first-section no-bg" style="min-height: 0 !important;">
-	<div class="container">
-		<div class="breadcrumbs">
-			<ul>
-				<li>
-					<a th:href="@{/web/static}" th:text="#{text.main}"></a>
-				</li>
-				<li>
-					<a th:href="@{/web/cart}" th:text="#{text.cart}"></a>
-				</li>
-				<li th:text="#{text.placingAnOrder}"></li>
-			</ul>
-		</div>
-	</div>
-</section>
+    <section class="first-section no-bg" style="min-height: 0 !important;">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ul>
+                    <li>
+                        <a th:href="@{/web/main}" th:text="#{text.main}"></a>
+                    </li>
+                    <li>
+                        <a th:href="@{/web/cart}" th:text="#{text.cart}"></a>
+                    </li>
+                    <li th:text="#{text.placingAnOrder}"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-	<section class="accaunt">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 col-md-6">
-					<h1 th:text="#{text.placingAnOrder}"></h1>
-				</div>
-				<div class="col-lg-8 col-md-6">
-					<div class="accaunt__manager">
-						<ul>
-							<li><p th:text="#{text.cartPersonalManager}"></p></li>
-							<li><i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14 12</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-12">
-					<table id="table">
-						<thead>
-						<tr>
-							<th><span th:text="#{table.header.product}"></span></th>
-							<th><span th:text="#{text.amount}"></span></th>
-							<th><span th:text="#{table.header.priceByProduct}"></span></th>
-							<th><span th:text="#{table.header.totalPrice}"></span></th>
-						</tr>
-						</thead>
-						<tbody>
-<!--						<tr>-->
-<!--							<td>Орех соленый 80г.</td>-->
-<!--							<td>-->
-<!--								<div class="item_quantity">-->
-<!--									<button type="button" class="quantity_minus">-->
-<!--										<i class="nut-icon icons-qty-left"></i>-->
-<!--									</button>-->
-<!--									<input type="text" name="quantity" value="4" class="quantity_input">-->
-<!--									<button type="button" class="quantity_plus">-->
-<!--										<i class="nut-icon icons-qty-right"></i>-->
-<!--									</button>-->
-<!--								</div>-->
-<!--							</td>-->
-<!--							<td>25 грн.</td>-->
-<!--							<td>100 грн.</td>-->
-<!--						</tr>-->
-						</tbody>
-					</table>
-				</div>
-				<div class="col-12">
-					<div class="after_table">
-						<div class="row">
-							<div class="col-md-6">
-
-							</div>
-							<div class="col-md-6">
-								<div class="popup__cart_sum">
-									<div class="sum_item">
-										<div class="sum_item_title">
-											<p th:text="#{text.total} + ' '"></p>
-										</div>
-										<div class="sum_item_new">
-											<p></p>
-										</div>
-									</div>
-									<div class="sum_item">
-										<!-- <div class="sum_item_button">
-											<a href="#" class="button">Оформить заказ</a>
-										</div> -->
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-12">
-					<div class="checkout_form">
-						<form action="#">
-							<div class="row">
-								<div class="col-lg-5">
-									<div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
-									<input type="text"  th:placeholder="#{table.header.fio}+'*'">
-									<input type="email"  th:placeholder="#{table.header.email}+'*'">
-									<input type="tel"  th:placeholder="#{table.header.phone}+'*'">
-									<div class="form__title" th:text="'2. '+#{table.header.typeOfDelivery}"></div>
-									<fieldset id="group1" class="radio__wrapper radio__wrapper_click">
-										<input id="radio-1" class="radio-custom" name="group1" value="new_post" type="radio" checked>
-										<label for="radio-1" class="radio-custom-label"><span th:text="#{text.checkoutDeliveryText}"></span></label>
-										<div class="new_post box">
-											<select>
-												<option value="hide" th:text="#{text.country}"></option>
-												<option value="lorem">lorem</option>
-											</select>
-											<select>
-												<option value="hide" th:text="#{text.region}"></option>
-												<option value="lorem">lorem</option>
-											</select>
-										</div>
-										<input id="radio-2" class="radio-custom" name="group1" value="adr" type="radio">
-										<label for="radio-2" class="radio-custom-label"><span th:text="#{text.checkoutCourier}"></span><span class="sticker"><i class="nut-icon icons-novinka"></i><span class="p" th:text="#{text.free}"></span></span></label>
-										<div class="adr box">
-											<input type="text"  th:placeholder="#{table.header.address}+'*'">
-										</div>
-										<input id="radio-3" class="radio-custom" name="group1" value="" type="radio">
-										<label for="radio-3" class="radio-custom-label radio-custom_last"><span th:text="#{text.pickupFromWarehouse}"></span></label>
-									</fieldset>
-									<div class="form__title" th:text="'3. '+#{text.paymentMethods}"></div>
-									<fieldset id="group2" class="radio__wrapper radio__wrapper_second">
-										<input id="radio-4" class="radio-custom" name="group2" value="" type="radio" checked>
-										<label for="radio-4" class="radio-custom-label"><span th:text="#{text.nonCashPayment}"></span></label>
-										<input id="radio-5" class="radio-custom" name="group2" value="" type="radio">
-										<label for="radio-5" class="radio-custom-label"><span>LiqPay / Приват24</span></label>
-										<input id="radio-6" class="radio-custom" name="group2" value="" type="radio">
-										<label for="radio-6" class="radio-custom-label"><span th:text="#{text.cashOnDelivery}"></span></label>
-									</fieldset>
-									<button class="button float-left" type="submit" th:text="#{text.continue}"></button>
-								</div>
-								<div class="col-lg-7"></div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="accaunt">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <h1 th:text="#{text.placingAnOrder}"></h1>
+                </div>
+                <div class="col-lg-8 col-md-6">
+                    <div class="accaunt__manager">
+                        <ul>
+                            <li><p th:text="#{text.cartPersonalManager}"></p></li>
+                            <li><i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14 12</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <table id="table">
+                        <thead>
+                        <tr>
+                            <th><span th:text="#{table.header.product}"></span></th>
+                            <th><span th:text="#{text.amount}"></span></th>
+                            <th><span th:text="#{table.header.priceByProduct}"></span></th>
+                            <th><span th:text="#{table.header.totalPrice}"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody id="container-cart-table">
+                        <tr class="card-row">
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="4" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>100 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        <tr class="card-row">
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="1" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        <tr class="card-row">
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="1" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        <tr class="card-row">
+                            <td th:text="#{text.cartProduct}"></td>
+                            <td>
+                                <div class="item_quantity">
+                                    <button type="button" class="quantity_minus">
+                                        <i class="nut-icon icons-qty-left"></i>
+                                    </button>
+                                    <input type="text" name="quantity" value="1" class="quantity_input">
+                                    <button type="button" class="quantity_plus">
+                                        <i class="nut-icon icons-qty-right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                            <td>25 <span th:text="#{text.grn}"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12">
+                    <div class="after_table">
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <div class="popup__cart_sum">
+                                    <div class="sum_item">
+                                        <div class="sum_item_title">
+                                            <p th:text="#{text.total} + ' '"></p>
+                                        </div>
+                                        <div class="sum_item_new">
+                                            <p><span id="resSumma">175</span> <i th:text="#{text.grn}"></i></p>
+                                        </div>
+                                    </div>
+                                    <div class="sum_item"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="checkout_form">
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
+                                    <input id="fio" data-error="fio" type="text"
+                                           th:placeholder="#{table.header.fio}+'*'">
+                                    <input id="email" data-error="email" type="email"
+                                           th:placeholder="#{table.header.email}+'*'">
+                                    <input id="phone" data-error="phone" type="tel"
+                                           th:placeholder="#{table.header.phone}+'*'">
+                                    <div class="form__title" th:text="'2. '+#{table.header.typeOfDelivery}"></div>
+                                    <fieldset id="group1" class="radio__wrapper radio__wrapper_click">
+                                        <input id="radio-1" class="radio-custom" name="group1" value="newMail"
+                                               type="radio" checked>
+                                        <label for="radio-1" class="radio-custom-label">
+                                            <span th:text="#{text.checkoutDeliveryText}"></span>
+                                        </label>
+                                        <div class="new_post box hide-block" id="fiz-selectors"></div>
+                                        <input id="radio-2" class="radio-custom" name="group1" value="courier"
+                                               type="radio">
+                                        <label for="radio-2" class="radio-custom-label"><span
+                                                th:text="#{text.checkoutCourier}"></span><span class="sticker"><i
+                                                class="nut-icon icons-novinka"></i>
+                                            <span class="p" th:text="#{text.free}"></span></span></label>
+                                        <div class="adr box"><input type="text"
+                                                                    th:placeholder="#{table.header.address}+'*'"></div>
+                                        <input id="radio-3" class="radio-custom" name="group1" value="pickUp"
+                                               type="radio">
+                                        <label for="radio-3" class="radio-custom-label radio-custom_last"><span
+                                                th:text="#{text.pickupFromWarehouse}"></span></label>
+                                    </fieldset>
+                                    <div class="form__title" th:text="'3. '+#{text.paymentMethods}"></div>
+                                    <fieldset id="group2" class="radio__wrapper radio__wrapper_second">
+                                        <input id="radio-4" class="radio-custom" name="group2" value="invoice"
+                                               type="radio"
+                                               checked>
+                                        <label for="radio-4" class="radio-custom-label"><span
+                                                th:text="#{text.nonCashPayment}"></span></label>
+                                        <input id="radio-5" class="radio-custom" name="group2" value="card"
+                                               type="radio">
+                                        <label for="radio-5"
+                                               class="radio-custom-label"><span>LiqPay / Приват24</span></label>
+                                        <div id="card-block" class="card-box" style="margin: 0;width: 100%;">
+                                            <div id="card-element" class="card_input"></div>
+                                            <!--                                            <button id="test-btn" class="card-button" type="button">Pay</button>-->
+                                        </div>
+                                        <input id="radio-6" class="radio-custom" name="group2" value="cash"
+                                               type="radio">
+                                        <label for="radio-6" class="radio-custom-label"><span
+                                                th:text="#{text.cashOnDelivery}"></span></label>
+                                    </fieldset>
+                                    <button id="checkout-btn" class="button float-left" type="button"
+                                            th:text="#{text.continue}"></button>
+                                </div>
+                                <div class="col-lg-7"></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script th:src="@{/js/validator.js}"></script>
 </div>
 
 <script layout:fragment="script">
+    $(document).ready(async function () {
+        invokeRequestCartData();
+        invokeRequestContactData();
+        let countries = await getCountriesAll();
+        await fillSelectorsByContainer('fiz-selectors', 'fiz');
+        appendOptionsToSelect(countries, 'fiz-select-countries');
+        handleChangeGeography('fiz');
 
+        $('#select-countries').on('change', function () {
+            invokeRequestRegionsByCountry($(this).val(), 'select-regions');
+        });
 
-	$(document).ready(function () {
-		invokeRequestProductData();
-	});
+        $('#select-regions').on('change', '#select-regions', function () {
+            invokeRequestCitiesByRegion($(this).val(), 'select-cities');
+        });
 
-	function invokeRequestProductData() {
-		let request = new XMLHttpRequest();
-		request.open("GET", contextPath + `web/contacts/get`)
-		request.send();
-		request.addEventListener('load', function () {
-			if (request.status === 200) {
-				let data = JSON.parse(request.response);
-				buildContacts(data);
-			}
-		});
-	}
+        toggleAddressBlock();
+        $('input[name="group1"]').on("change", toggleAddressBlock);
+        toggleCardBlock();
+        $('input[name="group2"]').on("change", toggleCardBlock);
 
+        $('#checkout-btn').on('click', function () {
+            let activePaymentType = $('input[name="group2"]:checked').val() || null;
+            if (activePaymentType) {
+                handlePayment(buildFormData());
+            }
+        });
+    });
+
+    function buildFormData() {
+        let data = new FormData();
+        data.append('fio', $('#fio').val());
+        data.append('email', $('#email').val());
+        data.append('phone', $('#phone').val());
+        data.append('countryId', $('#fiz-select-countries').val());
+        data.append('regionId', $('#fiz-select-regions').val());
+        data.append('cityId', $('#fiz-select-cities').val());
+        data.append('typeOfDelivery', $('input[name="group1"]:checked').val());
+        data.append('typeOfPayment', $('input[name="group2"]:checked').val());
+        data.append('totalAmount', Number($('#resSumma').text()) * 100 || null);
+        let counter = 0;
+
+        $('.product-row').each(function () {
+            let $row = $(this);
+            let name = $row.find('.name-span').text().trim();
+            let mass = $row.find('.mass-span').text().trim();
+            let quantity = $row.find('.quantity_input').val().trim();
+            let price = $row.find('td:eq(2) .bt-content').text().trim().replace('грн.', '');
+            data.append(`products[${counter}].name`, name);
+            data.append(`products[${counter}].mass`, mass);
+            data.append(`products[${counter}].amount`, quantity);
+            data.append(`products[${counter}].price`, price);
+            counter++;
+        });
+
+        console.log(counter);
+        counter = 0;
+        return data;
+    }
+
+    function toggleCardBlock() {
+        let prop = $("#radio-5").prop("checked");
+        if (prop) {
+            $('#card-block').slideDown();
+        } else {
+            $('#card-block').slideUp();
+        }
+    }
+
+    function toggleAddressBlock() {
+        let prop = $("#radio-1").prop('checked');
+        if (prop) {
+            $('#fiz-selectors').slideDown();
+        } else {
+            $('#fiz-selectors').slideUp();
+        }
+    }
+
+    function invokeRequestContactData() {
+        let request = new XMLHttpRequest();
+        request.open("GET", contextPath + `web/contacts/get`)
+        request.send();
+        request.addEventListener('load', function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                buildContacts(data);
+            }
+        });
+    }
+
+    const stripe = Stripe('pk_test_51R2IQUJrY7tkTcm5RI5omR8c2XidVO6rMtUZyoEEa37xPGoYDrH7hYLqhJM7xjk1wAi7YsQJNgaER5CpdYtr0TE700E1y2704W'); // Use your Stripe Publishable Key
+    const elements = stripe.elements();
+
+    const style = {
+        base: {
+            fontSize: '14px',
+            color: "#32325d",
+            fontFamily: 'Montserrat, sans-serif',
+            "::placeholder": {
+                color: "#767699"
+            }
+        },
+        invalid: {
+            color: "#fa755a",
+            iconColor: "#fa755a"
+        }
+    };
+    const card = elements.create('card', {style});
+    card.mount('#card-element');
+
+    async function handlePayment(formData) {
+        try {
+            const response = await fetch(`/checkout/card`, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            let data = await response.json();
+            console.log(data);
+            if (data.clientSecret) {
+                const clientSecret = data.clientSecret;
+                const {error} = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {name: $('#fio').val()}
+                    }
+                });
+                if (error) {
+                    console.error("Payment failed", error);
+                    alert("Помилка оплати: " + error.message);
+                } else {
+                    window.location.href = contextPath + "thanks";
+                }
+            }
+        } catch (error) {
+            let data = JSON.parse(error.message);
+            console.log(data);
+            clearValid();
+            validate4(data);
+        }
+    }
+
+    // paymentForm.addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     const response = await fetch('/create-payment-intent?amount=5000', {
+    //         method: 'POST',
+    //         headers: {"Content-Type": "application/json"}
+    //     });
+    //
+    //     const data = await response.json();
+    //     console.log(data);
+    //     const clientSecret = data.clientSecret;
+    //
+    //     const {error} = await stripe.confirmCardPayment(clientSecret, {
+    //         payment_method: {
+    //             card: cardNumber,
+    //             billing_details: {
+    //                 name: 'Customer Name',
+    //             },
+    //         },
+    //     });
+    //
+    //     if (error) {
+    //         console.error("Payment failed", error);
+    //         alert("Помилка оплати: " + error.message);
+    //     } else {
+    //         window.location.href = contextPath + 'thanks';
+    //     }
+    // });
 </script>
 </body>
 </html>

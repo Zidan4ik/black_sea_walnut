@@ -3,9 +3,12 @@ package org.example.black_sea_walnut.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@DynamicInsert
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,22 +39,22 @@ public class Product {
     private String pathToImagePacking;
     private String pathToImageDelivery;
     private String priceByUnit;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "products_discounts",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "articleId"),
             inverseJoinColumns = @JoinColumn(name = "discount_id", referencedColumnName = "discountCommonId")
     )
-    private Set<Discount> discounts;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Discount> discounts = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductTranslation> productTranslations = new ArrayList<>();
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "products_tastes",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "articleId"),
             inverseJoinColumns = @JoinColumn(name = "taste_id", referencedColumnName = "commonId")
     )
-    private Set<Taste> tastes;
+    private Set<Taste> tastes = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<HistoryPrices> historyPrices;
 }

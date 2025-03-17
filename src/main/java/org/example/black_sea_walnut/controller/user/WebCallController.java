@@ -1,9 +1,8 @@
 package org.example.black_sea_walnut.controller.user;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.calls.CallResponseForView;
+import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.service.CallService;
 import org.example.black_sea_walnut.service.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaRequestForAdd;
-import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaResponseForAdd;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.springframework.stereotype.Component;

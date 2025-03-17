@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.calls.CallResponseForView;
+import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.service.CallService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;

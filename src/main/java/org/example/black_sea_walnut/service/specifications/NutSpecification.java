@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.service.specifications;
 
 import jakarta.persistence.criteria.Join;
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.nut.NutResponseForView;
+import org.example.black_sea_walnut.dto.admin.nut.NutResponseForView;
 import org.example.black_sea_walnut.entity.Nut;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.jpa.domain.Specification;

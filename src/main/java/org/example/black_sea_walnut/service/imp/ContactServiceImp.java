@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.service.imp;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.entity.Contact;
 import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.repository.ContactRepository;

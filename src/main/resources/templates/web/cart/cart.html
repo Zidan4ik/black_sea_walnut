@@ -13,7 +13,7 @@
             <div class="breadcrumbs">
                 <ul>
                     <li>
-                        <a href="/static" th:text="#{text.main}"></a>
+                        <a th:href="@{/web/main}" th:text="#{text.main}"></a>
                     </li>
                     <li th:text="#{text.cart}"></li>
                 </ul>
@@ -46,7 +46,7 @@
                             <th><span th:text="#{table.header.totalPrice}"></span></th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="container-cart-table">
                         <tr>
                             <td th:text="#{text.cartProduct}"></td>
                             <td>
@@ -130,12 +130,13 @@
                                             <p th:text="#{text.total}+ ': '"></p>
                                         </div>
                                         <div class="sum_item_new">
-                                            <p>175 <i th:text="#{text.grn}"></i></p>
+                                            <p><span id="resSumma">175</span> <i th:text="#{text.grn}"></i></p>
                                         </div>
                                     </div>
                                     <div class="sum_item">
                                         <div class="sum_item_button">
-                                            <a th:href="@{/web/checkout-fiz}" class="button" th:text="#{text.toPlaceOnOrder}"></a>
+                                            <a th:href="@{/web/checkout-fiz}" class="button"
+                                               th:text="#{text.toPlaceOnOrder}"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -160,26 +161,11 @@
 
 <script layout:fragment="script">
 
-
     $(document).ready(function () {
         invokeRequestCartData();
         invokeRequestContacts();
     });
 
-    function invokeRequestCartData() {
-        let request = new XMLHttpRequest();
-        let pathName = location.pathname.substring(1, location.pathname.length);
-        console.log(pathName);
-        request.open("GET", contextPath + `web/cart/get`)
-        request.send();
-        request.addEventListener('load', function () {
-            if (request.status === 200) {
-                let data = JSON.parse(request.response);
-                console.log(data);
-
-            }
-        });
-    }
     function invokeRequestContacts() {
         let request = new XMLHttpRequest();
         request.open("GET", contextPath + `web/contacts/get`)

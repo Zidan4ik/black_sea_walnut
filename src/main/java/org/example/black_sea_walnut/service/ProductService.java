@@ -1,10 +1,10 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
-import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
+import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;

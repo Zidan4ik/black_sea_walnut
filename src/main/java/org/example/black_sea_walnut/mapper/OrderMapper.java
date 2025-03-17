@@ -1,13 +1,19 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.order.*;
+import org.example.black_sea_walnut.dto.admin.order.*;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
+import org.example.black_sea_walnut.dto.web.checkout.CheckoutUser;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.DeliveryStatus;
+import org.example.black_sea_walnut.enums.DeliveryType;
+import org.example.black_sea_walnut.enums.OrderStatus;
+import org.example.black_sea_walnut.enums.PaymentType;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,5 +107,27 @@ public class OrderMapper {
                 .status(status != null ? status.toString() : "")
                 .cost(String.valueOf(entity.getTotalPrice()))
                 .build();
+    }
+    public Order toEntityAfterCheckout(CheckoutUser dto){
+        Order entity = new Order();
+        entity.setFio(dto.getFio());
+        entity.setEmail(dto.getEmail());
+        entity.setPhone(dto.getPhone());
+        entity.setCountProducts(Math.toIntExact(dto.getTotalAmount()));
+        entity.setTotalPrice(Math.toIntExact(dto.getTotalCount()));
+
+        entity.setCompanyDelivery(dto.getCompanyDelivery());
+        entity.setPersonNameDelivery(dto.getPersonNameDelivery());
+        entity.setEmailDelivery(dto.getEmailDelivery());
+        entity.setPhoneDelivery(dto.getPhoneDelivery());
+        entity.setAddressDelivery(dto.getAddressDelivery());
+
+        entity.setOrderStatus(OrderStatus.new_);
+        entity.setDeliveryStatus(DeliveryStatus.await);
+        entity.setDeliveryType(DeliveryType.fromString(dto.getTypeOfDelivery()));
+        entity.setPaymentType(PaymentType.fromString(dto.getTypeOfPayment()));
+        entity.setPayed(dto.getIsPayed());
+        entity.setDateOfOrdering(LocalDate.now());
+        return entity;
     }
 }

@@ -27,33 +27,6 @@
             <div class="row no-gutters">
                 <div class="col-lg-5 col-md-6">
                     <div class="wrap" id="container-product">
-                        <div class="product__item">
-                            <div class="sticker">
-                                <i class="nut-icon icons-actciya"></i>
-                                <p id="product-discount"></p>
-                            </div>
-                            <!-- Slider main container -->
-                            <div class="products-container swiper-container">
-                                <!-- Additional required wrapper -->
-                                <div class="swiper-wrapper">
-                                    <!-- Slides -->
-                                    <div class="swiper-slide">
-                                        <a href="#"><img src="/blacksea/img/pic10.png" alt="alt"/></a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="#"><img src="/blacksea/img/pic10.png" alt="alt"/></a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="#"><img src="/blacksea/img/pic10.png" alt="alt"/></a>
-                                    </div>
-                                </div>
-
-                                <!-- If we need navigation buttons -->
-                                <div class="swiper-button-prev"></div>
-                                <div class="swiper-button-next"></div>
-                                <img class="zoom" src="/blacksea/img/zoom.svg" alt="alt">
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-6">
@@ -273,6 +246,38 @@
         $(`#container-packing-desc`).html(item.descriptionPacking);
         $(`#container-payment-desc`).html(item.descriptionPayment);
         $(`#container-delivery-desc`).html(item.descriptionDelivery);
+
+        let imageContainer = $('#container-product');
+        let discountItem = item.discount.toLowerCase();
+        let disColor = discountItem === 'new' || discountItem === 'новий'? 'icons-novinka':'icons-actciya';
+        if(imageContainer.length){
+            imageContainer.append(`<div class="product__item">
+                            <div class="sticker">
+                                <i class="nut-icon ${disColor}"></i>
+                                <p id="product-discount">${discountItem}</p>
+                            </div>
+                            <div class="products-container swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage1 || path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage2 || path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage3 || path_default_image}" alt="alt"/></a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a><img src="${item.pathToImage4 || path_default_image}" alt="alt"/></a>
+                                    </div>
+                                </div>
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                                <img class="zoom" src="${contextPath + 'blacksea/img/zoom.svg'}" alt="alt">
+                            </div>
+                        </div>`);
+            initSwipers('products-container');
+        }
     }
 
 </script>

@@ -2,8 +2,7 @@ package org.example.black_sea_walnut.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.web.NewResponseForView;
 import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;

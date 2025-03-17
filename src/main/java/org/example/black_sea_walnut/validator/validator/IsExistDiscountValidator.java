@@ -3,7 +3,7 @@ package org.example.black_sea_walnut.validator.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.discount.DiscountRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.discount.DiscountRequestForAdd;
 import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.DiscountService;

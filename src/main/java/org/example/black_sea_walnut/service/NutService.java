@@ -1,9 +1,9 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.nut.NutRequestForAdd;
-import org.example.black_sea_walnut.dto.nut.NutResponseForAdd;
-import org.example.black_sea_walnut.dto.nut.NutResponseForView;
+import org.example.black_sea_walnut.dto.admin.nut.NutRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.nut.NutResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.nut.NutResponseForView;
 import org.example.black_sea_walnut.entity.Nut;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;

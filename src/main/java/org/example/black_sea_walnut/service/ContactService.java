@@ -1,6 +1,6 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.entity.Contact;
 
 import java.util.List;

@@ -2,13 +2,11 @@ package org.example.black_sea_walnut.service.specifications;
 
 import jakarta.persistence.criteria.*;
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
-import org.example.black_sea_walnut.entity.HistoryPrices;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @UtilityClass

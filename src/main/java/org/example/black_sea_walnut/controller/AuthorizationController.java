@@ -2,9 +2,10 @@ package org.example.black_sea_walnut.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.web.RegistrationResponseForView;
 import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.Country;
@@ -30,7 +31,6 @@ import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("")
 public class AuthorizationController {
     private final UserService userService;
     private final CountryService countryService;
@@ -96,7 +96,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/password-reset-request")
-    public ResponseEntity<?> resetPasswordRequest(@Validated(OrderedEmailValidation.class) @ModelAttribute PasswordResetRequest passwordResetRequest,
+    public ResponseEntity<?> resetPasswordRequest(@Validated({OrderedEmailValidation.class, Default.class}) @ModelAttribute PasswordResetRequest passwordResetRequest,
                                                   BindingResult bindingResult,
                                                   final HttpServletRequest request) {
         if (bindingResult.hasErrors()) {

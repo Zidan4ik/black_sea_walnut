@@ -2,8 +2,8 @@ package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.gallery.GalleryRequestForAdd;
-import org.example.black_sea_walnut.dto.gallery.GalleryResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.gallery.GalleryRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.gallery.GalleryResponseForAdd;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.GalleryService;
 import org.springframework.http.HttpStatus;

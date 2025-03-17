@@ -1,7 +1,6 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.order.ResponseOrderDetailForView;
-import org.example.black_sea_walnut.entity.Basket;
+import org.example.black_sea_walnut.dto.admin.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 
@@ -19,4 +18,5 @@ public interface OrderDetailService {
     OrderDetail getById(Long id);
 
     void deleteById(Long id);
+
 }

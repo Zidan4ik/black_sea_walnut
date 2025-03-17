@@ -1,9 +1,9 @@
 package org.example.black_sea_walnut.mapper.pages;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.main.request.*;
-import org.example.black_sea_walnut.dto.pages.main.response.*;
+import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.main.request.*;
+import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;

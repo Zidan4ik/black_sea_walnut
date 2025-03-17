@@ -4,14 +4,16 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.*;
-import org.example.black_sea_walnut.dto.historyPrice.HistoryResponsePricesForProduct;
-import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
-import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
+import org.example.black_sea_walnut.dto.admin.historyPrice.HistoryResponsePricesForProduct;
+import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
+import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
+import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
@@ -26,11 +28,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,72 +80,60 @@ public class ProductServiceImp implements ProductService {
         return productRepository.save(entity);
     }
 
-    @SneakyThrows
+    @Transactional
     @Override
     public Product save(ProductRequestForAdd dto) {
+        Product product;
+
         if (dto.getId() != null) {
-            Product product = getById(dto.getId());
-            if (dto.getPathToImage1().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImage1());
-            if (dto.getPathToImage2().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImage2());
-            if (dto.getPathToImage3().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImage3());
-            if (dto.getPathToImage4().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImage4());
-            if (dto.getPathToImageDelivery().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImageDelivery());
-            if (dto.getPathToImageDescription().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImageDescription());
-            if (dto.getPathToImagePacking().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImagePacking());
-            if (dto.getPathToImagePayment().isEmpty())
-                imageServiceImp.deleteByPath(product.getPathToImagePayment());
+            product = getById(dto.getId());
+            if (dto.getImage1() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage1());
+                dto.setPathToImage1(generatedPath);
+            }
+            if (dto.getImage2() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage2());
+                dto.setPathToImage2(generatedPath);
+            }
+            if (dto.getImage3() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage3());
+                dto.setPathToImage3(generatedPath);
+            }
+            if (dto.getImage4() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage4());
+                dto.setPathToImage4(generatedPath);
+            }
+            if (dto.getImageDescription() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImageDescription());
+                dto.setPathToImageDescription(generatedPath);
+            }
+            if (dto.getImagePacking() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImagePacking());
+                dto.setPathToImagePacking(generatedPath);
+            }
+            if (dto.getImagePayment() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImagePayment());
+                dto.setPathToImagePayment(generatedPath);
+            }
+            if (dto.getImageDelivery() != null) {
+                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImageDelivery());
+                dto.setPathToImageDelivery(generatedPath);
+            }
+
             if (dto.getNewPrice() != null) {
                 product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
-                save(product);
             } else {
                 dto.setNewPrice(dto.getCurrentPrice());
             }
-        }
-        if (dto.getImage1() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage1());
-            dto.setPathToImage1(generatedPath);
-        }
-        if (dto.getImage2() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage2());
-            dto.setPathToImage2(generatedPath);
-        }
-        if (dto.getImage3() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage3());
-            dto.setPathToImage3(generatedPath);
-        }
-        if (dto.getImage4() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage4());
-            dto.setPathToImage4(generatedPath);
-        }
-        if (dto.getImageDescription() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImageDescription());
-            dto.setPathToImageDescription(generatedPath);
-        }
-        if (dto.getImagePacking() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImagePacking());
-            dto.setPathToImagePacking(generatedPath);
-        }
-        if (dto.getImagePayment() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImagePayment());
-            dto.setPathToImagePayment(generatedPath);
-        }
-        if (dto.getImageDelivery() != null) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImageDelivery());
-            dto.setPathToImageDelivery(generatedPath);
-        }
 
-        Product product = mapper.toEntityForRequestAdd(dto);
-        discountService.getAllByDiscountCommonId(dto.getDiscountId()).stream()
-                .findFirst().ifPresent(discount -> product.setDiscounts(Set.of(discount)));
-        tasteService.getAllByCommonId(dto.getTasteId()).stream()
-                .findFirst().ifPresent(taste -> product.setTastes(Set.of(taste)));
+        } else {
+            product = mapper.toEntityForRequestAdd(dto);
+        }
+        product.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())
+                .stream().filter(d -> d.getLanguageCode().equals(LanguageCode.en)).collect(Collectors.toSet())));
+        product.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())
+                .stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).collect(Collectors.toSet())));
+
         Product productSaved = save(product);
 
         imageServiceImp.save(dto.getImage1(), productSaved.getPathToImage1());
@@ -151,6 +144,7 @@ public class ProductServiceImp implements ProductService {
         imageServiceImp.save(dto.getImageDelivery(), productSaved.getPathToImageDelivery());
         imageServiceImp.save(dto.getImagePacking(), productSaved.getPathToImagePacking());
         imageServiceImp.save(dto.getImagePayment(), productSaved.getPathToImagePayment());
+
         return productSaved;
     }
 

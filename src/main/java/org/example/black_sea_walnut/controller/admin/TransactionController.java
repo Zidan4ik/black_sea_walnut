@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.transaction.ResponseTransactionForView;
+import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.TransactionsService;
 import org.springframework.data.domain.PageRequest;

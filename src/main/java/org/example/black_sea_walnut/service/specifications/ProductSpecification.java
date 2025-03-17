@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.service.specifications;
 
 import jakarta.persistence.criteria.*;
 import lombok.experimental.UtilityClass;
-import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.entity.HistoryPrices;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;

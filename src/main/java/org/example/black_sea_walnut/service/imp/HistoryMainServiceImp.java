@@ -2,9 +2,9 @@ package org.example.black_sea_walnut.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.example.black_sea_walnut.dto.historyMedia.HistoryMediaRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.main.request.*;
-import org.example.black_sea_walnut.dto.pages.main.response.*;
+import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.main.request.*;
+import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
 import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryMedia;

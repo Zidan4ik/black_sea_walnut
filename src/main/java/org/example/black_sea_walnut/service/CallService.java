@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.calls.CallResponseForView;
+import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.entity.Call;
 import org.springframework.data.domain.Pageable;
 

@@ -1,6 +1,6 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.calls.CallResponseForView;
+import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.entity.Call;
 import org.example.black_sea_walnut.enums.CallStatus;
 import org.example.black_sea_walnut.util.DateUtil;

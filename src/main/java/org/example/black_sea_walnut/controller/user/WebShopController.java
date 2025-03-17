@@ -2,12 +2,11 @@ package org.example.black_sea_walnut.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.dto.pages.catalog.response.BannerBlockResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.catalog.response.EcologicallyBlockResponseForAdd;
-import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForShopPage;
-import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.catalog.response.BannerBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.catalog.response.EcologicallyBlockResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
+import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.dto.web.ProductResponseInWeb;

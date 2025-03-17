@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.pages.main.request.*;
-import org.example.black_sea_walnut.dto.pages.main.response.*;
+import org.example.black_sea_walnut.dto.admin.pages.main.request.*;
+import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.enums.PageType;
 

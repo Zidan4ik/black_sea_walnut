@@ -1,9 +1,9 @@
 package org.example.black_sea_walnut.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.product.ProductRequestForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.product.ProductResponseForViewInProducts;
+import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Discount;
@@ -79,7 +79,7 @@ public class ProductMapper {
                 .pathToImageDelivery(entity.getPathToImageDelivery())
                 .build();
         entity.getTastes().stream().findFirst().ifPresent(t -> dto.setTasteId(t.getCommonId()));
-        entity.getDiscounts().stream().findFirst().ifPresent(d -> dto.setTasteId(d.getDiscountCommonId()));
+        entity.getDiscounts().stream().findFirst().ifPresent(d -> dto.setDiscountId(d.getDiscountCommonId()));
         return dto;
     }
 

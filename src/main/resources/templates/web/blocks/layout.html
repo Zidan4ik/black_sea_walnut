@@ -64,6 +64,21 @@
             box-shadow: none !important;
             width: 50%;
         }
+
+        .selectMy {
+            background-color: #fff;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            height: 47px;
+            padding: 14px 16px;
+            font-family: "Montserrat", sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 18px;
+            letter-spacing: 0.01em;
+        }
     </style>
 </head>
 
@@ -139,7 +154,7 @@
                 </div>
                 <div class="modal-body d-flex justify-content-center" data-error="phone">
                     <input
-                           class="form-control" type="text" id="input-number-user" style="width: 80%"/>
+                            class="form-control" type="text" id="input-number-user" style="width: 80%"/>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <a class="btn btn-image sendCall" style="color: white;" th:text="#{text.send}"></a>
@@ -701,7 +716,7 @@
                     $container.empty();
                     data.forEach(function (item) {
                         $container.append(`
-                        <div class="row align-items-center no-gutters item_row">
+                        <div class="row align-items-center no-gutters item_row card-row" data-id="${item.id}">
                             <div class="col-md-5 col-12">
                                 <div class="item_title">
                                     <p>${item.name} ${item.mass + ' ' + gram}</p>
@@ -739,14 +754,17 @@
                         summa += item.price * item.amount;
                         amount += item.amount;
                     });
-                    let $cartSumma = $('#cart-summa');
-                    let $cartTotalAmount = $('.quantity');
-                    if ($cartSumma.length > 0) {
-                        $cartSumma.text(summa);
-                    }
-                    if ($cartTotalAmount.length > 0) {
-                        $cartTotalAmount.text(amount);
-                    }
+                    let elementsUpdate = [
+                        {selector: '#cart-summa', value: summa},
+                        {selector: '#resSumma', value: summa},
+                        {selector: '.quantity', value: amount}
+                    ];
+                    elementsUpdate.forEach(function ({selector, value}) {
+                        let $element = $(selector);
+                        if ($element) {
+                            $element.text(value);
+                        }
+                    });
                 }
             }
         });
@@ -774,28 +792,29 @@
     }
 
     function addEventListenerCart() {
-        $('#container-cart').on('click', '.quantity_plus, .quantity_minus, .item_close', function () {
+        $('#container-cart, #container-cart-table').on('click', '.quantity_plus, .quantity_minus, .item_close', function () {
             let id = $(this).data('id');
             if (!id) return;
-
             if ($(this).hasClass('quantity_plus')) {
                 console.log(`Додати товар з ID: ${id}`);
-                incrementAmount(id);
+                incrementAmount(id, $(this));
             } else if ($(this).hasClass('quantity_minus')) {
                 console.log(`Зменшити товар з ID: ${id}`);
-                decreaseAmount(id);
+                decreaseAmount(id, $(this));
             } else if ($(this).hasClass('item_close')) {
-                deleteCartItem(id);
+                deleteCartItem(id, $(this));
             }
+            invokeRequestCart();
         });
-        $('#container-cart').on('change', '.quantity_input', function () {
+
+        $('#container-cart, #container-cart-table').on('change', '.quantity_input', function () {
             let id = $(this).data('id');
             if (!id) return;
-            saveCartItem(id, $(this).val());
+            saveCartItem(id, $(this).val(), $(this));
         });
     }
 
-    async function incrementAmount(id) {
+    async function incrementAmount(id, target) {
         try {
             const response = await fetch(`${contextPath}web/cart/increment-amount?id=${id}`, {
                 method: 'POST',
@@ -807,14 +826,22 @@
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
             invokeRequestCart();
+            let containerCartTable = $('#container-cart-table');
+            if (containerCartTable.length) {
+                let input = target.closest('.item_quantity').find('.quantity_input');
+                let value = parseInt(input.val(), 10) || 0;
+                let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
+                inputs.each(function () {
+                    $(this).val(value + 1);
+                });
+            }
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    async function decreaseAmount(id) {
+    async function decreaseAmount(id, target) {
         try {
             const response = await fetch(`${contextPath}web/cart/decrease-amount?id=${id}`, {
                 method: 'POST',
@@ -826,14 +853,22 @@
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
             invokeRequestCart();
+            let containerCartTable = $('#container-cart-table');
+            if (containerCartTable.length) {
+                let input = target.closest('.item_quantity').find('.quantity_input');
+                let value = parseInt(input.val(), 10) || 0;
+                let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
+                inputs.each(function () {
+                    $(this).val(value - 1);
+                });
+            }
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    async function deleteCartItem(id) {
+    async function deleteCartItem(id, target) {
         try {
             const response = await fetch(`${contextPath}web/cart/delete?id=${id}`, {
                 method: 'POST',
@@ -845,14 +880,20 @@
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            invokeRequestCart();
+            if (target.length) {
+                let id = target.attr('data-id');
+                let parentEl = $(`[class=card-row][data-id=${id}]`);
+                parentEl.each(function () {
+                    $(this).remove();
+                });
+                invokeRequestCart();
+            }
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    async function saveCartItem(id, value) {
+    async function saveCartItem(id, value, target) {
         try {
             const response = await fetch(`${contextPath}web/cart/save?id=${id}&value=${value}`, {
                 method: 'POST',
@@ -866,6 +907,14 @@
             }
 
             invokeRequestCart();
+            let containerCartTable = $('#container-cart-table');
+            if (containerCartTable.length) {
+                let input = target.closest('.item_quantity').find('.quantity_input');
+                let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
+                inputs.each(function () {
+                    $(this).val(value);
+                });
+            }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -961,6 +1010,62 @@
         }
     }
 
+    const containerCartTable = $('#container-cart-table');
+
+    function invokeRequestCartData() {
+        let request = new XMLHttpRequest();
+        let pathName = location.pathname.substring(1, location.pathname.length);
+        console.log(pathName);
+        request.open("GET", contextPath + `web/cart/get`)
+        request.send();
+        request.addEventListener('load', async function () {
+            if (request.status === 200) {
+                let data = JSON.parse(request.response);
+                console.log(data);
+                if (containerCartTable.length) {
+                    containerCartTable.empty();
+                    if (data.length > 0) {
+                        const key = await changeLanguage('text.gram', getCurrentLang());
+                        const keyGrn = await changeLanguage('text.grn', getCurrentLang());
+                        containerCartTable.append(data.map(item => {
+                            const price = parseFloat(item.price);
+                            const count = parseInt(item.amount, 10);
+                            const total = price * count;
+                            return `
+                            <tr class="card-row product-row" data-id="${item.id}">
+                                <td><span class="bt-content name-span">${item.name}</span><span class="mass-span">${Number(item.mass)}</span>${key}</td>
+                                <td>
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus" data-id="${item.id}">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
+                                        <button type="button" class="quantity_plus" data-id="${item.id}">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="bt-content">${price}<span>${keyGrn}</span></span>
+                                </td>
+                                <td><span class="bt-content">${total}<span>${keyGrn}</span></span></td>
+                            </tr>
+                        `;
+                        }).join(''));
+
+                        let summaEl = $('#resSumma');
+                        if (summaEl.length) {
+                            summaEl.text(data.reduce((sum, item) => {
+                                const price = parseFloat(item.price);
+                                const count = parseInt(item.amount, 10);
+                                return sum + (price * count);
+                            }, 0));
+                        }
+                    }
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>

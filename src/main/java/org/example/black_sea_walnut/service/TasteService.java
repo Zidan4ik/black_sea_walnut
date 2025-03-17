@@ -1,8 +1,8 @@
 package org.example.black_sea_walnut.service;
 
-import org.example.black_sea_walnut.dto.taste.TasteRequestForAdd;
-import org.example.black_sea_walnut.dto.taste.TasteResponseForAdd;
-import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
+import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 

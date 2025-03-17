@@ -3,8 +3,9 @@ package org.example.black_sea_walnut.service.imp;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.order.*;
+import org.example.black_sea_walnut.dto.admin.order.*;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
+import org.example.black_sea_walnut.dto.web.checkout.CheckoutUser;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
@@ -31,8 +32,10 @@ import java.util.Optional;
 public class OrderServiceImp implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper mapper = new OrderMapper();
+    private final OrderDetailMapper orderDetailMapper;
     private final OrderDetailsRepository orderDetailsRepository;
-    private final OrderMapper orderMapper;
+
+//    private final OrderMapper orderMapper;
 
     @Override
     public List<Order> getAll() {
@@ -107,6 +110,12 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public void saveAfterPayment(CheckoutUser dto) {
+        Order order = mapper.toEntityAfterCheckout(dto);
+//        dto.getProducts().stream().map(OrderDetailMapper::toDTOView).toList()
+    }
+
+    @Override
     public List<Map<String, Object>> getOrdersCountByDate(LocalDate start, LocalDate end) {
         return orderRepository.countOrdersByMonth(start, end);
     }
@@ -115,6 +124,6 @@ public class OrderServiceImp implements OrderService {
     public List<OrderResponseForStatsProducts> getTopProductBySalesInMonth(LocalDate start, LocalDate end, int size) {
         Pageable pageAble = PageRequest.of(0, size);
         List<Object[]> entities = orderDetailsRepository.findSummaWithDiscountByProductAndDateRange(start, end, pageAble);
-        return orderMapper.toResponseForStatsProduct(entities);
+        return mapper.toResponseForStatsProduct(entities);
     }
 }

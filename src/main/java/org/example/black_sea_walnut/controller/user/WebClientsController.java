@@ -1,11 +1,11 @@
 package org.example.black_sea_walnut.controller.user;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientBannerResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientCategoryResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientEcoProductionResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.main.response.NumberBlockResponseForAddInMain;
+import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientBannerResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientEcoProductionResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.main.response.NumberBlockResponseForAddInMain;
 import org.example.black_sea_walnut.dto.web.ClientsResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;

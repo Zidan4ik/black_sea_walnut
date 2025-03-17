@@ -1,12 +1,12 @@
 package org.example.black_sea_walnut.mapper.pages;
 
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.pages.clients.request.ClientBannerRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.request.ClientCategoryRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.request.ClientEcoProductionRequestForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientBannerResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientCategoryResponseForAdd;
-import org.example.black_sea_walnut.dto.pages.clients.response.ClientEcoProductionResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientBannerRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientEcoProductionRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientBannerResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientEcoProductionResponseForAdd;
 import org.example.black_sea_walnut.entity.ClientCategory;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.translation.ClientCategoryTranslation;

@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.gallery.GalleryResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.gallery.GalleryResponseForAdd;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.GalleryService;
 import org.springframework.data.domain.Pageable;

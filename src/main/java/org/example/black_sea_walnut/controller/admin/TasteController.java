@@ -2,9 +2,9 @@ package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.taste.TasteRequestForAdd;
-import org.example.black_sea_walnut.dto.taste.TasteResponseForAdd;
-import org.example.black_sea_walnut.dto.taste.TasteResponseForView;
+import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.TasteService;
 import org.springframework.http.HttpStatus;

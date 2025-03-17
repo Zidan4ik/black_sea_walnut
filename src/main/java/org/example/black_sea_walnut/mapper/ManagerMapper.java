@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.manager.ManagerDTO;
-import org.example.black_sea_walnut.dto.manager.ManagerResponseForView;
+import org.example.black_sea_walnut.dto.admin.manager.ManagerDTO;
+import org.example.black_sea_walnut.dto.admin.manager.ManagerResponseForView;
 import org.example.black_sea_walnut.entity.Manager;
 import org.example.black_sea_walnut.entity.translation.ManagerTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;

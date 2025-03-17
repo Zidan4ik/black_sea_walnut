@@ -1,7 +1,7 @@
 package org.example.black_sea_walnut.mapper;
 
-import org.example.black_sea_walnut.dto.new_.NewRequestForAdd;
-import org.example.black_sea_walnut.dto.new_.ResponseNewForView;
+import org.example.black_sea_walnut.dto.admin.new_.NewRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.new_.ResponseNewForView;
 import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;

@@ -2,9 +2,9 @@ package org.example.black_sea_walnut.service.imp;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.discount.DiscountRequestForAdd;
-import org.example.black_sea_walnut.dto.discount.DiscountResponseForAdd;
-import org.example.black_sea_walnut.dto.discount.DiscountResponseForView;
+import org.example.black_sea_walnut.dto.admin.discount.DiscountRequestForAdd;
+import org.example.black_sea_walnut.dto.admin.discount.DiscountResponseForAdd;
+import org.example.black_sea_walnut.dto.admin.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.DiscountMapper;
