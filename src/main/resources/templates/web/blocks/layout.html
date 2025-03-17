@@ -34,6 +34,7 @@
     <link rel="stylesheet" th:href="@{/blacksea/css/main.min.css}">
     <link rel="stylesheet" th:href="@{/css/web/style.css}">
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/fonts/tabler-icons.css}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
     <script th:src="@{/htmx/htmx.min.js}"></script>
@@ -140,9 +141,9 @@
                 </div>
             </div>
             <!-- Если корзина пуста -->
-            <!-- <div class="popup__cart_clean">
+            <div class="popup__cart_clean text-center" style="display: none;">
                 <p>Ваша корзина пуста</p>
-            </div> -->
+            </div>
         </div>
     </div>
 
@@ -709,13 +710,17 @@
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 let $container = $('#container-cart');
-                let gram = await changeLanguage('text.gram', getCurrentLang());
-                if ($container.length > 0) {
-                    let summa = 0;
-                    let amount = 0;
-                    $container.empty();
-                    data.forEach(function (item) {
-                        $container.append(`
+                if (data.length > 0){
+                    $container.css('display','');
+                    $('.popup__cart_sum').css('display','');
+                    $('.popup__cart_clean').css('display','none');
+                    let gram = await changeLanguage('text.gram', getCurrentLang());
+                    if ($container.length > 0) {
+                        let summa = 0;
+                        let amount = 0;
+                        $container.empty();
+                        data.forEach(function (item) {
+                            $container.append(`
                         <div class="row align-items-center no-gutters item_row card-row" data-id="${item.id}">
                             <div class="col-md-5 col-12">
                                 <div class="item_title">
@@ -751,20 +756,25 @@
                                 </div>
                             </div>
                         </div>`)
-                        summa += item.price * item.amount;
-                        amount += item.amount;
-                    });
-                    let elementsUpdate = [
-                        {selector: '#cart-summa', value: summa},
-                        {selector: '#resSumma', value: summa},
-                        {selector: '.quantity', value: amount}
-                    ];
-                    elementsUpdate.forEach(function ({selector, value}) {
-                        let $element = $(selector);
-                        if ($element) {
-                            $element.text(value);
-                        }
-                    });
+                            summa += item.price * item.amount;
+                            amount += item.amount;
+                        });
+                        let elementsUpdate = [
+                            {selector: '#cart-summa', value: summa},
+                            {selector: '#resSumma', value: summa},
+                            {selector: '.quantity', value: amount}
+                        ];
+                        elementsUpdate.forEach(function ({selector, value}) {
+                            let $element = $(selector);
+                            if ($element) {
+                                $element.text(value);
+                            }
+                        });
+                    }
+                }else{
+                    $container.css('display','none');
+                    $('.popup__cart_sum').css('display','none');
+                    $('.popup__cart_clean').css('display','');
                 }
             }
         });
@@ -824,6 +834,9 @@
             });
 
             if (!response.ok) {
+                if (response.status === 400) {
+                    await showAlert('error', 'text.noMoreProducts');
+                }
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             invokeRequestCart();
@@ -903,6 +916,10 @@
             });
 
             if (!response.ok) {
+                if (response.status === 400) {
+                    invokeRequestCart();
+                    await showAlertWithoutLocale('error', await response.text());
+                }
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
@@ -1072,6 +1089,15 @@
         Swal.fire({
             icon: icon,
             title: title,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    async function showAlertWithoutLocale(icon, messageKey) {
+        Swal.fire({
+            icon: icon,
+            title: messageKey,
             timer: 2000,
             showConfirmButton: false
         });

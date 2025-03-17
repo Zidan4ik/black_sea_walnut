@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +47,8 @@ public class BasketServiceImp implements BasketService {
     @Transactional
     public void decreaseAmountById(Long id) {
         Basket basket = getById(id);
+        Product product = basket.getProducts().get(0);
+        productService.increaseCountItems(product.getId());
         if (basket.getCount() <= 1) {
             deleteById(id);
         } else {
@@ -59,12 +60,31 @@ public class BasketServiceImp implements BasketService {
     @Transactional
     public void increaseAmountById(Long id) {
         Basket basket = getById(id);
+        Product product = basket.getProducts().get(0);
+        if (product.getTotalCount() - 1 < 0) {
+            throw new InsufficientStockException("Товарів більше немає");
+        }
+        productService.decreaseCountItems(product.getId());
         basket.setCount(basket.getCount() + 1);
     }
 
     @Override
     public void deleteById(Long id) {
         basketRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveCountProduct(Long  basketId, Integer value) {
+        Basket basketById = getById(basketId);
+        Product product = basketById.getProducts().get(0);
+        int countDifference = value - basketById.getCount();
+        if (product.getTotalCount() - countDifference < 0) {
+            throw new InsufficientStockException("На складі лишилось лише: " + product.getTotalCount() + " товару!");
+        }
+        Product productFromBD = productService.getById(product.getId());
+        productFromBD.setTotalCount(product.getTotalCount() - countDifference);
+        basketById.setCount(value);
+        save(basketById);
     }
 
     @Override

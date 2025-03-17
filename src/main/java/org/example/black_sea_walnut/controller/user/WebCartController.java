@@ -4,8 +4,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.web.BasketResponseForCart;
 import org.example.black_sea_walnut.entity.Basket;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.service.BasketService;
+import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import java.util.List;
 public class WebCartController {
     private final UserService userService;
     private final BasketService basketService;
+    private final ProductService productService;
 
     @GetMapping("/cart")
     public ModelAndView viewCart() {
@@ -61,17 +64,18 @@ public class WebCartController {
     }
 
     @PostMapping("/cart/delete")
-    public ResponseEntity<?> deleteCartItem(@RequestParam("id") Long id) {
+    public ResponseEntity<Void> deleteCartItem(@RequestParam("id") Long id) {
+        Basket basket = basketService.getById(id);
+        Product product = basket.getProducts().get(0);
+        productService.getById(product.getId()).setTotalCount(product.getTotalCount() + basket.getCount());
         basketService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/cart/save")
     public ResponseEntity<?> deleteCartItem(@RequestParam("id") Long id,
                                             @RequestParam("value") Integer value) {
-        Basket basket = basketService.getById(id);
-        basket.setCount(value);
-        basketService.save(basket);
+        basketService.saveCountProduct(id, value);
         return ResponseEntity.ok().build();
     }
 }

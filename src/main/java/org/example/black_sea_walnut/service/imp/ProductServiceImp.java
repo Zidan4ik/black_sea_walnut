@@ -213,4 +213,10 @@ public class ProductServiceImp implements ProductService {
             product.setTotalCount(product.getTotalCount() - 1);
         }
     }
+
+    @Override
+    public void increaseCountItems(Long productId) {
+        Product product = getById(productId);
+        product.setTotalCount(product.getTotalCount() + 1);
+    }
 }

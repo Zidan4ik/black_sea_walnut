@@ -39,4 +39,6 @@ public interface ProductService {
     List<Integer> getAllMasses();
 
     void decreaseCountItems(Long productId);
+
+    void increaseCountItems(Long productId);
 }

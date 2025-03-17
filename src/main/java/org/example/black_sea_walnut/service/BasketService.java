@@ -19,6 +19,8 @@ public interface BasketService {
 
     void deleteById(Long id);
 
+    void saveCountProduct(Long basketId, Integer value);
+
     void save(Basket basket);
 
     void buyProduct(Long idProduct, User currentUser);
