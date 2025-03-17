@@ -1066,6 +1066,16 @@
             }
         });
     }
+
+    async function showAlert(icon, messageKey) {
+        let title = await changeLanguage(messageKey, getCurrentLang());
+        Swal.fire({
+            icon: icon,
+            title: title,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
 </script>
 </body>
 </html>

@@ -5,6 +5,7 @@
 <head>
     <title th:text="#{text.shop}"></title>
     <script th:src="@{/js/swiperMy.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -118,7 +119,7 @@
                                     </div>
                                     <div class="sum_item">
                                         <div class="sum_item_button">
-                                            <a href="#" class="button" th:text="#{text.toOrder}"></a>
+                                            <a id="buyProductBtn" class="button" th:text="#{text.toOrder}"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -192,6 +193,7 @@
             </div>
         </div>
     </section>
+    <input type="hidden" id="hidden-count">
 </div>
 
 <script layout:fragment="script">
@@ -199,6 +201,16 @@
 
     $(document).ready(function () {
         invokeRequestProductData();
+        $('#buyProductBtn').on('click', async function () {
+            let countEl = $('#hidden-count');
+            if (countEl.length) {
+                if (Number(countEl.val()) > 0) {
+                    await requestBuyProduct(buildFormDataForProduct());
+                } else {
+                    await showAlert('error', 'text.noMoreProducts');
+                }
+            }
+        });
     });
 
     function invokeRequestProductData() {
@@ -211,8 +223,6 @@
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 console.log(data);
-
-                // initSwipers('manufacturer-container');
                 buildProduct(data.product);
                 buildContacts(data.contacts);
             }
@@ -223,6 +233,8 @@
         $(`#product-name`).text(item.name);
         $(`#product-article`).text(item.articleId);
         $(`#product-taste`).text(item.taste);
+        $(`#hidden-count`).val(item.amount);
+
         if (item.discount === '') {
             $(`#product-discount`).parent().remove();
         } else {
@@ -249,8 +261,8 @@
 
         let imageContainer = $('#container-product');
         let discountItem = item.discount.toLowerCase();
-        let disColor = discountItem === 'new' || discountItem === 'новий'? 'icons-novinka':'icons-actciya';
-        if(imageContainer.length){
+        let disColor = discountItem === 'new' || discountItem === 'новий' ? 'icons-novinka' : 'icons-actciya';
+        if (imageContainer.length) {
             imageContainer.append(`<div class="product__item">
                             <div class="sticker">
                                 <i class="nut-icon ${disColor}"></i>
@@ -277,6 +289,39 @@
                             </div>
                         </div>`);
             initSwipers('products-container');
+        }
+    }
+
+    function buildFormDataForProduct() {
+        let formData = new FormData();
+        formData.append('articleId', $('#product-article').text());
+        return formData;
+    }
+
+    async function requestBuyProduct(formData) {
+        try {
+            const response = await fetch(`${contextPath}web/product/buy`, {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    await showAlert('warning', 'text.not.authorized');
+                } else if (response.status === 400) {
+                    await showAlert('warning', 'text.noMoreProducts');
+                }
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            if (response.status) {
+                invokeRequestCart();
+                let countEl = $('#hidden-count');
+                if (countEl.length) {
+                    countEl.val(Number(countEl.val() - 1));
+                }
+                await showAlert('success', 'text.productBought');
+            }
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
 

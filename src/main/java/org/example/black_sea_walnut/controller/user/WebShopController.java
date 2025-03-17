@@ -1,5 +1,6 @@
 package org.example.black_sea_walnut.controller.user;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
@@ -11,14 +12,21 @@ import org.example.black_sea_walnut.dto.web.ProductResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.dto.web.ProductResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ShopResponseForView;
+import org.example.black_sea_walnut.dto.web.shop.ProductRequestForBuy;
+import org.example.black_sea_walnut.entity.Product;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,6 +43,8 @@ public class WebShopController {
     private final HistoryCatalogService historyCatalogService;
     private final ContactService contactService;
     private final ProductMapper productMapper;
+    private final BasketService basketService;
+    private final UserService userService;
 
     @GetMapping("/shop")
     public ModelAndView viewShopPage() {
@@ -91,4 +101,16 @@ public class WebShopController {
                 .build(), HttpStatus.OK);
     }
 
+    @PostMapping("/product/buy")
+    public ResponseEntity<?> buyProduct(@RequestParam(name = "articleId") Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            User user = userService.getByEmail(userDetails.getUsername()).orElseThrow(
+                    (() -> new EntityNotFoundException("User with email: " + userDetails.getUsername() + " was not found!"))
+            );
+            basketService.buyProduct(id, user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 }

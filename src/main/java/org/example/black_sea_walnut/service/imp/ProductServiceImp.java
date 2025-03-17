@@ -10,10 +10,7 @@ import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
-import org.example.black_sea_walnut.entity.Discount;
-import org.example.black_sea_walnut.entity.HistoryPrices;
-import org.example.black_sea_walnut.entity.Product;
-import org.example.black_sea_walnut.entity.Taste;
+import org.example.black_sea_walnut.entity.*;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
@@ -207,5 +204,13 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Integer> getAllMasses() {
         return productRepository.getAllMasses();
+    }
+
+    @Override
+    public void decreaseCountItems(Long productId) {
+        Product product = getById(productId);
+        if (product.getTotalCount() > 0) {
+            product.setTotalCount(product.getTotalCount() - 1);
+        }
     }
 }

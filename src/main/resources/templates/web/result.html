@@ -1,0 +1,26 @@
+<html lang="uk"
+      layout:decorate="~{web/blocks/layout.html}"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Stripe</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h3 th:if='${error}' th:text='${error}' style='color: red;'></h3>
+    <div th:unless='${error}'>
+        <h3 style='color: green;'>Success!</h3>
+        <div>Id.: <span th:text='${id}' /></div>
+        <div>Status: <span th:text='${status}' /></div>
+        <div>Charge id.: <span th:text='${chargeId}' /></div>
+        <div>Balance transaction id.: <span th:text='${balance_transaction}' /></div>
+    </div>
+    <a href='web/checkout.html'>Checkout again</a>
+</div>
+
+<script layout:fragment="script">
+
+</script>
+</body>
+</html>

@@ -37,4 +37,6 @@ public interface ProductService {
     List<ProductResponseForViewInTable> getRandomProductsBySize(int size, LanguageCode code);
 
     List<Integer> getAllMasses();
+
+    void decreaseCountItems(Long productId);
 }

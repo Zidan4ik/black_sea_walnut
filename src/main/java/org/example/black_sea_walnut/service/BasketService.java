@@ -20,4 +20,6 @@ public interface BasketService {
     void deleteById(Long id);
 
     void save(Basket basket);
+
+    void buyProduct(Long idProduct, User currentUser);
 }

@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     List<Basket> getAllByUser(User user);
+
+    Basket getBasketByUserAndProductName(User user, String productName);
 }
