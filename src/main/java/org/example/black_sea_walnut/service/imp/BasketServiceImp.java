@@ -53,6 +53,7 @@ public class BasketServiceImp implements BasketService {
             deleteById(id);
         } else {
             basket.setCount(basket.getCount() - 1);
+            applyDiscounts(basket, product);
         }
     }
 
@@ -66,6 +67,7 @@ public class BasketServiceImp implements BasketService {
         }
         productService.decreaseCountItems(product.getId());
         basket.setCount(basket.getCount() + 1);
+        applyDiscounts(basket, product);
     }
 
     @Override
@@ -74,7 +76,10 @@ public class BasketServiceImp implements BasketService {
     }
 
     @Override
-    public void saveCountProduct(Long  basketId, Integer value) {
+    public void saveCountProduct(Long basketId, Integer value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("Значення не повинно бути негативним!");
+        }
         Basket basketById = getById(basketId);
         Product product = basketById.getProducts().get(0);
         int countDifference = value - basketById.getCount();
@@ -83,8 +88,13 @@ public class BasketServiceImp implements BasketService {
         }
         Product productFromBD = productService.getById(product.getId());
         productFromBD.setTotalCount(product.getTotalCount() - countDifference);
-        basketById.setCount(value);
-        save(basketById);
+        if (value == 0) {
+            deleteById(basketId);
+        } else {
+            basketById.setCount(value);
+            save(basketById);
+            applyDiscounts(basketById, product);
+        }
     }
 
     @Override
@@ -122,9 +132,9 @@ public class BasketServiceImp implements BasketService {
             basket.setCount(basket.getCount() + 1);
         }
 
-        applyDiscounts(basket, product);
         productService.decreaseCountItems(idProduct);
         save(basket);
+        applyDiscounts(basket, product);
     }
 
     private void applyDiscounts(Basket basket, Product product) {

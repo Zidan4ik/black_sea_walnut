@@ -196,20 +196,13 @@
 </div>
 
 <script layout:fragment="script">
-
-
     $(document).ready(function () {
         invokeRequestProductData();
         $('#buyProductBtn').on('click', async function () {
-            let countEl = $('#hidden-count');
-            if (countEl.length) {
-                if (Number(countEl.val()) > 0) {
-                    await requestBuyProduct(buildFormDataForProduct());
-                } else {
-                    await showAlert('error', 'text.noMoreProducts');
-                }
+                await requestBuyProduct(buildFormDataForProduct());
             }
-        });
+        )
+        ;
     });
 
     function invokeRequestProductData() {
@@ -313,10 +306,6 @@
             }
             if (response.status) {
                 invokeRequestCart();
-                let countEl = $('#hidden-count');
-                if (countEl.length) {
-                    countEl.val(Number(countEl.val() - 1));
-                }
                 await showAlert('success', 'text.productBought');
             }
         } catch (error) {

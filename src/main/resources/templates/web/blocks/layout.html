@@ -710,10 +710,9 @@
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
                 let $container = $('#container-cart');
-                if (data.length > 0){
-                    $container.css('display','');
-                    $('.popup__cart_sum').css('display','');
-                    $('.popup__cart_clean').css('display','none');
+                if (data.length > 0) {
+                    $container.add('.popup__cart_sum').show();
+                    $('.popup__cart_clean').hide();
                     let gram = await changeLanguage('text.gram', getCurrentLang());
                     if ($container.length > 0) {
                         let summa = 0;
@@ -771,10 +770,15 @@
                             }
                         });
                     }
-                }else{
-                    $container.css('display','none');
-                    $('.popup__cart_sum').css('display','none');
-                    $('.popup__cart_clean').css('display','');
+                } else {
+                    $container.add('.popup__cart_sum').hide();
+                    $('.popup__cart_clean').show();
+                    const $quantities = $('.quantity');
+                    if ($quantities.length > 0) {
+                        $quantities.each(function () {
+                            $(this).text('0');
+                        });
+                    }
                 }
             }
         });
@@ -814,7 +818,7 @@
             } else if ($(this).hasClass('item_close')) {
                 deleteCartItem(id, $(this));
             }
-            invokeRequestCart();
+            // invokeRequestCart();
         });
 
         $('#container-cart, #container-cart-table').on('change', '.quantity_input', function () {
@@ -867,15 +871,25 @@
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             invokeRequestCart();
-            let containerCartTable = $('#container-cart-table');
-            if (containerCartTable.length) {
-                let input = target.closest('.item_quantity').find('.quantity_input');
-                let value = parseInt(input.val(), 10) || 0;
-                let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
-                inputs.each(function () {
-                    $(this).val(value - 1);
-                });
-            }
+
+            let input = target.closest('.item_quantity').find('.quantity_input');
+            let value = parseInt(input.val(), 10) || 0;
+
+            let $quantity = $('.quantity');
+            $quantity.each(function () {
+                let $el = $(this);
+                let currentValue = Number($el.text());
+
+                if (currentValue > 0) {
+                    $el.text(currentValue - 1);
+                }
+            });
+
+            let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
+            inputs.each(function () {
+                $(this).val(Math.max(0, value - 1));
+            });
+
         } catch (error) {
             console.error('Error:', error);
         }
@@ -893,14 +907,7 @@
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            if (target.length) {
-                let id = target.attr('data-id');
-                let parentEl = $(`[class=card-row][data-id=${id}]`);
-                parentEl.each(function () {
-                    $(this).remove();
-                });
-                invokeRequestCart();
-            }
+            invokeRequestCart();
         } catch (error) {
             console.error('Error:', error);
         }
@@ -922,8 +929,6 @@
                 }
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            invokeRequestCart();
             let containerCartTable = $('#container-cart-table');
             if (containerCartTable.length) {
                 let input = target.closest('.item_quantity').find('.quantity_input');
@@ -932,6 +937,8 @@
                     $(this).val(value);
                 });
             }
+            invokeRequestCart();
+            // }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -1038,7 +1045,7 @@
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
+                // console.log(data);
                 if (containerCartTable.length) {
                     containerCartTable.empty();
                     if (data.length > 0) {
@@ -1069,15 +1076,14 @@
                             </tr>
                         `;
                         }).join(''));
-
-                        let summaEl = $('#resSumma');
-                        if (summaEl.length) {
-                            summaEl.text(data.reduce((sum, item) => {
-                                const price = parseFloat(item.price);
-                                const count = parseInt(item.amount, 10);
-                                return sum + (price * count);
-                            }, 0));
-                        }
+                    }
+                    const summaEl = $('#resSumma');
+                    if (summaEl.length) {
+                        summaEl.text(data.reduce((sum, item) => {
+                            const price = parseFloat(item.price);
+                            const count = parseInt(item.amount, 10);
+                            return sum + (price * count);
+                        }, 0));
                     }
                 }
             }
