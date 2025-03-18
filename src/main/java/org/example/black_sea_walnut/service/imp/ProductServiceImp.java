@@ -26,12 +26,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +79,7 @@ public class ProductServiceImp implements ProductService {
         return productRepository.save(entity);
     }
 
+    @SneakyThrows
     @Transactional
     @Override
     public Product save(ProductRequestForAdd dto) {
@@ -84,48 +87,25 @@ public class ProductServiceImp implements ProductService {
 
         if (dto.getId() != null) {
             product = getById(dto.getId());
-            if (dto.getImage1() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage1());
-                dto.setPathToImage1(generatedPath);
-            }
-            if (dto.getImage2() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage2());
-                dto.setPathToImage2(generatedPath);
-            }
-            if (dto.getImage3() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage3());
-                dto.setPathToImage3(generatedPath);
-            }
-            if (dto.getImage4() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImage4());
-                dto.setPathToImage4(generatedPath);
-            }
-            if (dto.getImageDescription() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImageDescription());
-                dto.setPathToImageDescription(generatedPath);
-            }
-            if (dto.getImagePacking() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImagePacking());
-                dto.setPathToImagePacking(generatedPath);
-            }
-            if (dto.getImagePayment() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImagePayment());
-                dto.setPathToImagePayment(generatedPath);
-            }
-            if (dto.getImageDelivery() != null) {
-                String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(dto.getImageDelivery());
-                dto.setPathToImageDelivery(generatedPath);
-            }
+
+            processImage(dto.getImage1(), dto.getPathToImage1(), product::setPathToImage1);
+            processImage(dto.getImage2(), dto.getPathToImage2(), product::setPathToImage2);
+            processImage(dto.getImage3(), dto.getPathToImage3(), product::setPathToImage3);
+            processImage(dto.getImage4(), dto.getPathToImage4(), product::setPathToImage4);
+            processImage(dto.getImageDescription(), dto.getPathToImageDescription(), product::setPathToImageDescription);
+            processImage(dto.getImagePacking(), dto.getPathToImagePacking(), product::setPathToImagePacking);
+            processImage(dto.getImagePayment(), dto.getPathToImagePayment(), product::setPathToImagePayment);
+            processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery);
 
             if (dto.getNewPrice() != null) {
                 product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
             } else {
                 dto.setNewPrice(dto.getCurrentPrice());
             }
-
         } else {
             product = mapper.toEntityForRequestAdd(dto);
         }
+
         product.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())
                 .stream().filter(d -> d.getLanguageCode().equals(LanguageCode.en)).collect(Collectors.toSet())));
         product.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())
@@ -138,11 +118,22 @@ public class ProductServiceImp implements ProductService {
         imageServiceImp.save(dto.getImage3(), productSaved.getPathToImage3());
         imageServiceImp.save(dto.getImage4(), productSaved.getPathToImage4());
         imageServiceImp.save(dto.getImageDescription(), productSaved.getPathToImageDescription());
-        imageServiceImp.save(dto.getImageDelivery(), productSaved.getPathToImageDelivery());
         imageServiceImp.save(dto.getImagePacking(), productSaved.getPathToImagePacking());
         imageServiceImp.save(dto.getImagePayment(), productSaved.getPathToImagePayment());
+        imageServiceImp.save(dto.getImageDelivery(), productSaved.getPathToImageDelivery());
 
         return productSaved;
+    }
+
+    @SneakyThrows
+    private void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter) {
+        if (image != null && !image.isEmpty()) {
+            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(image);
+            pathSetter.accept(generatedPath);
+        } else if (imagePath != null && !imagePath.isEmpty()) {
+            pathSetter.accept(null);
+            imageServiceImp.deleteByPath(imagePath);
+        }
     }
 
     @Override
