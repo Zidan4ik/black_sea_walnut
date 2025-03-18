@@ -130,7 +130,7 @@ public class ProductServiceImp implements ProductService {
         if (image != null && !image.isEmpty()) {
             String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(image);
             pathSetter.accept(generatedPath);
-        } else if (imagePath != null && !imagePath.isEmpty()) {
+        } else if (imagePath.isEmpty()) {
             pathSetter.accept(null);
             imageServiceImp.deleteByPath(imagePath);
         }
