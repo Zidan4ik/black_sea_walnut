@@ -709,7 +709,7 @@
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                let $container = $('#container-cart');
+                const $container = $('#container-cart');
                 if (data.length > 0) {
                     $container.add('.popup__cart_sum').show();
                     $('.popup__cart_clean').hide();
@@ -779,6 +779,7 @@
                             $(this).text('0');
                         });
                     }
+
                 }
             }
         });
@@ -847,11 +848,20 @@
             let containerCartTable = $('#container-cart-table');
             if (containerCartTable.length) {
                 let input = target.closest('.item_quantity').find('.quantity_input');
-                let value = parseInt(input.val(), 10) || 0;
-                let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
+                let count = parseInt(input.val(), 10) || 0;
+
+                let dataId = input.attr('data-id');
+                let inputs = $(`[data-id=${dataId}][class="quantity_input"]`);
                 inputs.each(function () {
-                    $(this).val(value + 1);
+                    $(this).val(count + 1);
                 });
+
+                let resAmount = target.closest('.product-row').find('.res-amount-row');
+                let priceByUnit = target.closest('.product-row').find('.amount-by-item');
+
+                if (resAmount.length) {
+                    resAmount.text(Number(priceByUnit.text()) * (count + 1));
+                }
             }
         } catch (error) {
             console.error('Error:', error);
@@ -871,9 +881,8 @@
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             invokeRequestCart();
-
             let input = target.closest('.item_quantity').find('.quantity_input');
-            let value = parseInt(input.val(), 10) || 0;
+            let count = parseInt(input.val(), 10) || 0;
 
             let $quantity = $('.quantity');
             $quantity.each(function () {
@@ -887,9 +896,26 @@
 
             let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
             inputs.each(function () {
-                $(this).val(Math.max(0, value - 1));
+                $(this).val(Math.max(0, count - 1));
             });
 
+            let rowEl = target.closest('.product-row');
+            if (rowEl.length) {
+                if (count === 1) {
+                    let containerEl = target.closest('#container-cart-table');
+                    if (containerEl.find('tr').length === 1) {
+                        invokeRequestCartData();
+                    } else {
+                        rowEl.remove();
+                    }
+                } else {
+                    let resAmount = rowEl.find('.res-amount-row');
+                    let priceByUnit = rowEl.find('.amount-by-item');
+                    if (resAmount.length) {
+                        resAmount.text(Number(priceByUnit.text()) * (count - 1));
+                    }
+                }
+            }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -925,20 +951,30 @@
             if (!response.ok) {
                 if (response.status === 400) {
                     invokeRequestCart();
+                    invokeRequestCartData();
                     await showAlertWithoutLocale('error', await response.text());
                 }
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             let containerCartTable = $('#container-cart-table');
             if (containerCartTable.length) {
-                let input = target.closest('.item_quantity').find('.quantity_input');
-                let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
-                inputs.each(function () {
-                    $(this).val(value);
-                });
+                if (Number(value) === 0) {
+                    let containerEl = target.closest('#container-cart-table');
+                    if (containerEl.find('tr').length === 1) {
+                        invokeRequestCartData();
+                    } else {
+                        target.closest('.product-row').remove();
+                    }
+                } else {
+                    let input = target.closest('.item_quantity').find('.quantity_input');
+                    let inputs = $(`[data-id=${input.attr('data-id')}][class="quantity_input"]`);
+                    inputs.each(function () {
+                        $(this).val(value);
+                    });
+                }
             }
+
             invokeRequestCart();
-            // }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -1039,13 +1075,11 @@
     function invokeRequestCartData() {
         let request = new XMLHttpRequest();
         let pathName = location.pathname.substring(1, location.pathname.length);
-        console.log(pathName);
         request.open("GET", contextPath + `web/cart/get`)
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                // console.log(data);
                 if (containerCartTable.length) {
                     containerCartTable.empty();
                     if (data.length > 0) {
@@ -1070,20 +1104,26 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="bt-content">${price}<span>${keyGrn}</span></span>
+                                    <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
                                 </td>
-                                <td><span class="bt-content">${total}<span>${keyGrn}</span></span></td>
+                                <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
                             </tr>
                         `;
                         }).join(''));
-                    }
-                    const summaEl = $('#resSumma');
-                    if (summaEl.length) {
-                        summaEl.text(data.reduce((sum, item) => {
-                            const price = parseFloat(item.price);
-                            const count = parseInt(item.amount, 10);
-                            return sum + (price * count);
-                        }, 0));
+
+                        const summaEl = $('#resSumma');
+                        if (summaEl.length) {
+                            summaEl.text(data.reduce((sum, item) => {
+                                const price = parseFloat(item.price);
+                                const count = parseInt(item.amount, 10);
+                                return sum + (price * count);
+                            }, 0));
+                        }
+                    } else {
+                        let noExistKey = await changeLanguage('text.table.exist', getCurrentLang());
+                        containerCartTable.append(`<tr>
+                            <td colspan="4" style="text-align: center; color: gray; font-style: italic;">${noExistKey}</td>
+                        </tr>`);
                     }
                 }
             }
