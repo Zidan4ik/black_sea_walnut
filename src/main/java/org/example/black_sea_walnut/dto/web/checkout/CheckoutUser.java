@@ -32,13 +32,7 @@ public class CheckoutUser {
     private String cityId;
     private String typeOfPayment;
     private Boolean isPayed;
-    private String city;
     private String companyDelivery;
     private String personNameDelivery;
-    private String emailDelivery;
-    private String phoneDelivery;
-    private String addressDelivery;
     private User user;
-//    private OrderStatus orderStatus;
-//    private DeliveryStatus deliveryStatus;
 }

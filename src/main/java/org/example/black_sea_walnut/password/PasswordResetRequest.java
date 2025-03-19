@@ -10,10 +10,6 @@ import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
 @Data
 @PasswordValidationForReset
 public class PasswordResetRequest {
-    @NotBlank(message = "{error.field.empty}", groups = EmailValidGroups.NotBlankCheck.class)
-    @EmailValidation(groups = EmailValidGroups.EmailCheck.class)
-    @IsNoExistEmail(groups = EmailValidGroups.EmailExistenceCheck.class)
-    private String email;
     @NotBlank(message = "{error.field.empty}")
     private String newPassword;
     private String confirmPassword;

@@ -1080,6 +1080,7 @@
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
+                console.log(data);
                 if (containerCartTable.length) {
                     containerCartTable.empty();
                     if (data.length > 0) {
@@ -1107,6 +1108,7 @@
                                     <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
                                 </td>
                                 <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
+                                <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
                             </tr>
                         `;
                         }).join(''));

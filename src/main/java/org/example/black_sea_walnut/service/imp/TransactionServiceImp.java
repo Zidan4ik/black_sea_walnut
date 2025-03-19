@@ -6,6 +6,7 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForAccount;
 import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
+import org.example.black_sea_walnut.dto.web.checkout.CheckoutUser;
 import org.example.black_sea_walnut.entity.Transaction;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionServiceImp implements TransactionsService {
     private final TransactionsRepository transactionsRepository;
-    private final TransactionMapper mapper = new TransactionMapper();
+    private final TransactionMapper mapper;
 
     @Override
     public List<Transaction> getAll() {
@@ -70,5 +71,15 @@ public class TransactionServiceImp implements TransactionsService {
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
                 page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
         ));
+    }
+
+    @Override
+    public Transaction save(Transaction entity) {
+        return transactionsRepository.save(entity);
+    }
+
+    @Override
+    public Transaction save(CheckoutUser dto) {
+        return save(mapper.toMapperFromRequestCheckout(dto));
     }
 }

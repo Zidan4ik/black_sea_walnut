@@ -144,6 +144,12 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    public Product getByArticleId(Long id) {
+        return productRepository.getByArticleId(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product with article id:" + id + "was not found!"));
+    }
+
+    @Override
     public ProductResponseForAdd getByIdLikeDTOAdd(Long id) {
         Product product = getById(id);
         ProductResponseForAdd productInDtoAdd = mapper.toResponseForAdd(product);

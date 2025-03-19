@@ -1,15 +1,13 @@
 package org.example.black_sea_walnut.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.order.*;
 import org.example.black_sea_walnut.dto.web.OrderResponseForAccount;
 import org.example.black_sea_walnut.dto.web.checkout.CheckoutUser;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.enums.DeliveryStatus;
-import org.example.black_sea_walnut.enums.DeliveryType;
-import org.example.black_sea_walnut.enums.OrderStatus;
-import org.example.black_sea_walnut.enums.PaymentType;
+import org.example.black_sea_walnut.enums.*;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class OrderMapper {
+    private final OrderDetailMapper orderDetailMapper;
+
     public ResponseOrderForView toDTOView(Order entity) {
         return ResponseOrderForView.builder()
                 .id(entity.getId())
@@ -37,6 +38,7 @@ public class OrderMapper {
 
     public ResponseOrderForAdd toDTOAdd(Order entity) {
         List<ResponseOrderDetailForView> list = entity.getOrderDetails().stream().map(OrderDetailMapper::toDTOView).toList();
+        boolean isUserNull = entity.getUser() != null;
         return ResponseOrderForAdd
                 .builder()
                 .id(entity.getId())
@@ -49,15 +51,15 @@ public class OrderMapper {
                 .paymentType(entity.getPaymentType())
                 .isPayed(entity.isPayed())
                 .orderStatus(entity.getOrderStatus())
-                .city(entity.getCity().getName())
+                .city(isUserNull ? entity.getUser().getCity().toString() : null)
                 .companyDelivery(entity.getCompanyDelivery())
                 .personNameDelivery(entity.getPersonNameDelivery())
                 .emailDelivery(entity.getEmailDelivery())
                 .phoneDelivery(entity.getPhoneDelivery())
                 .addressDelivery(entity.getAddressDelivery())
                 .orderDetails(list)
-                .isFop(entity.getUser().isFop())
-                .userRegisterType(entity.getUser().getRegisterType().toString())
+                .isFop(isUserNull && entity.getUser().isFop())
+                .userRegisterType(isUserNull ? entity.getUser().getRegisterType().toString() : RegisterType.fop.toString())
                 .build();
     }
 
@@ -108,7 +110,8 @@ public class OrderMapper {
                 .cost(String.valueOf(entity.getTotalPrice()))
                 .build();
     }
-    public Order toEntityAfterCheckout(CheckoutUser dto){
+
+    public Order toEntityAfterCheckout(CheckoutUser dto) {
         Order entity = new Order();
         entity.setFio(dto.getFio());
         entity.setEmail(dto.getEmail());
@@ -118,16 +121,17 @@ public class OrderMapper {
 
         entity.setCompanyDelivery(dto.getCompanyDelivery());
         entity.setPersonNameDelivery(dto.getPersonNameDelivery());
-        entity.setEmailDelivery(dto.getEmailDelivery());
-        entity.setPhoneDelivery(dto.getPhoneDelivery());
-        entity.setAddressDelivery(dto.getAddressDelivery());
 
         entity.setOrderStatus(OrderStatus.new_);
         entity.setDeliveryStatus(DeliveryStatus.await);
         entity.setDeliveryType(DeliveryType.fromString(dto.getTypeOfDelivery()));
-        entity.setPaymentType(PaymentType.fromString(dto.getTypeOfPayment()));
-        entity.setPayed(dto.getIsPayed());
         entity.setDateOfOrdering(LocalDate.now());
+        PaymentType paymentType = PaymentType.fromString(dto.getTypeOfPayment());
+        entity.setPaymentType(paymentType);
+        entity.setPayed(paymentType.equals(PaymentType.card));
+        entity.setOrderDetails(dto.getProducts() != null ? dto.getProducts().stream()
+                .map(o -> orderDetailMapper.toEntityForBasket(o, entity)).toList() : new ArrayList<>());
+        entity.setUser(dto.getUser());
         return entity;
     }
 }

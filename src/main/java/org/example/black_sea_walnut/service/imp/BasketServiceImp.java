@@ -25,7 +25,6 @@ public class BasketServiceImp implements BasketService {
     private final BasketRepository basketRepository;
     private final BasketMapper basketMapper;
     private final ProductService productService;
-    private final ProductMapper productMapper;
 
     @Override
     public List<BasketResponseForCart> getAllInResponseForCart(User user) {
@@ -137,9 +136,15 @@ public class BasketServiceImp implements BasketService {
         applyDiscounts(basket, product);
     }
 
+    @Override
+    @Transactional
+    public void deleteByUser(User user) {
+        basketRepository.deleteByUser(user);
+    }
+
     private void applyDiscounts(Basket basket, Product product) {
         int unitPrice = Integer.parseInt(product.getPriceByUnit());
-        int discountPercent = product.getDiscounts().isEmpty() ? 1 : product.getDiscounts().iterator().next().getValue();
+        int discountPercent = product.getDiscounts().isEmpty() ? 0 : product.getDiscounts().iterator().next().getValue();
         int discountSumForUnit = (unitPrice * discountPercent) / 100;
         int discountUnitPrice = unitPrice - discountSumForUnit;
         int summaWithoutDiscount = unitPrice * basket.getCount();
@@ -154,4 +159,6 @@ public class BasketServiceImp implements BasketService {
         basket.setSummaDiscount(summaDiscount);
         basket.setSummaWithDiscount(summaWithDiscount);
     }
+
+
 }

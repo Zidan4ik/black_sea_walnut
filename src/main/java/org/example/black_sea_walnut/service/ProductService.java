@@ -26,6 +26,8 @@ public interface ProductService {
 
     Product getById(Long id);
 
+    Product getByArticleId(Long id);
+
     ProductResponseForAdd getByIdLikeDTOAdd(Long id);
 
     void deleteById(Long id) throws IOException;

@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
@@ -22,9 +23,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     boolean existsById(@NonNull Long id);
 
-    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT :size",nativeQuery = true)
+    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT :size", nativeQuery = true)
     List<Product> findRandomProducts(@Param("size") int size);
 
     @Query("SELECT p.mass FROM Product p GROUP BY p.mass")
     List<Integer> getAllMasses();
+
+    Optional<Product> getByArticleId(Long id);
 }

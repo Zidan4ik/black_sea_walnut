@@ -4,6 +4,7 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForAccount;
 import org.example.black_sea_walnut.dto.admin.transaction.ResponseTransactionForView;
 import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
+import org.example.black_sea_walnut.dto.web.checkout.CheckoutUser;
 import org.example.black_sea_walnut.entity.Transaction;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
@@ -22,5 +23,9 @@ public interface TransactionsService {
 
     PageResponse<TransactionResponseForAccount> getAll(Pageable pageable, LanguageCode code);
 
-    PageResponse<TransactionResponseForAccount> getAll(User user,Pageable pageable, LanguageCode code);
+    PageResponse<TransactionResponseForAccount> getAll(User user, Pageable pageable, LanguageCode code);
+
+    Transaction save(Transaction entity);
+
+    Transaction save(CheckoutUser dto);
 }

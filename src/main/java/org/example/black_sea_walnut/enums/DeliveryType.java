@@ -7,7 +7,7 @@ public enum DeliveryType {
             throw new IllegalArgumentException("Delivery type cannot be null or blank");
         }
         try {
-            return DeliveryType.valueOf(type.toLowerCase());
+            return DeliveryType.valueOf(type);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid delivery type: " + type);
         }

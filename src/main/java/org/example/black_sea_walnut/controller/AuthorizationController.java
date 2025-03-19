@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.web.RegistrationResponseForView;
+import org.example.black_sea_walnut.dto.web.security.EmailRecoveryDto;
 import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.Country;
 import org.example.black_sea_walnut.entity.User;
@@ -17,6 +18,7 @@ import org.example.black_sea_walnut.password.event.RegistrationCompleteEventList
 import org.example.black_sea_walnut.service.ContactService;
 import org.example.black_sea_walnut.service.CountryService;
 import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -96,9 +98,8 @@ public class AuthorizationController {
     }
 
     @PostMapping("/password-reset-request")
-    public ResponseEntity<?> resetPasswordRequest(@Validated({OrderedEmailValidation.class, Default.class}) @ModelAttribute PasswordResetRequest passwordResetRequest,
-                                                  BindingResult bindingResult,
-                                                  final HttpServletRequest request) {
+    public ResponseEntity<?> resetPasswordRequest(@Validated(EmailValidGroups.class) @ModelAttribute EmailRecoveryDto dto,
+                                                  BindingResult bindingResult, final HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -108,7 +109,7 @@ public class AuthorizationController {
                     .body(errors);
         }
         String res = "";
-        Optional<User> userOptional = userService.getByEmail(passwordResetRequest.getEmail());
+        Optional<User> userOptional = userService.getByEmail(dto.getEmail());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordResetTokenService.isExistTokenByUser(user)) {

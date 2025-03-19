@@ -46,8 +46,6 @@ public class Order {
     @ManyToMany
     private List<DeliveryPrice> deliveryPrices;
     @ManyToOne
-    private City city;
-    @ManyToOne
     private User user;
 
     public Order(LocalDate dateOfOrdering, boolean isPayed, int totalPrice, int countProducts) {

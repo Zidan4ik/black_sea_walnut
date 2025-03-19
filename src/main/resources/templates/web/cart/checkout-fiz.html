@@ -151,7 +151,7 @@
                 </div>
                 <div class="col-12">
                     <div class="checkout_form">
-                        <form action="#">
+                        <form>
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
@@ -163,6 +163,7 @@
                                            th:placeholder="#{table.header.phone}+'*'">
                                     <div class="form__title" th:text="'2. '+#{table.header.typeOfDelivery}"></div>
                                     <fieldset id="group1" class="radio__wrapper radio__wrapper_click">
+
                                         <input id="radio-1" class="radio-custom" name="group1" value="newMail"
                                                type="radio" checked>
                                         <label for="radio-1" class="radio-custom-label">
@@ -171,16 +172,22 @@
                                         <div class="new_post box hide-block" id="fiz-selectors"></div>
                                         <input id="radio-2" class="radio-custom" name="group1" value="courier"
                                                type="radio">
-                                        <label for="radio-2" class="radio-custom-label"><span
-                                                th:text="#{text.checkoutCourier}"></span><span class="sticker"><i
-                                                class="nut-icon icons-novinka"></i>
-                                            <span class="p" th:text="#{text.free}"></span></span></label>
-                                        <div class="adr box"><input type="text"
-                                                                    th:placeholder="#{table.header.address}+'*'"></div>
+                                        <label for="radio-2" class="radio-custom-label">
+                                            <span th:text="#{text.checkoutCourier}"></span>
+                                            <span class="sticker">
+                                                <i class="nut-icon icons-novinka"></i>
+                                            <span class="p" th:text="#{text.free}"></span>
+                                            </span>
+                                        </label>
+                                        <div class="adr box">
+                                            <input type="text" th:placeholder="#{table.header.address}+'*'">
+                                        </div>
+
                                         <input id="radio-3" class="radio-custom" name="group1" value="pickUp"
                                                type="radio">
-                                        <label for="radio-3" class="radio-custom-label radio-custom_last"><span
-                                                th:text="#{text.pickupFromWarehouse}"></span></label>
+                                        <label for="radio-3" class="radio-custom-label radio-custom_last">
+                                            <span th:text="#{text.pickupFromWarehouse}"></span>
+                                        </label>
                                     </fieldset>
                                     <div class="form__title" th:text="'3. '+#{text.paymentMethods}"></div>
                                     <fieldset id="group2" class="radio__wrapper radio__wrapper_second">
@@ -195,7 +202,6 @@
                                                class="radio-custom-label"><span>LiqPay / Приват24</span></label>
                                         <div id="card-block" class="card-box" style="margin: 0;width: 100%;">
                                             <div id="card-element" class="card_input"></div>
-                                            <!--                                            <button id="test-btn" class="card-button" type="button">Pay</button>-->
                                         </div>
                                         <input id="radio-6" class="radio-custom" name="group2" value="cash"
                                                type="radio">
@@ -239,10 +245,7 @@
         $('input[name="group2"]').on("change", toggleCardBlock);
 
         $('#checkout-btn').on('click', function () {
-            let activePaymentType = $('input[name="group2"]:checked').val() || null;
-            if (activePaymentType) {
-                handlePayment(buildFormData());
-            }
+            handlePayment(buildFormData());
         });
     });
 
@@ -251,28 +254,42 @@
         data.append('fio', $('#fio').val());
         data.append('email', $('#email').val());
         data.append('phone', $('#phone').val());
-        data.append('countryId', $('#fiz-select-countries').val());
-        data.append('regionId', $('#fiz-select-regions').val());
-        data.append('cityId', $('#fiz-select-cities').val());
-        data.append('typeOfDelivery', $('input[name="group1"]:checked').val());
+        let typeOfDelivery = $('input[name="group1"]:checked').val();
+        if (typeOfDelivery === 'newMail') {
+            data.append('countryId', $('#fiz-select-countries').val());
+            data.append('regionId', $('#fiz-select-regions').val());
+            data.append('cityId', $('#fiz-select-cities').val());
+        }
+        data.append('typeOfDelivery', typeOfDelivery);
         data.append('typeOfPayment', $('input[name="group2"]:checked').val());
         data.append('totalAmount', Number($('#resSumma').text()) * 100 || null);
-        let counter = 0;
+        let total = 0;
+        $('#container-cart-table .quantity_input').each(function () {
+            console.log(this);
+            let val = parseFloat($(this).val());
+            if (!isNaN(val)) {
+                total += val;
+            }
+        });
+        data.append('totalCount', total);
 
+
+        let counter = 0;
         $('.product-row').each(function () {
             let $row = $(this);
             let name = $row.find('.name-span').text().trim();
             let mass = $row.find('.mass-span').text().trim();
             let quantity = $row.find('.quantity_input').val().trim();
+            let articleId = $row.find('.articlesProduct').val().trim();
+            console.log(articleId);
             let price = $row.find('td:eq(2) .bt-content').text().trim().replace('грн.', '');
             data.append(`products[${counter}].name`, name);
             data.append(`products[${counter}].mass`, mass);
+            data.append(`products[${counter}].articleProduct`, articleId);
             data.append(`products[${counter}].amount`, quantity);
             data.append(`products[${counter}].price`, price);
             counter++;
         });
-
-        console.log(counter);
         counter = 0;
         return data;
     }
@@ -361,34 +378,6 @@
             validate4(data);
         }
     }
-
-    // paymentForm.addEventListener('submit', async (event) => {
-    //     event.preventDefault();
-    //     const response = await fetch('/create-payment-intent?amount=5000', {
-    //         method: 'POST',
-    //         headers: {"Content-Type": "application/json"}
-    //     });
-    //
-    //     const data = await response.json();
-    //     console.log(data);
-    //     const clientSecret = data.clientSecret;
-    //
-    //     const {error} = await stripe.confirmCardPayment(clientSecret, {
-    //         payment_method: {
-    //             card: cardNumber,
-    //             billing_details: {
-    //                 name: 'Customer Name',
-    //             },
-    //         },
-    //     });
-    //
-    //     if (error) {
-    //         console.error("Payment failed", error);
-    //         alert("Помилка оплати: " + error.message);
-    //     } else {
-    //         window.location.href = contextPath + 'thanks';
-    //     }
-    // });
 </script>
 </body>
 </html>

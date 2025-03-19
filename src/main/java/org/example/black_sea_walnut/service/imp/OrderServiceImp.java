@@ -15,12 +15,14 @@ import org.example.black_sea_walnut.mapper.OrderMapper;
 import org.example.black_sea_walnut.repository.OrderDetailsRepository;
 import org.example.black_sea_walnut.repository.OrderRepository;
 import org.example.black_sea_walnut.service.OrderService;
+import org.example.black_sea_walnut.service.TransactionsService;
 import org.example.black_sea_walnut.service.specifications.OrderSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,11 +33,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderServiceImp implements OrderService {
     private final OrderRepository orderRepository;
-    private final OrderMapper mapper = new OrderMapper();
+    private final OrderMapper mapper;
     private final OrderDetailMapper orderDetailMapper;
     private final OrderDetailsRepository orderDetailsRepository;
-
-//    private final OrderMapper orderMapper;
+    private final TransactionsService transactionsService;
 
     @Override
     public List<Order> getAll() {
@@ -105,14 +106,15 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    @Transactional
     public void save(Order entity) {
         orderRepository.save(entity);
     }
 
     @Override
+    @Transactional
     public void saveAfterPayment(CheckoutUser dto) {
-        Order order = mapper.toEntityAfterCheckout(dto);
-//        dto.getProducts().stream().map(OrderDetailMapper::toDTOView).toList()
+        save(mapper.toEntityAfterCheckout(dto));
     }
 
     @Override

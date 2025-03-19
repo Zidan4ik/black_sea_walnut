@@ -55,33 +55,33 @@
         const cardCVC = elements.create('cardCvc', {style});
         cardCVC.mount('#card-cvc-element');
 
-        // paymentForm.addEventListener('submit', async (event) => {
-        //     event.preventDefault();
-        //     const response = await fetch('/create-payment-intent?amount=5000', {
-        //         method: 'POST',
-        //         headers: {"Content-Type": "application/json"}
-        //     });
-        //
-        //     const data = await response.json();
-        //     console.log(data);
-        //     const clientSecret = data.clientSecret;
-        //
-        //     const {error} = await stripe.confirmCardPayment(clientSecret, {
-        //         payment_method: {
-        //             card: cardNumber,
-        //             billing_details: {
-        //                 name: 'Customer Name',
-        //             },
-        //         },
-        //     });
-        //
-        //     if (error) {
-        //         console.error("Payment failed", error);
-        //         alert("Помилка оплати: " + error.message);
-        //     } else {
-        //         window.location.href = contextPath + 'thanks';
-        //     }
-        // });
+        paymentForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const response = await fetch('/create-payment-intent?amount=5000', {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"}
+            });
+
+            const data = await response.json();
+            console.log(data);
+            const clientSecret = data.clientSecret;
+
+            const {error} = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: cardNumber,
+                    billing_details: {
+                        name: 'Customer Name',
+                    },
+                },
+            });
+
+            if (error) {
+                console.error("Payment failed", error);
+                alert("Помилка оплати: " + error.message);
+            } else {
+                window.location.href = contextPath + 'thanks';
+            }
+        });
     </script>
 </div>
 

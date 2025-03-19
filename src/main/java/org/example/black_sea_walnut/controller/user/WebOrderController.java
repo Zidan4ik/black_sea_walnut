@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.service.OrderDetailService;
 import org.example.black_sea_walnut.service.OrderService;
 import org.example.black_sea_walnut.service.UserService;
@@ -35,14 +36,23 @@ public class WebOrderController {
     private final OrderDetailService orderDetailService;
     private final UserService userService;
 
-    @GetMapping("/checkout-fiz")
+    @GetMapping("/checkout")
     public ModelAndView showCheckoutFiz() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ModelAndView model = new ModelAndView();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            User user = userService.getByEmail(userDetails.getUsername()).orElseThrow(
+                    (() -> new EntityNotFoundException("User with email: " + userDetails.getUsername() + " was not found!"))
+            );
+            if (user.getRegisterType().equals(RegisterType.individual)) {
+                model.setViewName("web/cart/checkout-fiz");
+                return model;
+            } else if (user.getRegisterType().equals(RegisterType.legal)) {
+                model.setViewName("web/cart/checkout-ur");
+                return model;
+            }
+        }
         return new ModelAndView("web/cart/checkout-fiz");
-    }
-
-    @GetMapping("/checkout-ur")
-    public ModelAndView showCheckoutUr() {
-        return new ModelAndView("web/cart/checkout-ur");
     }
 
     @GetMapping("/order")

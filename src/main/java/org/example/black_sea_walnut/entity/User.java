@@ -42,7 +42,7 @@ public class User {
     private String company;
     @ManyToOne
     private Manager manager;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Order> orders;
     @OneToOne
     private Basket basket;

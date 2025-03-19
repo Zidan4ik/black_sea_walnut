@@ -24,4 +24,6 @@ public interface BasketService {
     void save(Basket basket);
 
     void buyProduct(Long idProduct, User currentUser);
+
+    void deleteByUser(User user);
 }

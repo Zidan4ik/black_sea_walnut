@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "verification_token")
 public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
