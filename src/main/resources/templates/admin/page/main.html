@@ -119,7 +119,7 @@
                         </div>
                         <div class="col-6" id="status-factory-block-uk"></div>
                     </div>
-                    <div class="row" id="container-factory-images_">
+                    <div class="row" id="container-factory-images-uk">
                         <div class="col-3" id="add-button-container"
                              style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <div class="d-flex justify-content-center">
@@ -755,6 +755,7 @@
                             copyHTMLBlockInput('shared-title3-number', `main-number-title3-block-${activatedTabId}`);
                             copyHTMLBlockInput('shared-title4-number', `main-number-title4-block-${activatedTabId}`);
                         }
+                        copyHTMLBlockImage(`container-factory-images-${previousActiveTab}`, `container-factory-images-${activatedTabId}`);
                     });
                 });
 
@@ -1013,9 +1014,10 @@
                                            class="files" data-error="pathToMediaFile" value="${PATH}">
                                     </div>
                              `;
-                    const container = document.getElementById('container-factory-images_');
+                    const container = document.getElementById(`container-factory-images-${getCurrentLang()}`);
                     const addButtonContainer = document.getElementById('add-button-container');
                     container.insertBefore(newBlock, addButtonContainer);
+                    addEventListenersImage2();
                     counter++;
                 }
             </script>

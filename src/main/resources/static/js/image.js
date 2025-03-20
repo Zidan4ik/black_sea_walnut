@@ -41,7 +41,7 @@ function addEventListenersImage() {
     });
 }
 
-function addEventListenersImage2() {
+function    addEventListenersImage2() {
     document.querySelectorAll(".btn-select, .btn-delete, .files").forEach(function (button) {
         button.replaceWith(button.cloneNode(true));
     });
