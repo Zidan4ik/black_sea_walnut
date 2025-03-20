@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.Country;
 import org.example.black_sea_walnut.repository.CountryRepository;
 import org.example.black_sea_walnut.service.CountryService;
+import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +17,25 @@ public class CountryServiceImp implements CountryService {
 
     @Override
     public List<Country> getAll() {
-        return countryRepository.findAll();
+        LogUtil.logInfo("Fetching all countries.");
+        List<Country> countries = countryRepository.findAll();
+        LogUtil.logInfo("Fetched " + countries.size() + " countries.");
+        return countries;
     }
 
     @Override
     public Optional<Country> getById(Long id) {
+        LogUtil.logInfo("Fetching country with ID: " + id);
         if (id == null) {
+            LogUtil.logWarning("Provided ID is null, returning empty Optional.");
             return Optional.empty();
         }
-        return countryRepository.findById(id);
+        Optional<Country> country = countryRepository.findById(id);
+        if (country.isPresent()) {
+            LogUtil.logInfo("Found country with ID: " + id);
+        } else {
+            LogUtil.logWarning("Country with ID: " + id + " was not found.");
+        }
+        return country;
     }
 }

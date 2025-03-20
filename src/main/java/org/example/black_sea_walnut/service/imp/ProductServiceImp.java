@@ -21,6 +21,7 @@ import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
+import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,26 +48,29 @@ public class ProductServiceImp implements ProductService {
     private final ProductMapper productMapper;
     private final HistoryPricesService historyPricesService;
 
-
     @Value("${upload.path}")
     private String contextPath;
 
     @Override
     public List<Product> getAll() {
-        return productRepository.findAll();
+        LogUtil.logInfo("Fetching all products");
+        List<Product> products = productRepository.findAll();
+        LogUtil.logInfo("Fetched product: " + products.size());
+        return products;
     }
 
     @Override
     public PageResponse<ProductResponseForViewInProducts> getAll(ProductResponseForViewInProducts response, Pageable pageable, LanguageCode code) {
+        LogUtil.logInfo("Fetching all products with filters");
         Page<Product> page = productRepository.findAll(ProductSpecification.getSpecification(response, code), pageable);
-        List<ProductResponseForViewInProducts> responseDTOView = page.map(p -> mapper.toDTOForView(p, code)).stream().toList();
-        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
-                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
-        ));
+        List<ProductResponseForViewInProducts> responseDTOView = page.map(p -> mapper.toDTOForView(p, code)).toList();
+        LogUtil.logInfo("Fetched product: " + responseDTOView.size());
+        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()));
     }
 
     @Override
     public PageResponse<ProductResponseForViewInTable> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code) {
+        LogUtil.logInfo("Fetching all products with filters");
         Page<Product> page = productRepository.findAll(ProductSpecification2.getSpecification(response, code), pageable);
         List<ProductResponseForViewInTable> responseDTOView = page.map(p -> mapper.toResponseForViewInProduction(p, code)).toList();
         return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
@@ -83,6 +87,7 @@ public class ProductServiceImp implements ProductService {
     @Transactional
     @Override
     public Product save(ProductRequestForAdd dto) {
+        LogUtil.logInfo("Saving product: " + dto);
         Product product;
 
         if (dto.getId() != null) {
@@ -121,7 +126,7 @@ public class ProductServiceImp implements ProductService {
         imageServiceImp.save(dto.getImagePacking(), productSaved.getPathToImagePacking());
         imageServiceImp.save(dto.getImagePayment(), productSaved.getPathToImagePayment());
         imageServiceImp.save(dto.getImageDelivery(), productSaved.getPathToImageDelivery());
-
+        LogUtil.logInfo("Product saved successfully with ID: " + productSaved.getId());
         return productSaved;
     }
 
@@ -138,19 +143,26 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public Product getById(Long id) {
-        return productRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Product with id: " + id + " was not found!")
-        );
+        LogUtil.logInfo("Fetching product by ID: " + id);
+        return productRepository.findById(id).orElseThrow(() -> {
+            LogUtil.logError("Product not found with ID: " + id, null);
+            return new EntityNotFoundException("Product with id: " + id + " was not found!");
+        });
     }
 
     @Override
     public Product getByArticleId(Long id) {
+        LogUtil.logInfo("Fetching product by article ID: " + id);
         return productRepository.getByArticleId(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product with article id:" + id + "was not found!"));
+                .orElseThrow(() -> {
+                    LogUtil.logError("Product not found with article ID: " + id, null);
+                    return new EntityNotFoundException("Product with article id:" + id + " was not found!");
+                });
     }
 
     @Override
     public ProductResponseForAdd getByIdLikeDTOAdd(Long id) {
+        LogUtil.logInfo("Fetching product for DTO by ID: " + id);
         Product product = getById(id);
         ProductResponseForAdd productInDtoAdd = mapper.toResponseForAdd(product);
         HistoryResponsePricesForProduct responseHistoryPrices = historyPricesService.getLatestPriceByProductIdInDtoForProduct(product.getId());
@@ -160,6 +172,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void deleteById(Long id) throws IOException {
+        LogUtil.logInfo("Deleting product by ID: " + id);
         Product product = getById(id);
         if (product.getPathToImage1() != null && product.getPathToImage1().isEmpty())
             imageServiceImp.deleteByPath(product.getPathToImage1());
@@ -178,15 +191,18 @@ public class ProductServiceImp implements ProductService {
         if (product.getPathToImagePayment() != null && product.getPathToImagePayment().isEmpty())
             imageServiceImp.deleteByPath(product.getPathToImagePayment());
         productRepository.deleteById(id);
+        LogUtil.logInfo("Product deleted successfully: " + id);
     }
 
     @Override
     public boolean isExistByArticleId(Long id) {
+        LogUtil.logInfo("Checking if product exists by article ID: " + id);
         return productRepository.existsByArticleId(id);
     }
 
     @Override
     public boolean isExistById(Long id) {
+        LogUtil.logInfo("Checking if product exists by ID: " + id);
         return productRepository.existsById(id);
     }
 
@@ -205,6 +221,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void decreaseCountItems(Long productId) {
+        LogUtil.logInfo("Decreasing count of product ID: " + productId);
         Product product = getById(productId);
         if (product.getTotalCount() > 0) {
             product.setTotalCount(product.getTotalCount() - 1);
@@ -213,6 +230,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void increaseCountItems(Long productId) {
+        LogUtil.logInfo("Increasing count of product ID: " + productId);
         Product product = getById(productId);
         product.setTotalCount(product.getTotalCount() + 1);
     }

@@ -30,6 +30,7 @@ import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
 import org.example.black_sea_walnut.repository.UserRepository;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
+import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,11 +61,13 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<User> getAll() {
+        LogUtil.logInfo("Fetching all users");
         return userRepository.findAll();
     }
 
     @Override
     public List<UserResponseForView> getAllInResponseForView() {
+        LogUtil.logInfo("Fetching all users in dto for View");
         return getAll().stream().map(userMapper::toResponseForView).toList();
     }
 
@@ -77,34 +80,46 @@ public class UserServiceImp implements UserService {
         ));
     }
 
+
     @Override
     public User getById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " was not found!"));
+        LogUtil.logInfo("Fetching user with id: " + id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> {
+                    LogUtil.logError("User with id: " + id + " was not found!", null);
+                    return new EntityNotFoundException("User with id:" + id + " was not found!");
+                });
     }
 
     @Override
     public UserFopResponseForAdd getByIdForFopResponse(Long id) {
+        LogUtil.logInfo("Fetching FOP user response for id: " + id);
         return userMapper.toResponseForUserFopAdd(getById(id));
     }
 
     @Override
     public UserIndividualResponseForAdd getByIdForIndividualResponse(Long id) {
+        LogUtil.logInfo("Fetching Individual user response for id: " + id);
         return userMapper.toResponseForUserIndividualAdd(getById(id));
     }
 
     @Override
     public UserLegalResponseForView getByIdForLegalResponse(Long id) {
+        LogUtil.logInfo("Fetching Legal user response for id: " + id);
         return userMapper.toResponseForUserLegalAdd(getById(id));
     }
 
 
     @Override
     public User save(User entity) {
+        LogUtil.logInfo("Saving user with email: " + entity.getEmail());
         if (entity.getId() == null && !entity.getPassword().isEmpty()) {
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
             entity.setRole(Role.USER);
         }
-        return userRepository.save(entity);
+        User savedUser = userRepository.save(entity);
+        LogUtil.logInfo("User saved with id: " + savedUser.getId());
+        return savedUser;
     }
 
     @SneakyThrows
@@ -312,44 +327,58 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Optional<User> getByEmail(String email) {
+        LogUtil.logInfo("Fetching user by email: " + email);
         return userRepository.getByEmail(email);
     }
 
     @Override
     public boolean isExistUserByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        LogUtil.logInfo("Checking if user exists by email: " + email);
+        boolean exists = userRepository.existsByEmail(email);
+        LogUtil.logInfo("User exists: " + exists);
+        return exists;
     }
 
     @Override
     public void createPasswordResetTokenForUser(User user, String passwordToken) {
+        LogUtil.logInfo("Creating password reset token for user: " + user.getEmail());
         passwordResetTokenService.createResetPasswordTokenForUser(user, passwordToken);
+        LogUtil.logInfo("Password reset token created successfully for user: " + user.getEmail());
     }
 
     @Override
     public void saveUserVerificationToken(User theUser, String token) {
+        LogUtil.logInfo("Saving verification token for user: " + theUser.getEmail());
         var verificationToken = new VerificationToken(token, theUser);
         tokenRepository.save(verificationToken);
+        LogUtil.logInfo("Verification token saved successfully for user: " + theUser.getEmail());
     }
 
     @Override
     public String validatePasswordResetToken(String passwordResetToken) {
+        LogUtil.logInfo("Validating password reset token");
         return passwordResetTokenService.validatePasswordResetToken(passwordResetToken);
     }
 
     @Override
     public User findUserByPasswordToken(String passwordResetToken) {
+        LogUtil.logInfo("Finding user by password reset token");
         return passwordResetTokenService.findUserByPasswordToken(passwordResetToken).orElse(null);
     }
 
     @Override
     public void resetUserPassword(User user, String newPassword) {
+        LogUtil.logInfo("Resetting password for user: " + user.getEmail());
         user.setPassword(passwordEncoder.encode(newPassword));
         save(user);
+        LogUtil.logInfo("Password reset successful for user: " + user.getEmail());
     }
 
     @Override
     @Transactional
     public void deleteTokenByToken(String token) {
+        LogUtil.logInfo("Deleting password reset token: " + token);
         passwordResetTokenService.deleteTokenByToken(token);
+        LogUtil.logInfo("Token deleted successfully: " + token);
     }
 }

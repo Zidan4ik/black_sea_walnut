@@ -15,6 +15,7 @@ import org.example.black_sea_walnut.service.HistoryFactoryService;
 import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.example.black_sea_walnut.util.ImageUtil;
+import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,26 +32,35 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
 
     @Override
     public FactoryBannerBlockResponseForAdd getByPageTypeInResponseBannerBlock(PageType type) {
-        return factoryMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
+        LogUtil.logInfo("Fetching FactoryBanner for page type: " + type);
+        FactoryBannerBlockResponseForAdd response = factoryMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
+        LogUtil.logInfo("Fetched FactoryBanner: " + response);
+        return response;
     }
 
     @Override
     public BlockResponseForAdd getByPageTypeInResponseBlock(PageType type) {
-        return factoryMapper.toResponseBlockForAdd(historyService.getByPageType(type));
+        LogUtil.logInfo("Fetching FactoryBlock for page type: " + type);
+        BlockResponseForAdd response = factoryMapper.toResponseBlockForAdd(historyService.getByPageType(type));
+        LogUtil.logInfo("Fetched FactoryBlock: " + response);
+        return response;
     }
 
     @SneakyThrows
     @Override
     public History saveHistoryBannerBlock(BannerBlockRequestForAdd dto) {
+        LogUtil.logInfo("Saving FactoryBanner with DTO: " + dto);
         if (dto.getFactoryBannerId() != null) {
             History historyById = historyService.getById(dto.getFactoryBannerId());
             if (dto.getFactoryBannerPathToBanner().isEmpty() && historyById.getBanner() != null) {
+                LogUtil.logInfo("Deleting previous image for FactoryBanner ID: " + dto.getFactoryBannerId());
                 imageService.deleteByPath(historyById.getBanner().getPathToMedia());
             }
             dto.setMediaType(ImageUtil.getMediaType(dto.getFactoryBannerFile()));
             if (dto.getFactoryBannerFile() != null) {
                 String generatedPath = contextPath + "/page-factory/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getFactoryBannerFile());
                 dto.setFactoryBannerPathToBanner(generatedPath);
+                LogUtil.logInfo("Generated media file path for FactoryBanner: " + generatedPath);
             }
             if (historyById.getBanner() != null) {
                 historyById.getBanner().setPathToMedia(dto.getFactoryBannerPathToBanner());
@@ -59,12 +69,14 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
         }
         imageService.save(dto.getFactoryBannerFile(), dto.getFactoryBannerPathToBanner());
         History mappedHistory = factoryMapper.toEntityFromRequestBannerBlock(dto);
+        LogUtil.logInfo("Saved FactoryBanner with ID: " + mappedHistory.getId());
         return historyService.save(mappedHistory);
     }
 
     @SneakyThrows
     @Override
     public History saveHistoryBlock(BlockRequestForAdd dto) {
+        LogUtil.logInfo("Saving FactoryBlock with DTO: " + dto);
         if (dto.getFactoryBlockId() != null) {
             History historyById = historyService.getById(dto.getFactoryBlockId());
             if (dto.getFactoryBlockFiles() != null) {
@@ -72,6 +84,7 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
                 List<HistoryMedia> mediasToDelete = mediasFromBd.stream().filter(media -> dto.getFactoryBlockFiles().stream().noneMatch(mediaDto -> mediaDto.getId() != null && mediaDto.getId().equals(media.getId())))
                         .toList();
                 for (HistoryMedia media : mediasToDelete) {
+                    LogUtil.logInfo("Deleting media image for FactoryBlock ID: " + dto.getFactoryBlockId() + " with media ID: " + media.getId());
                     imageService.deleteByPath(media.getPathToImage());
                 }
 
@@ -79,12 +92,14 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
                     mediaDto.setMediaType(ImageUtil.getMediaType(mediaDto.getFileImage()));
                     HistoryMedia media = mediasFromBd.stream().filter(m -> m.getId().equals(mediaDto.getId())).findFirst().orElse(null);
                     if (mediaDto.getPathToImage().isEmpty() && media != null) {
+                        LogUtil.logInfo("Deleting previous media image for media ID: " + media.getId());
                         imageService.deleteByPath(media.getPathToImage());
                     }
 
                     if (mediaDto.getFileImage() != null) {
                         String generatedPath = contextPath + "/page-files/" + mediaDto.getMediaType() + "/" + imageService.generateFileName(mediaDto.getFileImage());
                         mediaDto.setPathToImage(generatedPath);
+                        LogUtil.logInfo("Generated media file path for media ID: " + mediaDto.getId() + ": " + generatedPath);
                     }
 
                     if (media != null) {
@@ -96,6 +111,7 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
             }
         }
         History mappedHistory = factoryMapper.toEntityFromRequestFactoryBlock(dto);
+        LogUtil.logInfo("Saved FactoryBlock with ID: " + mappedHistory.getId());
         return historyService.save(mappedHistory);
     }
 }
