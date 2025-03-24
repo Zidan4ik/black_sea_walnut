@@ -33,7 +33,7 @@ public class HistoryCatalogServiceImp implements HistoryCatalogService {
     @Override
     public BannerBlockResponseForAdd getByPageTypeInResponseBannerBlock(PageType type) {
         LogUtil.logInfo("Fetching BannerBlock for page type: " + type);
-        BannerBlockResponseForAdd response = catalogMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
+            BannerBlockResponseForAdd response = catalogMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
         LogUtil.logInfo("Fetched BannerBlock: " + response);
         return response;
     }

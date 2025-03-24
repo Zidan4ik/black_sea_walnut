@@ -12,16 +12,16 @@
                 <!-- Additional required wrapper -->
                 <div class="swiper-wrapper">
                     <!-- Slides -->
-                    <div class="swiper-slide">
+                    <div class="swiper-slide" th:if="${!item.pathToImage1.isEmpty()}">
                         <a><img th:src="${item.pathToImage1 != null? item.pathToImage1 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
-                    <div class="swiper-slide">
+                    <div class="swiper-slide" th:if="${!item.pathToImage2.isEmpty()}">
                         <a><img th:src="${item.pathToImage2 != null? item.pathToImage2 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
-                    <div class="swiper-slide">
+                    <div class="swiper-slide" th:if="${!item.pathToImage3.isEmpty()}">
                         <a><img th:src="${item.pathToImage3 != null? item.pathToImage3 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
-                    <div class="swiper-slide">
+                    <div class="swiper-slide" th:if="${item.pathToImage4!=null && !item.pathToImage4.isEmpty()}">
                         <a><img th:src="${item.pathToImage4 != null? item.pathToImage4 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
                 </div>

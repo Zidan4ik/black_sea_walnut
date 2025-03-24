@@ -135,12 +135,14 @@ public class ProductServiceImp implements ProductService {
     @SneakyThrows
     @Override
     public void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName) {
+        if (imagePath.isEmpty() && existingProduct != null) {
+            ImageUtil.deleteImageIfEmpty(existingProduct, fieldName, imageServiceImp);
+        }
         if (image != null && !image.isEmpty()) {
-            if (imagePath.isEmpty() && existingProduct != null) {
-                ImageUtil.deleteImageIfEmpty(existingProduct, fieldName, imageServiceImp);
-            }
             String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(image);
             pathSetter.accept(generatedPath);
+        } else {
+            pathSetter.accept("");
         }
     }
 
