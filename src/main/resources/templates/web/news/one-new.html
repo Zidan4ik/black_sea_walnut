@@ -91,16 +91,18 @@
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
-                buildContacts(data.contacts);
                 buildNewsLast(data.news, 'container-news');
                 buildNew(data.new_, 'container-new-content');
+                buildContacts(data.contacts);
             }
         });
     }
 
     function buildNewsLast(data, idContainer) {
-        if (!Array.isArray(data) || data.length === 0) return;
+        if (!Array.isArray(data) || data.length === 0) {
+            $('.sidebar__inner').parent().remove();
+            return;
+        }
 
         let container = $(`#${idContainer}`);
         if (container.length > 0) {
@@ -149,7 +151,7 @@
         let container = $(`#${idContainer}`);
         $('#container-new-header').text(data.title || '');
         if (data.length === 0 || !data.active) {
-                container.append(`<img src="${path_default_tech}" alt="alt">`);
+            container.append(`<img src="${path_default_tech}" alt="alt">`);
             return;
         }
 
@@ -174,8 +176,6 @@
             }
             container.append(`${data.description}`)
         }
-        console.log(data.title);
-        console.log(data.date);
         $('#container-new-title').text(data.title);
         $('#container-new-date').text(data.date);
     }

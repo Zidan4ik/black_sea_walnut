@@ -501,18 +501,23 @@
     }
 
     function buildNews(news, idContainer) {
-        if (news.length === 0) return;
-        else if (news.length > 0) {
-            if (news.length <= 3) {
-                $('.nav-buttons').remove();
-            }
+        if (news.length === 0) {
+            $('#container-navigation-news').css('display', 'none');
+            $('.wraper').css('display', 'none');
+        } else if (news.length > 0) {
             let $container = $(`#${idContainer}`);
-            if ($container) {
+            if ($container.length) {
                 let counter = 0;
                 for (let item of news) {
                     if (counter === 5) break;
                     $container.append(getRowNew(item));
                     counter++;
+                }
+            }
+            if (news.length <= 3) {
+                $('.nav-buttons').remove();
+                if (news.length < 3){
+                    $('#container-block-move-news').remove();
                 }
             }
         }
@@ -800,7 +805,6 @@
         $('.sendCall').on('click', function () {
             const formData = new FormData();
             let value = $('#input-number-user').val();
-            console.log(value);
             formData.append('phone', value)
             saveCall(formData);
         });
@@ -1064,7 +1068,6 @@
             window.location.reload();
         } catch (error) {
             let data = JSON.parse(error.message);
-            console.log(data);
             clearValid();
             validate4(data);
         }
@@ -1080,7 +1083,6 @@
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
                 if (containerCartTable.length) {
                     containerCartTable.empty();
                     if (data.length > 0) {

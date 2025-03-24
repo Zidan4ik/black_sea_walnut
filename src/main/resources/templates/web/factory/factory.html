@@ -115,7 +115,7 @@
 				});
 			</script>
 
-			<div class="row">
+			<div class="row" id="container-block-move-news">
 				<div class="wrapper">
 					<a th:href="@{/web/news}" class="button button_transparent"
 					   th:text="#{text.viewTheEntireGallery}"></a>
@@ -147,8 +147,8 @@
 				buildNumber(data.numbers,'container-numbers');
 				buildGallery(data.gallery,'container-gallery');
 				buildBannerTwo(data.ecology,'banner-factory2');
-				buildContacts(data.contacts);
 				buildNews(data.news,'container-news');
+				buildContacts(data.contacts);
 			}
 		});
 	}

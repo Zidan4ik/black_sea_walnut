@@ -173,18 +173,19 @@
                                 <!-- Additional required wrapper -->
                                 <div class="swiper-wrapper">
                                     <!-- Slides -->
-                                    <div class="swiper-slide">
-                                        <a><img src="${item.pathToImage1 != null ? item.pathToImage1 : path_default_image}" alt="alt"/></a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a><img src="${item.pathToImage2 != null ? item.pathToImage2 : path_default_image}" alt="alt"/></a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a><img src="${item.pathToImage3 != null ? item.pathToImage3 : path_default_image}" alt="alt"/></a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a><img src="${item.pathToImage4 != null ? item.pathToImage4 : path_default_image}" alt="alt"/></a>
-                                    </div>
+
+                                    ${item.pathToImage1? `<div class="swiper-slide">
+                                        <a><img src="${(item.pathToImage1)}" alt="alt"/></a>
+                                    </div>`:''}
+                                    ${item.pathToImage2? `<div class="swiper-slide">
+                                        <a><img src="${(item.pathToImage2)}" alt="alt"/></a>
+                                    </div>`:''}
+                                    ${item.pathToImage3? `<div class="swiper-slide">
+                                        <a><img src="${(item.pathToImage3)}" alt="alt"/></a>
+                                    </div>`:''}
+                                    ${item.pathToImage4? `<div class="swiper-slide">
+                                        <a><img src="${(item.pathToImage4)}" alt="alt"/></a>
+                                    </div>`:''}
                                 </div>
 
                                 <!-- If we need navigation buttons -->
