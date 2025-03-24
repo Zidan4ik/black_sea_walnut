@@ -37,13 +37,11 @@ public class CallSpecification {
 
 
     private static Specification<Call> hasId(Long id) {
-        if (id == null) return null;
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("id"), id));
     }
 
     private static Specification<Call> likePhone(String phone) {
-        if (phone == null || phone.isBlank()) return null;
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(root.get("phone"), "%" + phone + "%");
     }

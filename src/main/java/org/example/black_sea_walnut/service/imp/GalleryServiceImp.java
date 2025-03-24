@@ -13,6 +13,7 @@ import org.example.black_sea_walnut.mapper.GalleryMapper;
 import org.example.black_sea_walnut.repository.GalleryRepository;
 import org.example.black_sea_walnut.service.GalleryService;
 import org.example.black_sea_walnut.service.ImageService;
+import org.example.black_sea_walnut.service.specifications.GallerySpecifications;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -93,11 +94,7 @@ public class GalleryServiceImp implements GalleryService {
     @Override
     public PageResponse<GalleryResponseForAdd> getAllInResponseByLanguageCode(Pageable pageable, LanguageCode code) {
         LogUtil.logInfo("Fetching paginated gallery responses for add with language code: " + code);
-        Specification<Gallery> spec = Specification.where((root, query, criteriaBuilder) -> {
-            Join<Object, Object> translations = root.join("translations");
-            return criteriaBuilder.equal(translations.get("languageCode"), code);
-        });
-        Page<Gallery> page = galleryRepository.findAll(spec, pageable);
+        Page<Gallery> page = galleryRepository.findAll(GallerySpecifications.getSpecification(code), pageable);
         List<GalleryResponseForAdd> responsesDtoAdd = page.map(mapper::toResponseForAdd).stream().toList();
         LogUtil.logInfo("Fetched " + responsesDtoAdd.size() + " gallery responses for language code: " + code);
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(

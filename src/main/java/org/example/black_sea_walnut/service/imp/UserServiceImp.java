@@ -153,8 +153,8 @@ public class UserServiceImp implements UserService {
         }
         Long regionId = dto.getRegionForDeliveryId();
         if (regionId != null) {
-            userMapped.setRegion(regionService.getById(regionId).orElseThrow(
-                    () -> new EntityNotFoundException("Region with id:" + regionId + " was not found!")
+            userMapped.setRegion(regionService.getById(regionId)
+                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + regionId + " was not found!")
             ));
         }
         Long regionAdditionallyId = dto.getRegionAdditionallyId();

@@ -8,9 +8,14 @@ import java.util.List;
 
 public interface ClientCategoryService {
     void save(ClientCategory entity);
+
     void save(ClientCategoryRequestForAdd dto);
+
     List<ClientCategory> getAll();
+
     List<ClientCategoryResponseForAdd> getAllInResponse();
+
     ClientCategory getById(Long id);
+
     void deleteById(Long id);
 }

@@ -23,7 +23,7 @@ public class ProductSpecification2 {
         return specification;
     }
 
-    private static Specification<Product> hasTaste(String taste, LanguageCode code) {
+    static Specification<Product> hasTaste(String taste, LanguageCode code) {
         return (root, query, criteriaBuilder) -> {
             Join<Object, Object> tasteTable = root.join("tastes", JoinType.LEFT);
 
@@ -42,7 +42,7 @@ public class ProductSpecification2 {
         };
     }
 
-    private static Specification<Product> hasMass(String mass) {
+    static Specification<Product> hasMass(String mass) {
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("mass"), mass));
     }

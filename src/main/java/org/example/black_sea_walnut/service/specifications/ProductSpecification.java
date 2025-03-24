@@ -34,7 +34,7 @@ public class ProductSpecification {
         return specification;
     }
 
-    private static Specification<Product> hasTaste(String taste, LanguageCode code) {
+    static Specification<Product> hasTaste(String taste, LanguageCode code) {
         return (root, query, criteriaBuilder) -> {
             Join<Object, Object> tasteTable = root.join("tastes", JoinType.LEFT);
 
@@ -53,7 +53,7 @@ public class ProductSpecification {
         };
     }
 
-    private static Specification<Product> hasDiscount(String discount, LanguageCode code) {
+    static Specification<Product> hasDiscount(String discount, LanguageCode code) {
         return (root, query, criteriaBuilder) -> {
             Join<Object, Object> discountTable = root.join("discounts", JoinType.LEFT);
             if (!Objects.equals(discount, "")) {
@@ -71,12 +71,12 @@ public class ProductSpecification {
         };
     }
 
-    private static Specification<Product> hasId(Long id) {
+    static Specification<Product> hasId(Long id) {
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("id"), id));
     }
 
-    private static Specification<Product> likeName(String name, LanguageCode code) {
+    static Specification<Product> likeName(String name, LanguageCode code) {
         return (root, query, criteriaBuilder) -> {
             Join<Object, Object> translations = root.join("productTranslations");
             return criteriaBuilder.and(
@@ -86,7 +86,7 @@ public class ProductSpecification {
         };
     }
 
-    private static Specification<Product> equalPriceByUnit(int priceByUnit) {
+    static Specification<Product> equalPriceByUnit(int priceByUnit) {
         return (root, query, criteriaBuilder) -> {
             Subquery<LocalDateTime> maxValidFromSubquery = query.subquery(LocalDateTime.class);
             Root<HistoryPrices> historyRoot1 = maxValidFromSubquery.from(HistoryPrices.class);

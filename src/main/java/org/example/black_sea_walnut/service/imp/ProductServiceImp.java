@@ -21,6 +21,7 @@ import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
+import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -29,11 +30,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -93,14 +95,14 @@ public class ProductServiceImp implements ProductService {
         if (dto.getId() != null) {
             product = getById(dto.getId());
 
-            processImage(dto.getImage1(), dto.getPathToImage1(), product::setPathToImage1);
-            processImage(dto.getImage2(), dto.getPathToImage2(), product::setPathToImage2);
-            processImage(dto.getImage3(), dto.getPathToImage3(), product::setPathToImage3);
-            processImage(dto.getImage4(), dto.getPathToImage4(), product::setPathToImage4);
-            processImage(dto.getImageDescription(), dto.getPathToImageDescription(), product::setPathToImageDescription);
-            processImage(dto.getImagePacking(), dto.getPathToImagePacking(), product::setPathToImagePacking);
-            processImage(dto.getImagePayment(), dto.getPathToImagePayment(), product::setPathToImagePayment);
-            processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery);
+            processImage(dto.getImage1(), dto.getPathToImage1(), product::setPathToImage1, product, "pathToImage1");
+            processImage(dto.getImage2(), dto.getPathToImage2(), product::setPathToImage2, product, "pathToImage2");
+            processImage(dto.getImage3(), dto.getPathToImage3(), product::setPathToImage3, product, "pathToImage3");
+            processImage(dto.getImage4(), dto.getPathToImage4(), product::setPathToImage4, product, "pathToImage4");
+            processImage(dto.getImageDescription(), dto.getPathToImageDescription(), product::setPathToImageDescription, product, "pathToImageDescription");
+            processImage(dto.getImagePacking(), dto.getPathToImagePacking(), product::setPathToImagePacking, product, "pathToImagePacking");
+            processImage(dto.getImagePayment(), dto.getPathToImagePayment(), product::setPathToImagePayment, product, "pathToImagePayment");
+            processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery, product, "pathToImageDelivery");
 
             if (dto.getNewPrice() != null) {
                 product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
@@ -131,13 +133,14 @@ public class ProductServiceImp implements ProductService {
     }
 
     @SneakyThrows
-    private void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter) {
+    @Override
+    public void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName) {
         if (image != null && !image.isEmpty()) {
+            if (imagePath.isEmpty() && existingProduct != null) {
+                ImageUtil.deleteImageIfEmpty(existingProduct, fieldName, imageServiceImp);
+            }
             String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(image);
             pathSetter.accept(generatedPath);
-        } else if (imagePath.isEmpty()) {
-            pathSetter.accept(null);
-            imageServiceImp.deleteByPath(imagePath);
         }
     }
 

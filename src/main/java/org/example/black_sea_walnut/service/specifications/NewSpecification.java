@@ -28,13 +28,11 @@ public class NewSpecification {
     }
 
     private static Specification<New> hasId(Long id) {
-        if (id == null) return null;
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("id"), id));
     }
 
     private static Specification<New> likeTitle(String title, LanguageCode code) {
-        if (title == null || title.isBlank()) return null;
         return (root, query, criteriaBuilder) -> {
             Join<Object, Object> translation = root.join("translations");
             return criteriaBuilder.and(
@@ -45,7 +43,6 @@ public class NewSpecification {
     }
 
     private static Specification<New> hasDate(LocalDate date) {
-        if (date == null) return null;
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("dateOfPublication"), date));
     }

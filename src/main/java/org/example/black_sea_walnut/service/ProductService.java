@@ -9,9 +9,11 @@ import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 
 public interface ProductService {
     List<Product> getAll();
@@ -43,4 +45,6 @@ public interface ProductService {
     void decreaseCountItems(Long productId);
 
     void increaseCountItems(Long productId);
+
+    void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName);
 }

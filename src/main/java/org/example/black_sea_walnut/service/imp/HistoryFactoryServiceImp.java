@@ -81,7 +81,10 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
             History historyById = historyService.getById(dto.getFactoryBlockId());
             if (dto.getFactoryBlockFiles() != null) {
                 List<HistoryMedia> mediasFromBd = historyById.getHistoryMedia();
-                List<HistoryMedia> mediasToDelete = mediasFromBd.stream().filter(media -> dto.getFactoryBlockFiles().stream().noneMatch(mediaDto -> mediaDto.getId() != null && mediaDto.getId().equals(media.getId())))
+                List<HistoryMedia> mediasToDelete = mediasFromBd.stream().filter(
+                        media -> dto.getFactoryBlockFiles().stream().noneMatch(
+                                mediaDto -> mediaDto.getId() != null &&
+                                        mediaDto.getId().equals(media.getId())))
                         .toList();
                 for (HistoryMedia media : mediasToDelete) {
                     LogUtil.logInfo("Deleting media image for FactoryBlock ID: " + dto.getFactoryBlockId() + " with media ID: " + media.getId());

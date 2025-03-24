@@ -25,24 +25,17 @@ public class ManagerSpecification {
     }
 
     private static Specification<Manager> hasId(Long id) {
-        if (id == null) return null;
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("id"), id));
     }
 
     private static Specification<Manager> likePhone(String phone) {
-        if (phone == null || phone.isBlank()) return null;
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("phone"), "%" + phone + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("phone"), "%" + phone + "%");
     }
     private static Specification<Manager> likeName(String name) {
-        if (name == null || name.isBlank()) return null;
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("name"), "%" + name + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), "%" + name + "%");
     }
     private static Specification<Manager> likeSurname(String surname) {
-        if (surname == null || surname.isBlank()) return null;
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("surname"), "%" + surname + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("surname"), "%" + surname + "%");
     }
 }
