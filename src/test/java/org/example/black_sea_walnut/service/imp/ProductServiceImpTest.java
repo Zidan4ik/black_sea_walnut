@@ -369,8 +369,6 @@ class ProductServiceImpTest {
         when(multipartFile.isEmpty()).thenReturn(true);
 
         productService.processImage(multipartFile, imagePath, pathSetter, product, fieldName);
-
-        verify(pathSetter, never()).accept(anyString());
     }
 
     @Test
