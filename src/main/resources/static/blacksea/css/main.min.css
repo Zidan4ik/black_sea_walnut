@@ -1,128 +1,128 @@
-@import url(/blacksea/libs/swiper/dist/css/swiper.min.css);
-@import url(/blacksea/libs/gallery/simplelightbox.min.css);
-@import url(/blacksea/libs/scroll/jquery.mCustomScrollbar.min.css);
-@import url(/blacksea/libs/table/basictable.css);
-@import url(/blacksea/libs/tooltip/dist/css/tooltipster.bundle.min.css);
+@import url(/Walnut-R.Pravnyk/blacksea/libs/swiper/dist/css/swiper.min.css);
+@import url(/Walnut-R.Pravnyk/blacksea/libs/gallery/simplelightbox.min.css);
+@import url(/Walnut-R.Pravnyk/blacksea/libs/scroll/jquery.mCustomScrollbar.min.css);
+@import url(/Walnut-R.Pravnyk/blacksea/libs/table/basictable.css);
+@import url(/Walnut-R.Pravnyk/blacksea/libs/tooltip/dist/css/tooltipster.bundle.min.css);
 @import url("https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap&subset=latin-ext");
 
 @font-face {
     font-family: "Raleway";
     font-weight: normal;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-Regular.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-Regular.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-Regular.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-Regular.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Regular.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Regular.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Regular.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
     font-weight: bold;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-Bold.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-Bold.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-Bold.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-Bold.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Bold.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Bold.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Bold.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Bold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
     font-weight: 200;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-Thin.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-Thin.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-Thin.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-Thin.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Thin.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Thin.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Thin.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Thin.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
     font-weight: 100;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-Light.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-Light.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-Light.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-Light.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Light.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Light.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Light.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Light.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
     font-weight: 500;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-Medium.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-Medium.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-Medium.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-Medium.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Medium.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Medium.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Medium.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-Medium.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
     font-weight: 600;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-SemiBold.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-SemiBold.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-SemiBold.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-SemiBold.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-SemiBold.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-SemiBold.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-SemiBold.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Raleway";
     font-weight: 800;
     font-style: normal;
-    src: url("/blacksea/fonts/Raleway/Raleway-ExtraBold.eot");
-    src: url("/blacksea/fonts/Raleway/Raleway-ExtraBold.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Raleway/Raleway-ExtraBold.woff") format("woff"), url("/blacksea/fonts/Raleway/Raleway-ExtraBold.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-ExtraBold.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-ExtraBold.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-ExtraBold.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Raleway/Raleway-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: normal;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Regular.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Regular.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-Regular.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Regular.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Regular.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Regular.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: bold;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Bold.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Bold.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-Bold.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-Bold.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Bold.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Bold.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Bold.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Bold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: 200;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Thin.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Thin.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-Thin.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-Thin.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Thin.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Thin.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Thin.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Thin.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: 100;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Light.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Light.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-Light.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-Light.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Light.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Light.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Light.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Light.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: 500;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Medium.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-Medium.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-Medium.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-Medium.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Medium.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Medium.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Medium.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-Medium.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: 600;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-SemiBold.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-SemiBold.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-SemiBold.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-SemiBold.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-SemiBold.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-SemiBold.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-SemiBold.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-SemiBold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "Montserrat";
     font-weight: 800;
     font-style: normal;
-    src: url("/blacksea/fonts/Montserrat/Montserrat-ExtraBold.eot");
-    src: url("/blacksea/fonts/Montserrat/Montserrat-ExtraBold.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Montserrat/Montserrat-ExtraBold.woff") format("woff"), url("/blacksea/fonts/Montserrat/Montserrat-ExtraBold.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-ExtraBold.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-ExtraBold.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-ExtraBold.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Montserrat/Montserrat-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "nut";
     font-weight: normal;
     font-style: normal;
-    src: url("/blacksea/fonts/Nut/nut.eot");
-    src: url("/blacksea/fonts/Nut/nut.eot?#iefix") format("embedded-opentype"), url("/blacksea/fonts/Nut/nut.woff") format("woff"), url("/blacksea/fonts/Nut/nut.ttf") format("truetype");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Nut/nut.eot");
+    src: url("/Walnut-R.Pravnyk/blacksea/fonts/Nut/nut.eot?#iefix") format("embedded-opentype"), url("/Walnut-R.Pravnyk/blacksea/fonts/Nut/nut.woff") format("woff"), url("/Walnut-R.Pravnyk/blacksea/fonts/Nut/nut.ttf") format("truetype");
 }
 
 /*! Bootstrap v4.1.3 (https://getbootstrap.com/) Copyright 2011-2018 The Bootstrap Authors Copyright 2011-2018 Twitter, Inc. Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE) */
@@ -14783,7 +14783,7 @@ i[class^="icons-"]:before, i[class*=" icons-"]:before {
     line-height: 250px;
     margin: 10px;
     text-transform: uppercase;
-    background: url("/blacksea/img/e0678ef1.jpg");
+    background: url("/Walnut-R.Pravnyk/blacksea/img/e0678ef1.jpg");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center;
@@ -18374,7 +18374,7 @@ i[class^="icons-"]:before, i[class*=" icons-"]:before {
     display: inline-block;
     width: 131.01px;
     height: 170px;
-    background-image: url("/blacksea/img/pic.png");
+    background-image: url("/Walnut-R.Pravnyk/blacksea/img/pic.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -18427,7 +18427,7 @@ i[class^="icons-"]:before, i[class*=" icons-"]:before {
     display: inline-block;
     width: 131.01px;
     height: 170px;
-    background-image: url("/blacksea/img/pic.png");
+    background-image: url("/Walnut-R.Pravnyk/blacksea/img/pic.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

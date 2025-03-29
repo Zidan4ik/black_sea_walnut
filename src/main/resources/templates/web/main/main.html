@@ -26,7 +26,7 @@
     <section class="timer" id="main-number"></section>
 
     <div class="parallax" data-scrollax-parent="true">
-        <section id="main-aim" class="goal overlay cover" style="background-image: url(/blacksea/img/goal.jpg)"
+        <section id="main-aim" class="goal overlay cover" th:style="'background-image: url(' + @{/blacksea/img/goal.jpg} + ')'"
                  data-scrollax="properties: { translateY: '30%' }"></section>
     </div>
 
@@ -191,7 +191,7 @@
                                 <!-- If we need navigation buttons -->
                                 <div class="swiper-button-prev"></div>
                                 <div class="swiper-button-next"></div>
-                                <img class="zoom" src="/blacksea/img/zoom.svg" alt="alt">
+                                <img class="zoom" src="${contextPath}blacksea/img/zoom.svg" alt="alt">
                             </div>
                             <div class="wrap">
                                 <div class="production__item_title">

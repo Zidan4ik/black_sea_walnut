@@ -68,7 +68,7 @@ public class HistoryClientServiceImp implements HistoryClientService {
             }
             dto.setMediaType(ImageUtil.getMediaType(dto.getClientsBannerFile()));
             if (dto.getClientsBannerFile() != null) {
-                String generatedPath = contextPath + "/page-clients/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getClientsBannerFile());
+                String generatedPath = contextPath + "/pages/clients/banner-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getClientsBannerFile());
                 dto.setClientsBannerPathToBanner(generatedPath);
                 LogUtil.logInfo("Generated media file path for ClientBanner: " + generatedPath);
             }
@@ -107,7 +107,7 @@ public class HistoryClientServiceImp implements HistoryClientService {
             }
             dto.setMediaType(ImageUtil.getMediaType(dto.getClientsEcoProductionFile()));
             if (dto.getClientsEcoProductionFile() != null) {
-                String generatedPath = contextPath + "/page-clients/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getClientsEcoProductionFile());
+                String generatedPath = contextPath + "/pages/clients/eco-production-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getClientsEcoProductionFile());
                 dto.setClientsEcoProductionPathToBanner(generatedPath);
                 LogUtil.logInfo("Generated media file path for ClientEcoProduction: " + generatedPath);
             }

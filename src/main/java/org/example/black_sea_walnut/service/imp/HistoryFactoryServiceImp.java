@@ -58,7 +58,7 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
             }
             dto.setMediaType(ImageUtil.getMediaType(dto.getFactoryBannerFile()));
             if (dto.getFactoryBannerFile() != null) {
-                String generatedPath = contextPath + "/page-factory/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getFactoryBannerFile());
+                String generatedPath = contextPath + "/pages/factory/banner-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getFactoryBannerFile());
                 dto.setFactoryBannerPathToBanner(generatedPath);
                 LogUtil.logInfo("Generated media file path for FactoryBanner: " + generatedPath);
             }
@@ -66,8 +66,8 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
                 historyById.getBanner().setPathToMedia(dto.getFactoryBannerPathToBanner());
                 historyById.getBanner().setMediaType(dto.getMediaType());
             }
+            imageService.save(dto.getFactoryBannerFile(), dto.getFactoryBannerPathToBanner());
         }
-        imageService.save(dto.getFactoryBannerFile(), dto.getFactoryBannerPathToBanner());
         History mappedHistory = factoryMapper.toEntityFromRequestBannerBlock(dto);
         LogUtil.logInfo("Saved FactoryBanner with ID: " + mappedHistory.getId());
         return historyService.save(mappedHistory);
@@ -81,10 +81,10 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
             History historyById = historyService.getById(dto.getFactoryBlockId());
             if (dto.getFactoryBlockFiles() != null) {
                 List<HistoryMedia> mediasFromBd = historyById.getHistoryMedia();
+
                 List<HistoryMedia> mediasToDelete = mediasFromBd.stream().filter(
-                        media -> dto.getFactoryBlockFiles().stream().noneMatch(
-                                mediaDto -> mediaDto.getId() != null &&
-                                        mediaDto.getId().equals(media.getId())))
+                                media -> dto.getFactoryBlockFiles().stream().noneMatch(
+                                        mediaDto -> mediaDto.getPathToImage().equals(media.getPathToImage())))
                         .toList();
                 for (HistoryMedia media : mediasToDelete) {
                     LogUtil.logInfo("Deleting media image for FactoryBlock ID: " + dto.getFactoryBlockId() + " with media ID: " + media.getId());
@@ -93,24 +93,28 @@ public class HistoryFactoryServiceImp implements HistoryFactoryService {
 
                 for (HistoryMediaRequestForAdd mediaDto : dto.getFactoryBlockFiles()) {
                     mediaDto.setMediaType(ImageUtil.getMediaType(mediaDto.getFileImage()));
-                    HistoryMedia media = mediasFromBd.stream().filter(m -> m.getId().equals(mediaDto.getId())).findFirst().orElse(null);
-                    if (mediaDto.getPathToImage().isEmpty() && media != null) {
-                        LogUtil.logInfo("Deleting previous media image for media ID: " + media.getId());
-                        imageService.deleteByPath(media.getPathToImage());
-                    }
+//                    HistoryMedia media = mediasFromBd.stream().filter(m -> m.getPathToImage().equals(mediaDto.getPathToImage()))
+//                            .findFirst().orElse(null);
+//                    if (mediaDto.getPathToImage().isEmpty() && media != null) {
+//                        LogUtil.logInfo("Deleting previous media image for media ID: " + media.getId());
+//                        imageService.deleteByPath(media.getPathToImage());
+//                    }
 
                     if (mediaDto.getFileImage() != null) {
-                        String generatedPath = contextPath + "/page-files/" + mediaDto.getMediaType() + "/" + imageService.generateFileName(mediaDto.getFileImage());
+                        String generatedPath = contextPath + "/pages/factory/2blocks/" + mediaDto.getMediaType() + "/" + imageService.generateFileName(mediaDto.getFileImage());
                         mediaDto.setPathToImage(generatedPath);
                         LogUtil.logInfo("Generated media file path for media ID: " + mediaDto.getId() + ": " + generatedPath);
                     }
 
-                    if (media != null) {
-                        media.setPathToImage(mediaDto.getPathToImage());
-                        media.setMediaType(mediaDto.getMediaType());
-                    }
+//                    if (media != null) {
+//                        media.setPathToImage(mediaDto.getPathToImage());
+//                        media.setMediaType(mediaDto.getMediaType());
+//                    }
                     imageService.save(mediaDto.getFileImage(), mediaDto.getPathToImage());
                 }
+            }else{
+                historyById.getHistoryMedia().clear();
+                imageService.deleteByPath("/uploads/pages/factory/2blocks/image");
             }
         }
         History mappedHistory = factoryMapper.toEntityFromRequestFactoryBlock(dto);

@@ -37,9 +37,9 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/web/cart").permitAll()
-                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN")
-                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+//                                .requestMatchers("/web/cart").permitAll()
+//                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN")
+//                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                 .anyRequest().permitAll())
                 .formLogin(
                         login -> login
@@ -78,9 +78,9 @@ public class SecurityConfig {
                                                 Authentication authentication) throws IOException, ServletException {
                 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
                 if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
-                    response.sendRedirect("/admin/statistic");
+                    response.sendRedirect("/Walnut-R.Pravnyk/admin/statistic");
                 } else {
-                    response.sendRedirect("/web/main");
+                    response.sendRedirect("/Walnut-R.Pravnyk/web/main");
                 }
             }
         };

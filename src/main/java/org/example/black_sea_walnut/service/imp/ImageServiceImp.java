@@ -37,7 +37,7 @@ public class ImageServiceImp implements ImageService {
                 }
                 if (file != null) {
                     LogUtil.logInfo("Attempting to save file: " + file.getOriginalFilename() + " to path: " + path);
-                        Files.copy(file.getInputStream(), path_);
+                    Files.copy(file.getInputStream(), path_);
                     LogUtil.logInfo("File saved successfully to path: " + path_);
                 }
             }

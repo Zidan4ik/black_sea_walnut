@@ -37,6 +37,7 @@ function copyHTMLBlockSave(fromElementId, toElementId) {
     document.getElementById('btn-save_').addEventListener('click', function () {
         console.log('button save was clicked!')
         if(url){
+            console.log(url);
             saveRequest(url);
         }
     });

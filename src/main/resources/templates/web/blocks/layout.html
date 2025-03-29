@@ -41,9 +41,12 @@
     <script th:src="@{/js/swiperMy.js}"></script>
 
     <script th:inline="javascript">
-        const contextPath = '[[@{/}]]'.replaceAll("\"", "");
-        const path_default_image = contextPath + "uploads/default/default-image.jpg";
-        const path_default_preview_image = contextPath + "uploads/default/video-preview.jpg";
+        let contextPath = '[[@{/}]]'.replaceAll("\"", "").trim();
+        if (contextPath !== "/" && contextPath.endsWith("/")) {
+            contextPath = contextPath.slice(0, -1);
+        }
+        const path_default_image = contextPath + "/uploads/default/default-image.jpg";
+        const path_default_preview_image = contextPath + "/uploads/default/video-preview.jpg";
     </script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -174,10 +177,9 @@
 <script th:src="@{/vuexy/dist/js/bootstrap.js}"></script>
 <script th:src="@{/js/messageLocal.js}"></script>
 
-<link rel="stylesheet" th:href="@{/leaflet/leaflet.css}" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""/>
-<script th:src="@{/leaflet/leaflet.js}" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
+<link rel="stylesheet" th:href="@{/leaflet/leaflet.css}"/>
+<script th:src="@{/leaflet/leaflet.js}"></script>
+
 
 <script>
     function selectedLanguage() {
@@ -516,7 +518,7 @@
             }
             if (news.length <= 3) {
                 $('.nav-buttons').remove();
-                if (news.length < 3){
+                if (news.length < 3) {
                     $('#container-block-move-news').remove();
                 }
             }

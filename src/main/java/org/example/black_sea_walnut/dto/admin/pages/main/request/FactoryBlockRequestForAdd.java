@@ -10,8 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class FactoryBlockRequestForAdd {
     private Long mainFactoryId;
     private Boolean mainFactoryIsActive;

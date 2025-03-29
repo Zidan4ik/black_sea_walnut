@@ -9,7 +9,7 @@
 <body>
 <div layout:fragment="content">
     <div id="successMessage" class="alert alert-success text-center" role="alert" th:text="#{text.userSuccessCreate}"
-    style="display: none;"></div>
+         style="display: none;"></div>
     <div id="successMessageChangedPassword" class="alert alert-success text-center" role="alert" th:text="#{text.resetPassword}"
          style="display: none;"></div>
     <div th:if="${param.logout}" class="alert alert-success text-center" th:text="#{text.messageLogout}"></div>
@@ -19,7 +19,7 @@
             <div class="breadcrumbs">
                 <ul>
                     <li>
-                        <a th:href="@{/templates/web/main}" th:text="#{text.main}"></a>
+                        <a th:href="@{/web/main}" th:text="#{text.main}"></a>
                     </li>
                     <li th:text="#{text.login}"></li>
                 </ul>

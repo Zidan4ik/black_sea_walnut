@@ -1,6 +1,7 @@
 package org.example.black_sea_walnut.controller.admin;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
@@ -63,9 +64,9 @@ public class NewController {
 
     @GetMapping("/news/pagination/load")
     public ModelAndView loadPagination(@ModelAttribute ResponseNewForView responseNewForView,
-                                  @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "5") int size,
-                                  @RequestParam String languageCode) {
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "5") int size,
+                                       @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
         PageResponse<ResponseNewForView> pageResponse = newService.getAll(responseNewForView, pageable, LanguageCode.fromString(languageCode));
@@ -94,7 +95,8 @@ public class NewController {
 
     @PostMapping(value = "/new/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> saveNew(@ModelAttribute @Valid NewRequestForAdd dto,
-                                     BindingResult bindingResult) throws IOException {
+                                     BindingResult bindingResult,
+                                     HttpServletRequest request) throws IOException {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -107,18 +109,19 @@ public class NewController {
 
         HttpHeaders headers = new HttpHeaders();
         if (dto.getFile() != null) {
-                    if (Objects.requireNonNull(dto.getFile().getContentType()).contains("image")) {
-                        dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.image);
-                    } else if (Objects.requireNonNull(dto.getFile().getContentType()).contains("video")) {
-                        dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.video);
-                    }
+            if (Objects.requireNonNull(dto.getFile().getContentType()).contains("image")) {
+                dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.image);
+            } else if (Objects.requireNonNull(dto.getFile().getContentType()).contains("video")) {
+                dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.video);
+            }
         }
         newService.saveImage(dto);
-        headers.add("HX-Redirect", "/admin/news");
+        headers.add("HX-Redirect", request.getContextPath() + "/admin/news");
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
+
     @ModelAttribute("isActiveNews")
-    public boolean toActiveSidebarButton(){
+    public boolean toActiveSidebarButton() {
         return true;
     }
 }

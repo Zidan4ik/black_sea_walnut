@@ -33,7 +33,7 @@ public class HistoryCatalogServiceImp implements HistoryCatalogService {
     @Override
     public BannerBlockResponseForAdd getByPageTypeInResponseBannerBlock(PageType type) {
         LogUtil.logInfo("Fetching BannerBlock for page type: " + type);
-            BannerBlockResponseForAdd response = catalogMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
+        BannerBlockResponseForAdd response = catalogMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
         LogUtil.logInfo("Fetched BannerBlock: " + response);
         return response;
     }
@@ -58,7 +58,7 @@ public class HistoryCatalogServiceImp implements HistoryCatalogService {
             }
             dto.setMediaType(ImageUtil.getMediaType(dto.getCatalogBannerFile()));
             if (dto.getCatalogBannerFile() != null) {
-                String generatedPath = contextPath + "/page-catalog/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getCatalogBannerFile());
+                String generatedPath = contextPath + "/pages/catalog/banner-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getCatalogBannerFile());
                 dto.setCatalogBannerPathToImage(generatedPath);
                 LogUtil.logInfo("Generated media file path for BannerBlock: " + generatedPath);
             }
@@ -99,7 +99,7 @@ public class HistoryCatalogServiceImp implements HistoryCatalogService {
                     }
 
                     if (mediaDto.getFileImage() != null) {
-                        String generatedPath = contextPath + "/page-catalog/" + mediaDto.getMediaType() + "/" + imageService.generateFileName(mediaDto.getFileImage());
+                        String generatedPath = contextPath + "/pages/catalog/ecologically-block/" + mediaDto.getMediaType() + "/" + imageService.generateFileName(mediaDto.getFileImage());
                         mediaDto.setPathToImage(generatedPath);
                         LogUtil.logInfo("Generated media file path for media ID: " + mediaDto.getId() + ": " + generatedPath);
                     }

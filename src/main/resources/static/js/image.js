@@ -1,6 +1,4 @@
-let path_default_image = contextPath + "uploads/default/default-image.jpg";
-let path_default_tech = contextPath + "uploads/default/default-image-tech.jpg";
-
+let path_default_image = contextPath + "/uploads/default/default-image.jpg";
 
 function addEventListenersImage() {
     document.getElementById('btn-delete_').addEventListener('click', function () {
@@ -41,31 +39,24 @@ function addEventListenersImage() {
     });
 }
 
-function    addEventListenersImage2() {
+function addEventListenersImage2() {
     document.querySelectorAll(".btn-select, .btn-delete, .files").forEach(function (button) {
         button.replaceWith(button.cloneNode(true));
     });
 
     document.querySelectorAll(".btn-select").forEach(function (button) {
         button.addEventListener('click', function () {
-            console.log(this);
             let attribute = this.getAttribute('data-type');
-            console.log(attribute);
             document.getElementById("file-" + attribute).click();
         });
     });
     document.querySelectorAll(".files").forEach(function (button) {
         button.addEventListener('change', function (event) {
-            // console.log(this);
             let attribute = this.getAttribute("data-type");
-            // console.log("this:", this);
-
             const file = event.target.files[0];
             if (!file) return;
-
             const imageElement = document.getElementById(attribute);
             imageElement.src = URL.createObjectURL(file);
-
             let $input = $(`input[data-image="${attribute}"]`)[0];
             if ($input) {
                 $input.value = '';

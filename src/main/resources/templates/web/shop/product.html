@@ -119,7 +119,7 @@
                                     <div class="sum_item">
                                         <div class="sum_item_button">
                                             <a id="buyProductBtn" class="button" th:text="#{text.toOrder}"
-                                            style="color: white;"></a>
+                                               style="color: white;"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -208,8 +208,9 @@
     function invokeRequestProductData() {
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
+        console.log(location.pathname);
         let pathName = location.pathname.substring(1, location.pathname.length);
-        request.open("GET", contextPath + `${pathName}/data?lang=${lang}`)
+        request.open("GET", `${location.pathname}/data?lang=${lang}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
