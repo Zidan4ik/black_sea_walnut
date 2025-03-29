@@ -7,9 +7,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -51,15 +50,30 @@ public class ImageServiceImp implements ImageService {
 
     @Override
     public void deleteByPath(String path) throws IOException {
-        LogUtil.logInfo("Attempting to delete file at path: " + path);
-        Path path_ = Path.of("."+path);
-        if (Files.isRegularFile(path_)) {
-            Files.delete(path_);
-            LogUtil.logInfo("File deleted successfully from path: " + path);
+        LogUtil.logInfo("Attempting to delete file/folder at path: " + path);
+        Path path_ = Path.of("." + path);
+
+        if (Files.exists(path_)) {
+            Files.walkFileTree(path_, new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file);
+                    LogUtil.logInfo("Deleted file: " + file);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    Files.delete(dir);
+                    LogUtil.logInfo("Deleted directory: " + dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
         } else {
-            LogUtil.logWarning("File not found or is not a regular file at path: " + path);
+            LogUtil.logWarning("Path not found: " + path);
         }
     }
+
 
     @Override
     public String generateFileName(MultipartFile file) {
