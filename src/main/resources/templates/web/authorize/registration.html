@@ -194,7 +194,7 @@
 <script layout:fragment="script">
     function invokeData() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `registration/data`)
+        request.open("GET", contextPath + `/registration/data`)
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {
@@ -254,14 +254,14 @@
     function saveFiz(formData) {
         $.ajax({
             type: "post",
-            url: `${contextPath}user-fiz/save`,
+            url: `${contextPath}/user-fiz/save`,
             data: formData,
             processData: false,
             contentType: false,
             enctype: "multipart/form-data",
             success: function () {
                 sessionStorage.setItem("registrationSuccess","1");
-                window.location.replace(contextPath + 'login');
+                window.location.replace(contextPath + '/login');
             },
             error: function (error) {
                 clearValid();

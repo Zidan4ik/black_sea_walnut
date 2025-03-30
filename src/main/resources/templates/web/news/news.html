@@ -19,6 +19,7 @@
             text-overflow: ellipsis;
             max-width: 100%;
         }
+
         .text-limit {
             overflow: hidden;
             display: -webkit-box;
@@ -71,7 +72,7 @@
 </div>
 
 <script layout:fragment="script">
-    const pathToTable = contextPath + 'web/news/table/load';
+    const pathToTable = contextPath + '/web/news/table/load';
     let currentPage = 0;
     let timeoutId;
 
@@ -87,7 +88,7 @@
     function invokeRequestNewsData() {
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
-        request.open("GET", contextPath + `web/news/data?lang=${lang}`)
+        request.open("GET", contextPath + `/web/news/data?lang=${lang}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -100,7 +101,7 @@
     function loadNews() {
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
-        request.open("GET", contextPath + `web/news/table/load?lang=${lang}&page=${currentPage}`)
+        request.open("GET", contextPath + `/web/news/table/load?lang=${lang}&page=${currentPage}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -127,24 +128,25 @@
             html += `<div class="row">`;
 
             if (group[0]) {
-                let marginBottom = group[0].description === ''? 'margin-bottom: 0 !important;':'';
-                let pathToImage = group[0].pathToImage;
-                let isImage = pathToImage ? pathToImage.includes('/image/') : true;
+                if (!group[0].isActive) return;
+                let marginBottom = group[0].description === '' ? 'margin-bottom: 0 !important;' : '';
+                let pathToImage1 = group[0].pathToImage;
+                let isImage = pathToImage1 ? pathToImage1.includes('/image/') : true;
                 html += `
                     <div class="col-lg-8 py-4">
                         <div class="benefit-news__img">
-                        ${isImage ? `<img src="${group[0].pathToImage || path_default_image}" class="card-img-top" alt="error"
+                        ${isImage ? `<img src="${(pathToImage1 !== '' ? contextPath + pathToImage1: path_default_image) || path_default_image}" class="card-img-top" alt="error"
 style="height: 526px;">` : ''}
                         ${!isImage ? `<div class="video-container" style="position: relative; width: 100%;">
                         <img src="${path_default_preview_image}" class="video-preview"
-                             style="width: 100%; height: 526px; cursor: pointer; display: block;">
+                             style="width: 100%; height: 526px; cursor: pointer; display: block;" alt="error">
                         <button class="play-button"
                                 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
                                        background: rgba(0, 0, 0, 0.6); color: white; border: none;
                                        padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
                             ▶
                         </button>
-                        <video src="${group[0].pathToImage || path_default_image}" class="video-player"
+                        <video src="${(pathToImage1.trim() !== '' ? contextPath + pathToImage1: path_default_image) || path_default_image}" class="video-player"
                                style="width: 100%;height: 526px; display: none;" controls></video>
                     </div>` : ''}
                         </div>
@@ -155,7 +157,7 @@ style="height: 526px;">` : ''}
                                 <div class="item_data">${group[0].date}</div>
                                 <h3>${group[0].title}</h3>
                                 <p class="mb-3 text-limit" style="${marginBottom}">${group[0].description}</p>
-                                <a href="${contextPath}web/new/${group[0].id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                <a href="${contextPath}/web/new/${group[0].id}">Читати <i class="nut-icon icons-read-more"></i></a>
                             </div>
                         </div>
                     </div>
@@ -164,14 +166,16 @@ style="height: 526px;">` : ''}
 
             for (let j = 1; j <= 3; j++) {
                 if (group[j]) {
+                    console.log(group[j])
+                    if (!group[j].isActive) return;
                     let pathToImage = group[j].pathToImage;
                     let isImage = pathToImage ? pathToImage.includes('/image/') : true;
-                    let marginBottom = group[j].description === ''? 'margin-bottom: 62px;':'';
+                    let marginBottom = group[j].description === '' ? 'margin-bottom: 62px;' : '';
                     html += `
                     <div class="col-lg-4 col-md-6 col-12 py-4">
                         <div class="news__item">
                             <span class="video_wrap">
-                            ${isImage ? `<img src="${group[j].pathToImage || path_default_image}" class="card-img-top" alt="error"
+                            ${isImage ? `<img src="${(pathToImage !== '' ? contextPath + pathToImage: path_default_image) || path_default_image}" class="card-img-top" alt="error"
                             style="height: 220px;">` : ''}
                             ${!isImage ? `<div class="video-container" style="position: relative; width: 100%;">
                                 <img src="${path_default_preview_image}" class="video-preview"
@@ -181,15 +185,15 @@ style="height: 526px;">` : ''}
                                                background: rgba(0, 0, 0, 0.6); color: white; border: none;
                                                padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
                                     ▶</button>
-                                <video src="${group[j].pathToImage || path_default_image}" class="video-player"
+                                <video src="${(pathToImage !== '' ? contextPath + pathToImage: path_default_image) || path_default_image}" class="video-player"
                                        style="width: 100%;height: 220px; display: none;" controls></video>
                                         </div>` : ''}
                                     </span>
                                     <div class="wraper pr-5 truncate-container">
                                         <div class="item_data">${group[j].date}</div>
                                         <h3>${group[j].title}</h3>
-                                        <p class="text-limit" style="${marginBottom}">${group[j].description.substring(0,100)}</p>
-                                        <a href="${contextPath}web/new/${group[j].id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                        <p class="text-limit" style="${marginBottom}">${group[j].description.substring(0, 100)}</p>
+                                        <a href="${contextPath}/web/new/${group[j].id}">Читати <i class="nut-icon icons-read-more"></i></a>
                                     </div>
                                 </div>
                             </div> `;

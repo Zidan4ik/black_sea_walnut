@@ -55,7 +55,7 @@
 <script layout:fragment="script">
     function invokeData() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`)
+        request.open("GET", contextPath + `/web/contacts/get`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {

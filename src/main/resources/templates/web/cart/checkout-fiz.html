@@ -314,7 +314,7 @@
 
     function invokeRequestContactData() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`)
+        request.open("GET", contextPath + `/web/contacts/get`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -324,7 +324,7 @@
         });
     }
 
-    const stripe = Stripe('pk_test_51R2IQUJrY7tkTcm5RI5omR8c2XidVO6rMtUZyoEEa37xPGoYDrH7hYLqhJM7xjk1wAi7YsQJNgaER5CpdYtr0TE700E1y2704W'); // Use your Stripe Publishable Key
+    const stripe = Stripe('pk_test_51R2IQfR01V2gEYgJF29ufdo5xZt92Iun7aZKdnXuYYxOSljOLB5CNNM9jCuFjg9U8WWSWOUaEEOhqmViY4LHMBuY00Ycq9lLBC');
     const elements = stripe.elements();
 
     const style = {
@@ -346,7 +346,7 @@
 
     async function handlePayment(formData) {
         try {
-            const response = await fetch(`/checkout/card`, {
+            const response = await fetch(contextPath + `/checkout/card`, {
                 method: "POST",
                 body: formData
             });
@@ -368,7 +368,7 @@
                     console.error("Payment failed", error);
                     alert("Помилка оплати: " + error.message);
                 } else {
-                    window.location.href = contextPath + "thanks";
+                    window.location.href = contextPath + "/thanks";
                 }
             }
         } catch (error) {

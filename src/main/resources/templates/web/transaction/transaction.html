@@ -90,7 +90,7 @@
 
     function invokeDataContacts() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`)
+        request.open("GET", contextPath + `/web/contacts/get`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -102,7 +102,7 @@
 
     function invokeDataTransactionById(id) {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/transaction/${id}`)
+        request.open("GET", contextPath + `/web/transaction/${id}`)
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {

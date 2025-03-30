@@ -75,7 +75,7 @@
 
 </div>
 <script layout:fragment="script">
-    let path_default_tech = contextPath + "uploads/default/default-image-tech.jpg";
+    let path_default_tech = contextPath + "/uploads/default/default-image-tech.jpg";
 
     $(document).ready(function () {
         invokeRequestNewData();
@@ -86,7 +86,7 @@
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
         let pathname = location.pathname;
-        request.open("GET", contextPath + `${pathname.substring(1, pathname.length)}/data?lang=${lang}`)
+        request.open("GET", `/${pathname.substring(1, pathname.length)}/data?lang=${lang}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -107,14 +107,14 @@
         let container = $(`#${idContainer}`);
         if (container.length > 0) {
             data.forEach(function (item) {
-                if (item.active) {
-                    let pathToImage = item.pathToImage;
-                    let isImage = pathToImage ? pathToImage.includes('/image/') : true;
-                    let media;
-                    if (isImage) {
-                        media = `<img src="${pathToImage || path_default_image}" alt="alt">`;
-                    } else {
-                        media = `
+                if (!item.active) return;
+                let pathToImage = item.pathToImage;
+                let isImage = pathToImage ? pathToImage.includes('/image/') : true;
+                let media;
+                if (isImage) {
+                    media = `<img src="${(pathToImage !== '' ? contextPath + pathToImage : path_default_image) || path_default_image}" alt="alt">`;
+                } else {
+                    media = `
                 <div class="video-container" style="position: relative; width: 100%;">
                                 <img src="${path_default_preview_image}" class="video-preview"
                                      style="width: 100%; height:220px; cursor: pointer; display: block;">
@@ -123,12 +123,12 @@
                                                background: rgba(0, 0, 0, 0.6); color: white; border: none;
                                                padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
                                     ▶</button>
-                                <video src="${pathToImage || path_default_image}" class="video-player"
+                                <video src="${contextPath + pathToImage || path_default_image}" class="video-player"
                                        style="width: 100%;height: 220px; display: none;" controls></video>
                                         </div>`;
-                    }
+                }
 
-                    container.append(`<li>
+                container.append(`<li>
                                     <div class="aside__item">
                                         <div class="aside__item_img">
                                            ${media}
@@ -139,10 +139,9 @@
                                         <div class="aside__item_title">
                                             ${item.title}
                                         </div>
-                                        <a href="${contextPath}web/new/${item.id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                        <a href="${contextPath}/web/new/${item.id}">Читати <i class="nut-icon icons-read-more"></i></a>
                                     </div>
                                 </li>`);
-                }
             });
         }
     }

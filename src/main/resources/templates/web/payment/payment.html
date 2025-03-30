@@ -9,7 +9,7 @@
 
 <body>
 <div layout:fragment="content">
-	<section class="first-section overlay" style="background-image: url(/blacksea/img/Untitled-23.jpg)">
+	<section class="first-section overlay" th:style="'background-image: url('+@{/blacksea/img/Untitled-23.jpg}+')'">
 		<div class="container">
 			<div class="breadcrumbs">
 				<ul>
@@ -50,22 +50,22 @@
 										<p class="tabs__content_title" th:text="#{text.paymentMethods}"></p>
 										<ul>
 											<li>
-												<span><img src="/blacksea/img/icon-delivery13.png" alt="alt" th:text="#{text.cashlessPayment}"></span>
+												<span><img th:src="@{/blacksea/img/icon-delivery13.png}" alt="alt" th:text="#{text.cashlessPayment}"></span>
 												<p th:text="#{text.cashlessPaymentDesc}"></p>
 											</li>
 											<li>
-												<span><img src="/blacksea/img/icon-delivery15.png" alt="alt" th:text="#{text.paymentByItem}"></span>
+												<span><img th:src="@{/blacksea/img/icon-delivery15.png}" alt="alt" th:text="#{text.paymentByItem}"></span>
 												<p th:text="#{text.paymentByItemDesc}"></p>
 											</li>
 											<li>
-												<span><img src="/blacksea/img/icon-delivery14.png" alt="alt" th:text="#{text.cashPayment}"></span>
+												<span><img th:src="@{/blacksea/img/icon-delivery14.png}" alt="alt" th:text="#{text.cashPayment}"></span>
 												<p th:text="#{text.cashPaymentDesc}"></p>
 											</li>
 										</ul>
 									</div>
 								</div>
 								<div class="col-md-7 col-12">
-									<img src="/blacksea/img/Untitled-2.jpg" class="tabs__content_img" alt="alt">
+									<img th:src="@{/blacksea/img/Untitled-2.jpg}" class="tabs__content_img" alt="alt">
 								</div>
 							</div>
 						</div>
@@ -91,7 +91,7 @@
 									</div>
 								</div>
 								<div class="col-md-7 col-12">
-									<img src="/blacksea/img/Untitled-2.jpg" class="tabs__content_img" alt="alt">
+									<img th:src="@{/blacksea/img/Untitled-2.jpg}" class="tabs__content_img" alt="alt">
 								</div>
 							</div>
 						</div>
@@ -121,7 +121,7 @@
 									</div>
 								</div>
 								<div class="col-md-7 col-12">
-									<img src="/blacksea/img/Untitled-2.jpg" class="tabs__content_img" alt="alt">
+									<img th:src="@{/blacksea/img/Untitled-2.jpg}" class="tabs__content_img" alt="alt">
 								</div>
 							</div>
 						</div>
@@ -145,7 +145,7 @@
 	function invokeRequestPaymentData() {
 		let request = new XMLHttpRequest();
 		let lang = getCurrentLang();
-		request.open("GET", contextPath + `web/payment/data?lang=${lang}`)
+		request.open("GET", contextPath + `/web/payment/data?lang=${lang}`)
 		request.send();
 		request.addEventListener('load', function () {
 			if (request.status === 200) {

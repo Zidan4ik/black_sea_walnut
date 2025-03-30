@@ -9,7 +9,7 @@
 
 <body>
 <div layout:fragment="content">
-	<section id="container-banner" class="first-section overlay" style="background-image: url(/blacksea/img/about.jpg)"></section>
+	<section id="container-banner" class="first-section overlay" th:style="'background-image: url('+@{/blacksea/img/about.jpg}+')'"></section>
 
 	<section id="factory-post" class="manufacturer"></section>
 
@@ -134,7 +134,7 @@
 	function invokeRequestFactoryData() {
 		let request = new XMLHttpRequest();
 		let lang = getCurrentLang();
-		request.open("GET", contextPath + `web/factory/data?lang=${lang}`)
+		request.open("GET", contextPath + `/web/factory/data?lang=${lang}`)
 		request.send();
 		request.addEventListener('load', function () {
 			if (request.status === 200) {

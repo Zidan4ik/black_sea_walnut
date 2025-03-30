@@ -39,7 +39,8 @@
             <div id="container-gallery"></div>
             <div class="row">
                 <div class="wrapper">
-                    <a id="loadGallery" class="button button_transparent" th:text="#{text.loadMore}"></a>
+                    <a id="loadGallery" class="button button_transparent" th:text="#{text.loadMore}"
+                    style="display: none;"></a>
                 </div>
             </div>
         </div>
@@ -50,7 +51,7 @@
 
     function invokeRequestFactoryData() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`)
+        request.open("GET", contextPath + `/web/contacts/get`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -160,7 +161,7 @@
         container.innerHTML = html;
     }
 
-    const pathToTable = contextPath + 'web/gallery/load';
+    const pathToTable = contextPath + '/web/gallery/load';
     let currentPage = 0;
     let timeoutId;
 
@@ -178,6 +179,7 @@
         currentPage++;
     }
 
+
     $(document).ready(function () {
         invokeRequestFactoryData();
         loadGallery(currentPage);
@@ -187,6 +189,9 @@
     });
 
     document.addEventListener("htmx:afterSwap", function (event) {
+        if($('#totalPages').val()!==0){
+            $('#loadGallery').toggle();
+        }
         if (event.target.id === "container-gallery") {
             if ($('#totalPages').val() === String(currentPage)) {
                 $('#loadGallery').css('display', 'none');

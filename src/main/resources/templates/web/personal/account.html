@@ -119,11 +119,11 @@
 
         $('#container-content').empty();
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/orders/table/load?${params.toString()}`, {
+        htmx.ajax('GET', `${contextPath}/web/orders/table/load?${params.toString()}`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
-        htmx.ajax('GET', `${contextPath}web/orders/pagination/load?${params.toString()}`, {
+        htmx.ajax('GET', `${contextPath}/web/orders/pagination/load?${params.toString()}`, {
             target: '#container-pagination',
             swap: 'innerHTML'
         });
@@ -144,11 +144,11 @@
 
         $('#container-content').empty();
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/transactions/table/load?${params.toString()}`, {
+        htmx.ajax('GET', `${contextPath}/web/transactions/table/load?${params.toString()}`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
-        htmx.ajax('GET', `${contextPath}web/transactions/pagination/load?${params.toString()}`, {
+        htmx.ajax('GET', `${contextPath}/web/transactions/pagination/load?${params.toString()}`, {
             target: '#container-pagination',
             swap: 'innerHTML'
         });
@@ -156,7 +156,7 @@
 
     function loadInfo() {
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/info-user/load`, {
+        htmx.ajax('GET', `${contextPath}/web/info-user/load`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
@@ -165,7 +165,7 @@
 
     function loadAddress() {
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/address/load`, {
+        htmx.ajax('GET', `${contextPath}/web/address/load`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
@@ -182,7 +182,7 @@
 
     function loadPassword() {
         $('#container-pagination').empty();
-        htmx.ajax('GET', `${contextPath}web/password/load`, {
+        htmx.ajax('GET', `${contextPath}/web/password/load`, {
             target: '#container-content',
             swap: 'innerHTML'
         });
@@ -323,7 +323,7 @@
 
     function invokeRequestContactsData() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`);
+        request.open("GET", contextPath + `/web/contacts/get`);
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -334,7 +334,7 @@
 
     /* Contact information */
     async function getContactInformation() {
-        const url = contextPath + `web/info-user/get`;
+        const url = contextPath + `/web/info-user/get`;
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -362,7 +362,7 @@
     }
 
     async function saveUserFiz(formData) {
-        const url = contextPath + `web/info-fiz/save`;
+        const url = contextPath + `/web/info-fiz/save`;
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -381,7 +381,7 @@
     }
 
     async function saveUserUr(formData) {
-        const url = contextPath + `web/info-ur/save`;
+        const url = contextPath + `/web/info-ur/save`;
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -460,7 +460,7 @@
     /* Password Save*/
 
     async function savePassword(formData) {
-        const url = contextPath + `web/account/password-new/save`;
+        const url = contextPath + `/web/account/password-new/save`;
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -481,7 +481,7 @@
 
     /* Address Save*/
     async function saveAddressFiz(formData) {
-        const url = contextPath + `web/address-fiz/save`;
+        const url = contextPath + `/web/address-fiz/save`;
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -499,7 +499,7 @@
     }
 
     async function saveAddressUr(formData) {
-        const url = contextPath + `web/address-ur/save`;
+        const url = contextPath + `/web/address-ur/save`;
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -517,7 +517,7 @@
     }
 
     async function getAddress() {
-        const url = contextPath + `web/address/get`;
+        const url = contextPath + `/web/address/get`;
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -526,19 +526,6 @@
 
             const data = await response.json();
             return data;
-            // for (let key in data) {
-            //     let input = $(`input[data-name="${key}"], select[data-name="${key}"]`);
-            //     if (!input.length) continue;
-            //
-            //     let value = data[key];
-            //
-            //     if (input.is("select")) {
-            //         input.val(value).change();
-            //     } else {
-            //         input.val(value);
-            //     }
-            // }
-
         } catch (error) {
             console.error(error.message);
         }

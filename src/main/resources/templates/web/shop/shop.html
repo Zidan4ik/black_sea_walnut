@@ -86,7 +86,7 @@
 </div>
 
 <script layout:fragment="script">
-    const pathToTable = contextPath + 'web/products/table/load';
+    const pathToTable = contextPath + '/web/products/table/load';
 
     let currentPage = 0;
     let timeoutId;
@@ -169,7 +169,7 @@
     function invokeRequestShopData() {
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
-        request.open("GET", contextPath + `web/shop/data?lang=${lang}`)
+        request.open("GET", contextPath + `/web/shop/data?lang=${lang}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {

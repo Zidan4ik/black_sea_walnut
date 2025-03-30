@@ -131,7 +131,7 @@
 
     function invokeDataContacts() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/contacts/get`)
+        request.open("GET", contextPath + `/web/contacts/get`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
@@ -143,7 +143,7 @@
 
     function invokeDataOrderDetails(id) {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/order/${id}`)
+        request.open("GET", contextPath + `/web/order/${id}`)
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {

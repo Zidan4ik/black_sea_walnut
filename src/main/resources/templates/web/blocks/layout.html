@@ -262,7 +262,7 @@
                     ${(document.title !== 'Головна' && document.title !== 'Main') ? `
                     <ul>
                         <li>
-                            <a href="${contextPath}web/main">Головна</a>
+                            <a href="${contextPath}/web/main">Головна</a>
                         </li>
                         <li>${document.title}</li>
                     </ul>` : ''}
@@ -286,7 +286,7 @@
             const title = getLocalizedContent(bannerData, 'title');
             const description = getLocalizedContent(bannerData, 'description');
             container.append(`
-            		<section class="eco overlay" style="background-image: url(${bannerData.imagePath})" data-scrollax="properties: { translateY: '30%' }">
+            		<section class="eco overlay" style="background-image: url(${contextPath + bannerData.imagePath})" data-scrollax="properties: { translateY: '30%' }">
 			<div class="container">
 				<div class="row align-items-center justify-content-center">
 					<a data-scrollax="properties: { 'translateY': '5%', 'opacity': 1 }">
@@ -526,17 +526,21 @@
     }
 
     function getRowNew(item) {
+        if (item.active === false) return;
         let lang = getCurrentLang();
         const title = lang === 'uk' ? item.titleUA : (lang === 'en' ? item.titleENG : '');
         const description = lang === 'uk' ? item.descriptionUA : (lang === 'en' ? item.descriptionENG : '');
         let isImage = item.pathToImage.includes('/image/');
+        let isVideo = item.pathToImage.includes('/video/');
 
         return `
         <div class="swiper-slide">
             <div class="card" style="width: 24rem;">
-                ${isImage ? `<img src="${item.pathToImage || path_default_image}" class="card-img-top" alt="error"
+                ${!isImage && !isVideo ? `<img src="${path_default_image}" class="card-img-top" alt="error"
+                                    style="width: 100%;height: 220px;">` : ''}
+                ${isImage && !isVideo ? `<img src="${contextPath + item.pathToImage || path_default_image}" class="card-img-top" alt="error"
                     style="width: 100%;height: 220px;">` : ''}
-                ${!isImage ? `
+                ${isVideo && !isImage ? `
                     <div class="video-container" style="position: relative; width: 100%;">
                         <!-- Прев'ю відео -->
                         <img src="${path_default_preview_image}" class="video-preview"
@@ -551,15 +555,16 @@
                         </button>
 
                         <!-- Відео -->
-                        <video src="${item.pathToImage || path_default_image}" class="video-player"
+                        <video src="${contextPath + item.pathToImage || path_default_image}" class="video-player"
                                style="width: 100%;height: 220px; display: none;" controls></video>
                     </div>
                 ` : ''}
+
                 <div class="card-body">
                     <p class="date-new-my">${item.dateOfPublication}</p>
                     <h5 class="card-title title-new-my">${title}</h5>
                     <span class="card-text description-new-my" style="height: 85px;">${description}</span>
-                    <a href="${contextPath + 'web/new/' + item.id}" class="item-link-new-my">
+                    <a href="${contextPath + '/web/new/' + item.id}" class="item-link-new-my">
                         Читати
                         <i class="ti ti-arrow-right"></i>
                     </a>
@@ -664,7 +669,7 @@
     function invokeRequestRegionsByCountry(id, idContainer) {
         return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `regions?countryId=${id}`);
+            request.open("GET", contextPath + `/regions?countryId=${id}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
@@ -688,7 +693,7 @@
     async function invokeRequestCitiesByRegion(id, idContainer) {
         return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `cities?regionId=${id}`);
+            request.open("GET", contextPath + `/cities?regionId=${id}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
@@ -711,7 +716,7 @@
 
     function invokeRequestCart() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `web/cart/get`);
+        request.open("GET", contextPath + `/web/cart/get`);
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {
@@ -837,7 +842,7 @@
 
     async function incrementAmount(id, target) {
         try {
-            const response = await fetch(`${contextPath}web/cart/increment-amount?id=${id}`, {
+            const response = await fetch(`${contextPath}/web/cart/increment-amount?id=${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -876,7 +881,7 @@
 
     async function decreaseAmount(id, target) {
         try {
-            const response = await fetch(`${contextPath}web/cart/decrease-amount?id=${id}`, {
+            const response = await fetch(`${contextPath}/web/cart/decrease-amount?id=${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -929,7 +934,7 @@
 
     async function deleteCartItem(id, target) {
         try {
-            const response = await fetch(`${contextPath}web/cart/delete?id=${id}`, {
+            const response = await fetch(`${contextPath}/web/cart/delete?id=${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -947,7 +952,7 @@
 
     async function saveCartItem(id, value, target) {
         try {
-            const response = await fetch(`${contextPath}web/cart/save?id=${id}&value=${value}`, {
+            const response = await fetch(`${contextPath}/web/cart/save?id=${id}&value=${value}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -1021,7 +1026,7 @@
     }
 
     async function getCountriesAll() {
-        const url = contextPath + `countries/get`;
+        const url = contextPath + `/countries/get`;
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -1057,7 +1062,7 @@
     }
 
     async function saveCall(formData) {
-        const url = `${contextPath}web/call/save`;
+        const url = `${contextPath}/web/call/save`;
         try {
             const response = await fetch(url, {
                 method: "POST",
@@ -1080,7 +1085,7 @@
     function invokeRequestCartData() {
         let request = new XMLHttpRequest();
         let pathName = location.pathname.substring(1, location.pathname.length);
-        request.open("GET", contextPath + `web/cart/get`)
+        request.open("GET", contextPath + `/web/cart/get`)
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {

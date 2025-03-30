@@ -13,16 +13,16 @@
                 <div class="swiper-wrapper">
                     <!-- Slides -->
                     <div class="swiper-slide" th:if="${!item.pathToImage1.isEmpty()}">
-                        <a><img th:src="${item.pathToImage1 != null? item.pathToImage1 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                        <a><img th:src="${item.pathToImage1 != null? '/Walnut-R.Pravnyk' + item.pathToImage1 : '/Walnut-R.Pravnyk/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
                     <div class="swiper-slide" th:if="${!item.pathToImage2.isEmpty()}">
-                        <a><img th:src="${item.pathToImage2 != null? item.pathToImage2 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                        <a><img th:src="${item.pathToImage2 != null? '/Walnut-R.Pravnyk' + item.pathToImage2 : '/Walnut-R.Pravnyk/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
                     <div class="swiper-slide" th:if="${!item.pathToImage3.isEmpty()}">
-                        <a><img th:src="${item.pathToImage3 != null? item.pathToImage3 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                        <a><img th:src="${item.pathToImage3 != null? '/Walnut-R.Pravnyk' + item.pathToImage3 : '/Walnut-R.Pravnyk/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
                     <div class="swiper-slide" th:if="${item.pathToImage4!=null && !item.pathToImage4.isEmpty()}">
-                        <a><img th:src="${item.pathToImage4 != null? item.pathToImage4 : '/uploads/default/default-image.jpg'}" alt="alt"/></a>
+                        <a><img th:src="${item.pathToImage4 != null? '/Walnut-R.Pravnyk' + item.pathToImage4 : '/Walnut-R.Pravnyk/uploads/default/default-image.jpg'}" alt="alt"/></a>
                     </div>
                 </div>
 
