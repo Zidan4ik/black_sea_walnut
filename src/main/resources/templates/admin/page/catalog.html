@@ -327,7 +327,7 @@
                     selectedLanguage();
                 });
 
-                const urlCatalogBlock = `${contextPath}admin/page/catalog/save`;
+                const urlCatalogBlock = `${contextPath}/admin/page/catalog/save`;
 
                 function addEventListenerForMediaFiles(langActive) {
                     const container = "#container-catalog-ecologically-images-" + langActive;
@@ -427,7 +427,7 @@
 
                 function requestGetData() {
                     let request = new XMLHttpRequest();
-                    request.open("GET", `${contextPath}admin/page/catalog/data`);
+                    request.open("GET", `${contextPath}/admin/page/catalog/data`);
                     request.send();
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
@@ -487,7 +487,7 @@
                     });
                 }
 
-                const PathToDefaultImage = contextPath + 'uploads/default/default-image.jpg';
+                const PathToDefaultImage = contextPath + '/uploads/default/default-image.jpg';
                 let counter = 0;
 
                 function addMediaImageBlock(TYPE, ID, PATH) {

@@ -265,16 +265,16 @@
                     <button type="button" data-type="clientsBannerFile"
                             class="btn btn-outline-success btn-select"
                             style="left: 13%;top:25%;position: absolute;width: 35%;"
-                    th:text="#{text.button.change}">
+                            th:text="#{text.button.change}">
                     </button>
                     <button type="button" data-type="clientsBannerFile"
                             class="btn btn-outline-success btn-delete"
                             style="right: 13%;top:25%;position: absolute;width: 35%;"
-                    th:text="#{text.button.delete}">
+                            th:text="#{text.button.delete}">
                     </button>
                     <span class="text-center"
                           style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
-                    th:text="#{text.mediaSize15}"></span>
+                          th:text="#{text.mediaSize15}"></span>
                 </div>
             </div>
             <!--/ Banner Client Base -->
@@ -306,7 +306,7 @@
             <!-- Button save Base -->
             <div class="text-center" id="shared-save" style="display: none;">
                 <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
-                th:text="#{text.button.save}"></button>
+                        th:text="#{text.button.save}"></button>
             </div>
             <!--/ Button save Base -->
 
@@ -320,10 +320,10 @@
                         </div>
                         <div class="modal-footer justify-content-end">
                             <a type="button" id="modal-btnDelete_" class="btn btn-danger"
-                            th:text="#{text.button.delete}">
+                               th:text="#{text.button.delete}">
                             </a>
                             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal"
-                            th:text="#{value.status.cancel}">
+                                    th:text="#{value.status.cancel}">
                             </button>
                         </div>
                     </div>
@@ -355,7 +355,7 @@
             </script>
             <script>
                 function getFroalaEditor(idElementEditor) {
-                    console.log('idElementEditor: ',idElementEditor);
+                    console.log('idElementEditor: ', idElementEditor);
                     return new FroalaEditor(`#${idElementEditor}`, {
                         height: 12 * 10,
                         width: 700,
@@ -418,7 +418,7 @@
                     selectedLanguage();
                 });
 
-                const urlClientsBlock = `${contextPath}admin/page/clients/save`;
+                const urlClientsBlock = `${contextPath}/admin/page/clients/save`;
 
                 function addEventListenerForMediaFiles(langActive) {
                     const container = "#container-clients-block-images-" + langActive;
@@ -474,11 +474,11 @@
                     $('#modal-btnDelete_').on('click', function () {
                         let attrId = this.getAttribute('data-id');
                         let request = new XMLHttpRequest();
-                        request.open("DELETE", `${contextPath}admin/client/${attrId}/delete`);
+                        request.open("DELETE", `${contextPath}/admin/client/${attrId}/delete`);
                         request.send();
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
-                                window.location.pathname = contextPath + 'admin/page/clients';
+                                window.location.pathname = contextPath + '/admin/page/clients';
                             }
                         });
                     });
@@ -593,7 +593,7 @@
 
                 function requestGetData() {
                     let request = new XMLHttpRequest();
-                    request.open("GET", `${contextPath}admin/page/clients/data`);
+                    request.open("GET", `${contextPath}/admin/page/clients/data`);
                     request.send();
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
@@ -617,7 +617,7 @@
                                                     let $input = $(`#${img}`);
                                                     if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
 
-                                                        $input.attr('src', nestedObject[nestedKey]);
+                                                        $input.attr('src', contextPath + nestedObject[nestedKey]);
                                                         input.val(nestedObject[nestedKey]);
                                                     }
                                                 } else if (input.hasClass('editors')) {
@@ -655,7 +655,7 @@
                     });
                 }
 
-                const PathToDefaultImage = contextPath + 'uploads/default/default-image.jpg';
+                const PathToDefaultImage = contextPath + '/uploads/default/default-image.jpg';
                 let counter = 0;
 
                 function addMediaImageBlock(type, data) {
@@ -667,7 +667,7 @@
                         return `<div class="col-5">
                 <div class="position-relative" id="image-block-${lang}">
                     <img id="clientsFileImage${counterId}-${lang}" data-name="clientsFileImage${counterId}"
-                         src="${data.pathToImage}"
+                         src="${contextPath + data.pathToImage}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileImage">
                     <button type="button" data-id="${counterId}" data-name="clientsFileImage${counterId}"
@@ -713,7 +713,7 @@
                     <label for="clientsFileSvg" class="form-label" style="color: black; font-size: large;">Іконка:</label>
                     <div id="image-svg-block-${lang}">
                         <img id="clientsFileSvg${counterId}-${lang}" data-name="clientsFileSvg${counterId}"
-                        src="${data.pathToSvg}" data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileSvg"
+                        src="${contextPath + data.pathToSvg}" data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileSvg"
                              alt="error" style="width: 100px;height: 60px;">
                         <div class="row gap-3" style="margin: 3px;">
                             <button type="button" data-name="clientsFileSvg${counterId}" class="btn btn-outline-success btn-select-media" style="width: 60%;">Змінити</button>
@@ -741,7 +741,7 @@
                         newBlock.innerHTML = generateBlock(lang, data);
                         container.insertBefore(newBlock, addButtonContainer);
                         let editor = $(`#hidden-edit-description-block-${lang}-${counter}`);
-                        if(editor.length) editor.html(data.description || '');
+                        if (editor.length) editor.html(data.description || '');
                         getFroalaEditor(`edit-description-block-${lang}-${counter}`);
                     }
 
@@ -750,16 +750,16 @@
                         subtitle: data !== undefined ? data.clientCategorySubtitleUk : '',
                         description: data !== undefined ? data.clientCategoryDescriptionUk : '',
                         isActive: data !== undefined ? data.clientCategoryIsActive : false,
-                        pathToImage: data !== undefined ? data.clientCategoryPathToImage : PathToDefaultImage,
-                        pathToSvg: data !== undefined ? data.clientCategoryPathToSvg : PathToDefaultImage
+                        pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? data.clientCategoryPathToImage : PathToDefaultImage) : PathToDefaultImage,
+                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ? data.clientCategoryPathToSvg : PathToDefaultImage) : PathToDefaultImage
                     };
                     let dataEn = {
                         title: data !== undefined ? data.clientCategoryTitleEn : '',
                         subtitle: data !== undefined ? data.clientCategorySubtitleEn : '',
                         description: data !== undefined ? data.clientCategoryDescriptionEn : '',
                         isActive: data !== undefined ? data.clientCategoryIsActive : false,
-                        pathToImage: data !== undefined ? data.clientCategoryPathToImage : PathToDefaultImage,
-                        pathToSvg: data !== undefined ? data.clientCategoryPathToSvg : PathToDefaultImage
+                        pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? data.clientCategoryPathToImage : PathToDefaultImage) : PathToDefaultImage,
+                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ? data.clientCategoryPathToSvg : PathToDefaultImage) : PathToDefaultImage
                     };
                     addBlockToContainer('uk', dataUk);
                     addBlockToContainer('en', dataEn);

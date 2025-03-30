@@ -53,7 +53,13 @@ public class ImageServiceImp implements ImageService {
         LogUtil.logInfo("Attempting to delete file/folder at path: " + path);
         Path path_ = Path.of("." + path);
 
-        if (Files.exists(path_)) {
+        Path gitFolder = Path.of(".git").toAbsolutePath().normalize();
+        if (path_.toAbsolutePath().normalize().startsWith(gitFolder)) {
+            LogUtil.logWarning("Blocked deletion inside .git folder");
+            return;
+        }
+
+        if (!path.isEmpty() && Files.exists(path_)) {
             Files.walkFileTree(path_, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
