@@ -633,7 +633,7 @@
                     }
                 </script>
                 <script>
-                    const url = `${contextPath}admin/product/save`;
+                    const url = `${contextPath}/admin/product/save`;
 
                     document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
                         tab.addEventListener('shown.bs.tab', function (event) {
@@ -731,7 +731,7 @@
 
                     function getTastesAndDiscounts() {
                         let request = new XMLHttpRequest();
-                        request.open("GET", `${contextPath}admin/tastesAndDiscounts/get`);
+                        request.open("GET", `${contextPath}/admin/tastesAndDiscounts/get`);
                         request.send();
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
@@ -758,7 +758,7 @@
                             processData: false,
                             contentType: false,
                             success: function () {
-                                window.location.replace(`${contextPath}admin/products`);
+                                window.location.replace(`${contextPath}/admin/products`);
                                 console.log('Success');
                             },
                             error: function (error) {
@@ -789,7 +789,7 @@
                         resForm.append("mass", $('#mass_').val());
                         resForm.append("discountId", $('#discounts-uk_').val());
                         let value = $('#tastes-uk_').val();
-                        console.log('taste id:',value);
+                        console.log('taste id:', value);
                         resForm.append("tasteId", value);
 
                         resForm.append("descriptionProductUk", document.getElementById("hidden-edit-description-product-uk").innerHTML);
@@ -838,7 +838,7 @@
                     function requestGetProduct() {
                         const id = $("#id_").val();
                         let request = new XMLHttpRequest();
-                        request.open("GET", `${contextPath}admin/product/${id}`);
+                        request.open("GET", `${contextPath}/admin/product/${id}`);
                         request.send();
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
@@ -853,7 +853,7 @@
                                                 let img = input.attr('data-image');
                                                 let $input = $(`#${img}`);
                                                 if ($input && data[key] !== null) {
-                                                    $input.attr('src', data[key] === '' ? path_default_image : data[key]);
+                                                    $input.attr('src', data[key] === '' ? path_default_image : contextPath + data[key]);
                                                     input.val(data[key]);
                                                 }
                                             } else if (input.hasClass('editors')) {

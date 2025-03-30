@@ -121,8 +121,8 @@
     <script th:src="@{/js/table.js}"></script>
     <script>
         const inputs = ['id', 'customer', 'date', 'phone', 'email', 'typeOfPayment', 'statusPayment'];
-        let pathToTable = `${contextPath}admin/transactions/table/load`;
-        let pathToPagination = `${contextPath}admin/transactions/pagination/load`;
+        let pathToTable = `${contextPath}/admin/transactions/table/load`;
+        let pathToPagination = `${contextPath}/admin/transactions/pagination/load`;
         let timeoutId;
 
         document.body.addEventListener('htmx:afterSwap', function (event) {

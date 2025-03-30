@@ -107,11 +107,11 @@ public class NutServiceImp implements NutService {
     public void deleteById(Long id) {
         LogUtil.logInfo("Deleting Nut by ID: " + id);
         Nut nut = getById(id);
-        if (nut.getPathToImage() != null)
+        if (nut != null) {
             imageService.deleteByPath(nut.getPathToImage());
-        if (nut.getPathToSvg() != null)
             imageService.deleteByPath(nut.getPathToSvg());
-        nutRepository.deleteById(id);
+            nutRepository.deleteById(id);
+        }
         LogUtil.logInfo("Nut deleted successfully");
     }
 }

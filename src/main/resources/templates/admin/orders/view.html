@@ -147,7 +147,7 @@
 
             function getData(id) {
                 let request = new XMLHttpRequest();
-                request.open('GET', `${contextPath}admin/order/${id}/data`);
+                request.open('GET', `${contextPath}/admin/order/${id}/data`);
                 request.send();
                 request.addEventListener('load', async function () {
                     let data = JSON.parse(request.response);

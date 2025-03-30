@@ -105,14 +105,14 @@
     <script th:src="@{/js/table.js}"></script>
     <script>
         const inputs = ['id', 'name', 'taste', 'priceByUnit', 'discount'];
-        let pathToTable = `${contextPath}admin/products/table/load`;
-        let pathToPagination = `${contextPath}admin/products/pagination/load`;
+        let pathToTable = `${contextPath}/admin/products/table/load`;
+        let pathToPagination = `${contextPath}/admin/products/pagination/load`;
         let timeoutId;
         let hasExecuted = false;
 
         $(document).on('click', '.edit-icon', function () {
             let id = $(this).data('id');
-            window.location.pathname = contextPath + `admin/product/${id}/edit`;
+            window.location.pathname = contextPath + `/admin/product/${id}/edit`;
         });
 
         $(document).on('click', '.delete-icon', function () {
@@ -122,7 +122,7 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}admin/product/${id}/delete`);
+            request.open('DELETE', `${contextPath}/admin/product/${id}/delete`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {

@@ -271,7 +271,7 @@
                         requestGetNut();
                         selectedLanguage();
                     });
-                    const url = `${contextPath}admin/nut/save`;
+                    const url = `${contextPath}/admin/nut/save`;
 
                     function getActiveLangTab() {
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
@@ -287,7 +287,7 @@
                             processData: false,
                             contentType: false,
                             success: function () {
-                                window.location.replace(`${contextPath}admin/nuts`);
+                                window.location.replace(`${contextPath}/admin/nuts`);
                             },
                             error: function (error) {
                                 clearValid();
@@ -327,7 +327,7 @@
                     function requestGetNut() {
                         const id = $("#id_").val();
                         let request = new XMLHttpRequest();
-                        request.open("GET", `${contextPath}admin/nut/${id}`);
+                        request.open("GET", `${contextPath}/admin/nut/${id}`);
                         request.send();
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
@@ -347,7 +347,7 @@
                                                     if (data[key] === '') {
                                                         $input.attr('src', path_default_image);
                                                     } else {
-                                                        $input.attr('src', data[key]);
+                                                        $input.attr('src', contextPath + data[key]);
                                                         input.val(data[key]);
                                                     }
                                                 }

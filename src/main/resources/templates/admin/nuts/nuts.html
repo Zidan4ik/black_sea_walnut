@@ -100,13 +100,13 @@
     <script th:src="@{/js/table.js}"></script>
     <script>
         const inputs = ['id', 'title', 'dateOfUpdated'];
-        let pathToTable = `${contextPath}admin/nuts/table/load`;
-        let pathToPagination = `${contextPath}admin/nuts/pagination/load`;
+        let pathToTable = `${contextPath}/admin/nuts/table/load`;
+        let pathToPagination = `${contextPath}/admin/nuts/pagination/load`;
         let timeoutId;
 
         $(document).on('click', '.edit-icon', function () {
             let id = $(this).data('id');
-            window.location.pathname = contextPath + `admin/nut/${id}/edit`;
+            window.location.pathname = contextPath + `/admin/nut/${id}/edit`;
         });
 
         $(document).on('click', '.delete-icon', function () {
@@ -118,15 +118,15 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}admin/nut/${id}/delete`);
+            request.open('GET', `${contextPath}/admin/nut/delete/${id}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
-                    loadNews(inputs, 0);
-                    $('#ModalForDelete').modal('hide');
+                    window.location.reload();
                 }
             });
         }
+
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {
@@ -146,18 +146,19 @@
             });
             selectedLanguage();
         });
+
         $(document).on('change', '.switch-input', function () {
             const formData = new FormData();
             formData.append('id', $(this).prop('id'));
             formData.append('isActive', $(this).is(':checked'));
             $.ajax({
                 type: "post",
-                url: `${contextPath}admin/nut/save/switch`,
+                url: `${contextPath}/admin/nut/save/switch`,
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function () {
-                    // window.location.replace(`${contextPath}admin/nuts/save/switch`);
+                    window.location.replace(`${contextPath}/admin/nuts/save/switch`);
                 },
                 error: function (error) {
                     console.log("Error submitting form:", error);

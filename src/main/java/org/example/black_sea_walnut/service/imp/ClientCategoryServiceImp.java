@@ -42,12 +42,12 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
         dto.setMediaTypeImage(ImageUtil.getMediaType(dto.getClientsCategoryFileImage()));
 
         if (dto.getClientsCategoryFileImage() != null) {
-            String generatedPath = contextPath + "/page-clients/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
+            String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
             dto.setClientsCategoryPathToImage(generatedPath);
             LogUtil.logInfo("Generated image path for category: " + generatedPath);
         }
         if (dto.getClientsCategoryFileSvg() != null) {
-            String generatedPath = contextPath + "/page-clients/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
+            String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
             dto.setClientsCategoryPathToSvg(generatedPath);
             LogUtil.logInfo("Generated SVG path for category: " + generatedPath);
         }
@@ -109,10 +109,16 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
         return clientCategory;
     }
 
+    @SneakyThrows
     @Override
     public void deleteById(Long id) {
         LogUtil.logInfo("Attempting to delete ClientCategory with ID: " + id);
-        clientCategoryRepository.deleteById(id);
+        ClientCategory client = getById(id);
+        if (client != null) {
+            imageService.deleteByPath(client.getPathToImage());
+            imageService.deleteByPath(client.getPathToSvg());
+            clientCategoryRepository.deleteById(id);
+        }
         LogUtil.logInfo("ClientCategory with ID: " + id + " deleted successfully.");
     }
 }

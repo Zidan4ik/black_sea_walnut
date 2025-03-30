@@ -665,7 +665,7 @@
                         addEventListenerForSwitch();
                         selectedLanguage();
                     });
-                    const url = `${contextPath}admin/product/save`;
+                    const url = `${contextPath}/admin/product/save`;
                     function getActiveLangTab() {
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
                     }
@@ -705,7 +705,7 @@
 
                     function getTastesAndDiscounts() {
                         let request = new XMLHttpRequest();
-                        request.open("GET", `${contextPath}admin/tastesAndDiscounts/get`);
+                        request.open("GET", `${contextPath}/admin/tastesAndDiscounts/get`);
                         request.send();
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
@@ -732,7 +732,7 @@
                             processData: false,
                             contentType: false,
                             success: function () {
-                                window.location.replace(`${contextPath}admin/products`);
+                                window.location.replace(`${contextPath}/admin/products`);
                                 // console.log('Success!!!')
                             },
                             error: function (error) {

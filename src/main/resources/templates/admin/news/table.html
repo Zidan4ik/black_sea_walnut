@@ -97,8 +97,8 @@
     <script th:src="@{/js/table.js}"></script>
     <script>
         const inputs = ['id', 'title', 'date'];
-        let pathToTable = `${contextPath}admin/news/table/load`;
-        let pathToPagination = `${contextPath}admin/news/pagination/load`;
+        let pathToTable = `${contextPath}/admin/news/table/load`;
+        let pathToPagination = `${contextPath}/admin/news/pagination/load`;
         let timeoutId;
 
 
@@ -116,7 +116,7 @@
     <script>
         $(document).on('click', '.edit-icon', function () {
             let id = $(this).data('id');
-            window.location.pathname = contextPath + `admin/new/edit/${id}`;
+            window.location.pathname = contextPath + `/admin/new/edit/${id}`;
         });
 
         $(document).on('click', '.delete-icon', function () {
@@ -126,7 +126,7 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('GET', `${contextPath}admin/new/delete/${id}`);
+            request.open('GET', `${contextPath}/admin/new/delete/${id}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {

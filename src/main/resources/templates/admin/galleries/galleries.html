@@ -39,7 +39,7 @@
     <script th:src="@{/js/image.js}"></script>
 
     <script>
-        const pathToTable = contextPath + 'admin/galleries/load'
+        const pathToTable = contextPath + '/admin/galleries/load'
         $(document).ready(function () {
             invokeRequestGalleries();
             addEventListenersImage();
@@ -94,11 +94,11 @@
             $('#modal-btnDelete_').on('click', function () {
                 let attrId = this.getAttribute('data-id');
                 let request = new XMLHttpRequest();
-                request.open("GET", `${contextPath}admin/gallery/${attrId}/delete`);
+                request.open("GET", `${contextPath}/admin/gallery/${attrId}/delete`);
                 request.send();
                 request.addEventListener('load', function () {
                     if (request.status === 200) {
-                        window.location.pathname = contextPath + 'admin/galleries';
+                        window.location.pathname = contextPath + '/admin/galleries';
                     }
                 });
             });
@@ -207,12 +207,12 @@
         function sendRequestSave(formData, el) {
             $.ajax({
                 type: "post",
-                url: contextPath + `admin/gallery/save`,
+                url: contextPath + `/admin/gallery/save`,
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function () {
-                    window.location.replace(`${contextPath}admin/galleries`);
+                    window.location.replace(`${contextPath}/admin/galleries`);
                 },
                 error: function (error) {
                     console.log(el);
