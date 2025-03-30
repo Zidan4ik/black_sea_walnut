@@ -272,13 +272,8 @@
         document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
             tab.addEventListener('shown.bs.tab', function (event) {
                 let attribute = this.getAttribute('data-type');
-                // console.log(attribute);
                 const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                 let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-
-                // console.log(`Switched to tab: ${activatedTabId}`);
-                // console.log(`Previous: ${previousActiveTab}`);
-                // console.log(`Active: ${activatedTabId}`);
 
                 if (previousActiveTab && attribute === 'taste') {
                     copyHTMLBlockInput(`tasteId-block-${previousActiveTab}`, `shared-tasteId`);
@@ -369,10 +364,8 @@
             $("#table-data-container-tastes_").on('click', '.edit-icon, .delete-icon', function () {
                 let attribute = this.getAttribute('data-type');
                 let id = this.getAttribute('data-id');
-                // console.log(attribute);
                 if ($(this).hasClass('edit-icon') && attribute === 'taste') {
                     requestGetTaste(`${contextPath}/admin/taste/${id}`);
-                    console.log(1);
                 } else if ($(this).hasClass('delete-icon') && attribute === 'taste') {
                     deleteEntityById(`${contextPath}/admin/taste/${id}/delete`);
                 }
@@ -432,12 +425,10 @@
             const targetNode = document.getElementById("languageCode_");
 
             if (targetNode) {
-                console.log(document.documentElement.lang);
                 requestGetTastes();
                 requestGetDiscounts();
 
                 const observer = new MutationObserver(() => {
-                    console.log("Зміна мови:", document.documentElement.lang);
                     requestGetTastes();
                     requestGetDiscounts();
                     observer.disconnect();
@@ -455,12 +446,10 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    console.log(data);
                     const modal = new bootstrap.Modal(document.querySelector("#ModalForSaveTaste"));
                     modal.show();
                     for (let key in data) {
                         if (data.hasOwnProperty(key) && data[key] !== '') {
-                            // console.log(`Key: ${key} Value: ${data[key]}`);
                             if (key === 'id')
                                 $(`#unique-id-taste`).val(data[key]);
                             let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
@@ -491,12 +480,10 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    // console.log(data);
                     const modal = new bootstrap.Modal(document.querySelector("#ModalForSaveDiscount"));
                     modal.show();
                     for (let key in data) {
                         if (data.hasOwnProperty(key) && data[key] !== '') {
-                            // console.log(`Key: ${key} Value: ${data[key]}`);
                             if (key === 'id')
                                 $(`#unique-id-discount`).val(data[key]);
                             let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
@@ -519,7 +506,6 @@
                     let data = JSON.parse(request.response);
                     const containerTable = document.getElementById("table-data-container-tastes_");
                     containerTable.innerHTML = '';
-                    // console.log(data);
                     if (data.length > 0) {
                         data.forEach(function (element) {
                             containerTable.innerHTML += getRowData(element);
@@ -539,7 +525,6 @@
                     let data = JSON.parse(request.response);
                     const containerTable = document.getElementById("table-data-container-discounts_");
                     containerTable.innerHTML = '';
-                    // console.log(data);
                     if (data.length > 0) {
                         data.forEach(function (element) {
                             containerTable.innerHTML += getRowData2(element);

@@ -224,12 +224,10 @@
                             events: {
                                 'initialized': function () {
                                     let element = $(`#hidden-${idElementEditor}`);
-                                    console.log(element.html());
                                     this.html.set(element.html() || '');
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    // console.log(html);
                                     $(`#hidden-${idElementEditor}`).html(html);
                                 }
                             }
@@ -241,10 +239,6 @@
                         tab.addEventListener('shown.bs.tab', function (event) {
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-
-                            // console.log(`Switched to tab: ${activatedTabId}`);
-                            console.log(`Previous: ${previousActiveTab}`);
-                            console.log(`Active: ${activatedTabId}`);
 
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
@@ -332,16 +326,12 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                console.log(data);
                                 for (let key in data) {
                                     if (data.hasOwnProperty(key)) {
-                                        // console.log(`Key: ${key} Value: ${data[key]}`);
                                         let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
-                                        // console.log(input);
                                         if (input) {
                                             if (input.hasClass('files')) {
                                                 let img = input.attr('data-image');
-                                                // console.log(img);
                                                 let $input = $(`#${img}`);
                                                 if ($input && data[key] !== null) {
                                                     if (data[key] === '') {
@@ -352,19 +342,15 @@
                                                     }
                                                 }
                                             } else if (input.hasClass('editors')) {
-                                                // console.log(`Key: ${key} Value: ${data[key]}`);
                                                 let $div = $(input);
-                                                // console.log($div[0]);
                                                 if ($div) {
                                                     $div.html(data[key]);
                                                     let parent = $div.parent();
                                                     let find = parent.find('.editor-realise');
-                                                    // console.log(find[0]);
                                                     getFroalaEditor(find[0].getAttribute('id'));
                                                 }
                                             } else {
                                                 if (typeof data[key] === 'boolean') {
-                                                    console.log(`Key: ${key} Value: ${data[key]}`);
                                                     let isActiveEl = $(`input[data-name="${key}"]`)[0];
                                                     if (isActiveEl)
                                                         isActiveEl.checked = data[key];

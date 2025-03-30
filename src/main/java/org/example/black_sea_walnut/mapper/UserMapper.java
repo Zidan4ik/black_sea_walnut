@@ -89,7 +89,7 @@ public class UserMapper {
         entity.setStatus(UserStatus.fromString(dto.getStatus()));
         entity.setPathToImage(dto.getPathToImage());
         entity.setPaymentDetails(dto.getOkpo());
-        entity.setIndexAdditional(dto.getIndexAdditionally());
+        entity.setIndexAdditional(dto.getIndexLawful());
         entity.setPassword(dto.getPassword());
         entity.setAddressAdditional(dto.getAddressAdditionally());
         entity.setDepartment(Integer.valueOf(dto.getDepartmentForDelivery()));

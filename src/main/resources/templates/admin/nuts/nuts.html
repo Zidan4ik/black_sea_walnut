@@ -118,7 +118,7 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('GET', `${contextPath}/admin/nut/delete/${id}`);
+            request.open('DELETE', `${contextPath}/admin/nut/${id}/delete`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {

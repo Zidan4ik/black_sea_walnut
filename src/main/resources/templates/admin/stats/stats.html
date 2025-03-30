@@ -353,12 +353,11 @@
 
         function requestByDateOrder(date) {
             let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `admin/orders/getByDate?date=${date}`);
+            request.open("GET", contextPath + `/admin/orders/getByDate?date=${date}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    console.log(data);
                     if (!data || data.length === 0) {
                         const noExistText = document.documentElement.lang === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
                         $("#chart-orders-noExist").html(`<h5>${noExistText}</h5>`);
@@ -387,7 +386,7 @@
 
         function requestGetUsersByDate(date) {
             let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `admin/stats/users/get?date=${date}`);
+            request.open("GET", contextPath + `/admin/stats/users/get?date=${date}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
@@ -412,7 +411,7 @@
 
         function requestGetProducts(size, date) {
             let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `admin/stats/products/get?date=${date}&size=${size}`);
+            request.open("GET", contextPath + `/admin/stats/products/get?date=${date}&size=${size}`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {

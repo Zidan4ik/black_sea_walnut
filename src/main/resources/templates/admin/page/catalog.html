@@ -260,7 +260,6 @@
                 function copyHTMLBlockSave(fromElementId, toElementId) {
                     $(`#${toElementId}`).html($(`#${fromElementId}`).html());
                     document.getElementById('btn-save_').addEventListener('click', function () {
-                        console.log('button save was clicked!')
                         saveRequest(urlCatalogBlock);
                     });
                     clearBlock(fromElementId);
@@ -275,12 +274,10 @@
                         events: {
                             'initialized': function () {
                                 let element = $(`#hidden-${idElementEditor}`);
-                                // console.log(element.html());
                                 this.html.set(element.html() || '');
                             },
                             'contentChanged': function () {
                                 const html = this.html.get();
-                                // console.log(html);
                                 $(`#hidden-${idElementEditor}`).html(html);
                             }
                         }
@@ -293,9 +290,6 @@
                         const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                         let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
 
-                        // console.log(`Switched to tab: ${activatedTabId}`);
-                        // console.log(`Previous: ${previousActiveTab}`);
-                        // console.log(`Active: ${activatedTabId}`);
 
                         if (previousActiveTab) {
                             copyHTMLBlockImage(`image-catalog-banner-block-${previousActiveTab}`, 'shared-image-catalog-banner');
@@ -334,13 +328,10 @@
 
                     $(container).on('click', '.btn-select', function () {
                         let attribute = $(this).attr('data-type');
-                        console.log('Edit button clicked:', attribute);
                         $("#file-" + attribute).click();
                     });
                     $('#container-inputs').on('change', '.files', function (event) {
-                        // console.log(1);
                         let attribute = $(this).data('type');
-                        console.log(attribute);
                         const file = event.target.files[0];
                         if (!file) return;
 
@@ -375,13 +366,11 @@
                         processData: false,
                         contentType: false,
                         success: function () {
-                            console.log('success save');
                             window.location.reload();
                         },
                         error: function (error) {
                             clearValid();
                             let data = JSON.parse(error.responseText);
-                            console.log(data);
                             validate3(data);
                             console.log("Error submitting form:", error);
                         }
@@ -432,21 +421,15 @@
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
                             let data = JSON.parse(request.response);
-                            console.log(data);
                             for (let key in data) {
                                 let nestedObject = data[key];
                                 if (typeof nestedObject === 'object' && nestedObject !== null) {
                                     for (let nestedKey in nestedObject) {
-                                        // console.log(nestedKey);
                                         if (nestedObject.hasOwnProperty(nestedKey)) {
-                                            // console.log(`Key: ${nestedKey} Value: ${nestedObject[nestedKey]}`);
-
                                             let input = $(`input[data-name="${nestedKey}"], textarea[data-name="${nestedKey}"], div[data-name="${nestedKey}"]`);
-                                            // console.log(input[0]);
                                             if (input) {
                                                 if (input.hasClass('files')) {
                                                     let img = input.attr('data-image');
-                                                    // console.log(img);
                                                     let $input = $(`#${img}`);
                                                     if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
                                                         $input.attr('src', nestedObject[nestedKey]);

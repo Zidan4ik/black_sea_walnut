@@ -51,7 +51,6 @@
 
             $(container).on('click', '.btn-select', function () {
                 let attribute = $(this).attr('data-type');
-                console.log('Edit button clicked:', attribute);
                 $("#file-" + attribute).click();
             });
 
@@ -69,7 +68,6 @@
 
             $(container).on('change', '.files', function (event) {
                 let attribute = $(this).data('type');
-                console.log(attribute);
                 const file = event.target.files[0];
                 if (!file) return;
 
@@ -129,10 +127,7 @@
                 let pathEl = $(element).find('.files');
 
                 const resForm = new FormData();
-                console.log(attrId);
-                // console.log(attrType);
                 if (attrType && attrType !== 'new') {
-                    console.log(1);
                     resForm.append('id', attrId);
                 }
                 if (imageEl[0].files.length > 0) resForm.append('file', imageEl[0].files[0]);
@@ -156,7 +151,6 @@
 
             let imageBlock = rowElement.find(`#image${idBlock}`).parent();
             let fileInput = rowElement.find(`#file-image${idBlock}`)[0];
-            console.log(idBlock);
             const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
             const isTitleFilled = title.val() !== '';
@@ -215,10 +209,8 @@
                     window.location.replace(`${contextPath}/admin/galleries`);
                 },
                 error: function (error) {
-                    console.log(el);
                     clearValid();
                     let data = JSON.parse(error.responseText);
-                    console.log(data);
                     validateInSpecificContainer(data, el);
                     console.log("Error submitting form:", error);
                 }
@@ -228,8 +220,6 @@
         function validateInSpecificContainer(data, containerEl) {
             Object.entries(data).forEach(function ([field, message]) {
                 const inputField = containerEl.querySelector(`[data-error=${field}]`);
-                console.log(inputField);
-                console.log("Field:", field, "Message:", message);
                 if (inputField) {
 
                     inputField.classList.add("errorMy");
@@ -237,7 +227,6 @@
                     errorMessage.className = "error-message";
                     errorMessage.style.color = "red";
                     errorMessage.innerText = message;
-                    console.log(inputField.getAttribute('class'));
                     if (inputField.getAttribute("class").includes("files")) {
                         inputField.parentNode.parentElement.append(errorMessage);
                     } else {

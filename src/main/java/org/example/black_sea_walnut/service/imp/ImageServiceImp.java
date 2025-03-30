@@ -59,7 +59,7 @@ public class ImageServiceImp implements ImageService {
             return;
         }
 
-        if (!path.isEmpty() && Files.exists(path_)) {
+        if (path != null && !path.isEmpty() && Files.exists(path_)) {
             Files.walkFileTree(path_, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

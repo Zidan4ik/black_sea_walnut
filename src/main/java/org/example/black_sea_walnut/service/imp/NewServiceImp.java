@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.service.imp;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.new_.ResponseNewForView;
@@ -131,9 +132,14 @@ public class NewServiceImp implements NewService {
         return entity;
     }
 
+    @SneakyThrows
     @Override
     public void deleteById(Long id) {
         LogUtil.logInfo("Deleting news by ID: " + id);
-        newRepository.deleteById(id);
+        New new_ = getById(id);
+        if(new_ != null){
+            imageServiceImp.deleteByPath(new_.getPathToMedia());
+            newRepository.deleteById(id);
+        }
     }
 }

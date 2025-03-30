@@ -2,7 +2,6 @@ package org.example.black_sea_walnut.service.imp;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.Path;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
 import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
@@ -25,8 +24,6 @@ import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
-import org.example.black_sea_walnut.password.PasswordResetToken;
-import org.example.black_sea_walnut.password.PasswordResetTokenRepository;
 import org.example.black_sea_walnut.password.PasswordResetTokenService;
 import org.example.black_sea_walnut.password.token.VerificationToken;
 import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
@@ -50,9 +47,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +127,7 @@ class UserServiceImpTest {
         dto.setRegionAdditionallyId(40L);
         dto.setCityAdditionallyId(20L);
         dto.setAddressAdditionally("1234 Walnut St, CityName");
-        dto.setIndexAdditionally("56789");
+        dto.setIndexLawful("56789");
         dto.setPassword("securePass!123");
         dto.setRole(Role.USER);
 

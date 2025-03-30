@@ -33,7 +33,7 @@ public class UserLegalRequestForView {
     @NotBlank(message = "{error.field.empty}")
     private String addressAdditionally;
     @NotBlank(message = "{error.field.empty}")
-    private String indexAdditionally;
+    private String indexLawful;
     private String password;
     private Role role;
 }

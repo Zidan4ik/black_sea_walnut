@@ -122,13 +122,13 @@
     <script th:src="@{/js/table.js}"></script>
     <script>
         const inputs = ['id', 'fio', 'email', 'dateOfRegistration', 'registrationType', 'userStatus', 'phone'];
-        let pathToTable = `${contextPath}admin/users/table/load`;
-        let pathToPagination = `${contextPath}admin/users/pagination/load`;
+        let pathToTable = `${contextPath}/admin/users/table/load`;
+        let pathToPagination = `${contextPath}/admin/users/pagination/load`;
         let timeoutId;
 
         $(document).on('click', '.edit-icon', function () {
             let id = $(this).data('id');
-            window.location.pathname = contextPath + `admin/user/${id}/edit`;
+            window.location.pathname = contextPath + `/admin/user/${id}/edit`;
         });
 
         $(document).on('click', '.delete-icon', function () {
@@ -140,7 +140,7 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}admin/user/${id}/delete`);
+            request.open('DELETE', `${contextPath}/admin/user/${id}/delete`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
@@ -162,11 +162,10 @@
         });
 
         $(document).on('click', '.user-status-icon', function () {
-            console.log(this);
             let id = $(this).attr('data-id');
             $.ajax({
                 type: "POST",
-                url: `${contextPath}admin/user/${id}/change`,
+                url: `${contextPath}/admin/user/${id}/change`,
                 success: function () {
                     window.location.reload();
                 },
@@ -189,12 +188,11 @@
             formData.append('isActive', $(this).is(':checked'));
             $.ajax({
                 type: "post",
-                url: `${contextPath}admin/user/save/switch`,
+                url: `${contextPath}/admin/user/save/switch`,
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function () {
-                    // window.location.replace(`${contextPath}admin/nuts/save/switch`);
                     window.location.reload();
                 },
                 error: function (error) {

@@ -155,7 +155,7 @@ public class UserServiceImp implements UserService {
         if (regionId != null) {
             userMapped.setRegion(regionService.getById(regionId)
                     .orElseThrow(() -> new EntityNotFoundException("Region with id:" + regionId + " was not found!")
-            ));
+                    ));
         }
         Long regionAdditionallyId = dto.getRegionAdditionallyId();
         if (regionAdditionallyId != null) {
@@ -184,10 +184,15 @@ public class UserServiceImp implements UserService {
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
         User userMapped = userMapper.toEntityFromRequest(dto);
-        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
-                .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
-        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
-                .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
+        if (dto.getCityForDeliveryId() != null) {
+            userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
+                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
+
+        }
+        if (dto.getRegionForDeliveryId() != null) {
+            userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
+                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
+        }
         return save(userMapped);
     }
 
@@ -210,14 +215,22 @@ public class UserServiceImp implements UserService {
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
         User userMapped = userMapper.toEntityFromRequest(dto);
-        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
-                .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
-        userMapped.setCityAdditional(cityService.getById(dto.getCityAdditionallyId())
-                .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityAdditionallyId() + " was not found!")));
-        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
-                .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
-        userMapped.setRegionAdditional(regionService.getById(dto.getRegionAdditionallyId())
-                .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionAdditionallyId() + " was not found!")));
+        if (dto.getCityForDeliveryId() != null) {
+            userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
+                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
+        }
+        if (dto.getCityAdditionallyId() != null) {
+            userMapped.setCityAdditional(cityService.getById(dto.getCityAdditionallyId())
+                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityAdditionallyId() + " was not found!")));
+        }
+        if (dto.getRegionForDeliveryId() != null) {
+            userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
+                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
+        }
+        if (dto.getRegionAdditionallyId() != null) {
+            userMapped.setRegionAdditional(regionService.getById(dto.getRegionAdditionallyId())
+                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionAdditionallyId() + " was not found!")));
+        }
         return save(userMapped);
     }
 

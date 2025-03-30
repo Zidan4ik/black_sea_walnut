@@ -226,7 +226,6 @@
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    // console.log(html);
                                     $(`#hidden-${idElementEditor}`).html(html);
                                 }
                             }
@@ -239,9 +238,6 @@
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
 
-                            // console.log(`Switched to tab: ${activatedTabId}`);
-                            console.log(`Previous: ${previousActiveTab}`);
-                            console.log(`Active: ${activatedTabId}`);
 
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');

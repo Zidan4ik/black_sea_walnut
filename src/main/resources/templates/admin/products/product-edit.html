@@ -621,7 +621,6 @@
                             events: {
                                 'initialized': function () {
                                     let element = $(`#hidden-${idElementEditor}`);
-                                    // console.log(element.html());
                                     this.html.set(element.html() || '');
                                 },
                                 'contentChanged': function () {
@@ -639,10 +638,6 @@
                         tab.addEventListener('shown.bs.tab', function (event) {
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-
-                            // console.log(`Switched to tab: ${activatedTabId}`);
-                            // console.log(`Previous: ${previousActiveTab}`);
-                            // console.log(`Active: ${activatedTabId}`);
 
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
@@ -736,7 +731,6 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                // console.log(data);
                                 let selectorTasteUk = document.getElementById("tastes-uk_");
                                 let selectorTasteEn = document.getElementById("tastes-en_");
                                 let selectorDiscountUk = document.getElementById("discounts-uk_");
@@ -759,7 +753,6 @@
                             contentType: false,
                             success: function () {
                                 window.location.replace(`${contextPath}/admin/products`);
-                                console.log('Success');
                             },
                             error: function (error) {
                                 clearValid();
@@ -789,7 +782,6 @@
                         resForm.append("mass", $('#mass_').val());
                         resForm.append("discountId", $('#discounts-uk_').val());
                         let value = $('#tastes-uk_').val();
-                        console.log('taste id:', value);
                         resForm.append("tasteId", value);
 
                         resForm.append("descriptionProductUk", document.getElementById("hidden-edit-description-product-uk").innerHTML);
@@ -843,10 +835,8 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                console.log(data);
                                 for (let key in data) {
                                     if (data.hasOwnProperty(key)) {
-                                        // console.log(`Key: ${key} Value: ${data[key]}`);
                                         let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
                                         if (input) {
                                             if (input.hasClass('files')) {
@@ -857,7 +847,6 @@
                                                     input.val(data[key]);
                                                 }
                                             } else if (input.hasClass('editors')) {
-                                                console.log(`Key: ${key} Value: ${data[key]}`);
                                                 let $div = $(`div[data-name="${key}"]`);
                                                 if ($div) {
                                                     $div.html(data[key]);

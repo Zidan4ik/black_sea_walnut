@@ -166,7 +166,7 @@
                              alt="error"
                              style="width: 100%; height: 304px; display: block; margin: 0 auto;">
 
-                        <video th:src="${(news.getPathToImage() != null && !news.getPathToImage().isEmpty()) ? '/Walnut-R.Pravnyk' + news.getPathToImage():'/Walnut-P.Pravnyk/uploads/default/default-image.jpg'}"
+                        <video th:src="${(news.getPathToImage() != null && !news.getPathToImage().isEmpty()) ? '/Walnut-R.Pravnyk' + news.getPathToImage():'/Walnut-R.Pravnyk/uploads/default/default-image.jpg'}"
                                th:styleappend="${news.getPathToImage().contains('/video/')? '' : 'display:none;'}"
                                id="video_" controls
                                style="width: 345px; height: 304px; margin: 0 auto;"></video>

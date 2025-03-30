@@ -210,7 +210,6 @@
                             },
                             'contentChanged': function () {
                                 const html = this.html.get();
-                                // console.log('UA: ', html);
                                 $("#hidden-description-ua_").val(html);
                             }
                         }
@@ -224,7 +223,6 @@
                             },
                             'contentChanged': function () {
                                 const html = this.html.get();
-                                console.log('EN: ', html);
                                 $("#hidden-description-eng_").val(html);
                             }
                         }
@@ -234,8 +232,6 @@
                         tab.addEventListener('shown.bs.tab', function (event) {
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-
-                            console.log(`Switched to tab: ${activatedTabId}`);
 
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
@@ -276,7 +272,6 @@
                         if (event.detail.xhr.status === 400) {
                             clearValid();
                             let data = JSON.parse(event.detail.xhr.responseText);
-                            // console.log(data);
                             validate3(data);
                         }
                     });

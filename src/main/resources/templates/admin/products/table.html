@@ -138,13 +138,8 @@
                 let tastes = $("#tastes_").val();
                 discounts = discounts.split(", ").map(item=>item.trim());
                 tastes = tastes.split(", ").map(item=>item.trim());
-                // console.log("Discounts:", discounts);
-                // console.log("Tastes:", tastes);
                 let tastesNew = getTransferData(tastes);
-                // console.log(tastesNew);
                 let discountsNew = getTransferData(discounts);
-                // console.log(discountsNew);
-
                 let tastesElements = document.getElementById("pick-type-of-taste_");
                 let discountElements = document.getElementById("pick-type-of-discount_");
                 fillOptions(tastesElements, tastesNew);

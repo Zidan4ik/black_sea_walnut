@@ -151,7 +151,6 @@
                 request.send();
                 request.addEventListener('load', async function () {
                     let data = JSON.parse(request.response);
-                    console.log(data);
                     let count = 0;
                     data.orderDetails.forEach(item => {
                         count += item.totalSumma = item.price * item.count;
@@ -243,7 +242,6 @@
                                 } else {
                                     elementById.textContent = data[key];
                                 }
-                                console.log(`Field: ${key}, Value: ${data[key]}`);
                             }
                         }
                     }

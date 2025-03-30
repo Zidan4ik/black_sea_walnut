@@ -1,7 +1,7 @@
 <div class="col-6 row" th:each="p:${list}" th:data-id="${p.getId()}" data-type="old">
     <div class="col-6 text-center">
         <img th:id="'image'+${p.getId()}"
-             th:src="${(p.getPathToMediaFile()!=null && !p.getPathToMediaFile.isEmpty())? p.getPathToMediaFile():'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s'}"
+             th:src="${(p.getPathToMediaFile()!=null && !p.getPathToMediaFile.isEmpty())? '/Walnut-R.Pravnyk' + p.getPathToMediaFile():'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s'}"
              alt="error" style="width: 200px;height: 200px;">
         <label class="form-label" style="color: #AAAAAA;"
         th:text="#{text.mediaSize15}"></label>

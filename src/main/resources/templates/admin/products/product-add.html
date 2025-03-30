@@ -599,7 +599,6 @@
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    // console.log(html);
                                     $(`#hidden-${idElementEditor}`).html(html);
                                 }
                             }
@@ -612,9 +611,6 @@
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
 
-                            // console.log(`Switched to tab: ${activatedTabId}`);
-                            console.log(`Previous: ${previousActiveTab}`);
-                            console.log(`Active: ${activatedTabId}`);
 
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
@@ -648,7 +644,6 @@
 
                     $(document).ready(function () {
                         let activeLang = getActiveLangTab();
-                        // console.log(activeLang);
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
                         copyHTMLBlockHeader('shared-header', `header-block-${activeLang}`);
@@ -710,7 +705,6 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                // console.log(data);
                                 let selectorTasteUk = document.getElementById("tastes-uk_");
                                 let selectorTasteEn = document.getElementById("tastes-en_");
                                 let selectorDiscountUk = document.getElementById("discounts-uk_");
@@ -733,12 +727,10 @@
                             contentType: false,
                             success: function () {
                                 window.location.replace(`${contextPath}/admin/products`);
-                                // console.log('Success!!!')
                             },
                             error: function (error) {
                                 clearValid();
                                 let data = JSON.parse(error.responseText);
-                                // console.log(data);
                                 validate2(data);
                                 console.log("Error submitting form:", error);
                             }

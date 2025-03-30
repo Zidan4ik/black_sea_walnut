@@ -24,11 +24,11 @@
                         <h5 th:text="#{text.numberPhone}+':'"></h5>
                         <div>
                             <input class="form-control" id="phone1_" type="text" data-name="phone1"
-                                   placeholder="0982370190"/>
+                                   placeholder="0666790100"/>
                         </div>
                         <div>
                             <input class="form-control" id="phone2_" type="text" data-name="phone2"
-                                   placeholder="0982370190"/>
+                                   placeholder="0666790100"/>
                         </div>
                         <h5 th:text="#{table.header.email}+':'"></h5>
                         <div>
@@ -123,7 +123,7 @@
                 let formData = getFormData();
                 $.ajax({
                     type: "post",
-                    url: `${contextPath}admin/contact/save`,
+                    url: `${contextPath}/admin/contact/save`,
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -161,18 +161,15 @@
         <script>
             function requestGetContact(id) {
                 let request = new XMLHttpRequest();
-                let url1 = `${contextPath}admin/contact/${id}`;
-                console.log(url1);
+                let url1 = `${contextPath}/admin/contact/${id}`;
                 request.open("GET", url1);
                 request.send();
                 request.addEventListener('load', function () {
                     if (request.status === 200) {
                         let data = JSON.parse(request.response);
-                        console.log(data);
 
                         for (let key in data) {
                             if (data.hasOwnProperty(key)) {
-                                // console.log(`Key: ${key} Value: ${data[key]}`);
                                 let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"], select[data-name="${key}"]`);
                                 if (input) {
                                     if (input.hasClass('files')) {
@@ -203,11 +200,10 @@
             }
 
             $(document).on('click', '.user-status-icon', function () {
-                console.log(this);
                 let id = $(this).attr('data-id');
                 $.ajax({
                     type: "POST",
-                    url: `${contextPath}admin/user/${id}/change`,
+                    url: `${contextPath}/admin/user/${id}/change`,
                     success: function () {
                         window.location.reload();
                     },

@@ -347,7 +347,6 @@
                 function copyHTMLBlockSave(fromElementId, toElementId) {
                     $(`#${toElementId}`).html($(`#${fromElementId}`).html());
                     document.getElementById('btn-save_').addEventListener('click', function () {
-                        console.log('button save was clicked!')
                         saveRequest(urlClientsBlock);
                     });
                     clearBlock(fromElementId);
@@ -355,7 +354,6 @@
             </script>
             <script>
                 function getFroalaEditor(idElementEditor) {
-                    console.log('idElementEditor: ', idElementEditor);
                     return new FroalaEditor(`#${idElementEditor}`, {
                         height: 12 * 10,
                         width: 700,
@@ -363,12 +361,10 @@
                         events: {
                             'initialized': function () {
                                 let element = $(`#hidden-${idElementEditor}`);
-                                // console.log(element.html());
                                 this.html.set(element.html() || '');
                             },
                             'contentChanged': function () {
                                 const html = this.html.get();
-                                // console.log(html);
                                 $(`#hidden-${idElementEditor}`).html(html);
                             }
                         }
@@ -380,10 +376,6 @@
                     tab.addEventListener('shown.bs.tab', function (event) {
                         const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                         let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-
-                        // console.log(`Switched to tab: ${activatedTabId}`);
-                        // console.log(`Previous: ${previousActiveTab}`);
-                        // console.log(`Active: ${activatedTabId}`);
 
                         if (previousActiveTab) {
                             copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
@@ -432,7 +424,6 @@
 
                     $(container).on('click', '.btn-select-media', function () {
                         let attribute = $(this).attr('data-name');
-                        console.log('Edit button clicked:', attribute);
                         $("#file-" + attribute).click();
                     });
 
@@ -518,13 +509,11 @@
                         processData: false,
                         contentType: false,
                         success: function () {
-                            console.log('success save');
                             window.location.reload();
                         },
                         error: function (error) {
                             clearValid();
                             let data = JSON.parse(error.responseText);
-                            // console.log(data);
                             validate3(data);
                             console.log("Error submitting form:", error);
                         }
@@ -598,17 +587,14 @@
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
                             let data = JSON.parse(request.response);
-                            console.log(data);
                             for (let key in data) {
                                 let nestedObject = data[key];
                                 if (Array.isArray(nestedObject)) {
                                     nestedObject.forEach((item, index) => {
-                                        console.log(item);
                                         addMediaImageBlock('old', item);
                                     });
                                 } else if (typeof nestedObject === 'object' && nestedObject !== null) {
                                     for (let nestedKey in nestedObject) {
-                                        // console.log(`Key: ${nestedKey} Value: ${nestedObject[nestedKey]}`);
                                         if (nestedObject.hasOwnProperty(nestedKey)) {
                                             let input = $(`input[data-name="${nestedKey}"], textarea[data-name="${nestedKey}"], div[data-name="${nestedKey}"]`);
                                             if (input) {
@@ -621,7 +607,6 @@
                                                         input.val(nestedObject[nestedKey]);
                                                     }
                                                 } else if (input.hasClass('editors')) {
-                                                    console.log(`Key: ${key} Value: ${data[key]}`);
                                                     let $div = $(input);
                                                     if ($div) {
                                                         $div.html(nestedObject[nestedKey]);

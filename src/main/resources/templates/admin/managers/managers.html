@@ -187,8 +187,8 @@
 
     <script>
         const inputs = ['id', 'name', 'surname', 'phone'];
-        let pathToTable = `${contextPath}admin/managers/table/load`;
-        let pathToPagination = `${contextPath}admin/managers/pagination/load`;
+        let pathToTable = `${contextPath}/admin/managers/table/load`;
+        let pathToPagination = `${contextPath}/admin/managers/pagination/load`;
         let timeoutId;
 
         $(document).on('click', '.btn-danger', function () {
@@ -200,11 +200,9 @@
                     requestDelete(id)
                     selectedIds.push(id);
                 });
-                console.log(selectedIds);
             } else if (attr === 'one') {
                 let attrId = this.getAttribute('data-id');
                 requestDelete(attrId);
-                console.log(attrId);
             }
         });
 
@@ -222,12 +220,10 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    // console.log(data);
                     const modal = new bootstrap.Modal(document.querySelector("#ModalManager"));
                     modal.show();
                     for (let key in data) {
                         if (data.hasOwnProperty(key) && data[key] !== '') {
-                            console.log(`Key: ${key} Value: ${data[key]}`);
                             let input = $(`input[data-name="${key}"]`);
                             if (input) {
                                 input.val(data[key]);
@@ -249,7 +245,7 @@
 
         function requestDelete(id) {
             let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}admin/manager/${id}/delete`);
+            request.open('DELETE', `${contextPath}/admin/manager/${id}/delete`);
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
@@ -302,8 +298,7 @@
             $("#table-data-container_").on('click', '.edit-icon, .delete-icon', function () {
                 let id = this.getAttribute('data-id');
                 if ($(this).hasClass('edit-icon')) {
-                    console.log(id);
-                    requestGetManager(`${contextPath}admin/manager/${id}`);
+                    requestGetManager(`${contextPath}/admin/manager/${id}`);
                 }
             });
         }
@@ -330,7 +325,7 @@
             let formData = getFormData();
             $.ajax({
                 type: "post",
-                url: contextPath + `admin/manager/save`,
+                url: contextPath + `/admin/manager/save`,
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -353,12 +348,10 @@
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     let data = JSON.parse(request.response);
-                    console.log(data);
                     const modal = new    bootstrap.Modal(document.querySelector("#ModalManager"));
                     modal.show();
                     for (let key in data) {
                         if (data.hasOwnProperty(key) && data[key] !== '') {
-                            console.log(`Key: ${key} Value: ${data[key]}`);
                             let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"]`);
                             if (input) {
                                 input.val(data[key]);
@@ -385,9 +378,6 @@
                 let attribute = this.getAttribute('data-type');
                 const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                 let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-                // console.log(`Switched to tab: ${activatedTabId}`);
-                // console.log(`Previous: ${previousActiveTab}`);
-                // console.log(`Active: ${activatedTabId}`);
                 copyHTMLBlockInput(`phone-block-${previousActiveTab}`, `phone-block-${activatedTabId}`);
             });
         });
