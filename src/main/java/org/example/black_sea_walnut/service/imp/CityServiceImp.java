@@ -51,5 +51,10 @@ public class CityServiceImp implements CityService {
         LogUtil.logInfo("Fetched " + cities.size() + " cities for region: " + region.getName());
         return cities;
     }
+
+    @Override
+    public void save(City city) {
+        cityRepository.save(city);
+    }
 }
 

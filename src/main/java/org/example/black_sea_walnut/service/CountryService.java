@@ -9,4 +9,6 @@ public interface CountryService {
     List<Country> getAll();
 
     Optional<Country> getById(Long id);
+
+    void save(Country country);
 }

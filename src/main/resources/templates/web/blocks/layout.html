@@ -253,7 +253,7 @@
         if (!bannerData || !bannerData.isActive) return;
         const container = $(`#${idContainer}`);
         if (container.length) {
-            container.css("background-image", `url(${bannerData.imagePath})`);
+            container.css("background-image", `url(${contextPath + bannerData.imagePath})`);
             const title = getLocalizedContent(bannerData, 'title');
             const description = getLocalizedContent(bannerData, 'description');
             container.append(`
@@ -617,7 +617,7 @@
                             </div>
                         </div>
                         <div class="col-md-7 col-12">
-                            <img src="${postData.imagePath}" class="tabs__content_img" alt="alt">
+                            <img src="${contextPath + postData.imagePath}" class="tabs__content_img" alt="alt">
                         </div>
                     </div>
                 </div>`

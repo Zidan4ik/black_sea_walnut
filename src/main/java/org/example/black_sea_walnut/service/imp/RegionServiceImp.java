@@ -41,4 +41,9 @@ public class RegionServiceImp implements RegionService {
         LogUtil.logInfo("Fetching regions for country: " + country.getName());
         return regionRepository.getRegionsByCountry(country);
     }
+
+    @Override
+    public void save(Region region) {
+        regionRepository.save(region);
+    }
 }

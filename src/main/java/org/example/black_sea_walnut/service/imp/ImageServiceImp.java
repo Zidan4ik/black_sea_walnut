@@ -52,7 +52,11 @@ public class ImageServiceImp implements ImageService {
     public void deleteByPath(String path) throws IOException {
         LogUtil.logInfo("Attempting to delete file/folder at path: " + path);
         Path path_ = Path.of("." + path);
-
+        Path lockFile = Path.of(path_ + ".lock");
+        if (Files.exists(lockFile)) {
+            LogUtil.logWarning("Deletion blocked: lock file exists for " + path);
+            return;
+        }
         Path gitFolder = Path.of(".git").toAbsolutePath().normalize();
         if (path_.toAbsolutePath().normalize().startsWith(gitFolder)) {
             LogUtil.logWarning("Blocked deletion inside .git folder");

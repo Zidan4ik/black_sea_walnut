@@ -12,4 +12,6 @@ public interface RegionService {
     List<Region> getAll();
 
     List<Region> getByCountry(Country country);
+
+    void save(Region region);
 }

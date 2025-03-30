@@ -28,4 +28,5 @@ public interface TransactionsService {
     Transaction save(Transaction entity);
 
     Transaction save(CheckoutUser dto);
+
 }

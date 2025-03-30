@@ -38,4 +38,9 @@ public class CountryServiceImp implements CountryService {
         }
         return country;
     }
+
+    @Override
+    public void save(Country country) {
+        countryRepository.save(country);
+    }
 }

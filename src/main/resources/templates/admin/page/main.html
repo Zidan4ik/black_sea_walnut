@@ -703,6 +703,12 @@
                     clearBlock(fromElementId);
                 }
 
+                function copyHTMLBlockImages(fromElementId, toElementId) {
+                    $(`#${toElementId}`).html($(`#${fromElementId}`).html());
+                    addEventListenerForMediaFiles(getActiveLangTab());
+                    clearBlock(fromElementId);
+                }
+
                 function copyHTMLBlockSave(fromElementId, toElementId) {
                     $(`#${toElementId}`).html($(`#${fromElementId}`).html());
                     document.getElementById('btn-save_').addEventListener('click', function () {
@@ -770,7 +776,8 @@
                             copyHTMLBlockInput('shared-title3-number', `main-number-title3-block-${activatedTabId}`);
                             copyHTMLBlockInput('shared-title4-number', `main-number-title4-block-${activatedTabId}`);
                         }
-                        copyHTMLBlockImage(`container-factory-images-${previousActiveTab}`, `container-factory-images-${activatedTabId}`);
+                        copyHTMLBlockImages(`container-factory-images-${previousActiveTab}`, `container-factory-images-${activatedTabId}`);
+                        addEventAddBlock();
                     });
                 });
 
@@ -794,12 +801,18 @@
                     requestGetData();
                     addEventListenerForMediaFiles(activeLang);
                     selectedLanguage();
+                    addEventAddBlock();
                 });
 
                 const urlMainBlock = `${contextPath}/admin/page/main/save`;
 
                 function addEventListenerForMediaFiles(langActive) {
                     const container = `#container-factory-images-${langActive}`;
+
+                    $(container).off('click', '.btn-select');
+                    $(container).off('change', '.files');
+                    $(container).off('click', '.btn-delete');
+
                     $(container).on('click', '.btn-select', function () {
                         let attribute = $(this).attr('data-type');
                         $("#file-" + attribute).click();
@@ -989,9 +1002,12 @@
                     });
                 }
 
-                $('#btn-add-media-block').on('click', function () {
-                    addFactoryImageBlock('new');
-                });
+               function addEventAddBlock(){
+                   $('#btn-add-media-block').on('click', function () {
+                       addFactoryImageBlock('new');
+                   });
+               }
+
                 const PathToDefaultImage = contextPath + '/uploads/default/default-image.jpg';
                 let counter = 0;
 
@@ -1021,7 +1037,7 @@
                                            class="files" data-error="pathToMediaFile" value="${PATH}">
                                     </div>
                              `;
-                    const container = document.getElementById(`container-factory-images-${getCurrentLang()}`);
+                    const container = document.getElementById(`container-factory-images-${getActiveLangTab()}`);
                     const addButtonContainer = document.getElementById('add-button-container');
                     container.insertBefore(newBlock, addButtonContainer);
                     // addEventListenersImage2();

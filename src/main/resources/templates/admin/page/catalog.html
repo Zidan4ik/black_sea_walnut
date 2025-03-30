@@ -85,11 +85,12 @@
                         <div class="col-3" id="add-button-container"
                              style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                             <div class="d-flex justify-content-center">
-                                <button class="btn btn-outline-success" id="btn-add-media-block" th:text="#{text.button.addMedia}"></button>
+                                <button class="btn btn-outline-success" id="btn-add-media-block"
+                                        th:text="#{text.button.addMedia}"></button>
                             </div>
                             <span class="text-center"
                                   style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
-                            th:text="#{text.mediaSize10}">
+                                  th:text="#{text.mediaSize10}">
                                 </span>
                         </div>
                     </div>
@@ -98,18 +99,21 @@
                             <label class="form-label" for="catalog-ecologically-title-uk_"
                                    style="font-size: small;font-weight: bold">Заголовок:</label>
                             <input class="form-control" id="catalog-ecologically-title-uk_"
-                                   data-name="catalogEcologicallyTitleUk" data-error="requestEcologicallyForAdd.catalogEcologicallyTitleUk">
+                                   data-name="catalogEcologicallyTitleUk"
+                                   data-error="requestEcologicallyForAdd.catalogEcologicallyTitleUk">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="catalog-ecologically-subtitle-uk_"
                                    style="font-size: small;font-weight: bold">Підзаголовок:</label>
                             <input class="form-control" id="catalog-ecologically-subtitle-uk_"
-                                   data-name="catalogEcologicallySubtitleUk" data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleUk">
+                                   data-name="catalogEcologicallySubtitleUk"
+                                   data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleUk">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="edit-description-ecologically-uk"
                                    style="font-size: small;font-weight: bold">Опис:</label>
-                            <div id="edit-description-ecologically-uk" class="editor-realise" data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionUk"
+                            <div id="edit-description-ecologically-uk" class="editor-realise"
+                                 data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionUk"
                                  style="min-height: 100px; border: 1px solid #ccc;"></div>
                             <label class="form-label" style="color: #AAAAAA;">Максимум: 3500 символів</label>
                             <div type="hidden" id="hidden-edit-description-ecologically-uk"
@@ -149,22 +153,26 @@
                             <label class="form-label" for="catalog-ecologically-title-en_"
                                    style="font-size: small;font-weight: bold">Title:</label>
                             <input class="form-control" id="catalog-ecologically-title-en_"
-                                   data-name="catalogEcologicallyTitleEn" data-error="requestEcologicallyForAdd.catalogEcologicallyTitleEn">
+                                   data-name="catalogEcologicallyTitleEn"
+                                   data-error="requestEcologicallyForAdd.catalogEcologicallyTitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="catalog-ecologically-subtitle-en_"
                                    style="font-size: small;font-weight: bold">Subtitle:</label>
                             <input class="form-control" id="catalog-ecologically-subtitle-en_"
-                                   data-name="catalogEcologicallySubtitleEn" data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleEn">
+                                   data-name="catalogEcologicallySubtitleEn"
+                                   data-error="requestEcologicallyForAdd.catalogEcologicallySubtitleEn">
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="edit-description-ecologically-en"
                                    style="font-size: small;font-weight: bold">Description:</label>
                             <div id="edit-description-ecologically-en" class="editor-realise"
-                                 style="min-height: 100px; border: 1px solid #ccc;" data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionEn"></div>
+                                 style="min-height: 100px; border: 1px solid #ccc;"
+                                 data-error="requestEcologicallyForAdd.catalogEcologicallyDescriptionEn"></div>
                             <label class="form-label" style="color: #AAAAAA;">Max: 3500 characters</label>
                             <div type="hidden" id="hidden-edit-description-ecologically-en"
-                                 data-name="catalogEcologicallyDescriptionEn" style="display: none;" class="editors"></div>
+                                 data-name="catalogEcologicallyDescriptionEn" style="display: none;"
+                                 class="editors"></div>
                         </div>
                     </div>
                 </div>
@@ -222,16 +230,16 @@
                     <button type="button" data-type="catalogBannerFile"
                             class="btn btn-outline-success btn-select"
                             style="left: 13%;top:25%;position: absolute;width: 35%;"
-                    th:text="#{text.button.change}">
+                            th:text="#{text.button.change}">
                     </button>
                     <button type="button" data-type="catalogBannerFile"
                             class="btn btn-outline-success btn-delete"
                             style="right: 13%;top:25%;position: absolute;width: 35%;"
-                    th:text="#{text.button.delete}">
+                            th:text="#{text.button.delete}">
                     </button>
                     <span class="text-center"
                           style="font-size: small; color: darkgrey; display: block; margin-top: 10px;"
-                    th:text="#{text.mediaSize15}"></span>
+                          th:text="#{text.mediaSize15}"></span>
                 </div>
             </div>
             <!--/ Image Catalog Base -->
@@ -239,7 +247,7 @@
             <!-- Button save Base -->
             <div id="shared-save" style="display: none;">
                 <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
-                th:text="#{text.button.save}"></button>
+                        th:text="#{text.button.save}"></button>
             </div>
             <!--/ Button save Base -->
 
@@ -432,7 +440,7 @@
                                                     let img = input.attr('data-image');
                                                     let $input = $(`#${img}`);
                                                     if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
-                                                        $input.attr('src', nestedObject[nestedKey]);
+                                                        $input.attr('src', contextPath + nestedObject[nestedKey]);
                                                         input.val(nestedObject[nestedKey]);
                                                     }
                                                 } else if (input.hasClass('editors')) {
