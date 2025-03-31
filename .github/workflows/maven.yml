@@ -53,5 +53,5 @@ jobs:
                 docker stop walnut || true
                 docker rm walnut || true
              fi
-              docker pull zidan4ikuk/walnut:latest
+              docker pull ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/walnut:latest
               docker run -d -p 7701:7701 --name walnut --network walnut-network ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/walnut:latest
