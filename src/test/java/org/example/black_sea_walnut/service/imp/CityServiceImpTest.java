@@ -85,4 +85,11 @@ class CityServiceImpTest {
         assertEquals(city, result.get(0));
         verify(cityRepository, times(1)).getAllByRegion(region);
     }
+
+    @Test
+    void testSaveRegion(){
+        City city = new City();
+        cityService.save(city);
+        verify(cityRepository, times(1)).save(city);
+    }
 }

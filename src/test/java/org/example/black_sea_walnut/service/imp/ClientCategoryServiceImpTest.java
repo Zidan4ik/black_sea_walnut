@@ -1,6 +1,7 @@
 package org.example.black_sea_walnut.service.imp;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
 import org.example.black_sea_walnut.entity.ClientCategory;
@@ -137,11 +138,21 @@ class ClientCategoryServiceImpTest {
         when(clientCategoryRepository.findById(2L)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> clientCategoryService.getById(2L));
     }
+//
+//    @Test
+//    void testDeleteById() {
+//        doNothing().when(clientCategoryRepository).deleteById(1L);
+//        clientCategoryService.deleteById(1L);
+//        verify(clientCategoryRepository, times(1)).deleteById(1L);
+//    }
 
+    @SneakyThrows
     @Test
-    void testDeleteById() {
-        doNothing().when(clientCategoryRepository).deleteById(1L);
+    void deleteById_ClientExists_ShouldDeleteSuccessfully() {
+        when(clientCategoryRepository.findById(1L)).thenReturn(Optional.of(clientCategory));
         clientCategoryService.deleteById(1L);
-        verify(clientCategoryRepository, times(1)).deleteById(1L);
+        verify(imageService).deleteByPath("/test/image.png");
+        verify(imageService).deleteByPath("/test/image.svg");
+        verify(clientCategoryRepository).deleteById(1L);
     }
 }

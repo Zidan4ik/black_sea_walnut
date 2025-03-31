@@ -73,4 +73,11 @@ class CountryServiceImpTest {
         assertFalse(foundCountry.isPresent());
         verifyNoInteractions(countryRepository);
     }
+
+    @Test
+    void saveCountry(){
+        Country country = new Country();
+        countryService.save(country);
+        verify(countryRepository,times(1)).save(country);
+    }
 }

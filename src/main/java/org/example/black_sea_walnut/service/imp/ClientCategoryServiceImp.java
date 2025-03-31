@@ -114,11 +114,9 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
     public void deleteById(Long id) {
         LogUtil.logInfo("Attempting to delete ClientCategory with ID: " + id);
         ClientCategory client = getById(id);
-        if (client != null) {
-            imageService.deleteByPath(client.getPathToImage());
-            imageService.deleteByPath(client.getPathToSvg());
-            clientCategoryRepository.deleteById(id);
-        }
+        imageService.deleteByPath(client.getPathToImage());
+        imageService.deleteByPath(client.getPathToSvg());
+        clientCategoryRepository.deleteById(id);
         LogUtil.logInfo("ClientCategory with ID: " + id + " deleted successfully.");
     }
 }

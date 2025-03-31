@@ -106,8 +106,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
         try {
             if (dto.getMainAimId() != null) {
                 History historyById = historyService.getById(dto.getMainAimId());
-                if (dto.getMainAimPathToBanner().isEmpty() && historyById.getBanner() != null
-                        && !historyById.getBanner().getPathToMedia().isEmpty()) {
+                if (dto.getMainAimPathToBanner().isEmpty() && historyById.getBanner() != null && !historyById.getBanner().getPathToMedia().isEmpty()) {
                     LogUtil.logInfo("Deleting previous image for FactoryBanner ID: " + dto.getMainAimId());
                     imageService.deleteByPath(historyById.getBanner().getPathToMedia());
                 }
@@ -141,8 +140,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
         try {
             if (dto.getMainEcoProductionId() != null) {
                 History historyById = historyService.getById(dto.getMainEcoProductionId());
-                if (dto.getMainEcoProductionFileBanner() != null && dto.getMainEcoProductionFileBanner().isEmpty()
-                        && historyById.getBanner() != null && !historyById.getBanner().getPathToMedia().isEmpty()) {
+                if (dto.getMainEcoProductionFileBanner() != null && historyById.getBanner() != null && !historyById.getBanner().getPathToMedia().isEmpty()) {
                     LogUtil.logInfo("Deleting previous image for FactoryBanner ID: " + dto.getMainEcoProductionId());
                     imageService.deleteByPath(historyById.getBanner().getPathToMedia());
                 }
