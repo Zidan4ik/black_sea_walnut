@@ -418,10 +418,24 @@ class UserServiceImpTest {
     }
 
     @Test
-    void testSaveUserIndividualRequestForAdd_WithNullId() throws IOException {
+    void testSaveUserIndividualRequestForAdd_WithNullId() {
         dtoIndividual.setId(null);
         when(cityService.getById(10L)).thenReturn(Optional.of(new City()));
         when(regionService.getById(20L)).thenReturn(Optional.of(new Region()));
+        when(userMapper.toEntityFromRequest(dtoIndividual)).thenReturn(user);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User result = userService.save(dtoIndividual);
+
+        assertNotNull(result);
+        verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    void testSaveUserIndividualRequestForAdd_WithNullId_WhenNoPositions() {
+        dtoIndividual.setId(null);
+        dtoIndividual.setRegionForDeliveryId(null);
+        dtoIndividual.setCityForDeliveryId(null);
         when(userMapper.toEntityFromRequest(dtoIndividual)).thenReturn(user);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -476,6 +490,23 @@ class UserServiceImpTest {
     }
 
     @Test
+    void testSaveUserLegal_WhenPositionsAreNotFound() throws IOException {
+        dto.setFileImage(null);
+        dto.setPathToImage("/path/to/file");
+        dto.setRegionForDeliveryId(null);
+        dto.setRegionAdditionallyId(null);
+        dto.setCityAdditionallyId(null);
+        dto.setCityForDeliveryId(null);
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user));
+        when(userMapper.toEntityFromRequest(dto)).thenReturn(user);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        User result = userService.save(dto);
+        verify(imageService, times(1)).save(any(), any());
+        verify(userMapper, times(1)).toEntityFromRequest(dto);
+        assertEquals(user, result);
+    }
+
+    @Test
     void testSaveUserLegal_WhenDtoNoHasId() throws IOException {
         dto.setId(null);
         when(userMapper.toEntityFromRequest(dto)).thenReturn(user);
@@ -510,11 +541,8 @@ class UserServiceImpTest {
         dto.setCityForDeliveryId(123L);
         dto.setFileImage(mock(MultipartFile.class));
         dto.setPathToImage("path.jpg");
-
-//        when(imageService.save(any(), any())).thenReturn(null);
         when(userMapper.toEntityFromRequest(dto)).thenReturn(new User());
         when(cityService.getById(123L)).thenReturn(Optional.empty());
-
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> userService.save(dto));
         assertTrue(exception.getMessage().contains("City with id:123 was not found"));
     }
@@ -668,28 +696,18 @@ class UserServiceImpTest {
 
     @Test
     void findUserByPasswordToken_returnsUser_whenTokenIsValid() {
-        // Arrange
         String token = "validToken";
         when(passwordResetTokenService.findUserByPasswordToken(token)).thenReturn(Optional.of(user));
-
-        // Act
         User result = userService.findUserByPasswordToken(token);
-
-        // Assert
         assertNotNull(result);
         assertEquals(user.getEmail(), result.getEmail());
     }
 
     @Test
     void findUserByPasswordToken_returnsNull_whenTokenIsInvalid() {
-        // Arrange
         String token = "invalidToken";
         when(passwordResetTokenService.findUserByPasswordToken(token)).thenReturn(Optional.empty());
-
-        // Act
         User result = userService.findUserByPasswordToken(token);
-
-        // Assert
         assertNull(result);
     }
 

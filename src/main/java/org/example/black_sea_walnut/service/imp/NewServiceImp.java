@@ -137,9 +137,8 @@ public class NewServiceImp implements NewService {
     public void deleteById(Long id) {
         LogUtil.logInfo("Deleting news by ID: " + id);
         New new_ = getById(id);
-        if(new_ != null){
-            imageServiceImp.deleteByPath(new_.getPathToMedia());
-            newRepository.deleteById(id);
-        }
+        imageServiceImp.deleteByPath(new_.getPathToMedia());
+        newRepository.deleteById(id);
+
     }
 }

@@ -1,5 +1,6 @@
 package org.example.black_sea_walnut.service.imp;
 
+import lombok.SneakyThrows;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,6 +32,7 @@ class ImageServiceImpTest {
     private Path tempDirectory;
     private Path tempFolder;
     private Path tempFile;
+    private Path tempFileLock;
     private MockMultipartFile mockFile;
     @Mock
     private LogUtil logUtil;
@@ -44,6 +46,7 @@ class ImageServiceImpTest {
         tempDirectory = Files.createTempDirectory(uploadPath, "testDir");
         tempFolder = Files.createDirectory(tempDirectory.resolve("testFolder1"));
         tempFile = Files.createFile(tempDirectory.resolve("testFolder1").resolve("testFile.txt"));
+        tempFileLock = Files.createFile(tempDirectory.resolve("testFolder1").resolve("testFile.txt.lock"));
     }
 
     @AfterEach
@@ -114,18 +117,13 @@ class ImageServiceImpTest {
         }
     }
 
-    @Test
-    void deleteByPath_withExistingFile_shouldDeleteFileAndLogSuccess() throws IOException {
-        Path filePath = tempFolder.resolve("testFile.txt");
-        String relativePath = filePath.toString().replace(tempDir.toString(), "");
-        imageService.deleteByPath(relativePath.substring(1));
-    }
-    @Test
-    void deleteByPath_withExistingFile_shouldNotDeleteFile() throws IOException {
-        Path filePath = tempFolder.resolve("testFile.txt");
-        String relativePath = filePath.toString().replace(tempDir.toString(), "");
-        imageService.deleteByPath(relativePath);
-    }
+
+//    @Test
+//    void deleteByPath_withExistingFile_shouldNotDeleteFile() throws IOException {
+//        Path filePath = tempFolder.resolve("testFile.txt");
+//        String relativePath = filePath.toString().replace(tempDir.toString(), "");
+//        imageService.deleteByPath(relativePath);
+//    }
 
 
     @Test
@@ -133,6 +131,68 @@ class ImageServiceImpTest {
         String generatedName = imageService.generateFileName(mockFile);
         assertNotNull(generatedName, "Generated file name should not be null");
         assertTrue(generatedName.matches("^[\\w-]+\\.test\\.jpg$"), "Generated file name should match expected pattern");
+    }
+
+    @Test
+    void deleteByPath_withExistingFile_shouldDeleteFileAndLogSuccess() throws IOException {
+        Path filePath = tempFolder.resolve("testFileToDelete.txt");
+        Files.createFile(filePath);
+        String relativePath = filePath.toString().replace(tempDir.toString(), "");
+
+        try (MockedStatic<LogUtil> logUtilMock = mockStatic(LogUtil.class)) {
+            imageService.deleteByPath(relativePath.substring(1));
+            assertFalse(Files.exists(filePath), "Файл повинен бути видалений");
+
+            logUtilMock.verify(() -> LogUtil.logInfo(contains("Deleted file")), times(1));
+        }
+    }
+
+    @Test
+    void deleteByPath_withExistingFile_shouldNotFoundPath() throws IOException {
+        Path filePath = tempFolder.resolve("testFileToDelete.txt");
+        try (MockedStatic<LogUtil> logUtilMock = mockStatic(LogUtil.class)) {
+            imageService.deleteByPath("");
+            assertFalse(Files.exists(filePath), "Файл повинен бути видалений");
+        }
+    }
+    @Test
+    void deleteByPath_withExistingFile_WhenPathIsNull() throws IOException {
+        Path filePath = tempFolder.resolve("testFileToDelete.txt");
+        try (MockedStatic<LogUtil> logUtilMock = mockStatic(LogUtil.class)) {
+            imageService.deleteByPath(null);
+            assertFalse(Files.exists(filePath), "Файл повинен бути видалений");
+        }
+    }
+
+    @Test
+    void deleteByPath_withExistingFolder_shouldDeleteFolderAndContents() throws IOException {
+        Path folderPath = tempFolder.resolve("testFolderToDelete");
+        Files.createDirectory(folderPath);
+        Path fileInFolder = Files.createFile(folderPath.resolve("file.txt"));
+
+        String relativePath = folderPath.toString().replace(tempDir.toString(), "");
+
+        imageService.deleteByPath(relativePath.substring(1));
+        assertFalse(Files.exists(folderPath), "Каталог повинен бути видалений");
+        assertFalse(Files.exists(fileInFolder), "Файл у каталозі повинен бути видалений");
+    }
+
+    @Test
+    void deleteByPath_withLockFile_shouldNotDelete() throws IOException {
+        try (MockedStatic<LogUtil> logUtilMock = mockStatic(LogUtil.class)) {
+            imageService.deleteByPath(tempFile.toString().substring(1));
+            logUtilMock.verify(() -> LogUtil.logWarning(contains("Deletion blocked")), times(1));
+        }
+    }
+
+    @SneakyThrows
+    @Test
+    void deleteByPath_withNonExistingFile_shouldLogWarning() {
+        String nonExistentPath = "nonexistent.txt";
+        try (MockedStatic<LogUtil> logUtilMock = mockStatic(LogUtil.class)) {
+            imageService.deleteByPath(nonExistentPath);
+            logUtilMock.verify(() -> LogUtil.logWarning(contains("Path not found")), times(1));
+        }
     }
 
 //    @Test

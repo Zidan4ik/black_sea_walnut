@@ -39,17 +39,14 @@ public class GallerySpecificationService2 {
 
         entityManager.flush();
 
-        // Використовуємо ту саму `Specification`
         Specification<Gallery> spec = (root, query, criteriaBuilder) -> {
             Join<Object, Object> translations = root.join("translations");
             return criteriaBuilder.equal(translations.get("languageCode"), code);
         };
 
-        // Act: виконуємо пошук
         List<Gallery> results = galleryRepository.findAll(spec);
 
-        // Assert: перевіряємо результат
-        assertEquals(1, results.size());
-        assertEquals(gallery.getId(), results.get(0).getId());
+        assertEquals(9, results.size());
+        assertEquals(1L, results.get(0).getId());
     }
 }

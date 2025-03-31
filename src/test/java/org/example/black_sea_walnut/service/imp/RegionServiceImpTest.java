@@ -108,4 +108,11 @@ class RegionServiceImpTest {
         assertTrue(result.isEmpty());
         verify(regionRepository, never()).getRegionsByCountry(any());
     }
+
+    @Test
+    void saveRegion(){
+        Region region = new Region();
+        regionService.save(region);
+        verify(regionRepository,times(1)).save(region);
+    }
 }

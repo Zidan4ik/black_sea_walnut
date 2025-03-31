@@ -253,7 +253,7 @@ class NewServiceImpTest {
 
     @Test
     void testDeleteById() {
-        doNothing().when(newRepository).deleteById(1L);
+        when(newRepository.findById(1L)).thenReturn(Optional.of(new New()));
         newServiceImp.deleteById(1L);
         verify(newRepository, times(1)).deleteById(1L);
     }
