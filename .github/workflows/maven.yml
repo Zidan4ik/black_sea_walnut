@@ -41,16 +41,26 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: zidan4ikuk/walnut:latest
-      - name: Deploy to SSH server
-        uses: appleboy/ssh-action@master
+
+      - name: Upload Docker image to server
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.REMOTE_SERVER_SSH_HOST }}
           username: ${{ secrets.REMOTE_SERVER_SSH_USERNAME }}
           password: ${{ secrets.REMOTE_SERVER_SSH_PASS }}
-          script: |
-             if docker ps -a --format '{{.Names}}' | grep -q '^zidan4ikuk/walnut'; then
-                docker stop zidan4ikuk/walnut || true
-                docker rm zidan4ikuk/walnut || true
-             fi
-              docker pull zidan4ikuk/walnut:latest
-              docker run -d -p 7701:7701 --name walnut --network walnut-network ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/walnut:latest
+          source: "walnut.tar"
+          target: "~/"
+
+#      - name: Deploy to SSH server
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.REMOTE_SERVER_SSH_HOST }}
+#          username: ${{ secrets.REMOTE_SERVER_SSH_USERNAME }}
+#          password: ${{ secrets.REMOTE_SERVER_SSH_PASS }}
+#          script: |
+#             if docker ps -a --format '{{.Names}}' | grep -q '^zidan4ikuk/walnut'; then
+#                docker stop zidan4ikuk/walnut || true
+#                docker rm zidan4ikuk/walnut || true
+#             fi
+#              docker pull zidan4ikuk/walnut:latest
+#              docker run -d -p 7701:7701 --name walnut --network walnut-network ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/walnut:latest
