@@ -1,5 +1,4 @@
 name: Java CI and Maven
-
 on:
  push:
   branches: ["master"]
