@@ -208,14 +208,12 @@
     function invokeRequestProductData() {
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
-        console.log(location.pathname);
         let pathName = location.pathname.substring(1, location.pathname.length);
         request.open("GET", `${location.pathname}/data?lang=${lang}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
                 buildProduct(data.product);
                 buildContacts(data.contacts);
             }
@@ -243,10 +241,10 @@
         } else {
             $(`#product-old-price`).text(item.oldPrice);
         }
-        $(`#image-description`).attr('src', item.pathToImageDescription || path_default_image);
-        $(`#image-packing`).attr('src', item.pathToImagePacking || path_default_image);
-        $(`#image-payment`).attr('src', item.pathToImagePayment || path_default_image);
-        $(`#image-delivery`).attr('src', item.pathToImageDelivery || path_default_image);
+        $(`#image-description`).attr('src', contextPath + item.pathToImageDescription || path_default_image);
+        $(`#image-packing`).attr('src', contextPath + item.pathToImagePacking || path_default_image);
+        $(`#image-payment`).attr('src', contextPath + item.pathToImagePayment || path_default_image);
+        $(`#image-delivery`).attr('src', contextPath + item.pathToImageDelivery || path_default_image);
         $(`#container-description-desc`).html(item.descriptionProduct);
         $(`#container-packing-desc`).html(item.descriptionPacking);
         $(`#container-payment-desc`).html(item.descriptionPayment);

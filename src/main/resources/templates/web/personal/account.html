@@ -135,7 +135,6 @@
             let dir = element.attr('data-direction');
             let name = element.attr('data-name');
             params.append('sort', `${name},${dir}`)
-            console.log(`${name},${dir}`);
         }
 
         params.append('page', page);
@@ -190,7 +189,6 @@
 
     document.body.addEventListener('htmx:afterSwap', async function (event) {
         let targetId = event.detail.target.id;
-        console.log(`HTMX оновив: ${targetId}`);
 
         if (targetId === 'container-content' || targetId === 'container-pagination') {
             let currentUrl = event.detail.xhr.responseURL;
@@ -210,7 +208,6 @@
                 let status = $('[data-status]');
                 if (isAuthorized.length && status.length) {
                     let data = await getAddress();
-                    console.log(data);
                     let countries = await getCountriesAll();
                     if (status.attr('data-status') === 'individual') {
                         await fillSelectorsByContainer('fiz-selectors', 'fiz');
@@ -252,7 +249,6 @@
         let authorizedBlock = $('[data-isAuthorized]');
         if (authorizedBlock.length) {
             let isAuthorized = authorizedBlock.attr('data-isAuthorized');
-            console.log(isAuthorized);
             if (isAuthorized === 'true') {
                 $('#container-content').off('click', '.ti-arrow-down, .ti-arrow-up')
                     .on('click', '.ti-arrow-down, .ti-arrow-up', function () {
@@ -407,7 +403,6 @@
             if (!assignment.length) return;
             if (status.length) {
                 if (assignment.attr('data-assignment') === 'info-user') {
-                    console.log('info-user');
                     const formData = new FormData();
                     formData.append("fullName", $('[data-name="fullName"]').val());
                     formData.append("email", $('[data-name="email"]').val());
@@ -424,7 +419,6 @@
                         saveUserUr(formData);
                     }
                 } else if (assignment.attr('data-assignment') === 'address') {
-                    console.log('address');
                     const formData = new FormData();
                     if (status.attr('data-status') === 'individual') {
                         formData.append("idCountry", Number($('#fiz-select-countries').val()));
@@ -447,7 +441,6 @@
                     }
                 }
             } else if (assignment.attr('data-assignment') === 'password') {
-                console.log('password');
                 const formData = new FormData();
                 formData.append("currentPassword", $('[data-name="currentPassword"]').val());
                 formData.append("newPassword", $('[data-name="newPassword"]').val());
@@ -473,7 +466,6 @@
             window.location.reload();
         } catch (error) {
             let data = JSON.parse(error.message);
-            console.log(data);
             clearValid();
             validate4(data);
         }

@@ -107,7 +107,6 @@
         request.addEventListener('load', async function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
                 const container = $('#container-transaction');
                 if (container.length) {
                     container.empty();

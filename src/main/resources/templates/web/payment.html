@@ -63,7 +63,6 @@
             });
 
             const data = await response.json();
-            console.log(data);
             const clientSecret = data.clientSecret;
 
             const {error} = await stripe.confirmCardPayment(clientSecret, {

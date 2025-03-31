@@ -268,11 +268,14 @@ public class DatabaseLoader implements CommandLineRunner {
                 product.setPathToImage4("/uploads/default/image/default-image-nut.jpg");
                 product.setMass(faker.number().numberBetween(1, 1000));
                 product.setMassEnergy(faker.number().numberBetween(1, 1000));
+
                 product.setPathToImageDescription("/uploads/default/image/default-image-nut.jpg");
                 product.setPathToImagePayment("/uploads/default/image/default-image-nut.jpg");
                 product.setPathToImagePacking("/uploads/default/image/default-image-nut.jpg");
                 product.setPathToImageDelivery("/uploads/default/image/default-image-nut.jpg");
-                product.setPriceByUnit(faker.commerce().price());
+
+//                product.setPriceByUnit(String.valueOf((int) Double.parseDouble(faker.number().numberBetween(1, 50))));
+                product.setPriceByUnit(String.valueOf(faker.number().numberBetween(50, 150)));
 
                 product.getProductTranslations().add(new ProductTranslation(
                         LanguageCode.uk,
@@ -433,9 +436,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
             User user = new User();
             user.setFullName("User");
-            user.setEmail("user@user.com");
+            user.setEmail("user@gmail.com");
             user.setPhone("+987654321");
-            user.setPassword(passwordEncoder.encode("admin"));
+            user.setPassword(passwordEncoder.encode("user"));
             user.setPaymentDetails("Bank Account: 8765-4321");
             user.setDateRegistered(LocalDate.now());
             user.setRegisterType(RegisterType.legal);

@@ -57,16 +57,17 @@ public class PaymentController {
     @ResponseBody
     public ResponseEntity<?> checkoutUserCard(@Validated({OrderedEmailValidation.class, Default.class})
                                               @ModelAttribute CheckoutUser dto, BindingResult bindingResult) throws StripeException {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity
-                    .status(HttpStatus.valueOf(400))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errors);
-        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            if (bindingResult.hasErrors()) {
+                Map<String, String> errors = new HashMap<>();
+                bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+                return ResponseEntity
+                        .status(HttpStatus.valueOf(400))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(errors);
+            }
+
             User user = userService.getByEmail(userDetails.getUsername()).orElseThrow(
                     (() -> new EntityNotFoundException("User with email: " + userDetails.getUsername() + " was not found!"))
             );

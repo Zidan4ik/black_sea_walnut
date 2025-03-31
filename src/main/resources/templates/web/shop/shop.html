@@ -174,8 +174,6 @@
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
-
                 const containerTastes = $('#container-tasteFilter');
                 containerTastes.append(`<select id="tasteFilter" name="tasteFilter" class="selectMy" style="width: 80%;">
                                             <option value="">Всі</option>

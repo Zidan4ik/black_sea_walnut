@@ -167,8 +167,8 @@ public class BasketServiceImp implements BasketService {
         }
 
         productService.decreaseCountItems(idProduct);
-        save(basket);
         applyDiscounts(basket, product);
+        save(basket);
     }
 
     @Override

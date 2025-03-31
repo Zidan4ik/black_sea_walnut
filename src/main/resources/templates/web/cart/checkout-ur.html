@@ -312,7 +312,6 @@
                 throw new Error(JSON.stringify(res));
             }
             let data = await response.json();
-            console.log(data);
             if (data.clientSecret) {
                 const clientSecret = data.clientSecret;
                 const {error} = await stripe.confirmCardPayment(clientSecret, {
@@ -330,7 +329,6 @@
             }
         } catch (error) {
             let data = JSON.parse(error.message);
-            console.log(data);
             clearValid();
             validate4(data);
         }
@@ -354,7 +352,6 @@
         data.append('totalAmount', Number($('#resSumma').text()) * 100 || null);
         let total = 0;
         $('#container-cart-table .quantity_input').each(function () {
-            console.log(this);
             let val = parseFloat($(this).val());
             if (!isNaN(val)) {
                 total += val;
@@ -370,7 +367,6 @@
             let mass = $row.find('.mass-span').text().trim();
             let quantity = $row.find('.quantity_input').val().trim();
             let articleId = $row.find('.articlesProduct').val().trim();
-            console.log(articleId);
             let price = $row.find('td:eq(2) .bt-content').text().trim().replace('грн.', '');
             data.append(`products[${counter}].name`, name);
             data.append(`products[${counter}].mass`, mass);

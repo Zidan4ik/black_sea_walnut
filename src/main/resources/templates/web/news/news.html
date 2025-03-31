@@ -106,7 +106,6 @@
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
                 buildNewsGrid(data.content, 'table-data-container_')
                 if (data.metadata.totalPages === (++currentPage)) {
                     $('#getProducts').css('display', 'none');
@@ -166,7 +165,6 @@ style="height: 526px;">` : ''}
 
             for (let j = 1; j <= 3; j++) {
                 if (group[j]) {
-                    console.log(group[j])
                     if (!group[j].isActive) return;
                     let pathToImage = group[j].pathToImage;
                     let isImage = pathToImage ? pathToImage.includes('/image/') : true;

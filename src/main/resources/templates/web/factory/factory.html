@@ -139,8 +139,6 @@
 		request.addEventListener('load', function () {
 			if (request.status === 200) {
 				let data = JSON.parse(request.response);
-				console.log(data);
-
 				buildBanner(data.banner,'container-banner');
 				buildPost(data.block,'factory-post');
 				initSwipers('manufacturer-container');

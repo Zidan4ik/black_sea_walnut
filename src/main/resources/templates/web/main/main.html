@@ -120,7 +120,6 @@
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
                 buildProducts(data.products);
                 buildBanner(data.banner, 'main-banner');
                 buildPost(data.factory, 'main-factory');

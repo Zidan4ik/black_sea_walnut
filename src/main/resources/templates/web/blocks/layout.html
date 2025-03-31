@@ -822,10 +822,8 @@
             let id = $(this).data('id');
             if (!id) return;
             if ($(this).hasClass('quantity_plus')) {
-                console.log(`Додати товар з ID: ${id}`);
                 incrementAmount(id, $(this));
             } else if ($(this).hasClass('quantity_minus')) {
-                console.log(`Зменшити товар з ID: ${id}`);
                 decreaseAmount(id, $(this));
             } else if ($(this).hasClass('item_close')) {
                 deleteCartItem(id, $(this));
