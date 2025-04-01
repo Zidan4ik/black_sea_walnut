@@ -45,8 +45,8 @@
         if (contextPath !== "/" && contextPath.endsWith("/")) {
             contextPath = contextPath.slice(0, -1);
         }
-        const path_default_image = contextPath + "/uploads/default/default-image.jpg";
-        const path_default_preview_image = contextPath + "/uploads/default/video-preview.jpg";
+        const path_default_image = contextPath + "/image/default-image.jpg";
+        const path_default_preview_image = contextPath + "/image/video-preview.jpg";
     </script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -253,7 +253,7 @@
         if (!bannerData || !bannerData.isActive) return;
         const container = $(`#${idContainer}`);
         if (container.length) {
-            container.css("background-image", `url(${contextPath + bannerData.imagePath})`);
+            container.css("background-image", `url(${bannerData.imagePath !== path_default_image ? contextPath + bannerData.imagePath : path_default_image})`);
             const title = getLocalizedContent(bannerData, 'title');
             const description = getLocalizedContent(bannerData, 'description');
             container.append(`
@@ -286,7 +286,7 @@
             const title = getLocalizedContent(bannerData, 'title');
             const description = getLocalizedContent(bannerData, 'description');
             container.append(`
-            		<section class="eco overlay" style="background-image: url(${contextPath + bannerData.imagePath})" data-scrollax="properties: { translateY: '30%' }">
+            		<section class="eco overlay" style="background-image: url(${bannerData.imagePath !== path_default_image ? contextPath + bannerData.imagePath : path_default_image})" data-scrollax="properties: { translateY: '30%' }">
 			<div class="container">
 				<div class="row align-items-center justify-content-center">
 					<a data-scrollax="properties: { 'translateY': '5%', 'opacity': 1 }">
@@ -424,7 +424,7 @@
                 html += `
                 <div class="col-lg-7 col-md-6 col-12">
                     <div class="wrap">
-                        <div class="benefit__item" style="background-image: url(${group[0].pathToMediaFile})"></div>
+                        <div class="benefit__item" style="background-image: url(${contextPath + group[0].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green">
                             <h3>${group[0].title}</h3>
                             <p>${group[0].description}</p>
@@ -438,7 +438,7 @@
                 html += `
                 <div class="col-lg-5 col-md-6 col-12">
                     <div class="wrap">
-                        <div class="benefit__item" style="background-image: url(${group[1].pathToMediaFile})"></div>
+                        <div class="benefit__item" style="background-image: url(${contextPath + group[1].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green">
                             <h3>${group[1].title}</h3>
                             <p>${group[1].description}</p>
@@ -452,7 +452,7 @@
                 html += `
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="wrap">
-                        <a class="benefit__item overlay benefit__item_video_text" style="background-image: url(${group[2].pathToMediaFile})">
+                        <a class="benefit__item overlay benefit__item_video_text" style="background-image: url(${contextPath + group[2].pathToMediaFile})">
                             <h3>${group[2].title}</h3>
                             <p>${group[2].description}</p>
                         </a>
@@ -465,7 +465,7 @@
                 html += `
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
-                        <div class="benefit__item item_small" style="background-image: url(${group[3].pathToMediaFile})"></div>
+                        <div class="benefit__item item_small" style="background-image: url(${contextPath + group[3].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green">
                             <h3>${group[3].title}</h3>
                             <p>${group[3].description}</p>
@@ -479,7 +479,7 @@
                 html += `
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
-                        <div class="benefit__item item_small" style="background-image: url(${group[4].pathToMediaFile})"></div>
+                        <div class="benefit__item item_small" style="background-image: url(${contextPath + group[4].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green">
                             <h3>${group[4].title}</h3>
                             <p>${group[4].description}</p>
@@ -490,7 +490,7 @@
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
                         <a>
-                            <span class="benefit__item item_small overlay" style="background-image: url(${group[5].pathToMediaFile})"></span>
+                            <span class="benefit__item item_small overlay" style="background-image: url(${contextPath + group[5].pathToMediaFile})"></span>
                         </a>
                     </div>
                 </div>

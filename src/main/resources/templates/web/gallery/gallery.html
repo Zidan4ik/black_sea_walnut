@@ -9,7 +9,8 @@
 
 <body>
 <div layout:fragment="content">
-    <section class="first-section overlay" th:style="'background-image: url('+@{/blacksea/img/sadzhanec_shipshini.jpg}+')'">
+    <section class="first-section overlay"
+             th:style="'background-image: url('+@{/blacksea/img/sadzhanec_shipshini.jpg}+')'">
         <div class="container">
             <div class="breadcrumbs">
                 <ul>
@@ -40,7 +41,7 @@
             <div class="row">
                 <div class="wrapper">
                     <a id="loadGallery" class="button button_transparent" th:text="#{text.loadMore}"
-                    style="display: none;"></a>
+                       style="display: none;"></a>
                 </div>
             </div>
         </div>
@@ -77,7 +78,7 @@
                 html += `
                 <div class="col-lg-7 col-md-6 col-12">
                     <div class="wrap">
-                        <div class="benefit__item" style="background-image: url(${group[0].pathToMediaFile})"></div>
+                        <div class="benefit__item" style="background-image: url(${contextPath + group[0].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green overlay_green_bg">
                             <h3>${group[0].title}</h3>
                             <p>${group[0].description}</p>
@@ -91,7 +92,7 @@
                 html += `
                 <div class="col-lg-5 col-md-6 col-12">
                     <div class="wrap">
-                        <div class="benefit__item" style="background-image: url(${group[1].pathToMediaFile})"></div>
+                        <div class="benefit__item" style="background-image: url(${contextPath + group[1].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green overlay_green_bg">
                             <h3>${group[1].title}</h3>
                             <p>${group[1].description}</p>
@@ -105,7 +106,7 @@
                 html += `
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="wrap">
-                        <a href="#" class="benefit__item overlay benefit__item_video_text" style="background-image: url(${group[2].pathToMediaFile})">
+                        <a href="#" class="benefit__item overlay benefit__item_video_text" style="background-image: url(${contextPath + group[2].pathToMediaFile})">
                             <span><i class="nut-icon icons-play-icon"></i></span>
                             <h3>${group[2].title}</h3>
                             <p>${group[2].description}</p>
@@ -119,7 +120,7 @@
                 html += `
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
-                        <div class="benefit__item item_small" style="background-image: url(${group[3].pathToMediaFile})"></div>
+                        <div class="benefit__item item_small" style="background-image: url(${contextPath + group[3].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green overlay_green_bg">
                             <h3>${group[3].title}</h3>
                             <p>${group[3].description}</p>
@@ -133,7 +134,7 @@
                 html += `
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
-                        <div class="benefit__item item_small" style="background-image: url(${group[4].pathToMediaFile})"></div>
+                        <div class="benefit__item item_small" style="background-image: url(${contextPath + group[4].pathToMediaFile})"></div>
                         <div class="benefit__item item_hover overlay_green overlay_green_bg">
                             <h3>${group[4].title}</h3>
                             <p>${group[4].description}</p>
@@ -148,7 +149,7 @@
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
                         <a href="#">
-                            <span class="benefit__item item_small benefit__item_video overlay" style="background-image: url(${group[5].pathToMediaFile})"></span>
+                            <span class="benefit__item item_small benefit__item_video overlay" style="background-image: url(${contextPath + group[5].pathToMediaFile})"></span>
                         </a>
                     </div>
                 </div>
@@ -189,7 +190,7 @@
     });
 
     document.addEventListener("htmx:afterSwap", function (event) {
-        if($('#totalPages').val()!==0){
+        if ($('#totalPages').val() !== 0) {
             $('#loadGallery').toggle();
         }
         if (event.target.id === "container-gallery") {

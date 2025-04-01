@@ -242,7 +242,7 @@
             <div id="shared-image-factory-banner" style="display: none;">
                 <div class="position-relative">
                     <img id="factoryBannerFile" data-name="factoryBannerFile"
-                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestFactoryBannerForAdd.factoryBannerFile">
                     <button type="button" data-type="factoryBannerFile"
@@ -498,7 +498,6 @@
                     });
                 }
 
-                const PathToDefaultImage = contextPath + '/uploads/default/default-image.jpg';
                 let counter = 0;
 
                 function addMediaImageBlock(TYPE, ID, PATH) {
@@ -510,7 +509,7 @@
                     newBlock.dataset.type = TYPE;
                     newBlock.innerHTML = `
                                     <img id="image${UUID}" data-name="image${UUID}"
-                                    src="${PATH ? contextPath + PATH : PathToDefaultImage}"
+                                    src="${PATH ? contextPath + PATH : path_default_image}"
                                     alt="error" style="width: 100%; height: 167px;display: block; margin: 0 auto;"
                                     data-error="requestFactoryBlockForAdd.factoryBlockFiles[${counter}].fileImage">
                                     <div class="d-flex justify-content-center gap-3">

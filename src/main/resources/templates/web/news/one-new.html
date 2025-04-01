@@ -75,7 +75,6 @@
 
 </div>
 <script layout:fragment="script">
-    let path_default_tech = contextPath + "/uploads/default/default-image-tech.jpg";
 
     $(document).ready(function () {
         invokeRequestNewData();
@@ -150,12 +149,12 @@
         let container = $(`#${idContainer}`);
         $('#container-new-header').text(data.title || '');
         if (data.length === 0 || !data.active) {
-            container.append(`<img src="${path_default_tech}" alt="alt">`);
+            container.append(`<img src="${path_default_image}" alt="alt">`);
             return;
         }
 
         if (container.length > 0) {
-            let pathToImage = data.pathToImage;
+            let pathToImage = contextPath + data.pathToImage;
             let isImage = pathToImage ? pathToImage.includes('/image/') : true;
             if (isImage) {
                 container.append(`<img src="${pathToImage || path_default_image}" alt="alt">`);

@@ -259,7 +259,7 @@
             <div id="shared-image-clients-banner" style="display: none;">
                 <div class="position-relative">
                     <img id="clientsBannerFile" data-name="clientsBannerFile"
-                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestClientBannerForAdd.clientsBannerFile">
                     <button type="button" data-type="clientsBannerFile"
@@ -283,7 +283,7 @@
             <div id="shared-image-clients-eco-production" style="display: none;">
                 <div class="position-relative">
                     <img id="clientsEcoProductionFile" data-name="clientsEcoProductionFile"
-                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestClientEcoProductionForAdd.clientsEcoProductionFile">
                     <button type="button" data-type="clientsEcoProductionFile"
@@ -640,7 +640,6 @@
                     });
                 }
 
-                const PathToDefaultImage = contextPath + '/uploads/default/default-image.jpg';
                 let counter = 0;
 
                 function addMediaImageBlock(type, data) {
@@ -735,16 +734,16 @@
                         subtitle: data !== undefined ? data.clientCategorySubtitleUk : '',
                         description: data !== undefined ? data.clientCategoryDescriptionUk : '',
                         isActive: data !== undefined ? data.clientCategoryIsActive : false,
-                        pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? contextPath + data.clientCategoryPathToImage : PathToDefaultImage) : PathToDefaultImage,
-                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ?contextPath + data.clientCategoryPathToSvg : PathToDefaultImage) : PathToDefaultImage
+                        pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? contextPath + data.clientCategoryPathToImage : path_default_image) : path_default_image,
+                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ?contextPath + data.clientCategoryPathToSvg : path_default_image) : path_default_image
                     };
                     let dataEn = {
                         title: data !== undefined ? data.clientCategoryTitleEn : '',
                         subtitle: data !== undefined ? data.clientCategorySubtitleEn : '',
                         description: data !== undefined ? data.clientCategoryDescriptionEn : '',
                         isActive: data !== undefined ? data.clientCategoryIsActive : false,
-                        pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? contextPath + data.clientCategoryPathToImage : PathToDefaultImage) : PathToDefaultImage,
-                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ? contextPath + data.clientCategoryPathToSvg : PathToDefaultImage) : PathToDefaultImage
+                        pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? contextPath + data.clientCategoryPathToImage : path_default_image) : path_default_image,
+                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ? contextPath + data.clientCategoryPathToSvg : path_default_image) : path_default_image
                     };
                     addBlockToContainer('uk', dataUk);
                     addBlockToContainer('en', dataEn);

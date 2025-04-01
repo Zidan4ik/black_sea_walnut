@@ -613,7 +613,7 @@
             <div id="shared-image-main" style="display: none;">
                 <div class="position-relative">
                     <img id="mainFileBanner" data-name="mainFileBanner"
-                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestMainForAdd.mainFileBanner">
                     <button type="button" data-type="mainFileBanner"
@@ -638,7 +638,7 @@
             <div id="shared-image-aim" style="display: none;">
                 <div class="position-relative">
                     <img id="mainAimFileBanner" data-name="mainAimFileBanner"
-                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestAimBlockForAdd.mainAimFileBanner">
                     <button type="button" data-type="mainAimFileBanner"
@@ -663,7 +663,7 @@
             <div id="shared-image-eco-production" style="display: none;">
                 <div class="position-relative">
                     <img id="mainEcoProductionFileBanner" data-name="mainEcoProductionFileBanner"
-                         th:src="@{'/uploads/default/default-image.jpg'}"
+                         th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestEcoProductionForAdd.mainEcoProductionFileBanner">
                     <button type="button" data-type="mainEcoProductionFileBanner"
@@ -1008,7 +1008,6 @@
                    });
                }
 
-                const PathToDefaultImage = contextPath + '/uploads/default/default-image.jpg';
                 let counter = 0;
 
                 function addFactoryImageBlock(TYPE, ID, PATH) {
@@ -1020,7 +1019,7 @@
                     newBlock.dataset.type = TYPE;
                     newBlock.innerHTML = `
                                     <img id="image${UUID}" data-name="image${UUID}"
-                                    src="${PATH ? contextPath + PATH : PathToDefaultImage}"
+                                    src="${PATH ? contextPath + PATH : path_default_image}"
                                     alt="error" style="width: 100%; height: 167px;display: block; margin: 0 auto;"
                                     data-error="requestFactoryForAdd.files[${counter}].fileImage">
                                     <div class="d-flex justify-content-center gap-3">
