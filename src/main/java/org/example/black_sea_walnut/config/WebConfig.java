@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
-        String s = "/home/slj/projects/PortierDigital-R.Pravnyk/uploads";
+        String s = "/home/slj/projects/Walnut-R.Pravnyk/uploads";
         if (!Paths.get(s).toFile().exists()) {
             Paths.get(s).toFile().mkdirs();
         }
