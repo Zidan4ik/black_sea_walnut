@@ -1876,3 +1876,6 @@ java.lang.NullPointerException: Cannot invoke "org.example.black_sea_walnut.enti
 2025-04-01T16:34:54.967+03:00  INFO 7192 --- [walnut] [http-nio-7701-exec-1] o.example.black_sea_walnut.util.LogUtil  : Fetching Contact with ID: 1
 2025-04-01T16:34:54.974+03:00  INFO 7192 --- [walnut] [http-nio-7701-exec-1] o.example.black_sea_walnut.util.LogUtil  : Found Contact with ID: 1
 2025-04-01T16:34:54.974+03:00  INFO 7192 --- [walnut] [http-nio-7701-exec-1] o.example.black_sea_walnut.util.LogUtil  : Found Contact DTO for ID: 1
+2025-04-01T16:37:04.318+03:00  INFO 7192 --- [walnut] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-01T16:37:04.406+03:00  INFO 7192 --- [walnut] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-01T16:37:04.462+03:00  INFO 7192 --- [walnut] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
