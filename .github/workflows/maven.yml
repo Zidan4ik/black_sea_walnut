@@ -19,9 +19,9 @@ jobs:
         run: |
           mvn clean
           
-          sed -i "s|\${DB_HOST}|${{ secrets.DB_URL }}|g" src/main/resources/application.yaml
-          sed -i "s|\${DB_USERNAME}|${{ secrets.DB_USERNAME }}|g" src/main/resources/application.yaml
-          sed -i "s|\${DB_PASSWORD}|${{ secrets.DB_PASSWORD }}|g" src/main/resources/application.yaml
+          sed -i "s|\${DB_HOST}|${{ secrets.DB_URL }}|g" src/main/resources/application.properties
+          sed -i "s|\${DB_USERNAME}|${{ secrets.DB_USERNAME }}|g" src/main/resources/application.properties
+          sed -i "s|\${DB_PASSWORD}|${{ secrets.DB_PASSWORD }}|g" src/main/resources/application.properties
           
           mvn package -DskipTests=true
       - name: Build Docker
