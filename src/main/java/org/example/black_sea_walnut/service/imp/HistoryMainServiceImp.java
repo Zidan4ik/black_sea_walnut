@@ -29,6 +29,10 @@ public class HistoryMainServiceImp implements HistoryMainService {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Value("${upload.path.container}")
+    private String uploadPathContainer;
+
+
     @Override
     public BlockResponseForAddInMain getByPageTypeInResponseMainBlock(PageType type) {
         LogUtil.logInfo("Fetching Main Block by PageType: " + type);
@@ -78,9 +82,12 @@ public class HistoryMainServiceImp implements HistoryMainService {
                 }
                 dto.setMediaType(ImageUtil.getMediaType(dto.getMainFileBanner()));
                 if (dto.getMainFileBanner() != null) {
-                    String generatedPath = uploadPath + "/pages/main/main-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getMainFileBanner());
-                    dto.setMainPathToBanner(generatedPath);
-                    LogUtil.logInfo("Generated media file path for FactoryBanner: " + generatedPath);
+                    String generatedPath = "/pages/main/main-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getMainFileBanner());
+                    String server = uploadPath +generatedPath;
+                    String container = uploadPathContainer +generatedPath;
+                    imageService.save(dto.getMainFileBanner(), container);
+                    dto.setMainPathToBanner(server);
+                    LogUtil.logInfo("Generated media file path for FactoryBanner: " + server);
                 }
                 if (historyById.getBanner() != null) {
                     historyById.getBanner().setPathToMedia(dto.getMainPathToBanner());
@@ -88,7 +95,7 @@ public class HistoryMainServiceImp implements HistoryMainService {
                 }
             }
             dto.setMediaType(ImageUtil.getMediaType(dto.getMainFileBanner()));
-            imageService.save(dto.getMainFileBanner(), dto.getMainPathToBanner());
+//            imageService.save(dto.getMainFileBanner(), dto.getMainPathToBanner());
             History mappedHistory = historyMainMapper.toEntityFromRequestForAdd(dto);
             History savedHistory = historyService.save(mappedHistory);
             LogUtil.logInfo("Successfully saved Main Block with ID: " + savedHistory.getId());
