@@ -19,12 +19,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
-        String s = "/home/slj/projects/Walnut-R.Pravnyk/uploads";
-        if (!Paths.get(s).toFile().exists()) {
-            Paths.get(s).toFile().mkdirs();
+//        String rootPath = System.getProperty("user.dir");
+//        String s = rootPath + path;
+        if (!Paths.get(path).toFile().exists()) {
+            Paths.get(path).toFile().mkdirs();
         }
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:" + s + "/");
+                .addResourceLocations("file:" + path + "/");
     }
 
     @Bean
