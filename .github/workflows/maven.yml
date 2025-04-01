@@ -22,6 +22,7 @@ jobs:
           sed -i "s|\${DB_URL}|${{ secrets.DB_URL }}|g" src/main/resources/application.properties
           sed -i "s|\${DB_USERNAME}|${{ secrets.DB_USERNAME }}|g" src/main/resources/application.properties
           sed -i "s|\${DB_PASSWORD}|${{ secrets.DB_PASSWORD }}|g" src/main/resources/application.properties
+          sed -i "s|\${STRIPE_KEY}|${{ secrets.STRIPE_KEY }}|g" src/main/resources/application.properties
           
           mvn package -DskipTests=true
       - name: Build Docker
