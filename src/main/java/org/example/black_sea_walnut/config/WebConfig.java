@@ -24,7 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
         if (!Paths.get(path).toFile().exists()) {
             Paths.get(path).toFile().mkdirs();
         }
-        registry.addResourceHandler("/uploads/**")
+        registry.addResourceHandler("/app/uploads/**")
                 .addResourceLocations("file:" + path + "/");
     }
 
