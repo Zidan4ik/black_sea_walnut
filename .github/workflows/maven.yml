@@ -56,4 +56,4 @@ jobs:
               docker rm slj-walnut-container || true
             fi
             docker pull ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/slj-walnut-image:latest
-            docker run -d -p 7701:7701 --name slj-walnut-container --network slj-walnut-network -v /home/slj/projects/Walnut-R.Pravnyk/uploads:/app/uploads ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/slj-walnut-image:latest
+            docker run -d -p 7701:7701 --name slj-walnut-container --network slj-walnut-network --mount source=walnut-volume,target=/app/uploads ${{ secrets.SECRET_NAME_DOCKER_HUB_LOWER_CASE }}/slj-walnut-image:latest
