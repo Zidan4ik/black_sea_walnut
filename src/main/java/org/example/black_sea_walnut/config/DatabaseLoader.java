@@ -274,9 +274,6 @@ public class DatabaseLoader implements CommandLineRunner {
                 product.setPathToImagePacking("/app/uploads/image/default-image-nut.jpg");
                 product.setPathToImageDelivery("/app/uploads/image/default-image-nut.jpg");
 
-//                product.setPriceByUnit(String.valueOf((int) Double.parseDouble(faker.number().numberBetween(1, 50))));
-                product.setPriceByUnit(String.valueOf(faker.number().numberBetween(50, 150)));
-
                 product.getProductTranslations().add(new ProductTranslation(
                         LanguageCode.uk,
                         "Продукт " + i,
@@ -300,9 +297,11 @@ public class DatabaseLoader implements CommandLineRunner {
                         product
                 ));
 
+                String priceByUnit = String.valueOf(faker.number().numberBetween(100, 1000));
+                product.setPriceByUnit(priceByUnit);
                 product.setHistoryPrices(new ArrayList<>());
                 product.getHistoryPrices().add(new HistoryPrices(
-                        faker.number().numberBetween(100, 1000),
+                        Integer.parseInt(priceByUnit),
                         LocalDateTime.now().minusDays(i),
                         LocalDateTime.now().plusDays(i),
                         product

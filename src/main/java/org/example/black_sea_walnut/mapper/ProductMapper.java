@@ -154,8 +154,8 @@ public class ProductMapper {
         Discount discount = entity.getDiscounts().stream().filter(t -> t.getLanguageCode().equals(languageCode)).findFirst().orElse(null);
 
         List<HistoryPrices> prices = entity.getHistoryPrices();
-        int priceNew = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
-        int priceOld = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
+        int priceOld = prices.size() > 0 ? prices.get(0).getCurrentPrice() : 0;
+        int priceNew = prices.size() > 1 ? prices.get(1).getCurrentPrice() : 0;
         return ProductResponseForView
                 .builder()
                 .id(entity.getId())

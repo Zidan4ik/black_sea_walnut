@@ -105,6 +105,7 @@ public class ProductServiceImp implements ProductService {
             processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery, product, "pathToImageDelivery");
 
             if (dto.getNewPrice() != null) {
+                product.setPriceByUnit(String.valueOf(dto.getNewPrice()));
                 product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
             } else {
                 dto.setNewPrice(dto.getCurrentPrice());

@@ -214,6 +214,7 @@
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
+                console.log(data);
                 buildProduct(data.product);
                 buildContacts(data.contacts);
             }
@@ -226,20 +227,28 @@
         $(`#product-taste`).text(item.taste);
         $(`#hidden-count`).val(item.amount);
 
-        if (item.discount === '') {
-            $(`#product-discount`).parent().remove();
+        let discountEl = $(`#product-discount`);
+        if (!item.discount) {
+            console.log(1);
+            // discountEl.parent().remove();
         } else {
-            $(`#product-discount`).text(item.discount);
+            discountEl.text(item.discount);
         }
         $(`#product-storage`).text(item.recipe);
         $(`#product-mass`).text(item.mass);
         $(`#product-energy-mass`).text(item.energyMass);
         $(`#product-instruction`).text(item.conditionExploitation);
-        $(`#product-new-price`).text(item.newPrice);
-        if (item.oldPrice === '0') {
-            $('#product-old-price').parent().remove();
+        $(`#product-old-price`).text(item.oldPrice);
+        if (item.newPrice === '0') {
+            $('#product-old-price').parent().find('span').css('color', 'green');
+            $('#product-new-price').parent().remove();
         } else {
-            $(`#product-old-price`).text(item.oldPrice);
+            $(`#product-new-price`).text(item.newPrice);
+            $('#product-old-price').parent().find('span').css({
+                'color': 'grey',
+                'text-decoration': 'line-through'
+            });
+            $('#product-new-price').parent().find('span').css('color','green');
         }
         $(`#image-description`).attr('src', contextPath + item.pathToImageDescription || path_default_image);
         $(`#image-packing`).attr('src', contextPath + item.pathToImagePacking || path_default_image);
@@ -255,10 +264,10 @@
         let disColor = discountItem === 'new' || discountItem === 'новий' ? 'icons-novinka' : 'icons-actciya';
         if (imageContainer.length) {
             imageContainer.append(`<div class="product__item">
-                            <div class="sticker">
+                            ${item.discount?`<div class="sticker">
                                 <i class="nut-icon ${disColor}"></i>
                                 <p id="product-discount">${discountItem}</p>
-                            </div>
+                            </div>`:``}
                             <div class="products-container swiper-container">
                                 <div class="swiper-wrapper">
                                     ${item.pathToImage1 ? `
