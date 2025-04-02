@@ -19,8 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
-//        String rootPath = System.getProperty("user.dir");
-//        String s = rootPath + path;
         if (!Paths.get(path).toFile().exists()) {
             Paths.get(path).toFile().mkdirs();
         }
