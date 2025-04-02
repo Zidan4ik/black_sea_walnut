@@ -489,7 +489,7 @@
                     newBlock.dataset.type = TYPE;
                     newBlock.innerHTML = `
                                     <img id="image${UUID}" data-name="image${UUID}"
-                                    src="${PATH ? PATH : path_default_image}"
+                                    src="${PATH ? contextPath + PATH : path_default_image}"
                                     alt="error" style="width: 100%; height: 167px;display: block; margin: 0 auto;"
                                     data-error="requestEcologicallyForAdd.catalogEcologicallyFiles[${counter}].fileImage">
                                     <div class="d-flex justify-content-center gap-3">
