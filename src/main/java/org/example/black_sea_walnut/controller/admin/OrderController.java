@@ -21,7 +21,7 @@ public class OrderController {
 
     @GetMapping("/orders")
     public ModelAndView viewOrders() {
-        return new ModelAndView("/admin/orders/table");
+        return new ModelAndView("admin/orders/table");
     }
 
     @GetMapping("/orders/table/load")

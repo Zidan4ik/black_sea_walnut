@@ -42,12 +42,12 @@ public class ProductController {
 
     @GetMapping("/warehouse")
     public ModelAndView viewWareAndHouse() {
-        return new ModelAndView("/admin/products/warehouse");
+        return new ModelAndView("admin/products/warehouse");
     }
 
     @GetMapping("/products")
     private ModelAndView viewTransactions() {
-        return new ModelAndView("/admin/products/table");
+        return new ModelAndView("admin/products/table");
     }
 
     @GetMapping("/products/table/load")
@@ -136,7 +136,7 @@ public class ProductController {
 
     @GetMapping("/products/configuration")
     public ModelAndView viewConfiguration(){
-        return new ModelAndView("/admin/products/configuration");
+        return new ModelAndView("admin/products/configuration");
     }
     @ModelAttribute("isActiveWarehouse")
     public boolean toActiveSidebarButton(){
