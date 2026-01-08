@@ -41,14 +41,13 @@ function validate2(data) {
             errorMessage.className = "error-message";
             errorMessage.style.color = "red";
             errorMessage.innerText = message;
-            if (inputField.getAttribute("class")==="files") {
+            if (inputField.getAttribute("class") === "files") {
                 inputField.parentNode.append(errorMessage);
-            } else if(inputField.id === 'amount_'){
+            } else if (inputField.id === 'amount_') {
                 let parentDiv = inputField.closest('div');
-                if(parentDiv)
+                if (parentDiv)
                     parentDiv.appendChild(errorMessage);
-            }
-            else {
+            } else {
                 inputField.parentNode.appendChild(errorMessage);
             }
         }
@@ -69,15 +68,14 @@ function validate3(data) {
             errorMessage.className = "error-message";
             errorMessage.style.color = "red";
             errorMessage.innerText = message;
-            if (inputField.getAttribute("class")==="files") {
+            if (inputField.getAttribute("class") === "files") {
                 console.log(field);
                 inputField.parentNode.append(errorMessage);
-            } else if(inputField.id === 'amount_'){
+            } else if (inputField.id === 'amount_') {
                 let parentDiv = inputField.closest('div');
-                if(parentDiv)
+                if (parentDiv)
                     parentDiv.appendChild(errorMessage);
-            }
-            else {
+            } else {
                 inputField.parentNode.appendChild(errorMessage);
             }
         }
@@ -96,13 +94,13 @@ function validate4(data) {
             div.style.marginBottom = '10px';
             let errorMessage = document.createElement("span");
             errorMessage.className = "error-message";
-            errorMessage.style.fontFamily='monospace';
+            errorMessage.style.fontFamily = 'monospace';
             errorMessage.style.color = "red";
             errorMessage.innerText = message;
             div.appendChild(errorMessage);
             if (inputField.getAttribute("class") === "files") {
                 inputField.parentNode.append(errorMessage);
-            }else {
+            } else {
                 inputField.after(div);
             }
         });
