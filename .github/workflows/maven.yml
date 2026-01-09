@@ -37,9 +37,9 @@ jobs:
           push: true
           tags: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
 
-#      - name: Deploy to Cloud Run
-#        uses: google-github-actions/deploy-cloudrun@v1
-#        with:
-#          service: black-sea-walnut
-#          region: europe-west1
-#          image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          service: black-sea-walnut
+          region: europe-west1
+          image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
