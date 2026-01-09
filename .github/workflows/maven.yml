@@ -43,6 +43,7 @@ jobs:
           service: black-sea-walnut
           region: europe-west1
           image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
+          timeout: 300s
           env_vars: |
             PORT=8080
             DB_URL=${{ secrets.DB_URL }}
