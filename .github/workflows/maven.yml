@@ -43,3 +43,8 @@ jobs:
           service: black-sea-walnut
           region: europe-west1
           image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
+          env_vars: |
+            PORT=8080
+            DB_URL=${{ secrets.DB_URL }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
