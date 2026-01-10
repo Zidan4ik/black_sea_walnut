@@ -37,15 +37,15 @@ jobs:
           push: true
           tags: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
 
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v1
-        with:
-          service: black-sea-walnut
-          region: europe-west1
-          image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
-          timeout: 300s
-          env_vars: |
-            PORT=8080
-            DB_URL=${{ secrets.DB_URL }}
-            DB_USERNAME=${{ secrets.DB_USERNAME }}
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+#      - name: Deploy to Cloud Run
+#        uses: google-github-actions/deploy-cloudrun@v1
+#        with:
+#          service: black-sea-walnut
+#          region: europe-west1
+#          image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
+#          timeout: 300s
+#          env_vars: |
+#            PORT=8080
+#            DB_URL=${{ secrets.DB_URL }}
+#            DB_USERNAME=${{ secrets.DB_USERNAME }}
+#            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
