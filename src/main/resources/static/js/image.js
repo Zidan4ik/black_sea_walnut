@@ -1,4 +1,4 @@
-let path_default_image = contextPath + "/app/uploads/image/default-image.jpg";
+let path_default_image = contextPath + "/image/default-image.jpg";
 
 function addEventListenersImage() {
     document.getElementById('btn-delete_').addEventListener('click', function () {

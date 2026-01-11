@@ -13,4 +13,8 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    public Country(String name) {
+        this.name = name;
+    }
 }

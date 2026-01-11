@@ -213,9 +213,6 @@
                     }
                 </script>
                 <script>
-                    // const editorDescProductUK = getFroalaEditor("edit-description-uk");
-                    // const editorDescProductEN = getFroalaEditor("edit-description-en");
-
                     function getFroalaEditor(idElementEditor) {
                         return new FroalaEditor(`#${idElementEditor}`, {
                             height: 12 * 10,
@@ -309,7 +306,7 @@
                             {id: "#file-fileSvg", fieldName: "fileSvg"},
                         ];
 
-                        ffiles.forEach(function (fileObj) {
+                        files.forEach(function (fileObj) {
                             let file = $(fileObj.id)[0].files[0];
                             if (file) {
                                 resForm.append(fileObj.fieldName, file);

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 @Configuration
 @RequiredArgsConstructor
@@ -43,65 +44,53 @@ public class DatabaseLoader implements CommandLineRunner {
     private final ManagerRepository managerRepository;
 
     private final Random random = new Random();
-    private final Faker faker = new Faker();
+    private Faker faker = new Faker();
 
     @Override
     public void run(String... args) throws Exception {
+
         if (newService.getAll().isEmpty()) {
             for (int i = 0; i < 3; i++) {
                 New new_ = new New();
                 new_.setActive(faker.bool().bool());
                 new_.setDateOfPublication(faker.date().past(30, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                new_.setPathToMedia("/app/uploads/image/default-image-nut.jpg");
+                new_.setPathToMedia("/image/default-image-nut.jpg");
                 new_.setMediaType(MediaType.image);
 
-                NewTranslation eng = new NewTranslation();
-                eng.setLanguageCode(LanguageCode.en);
-                eng.setTitle(faker.book().title());
-                eng.setDescription(faker.lorem().paragraph());
-
-                NewTranslation ukr = new NewTranslation();
-                ukr.setLanguageCode(LanguageCode.uk);
-                ukr.setTitle(faker.book().title());
-                ukr.setDescription(faker.lorem().paragraph());
-
-                eng.setNew_(new_);
-                ukr.setNew_(new_);
-
-                new_.setTranslations(List.of(eng, ukr));
-
+                List<NewTranslation> translations = Arrays.stream(LanguageCode.values())
+                        .map(lang -> {
+                            faker = new Faker(new Locale(String.valueOf(lang)));
+                            NewTranslation t = new NewTranslation();
+                            t.setLanguageCode(lang);
+                            t.setTitle(faker.commerce().department());
+                            t.setDescription(faker.lorem().paragraph());
+                            t.setNew_(new_);
+                            return t;
+                        }).toList();
+                new_.setTranslations(translations);
                 newService.save(new_);
             }
-
         }
+
         if (countryService.getAll().isEmpty()) {
-            for (int i = 0; i < 3; i++) {
-                Country country = new Country();
-                country.setName(faker.country().name());
-                countryService.save(country);
-
-                for (int j = 0; j < 2; j++) {
-                    Region region = new Region();
-                    region.setName(faker.address().state());
-                    region.setCountry(country);
-                    regionService.save(region);
-
-                    for (int k = 0; k < 2; k++) {
-                        City city = new City();
-                        city.setName(faker.address().city());
-                        city.setRegion(region);
-                        cityService.save(city);
-                    }
-                }
-            }
+            IntStream.range(0,3).forEach(i->{
+                Country country = countryService.save(new Country(faker.country().name()));
+                IntStream.range(0,3).forEach(r->{
+                    Region region = regionService.save(new Region(faker.address().state(),country));
+                    IntStream.range(0,3).forEach(c->{
+                        cityService.save(new City(faker.address().city(), region));
+                    });
+                });
+            });
         }
+
         if (historyService.getAll().isEmpty()) {
             History historyMain = new History(null, true, PageType.main_banner, null, new ArrayList<>(), new ArrayList<>());
-            historyMain.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, historyMain));
+            historyMain.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, historyMain));
             historyMain.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Головний банер", "Підзаголовок", "Опис головного банера", historyMain));
             historyMain.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Main Banner", "Subtitle", "Main banner description", historyMain));
-            historyMain.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/app/uploads/image/default-image-nut.jpg", historyMain));
-            historyMain.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/app/uploads/image/default-image-nut.jpg", historyMain));
+            historyMain.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", historyMain));
+            historyMain.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", historyMain));
             historyService.save(historyMain);
 
             History historyProduction = new History(null, true, PageType.main_production, null, new ArrayList<>(), new ArrayList<>());
@@ -114,8 +103,8 @@ public class DatabaseLoader implements CommandLineRunner {
             historyFactory.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Про фабрику", "Підзаголовок", "Опис про фабрику", historyFactory));
             historyFactory.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "About Factory", "Subtitle", "About factory description", historyFactory));
 
-            historyFactory.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/app/uploads/image/default-image-nut.jpg", historyFactory));
-            historyFactory.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/app/uploads/image/default-image-nut.jpg", historyFactory));
+            historyFactory.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", historyFactory));
+            historyFactory.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", historyFactory));
 
             historyService.save(historyFactory);
 
@@ -138,23 +127,23 @@ public class DatabaseLoader implements CommandLineRunner {
             historyService.save(historyNumber);
 
             History historyAim = new History(null, true, PageType.main_aim, null, new ArrayList<>(), new ArrayList<>());
-            historyAim.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, historyAim));
+            historyAim.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, historyAim));
             historyAim.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Мета", "Підзаголовок", "Опис мети", historyAim));
             historyAim.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Aim", "Subtitle", "Aim description", historyAim));
             historyService.save(historyAim);
 
             History historyEcoProduction = new History(null, true, PageType.main_eco_production, null, new ArrayList<>(), new ArrayList<>());
-            historyEcoProduction.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, historyEcoProduction));
+            historyEcoProduction.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, historyEcoProduction));
             historyEcoProduction.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Еко-виробництво", "Підзаголовок", "Опис еко-виробництва", historyEcoProduction));
             historyEcoProduction.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Eco Production", "Subtitle", "Eco production description", historyEcoProduction));
             historyService.save(historyEcoProduction);
 
             History catalogBanner = new History(null, true, PageType.catalog_banner, null, new ArrayList<>(), new ArrayList<>());
-            catalogBanner.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, catalogBanner));
+            catalogBanner.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, catalogBanner));
             catalogBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Каталог банер", "Підзаголовок", "Опис банера каталогу", catalogBanner));
             catalogBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Catalog Banner", "Subtitle", "Catalog banner description", catalogBanner));
-            catalogBanner.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/app/uploads/image/default-image-nut.jpg", historyFactory));
-            catalogBanner.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/app/uploads/image/default-image-nut.jpg", historyFactory));
+            catalogBanner.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", historyFactory));
+            catalogBanner.getHistoryMedia().add(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", historyFactory));
 
 
             historyService.save(catalogBanner);
@@ -165,7 +154,7 @@ public class DatabaseLoader implements CommandLineRunner {
             historyService.save(catalogEcologically);
 
             History factoryBanner = new History(null, true, PageType.factory_banner, null, new ArrayList<>(), new ArrayList<>());
-            factoryBanner.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, factoryBanner));
+            factoryBanner.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, factoryBanner));
             factoryBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Банер фабрики", "Підзаголовок", "Опис банера фабрики", factoryBanner));
             factoryBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Factory Banner", "Subtitle", "Factory banner description", factoryBanner));
             historyService.save(factoryBanner);
@@ -176,13 +165,13 @@ public class DatabaseLoader implements CommandLineRunner {
             historyService.save(catalogBlock);
 
             History clientBanner = new History(null, true, PageType.clients_banner, null, new ArrayList<>(), new ArrayList<>());
-            clientBanner.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, clientBanner));
+            clientBanner.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, clientBanner));
             clientBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Банер клієнтів", "Підзаголовок", "Опис банера клієнтів", clientBanner));
             clientBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Clients Banner", "Subtitle", "Clients banner description", clientBanner));
             historyService.save(clientBanner);
 
             History clientEcoProduction = new History(null, true, PageType.clients_eco_production, null, new ArrayList<>(), new ArrayList<>());
-            clientEcoProduction.setBanner(new Banner(null, "/app/uploads/image/default-image-nut.jpg", MediaType.image, clientEcoProduction));
+            clientEcoProduction.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, clientEcoProduction));
             clientEcoProduction.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Еко-виробництво для клієнтів", "Підзаголовок", "Опис еко-виробництва", clientEcoProduction));
             clientEcoProduction.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Eco Production for Clients", "Subtitle", "Eco production description", clientEcoProduction));
             historyService.save(clientEcoProduction);
@@ -190,8 +179,8 @@ public class DatabaseLoader implements CommandLineRunner {
         if (clientCategoryService.getAll().isEmpty()) {
             ClientCategory clientCategory1 = new ClientCategory();
             clientCategory1.setActive(true);
-            clientCategory1.setPathToImage("/app/uploads/image/default-image-nut.jpg");
-            clientCategory1.setPathToSvg("/app/uploads/image/default-image-nut.jpg");
+            clientCategory1.setPathToImage("/image/default-image-nut.jpg");
+            clientCategory1.setPathToSvg("/image/default-image-nut.jpg");
             clientCategory1.setMediaTypeImage(MediaType.image);
             clientCategory1.setMediaTypeSvg(MediaType.image);
 
@@ -215,8 +204,8 @@ public class DatabaseLoader implements CommandLineRunner {
 
             ClientCategory clientCategory2 = new ClientCategory();
             clientCategory2.setActive(true);
-            clientCategory2.setPathToImage("/app/uploads/image/default-image-nut.jpg");
-            clientCategory2.setPathToSvg("/app/uploads/image/default-image-nut.jpg");
+            clientCategory2.setPathToImage("/image/default-image-nut.jpg");
+            clientCategory2.setPathToSvg("/image/default-image-nut.jpg");
             clientCategory2.setMediaTypeImage(MediaType.image);
             clientCategory2.setMediaTypeSvg(MediaType.image);
 
@@ -262,17 +251,17 @@ public class DatabaseLoader implements CommandLineRunner {
                 product.setActive(faker.random().nextBoolean());
                 product.setTotalCount((long) faker.number().numberBetween(1, 100));
                 product.setCreatedDate(LocalDateTime.now().minusDays(i));
-                product.setPathToImage1("/app/uploads/image/default-image-nut.jpg");
-                product.setPathToImage2("/app/uploads/image/default-image-nut.jpg");
-                product.setPathToImage3("/app/uploads/image/default-image-nut.jpg");
-                product.setPathToImage4("/app/uploads/image/default-image-nut.jpg");
+                product.setPathToImage1("/image/default-image-nut.jpg");
+                product.setPathToImage2("/image/default-image-nut.jpg");
+                product.setPathToImage3("/image/default-image-nut.jpg");
+                product.setPathToImage4("/image/default-image-nut.jpg");
                 product.setMass(faker.number().numberBetween(1, 1000));
                 product.setMassEnergy(faker.number().numberBetween(1, 1000));
 
-                product.setPathToImageDescription("/app/uploads/image/default-image-nut.jpg");
-                product.setPathToImagePayment("/app/uploads/image/default-image-nut.jpg");
-                product.setPathToImagePacking("/app/uploads/image/default-image-nut.jpg");
-                product.setPathToImageDelivery("/app/uploads/image/default-image-nut.jpg");
+                product.setPathToImageDescription("/image/default-image-nut.jpg");
+                product.setPathToImagePayment("/image/default-image-nut.jpg");
+                product.setPathToImagePacking("/image/default-image-nut.jpg");
+                product.setPathToImageDelivery("/image/default-image-nut.jpg");
 
                 product.getProductTranslations().add(new ProductTranslation(
                         LanguageCode.uk,
@@ -349,11 +338,11 @@ public class DatabaseLoader implements CommandLineRunner {
                 gallery.setMediaType(randomEnum(MediaType.class));
                 gallery.setActive(random.nextBoolean());
                 gallery.setTimeUpdate(LocalDateTime.now().minusDays(random.nextInt(30)));
-                gallery.setPathToMedia("/app/uploads/image/default-image-nut.jpg");
+                gallery.setPathToMedia("/image/default-image-nut.jpg");
                 List<GalleryTranslation> translations = new ArrayList<>();
-                for (int j = 0; j < 2; j++) {
+                for (LanguageCode language : LanguageCode.values()) {
                     GalleryTranslation translation = new GalleryTranslation();
-                    translation.setLanguageCode(randomEnum(LanguageCode.class));
+                    translation.setLanguageCode(language);
                     translation.setTitle(faker.book().title());
                     translation.setDescription(faker.lorem().paragraph());
                     translation.setGallery(gallery);
@@ -369,14 +358,14 @@ public class DatabaseLoader implements CommandLineRunner {
             for (int i = 0; i < 4; i++) {
                 Nut nut = new Nut();
                 nut.setActive(random.nextBoolean());
-                nut.setPathToImage("/app/uploads/image/default-image-nut.jpg");
-                nut.setPathToSvg("/app/uploads/image/default-image-nut.jpg");
+                nut.setPathToImage("/image/default-image-nut.jpg");
+                nut.setPathToSvg("/image/default-image-nut.jpg");
                 nut.setDate(LocalDate.now().minusDays(random.nextInt(365)));
 
                 List<NutTranslation> translations = new ArrayList<>();
-                for (int j = 0; j < 2; j++) {
+                for (LanguageCode language : LanguageCode.values()) {
                     NutTranslation translation = new NutTranslation();
-                    translation.setLanguageCode(randomEnum(LanguageCode.class));
+                    translation.setLanguageCode(language);
                     translation.setTitle(faker.food().fruit());
                     translation.setDescription(faker.lorem().paragraph());
                     translation.setNut(nut);
@@ -398,7 +387,7 @@ public class DatabaseLoader implements CommandLineRunner {
             }
             callRepository.saveAll(calls);
         }
-        if(contactRepository.findAll().isEmpty()){
+        if (contactRepository.findAll().isEmpty()) {
             Contact contact = Contact.builder()
                     .phone1("+380936610366")
                     .phone2("+380666790166")
@@ -406,7 +395,7 @@ public class DatabaseLoader implements CommandLineRunner {
                     .addressWork("4145 Leonor Locks")
                     .addressFactory("9051 Mertz Corners")
                     .coordinates("51.5,-0.09")
-                    .telegram("https://t.me/ang_lok")
+                    .telegram("https://t.me/AlFr1eD")
                     .viber("https://invite.viber.com/?g=j9MxXBxkQVTtvxKDAEHOYrzC1lfBMp1K")
                     .whatsapp("https://chat.whatsapp.com/Iv5YyuF7MI3KQe0N60jsry")
                     .facebook("https://www.facebook.com/WalnutAI/")
@@ -416,7 +405,7 @@ public class DatabaseLoader implements CommandLineRunner {
                     .build();
             contactRepository.save(contact);
         }
-        if(userRepository.findAll().isEmpty()){
+        if (userRepository.findAll().isEmpty()) {
             User admin = new User();
             admin.setFullName("Admin User");
             admin.setEmail("admin@gmail.com");

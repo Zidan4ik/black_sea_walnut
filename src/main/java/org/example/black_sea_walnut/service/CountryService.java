@@ -10,5 +10,5 @@ public interface CountryService {
 
     Optional<Country> getById(Long id);
 
-    void save(Country country);
+    Country save(Country country);
 }

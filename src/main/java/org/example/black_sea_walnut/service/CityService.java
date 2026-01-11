@@ -13,5 +13,5 @@ public interface CityService {
 
     List<City> getByRegion(Region region);
 
-    void save(City city);
+    City save(City city);
 }

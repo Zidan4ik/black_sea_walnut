@@ -43,7 +43,7 @@ public class RegionServiceImp implements RegionService {
     }
 
     @Override
-    public void save(Region region) {
-        regionRepository.save(region);
+    public Region save(Region region) {
+        return regionRepository.save(region);
     }
 }

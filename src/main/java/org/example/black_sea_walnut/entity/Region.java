@@ -17,4 +17,9 @@ public class Region {
     private String name;
     @ManyToOne
     private Country country;
+
+    public Region(String name, Country country) {
+        this.name = name;
+        this.country = country;
+    }
 }

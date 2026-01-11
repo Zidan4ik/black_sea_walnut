@@ -53,8 +53,8 @@ public class CityServiceImp implements CityService {
     }
 
     @Override
-    public void save(City city) {
-        cityRepository.save(city);
+    public City save(City city) {
+        return cityRepository.save(city);
     }
 }
 
