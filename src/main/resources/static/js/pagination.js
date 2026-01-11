@@ -85,7 +85,7 @@ function getPageWithFilter(page, size) {
 
 function getRowData(element) {
     let row = '<tr>';
-    // console.log(element);
+    console.log(element);
     Object.keys(element).forEach(field => {
         const value = element[field] !== null ? element[field] : '';
         row += `<td class="divided-text">${value}</td>`;

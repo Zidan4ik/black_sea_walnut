@@ -40,7 +40,7 @@
                         th:text="#{text.order}+' № '+${id}"></span></h3>
                 <div class="col-3">
                     <label class="form-label boldMy" th:text="#{table.header.statusPayment}+':'"></label>
-                    <input id="orderStatus_" class="form-control" value="" disabled>
+                    <input id="orderStatus_" class="form-control" value="" readonly>
                 </div>
                 <div class="table-responsive mt-3" style="width: 75%">
                     <table class="table table-bordered table-hover table-striped linkedRow"
@@ -63,19 +63,19 @@
                 <div class="mt-4 pb-4 row" style="border-bottom: 1px solid black;">
                     <div class="col-12">
                         <label class="form-label boldMy" th:text="#{text.informationAboutCustomer}+':'"></label>
-                        <input id="userRegisterType_" class="form-control" value="" style="width: 23%;">
+                        <input id="userRegisterType_" class="form-control" value="" style="width: 23%;" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.fio}+':'"></label>
-                        <input id="fio_" class="form-control" value="">
+                        <input id="fio_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.phone}+':'"></label>
-                        <input id="phone_" class="form-control" value="">
+                        <input id="phone_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.email}+':'"></label>
-                        <input id="email_" class="form-control" value="">
+                        <input id="email_" class="form-control" value="" readonly>
                     </div>
                 </div>
                 <div class="mt-2 pb-4 row" style="border-bottom: 1px solid black;">
@@ -88,45 +88,45 @@
                 <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.typeOfDelivery}+':'"></label>
-                        <input id="deliveryType_" class="form-control" value="" disabled>
+                        <input id="deliveryType_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.statusDelivery}+':'"></label>
-                        <input id="deliveryStatus_" class="form-control" value="" disabled>
+                        <input id="deliveryStatus_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.typeOfPayment}+':'"></label>
-                        <input id="paymentType_" class="form-control" value="" disabled>
+                        <input id="paymentType_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.status}+':'"></label>
-                        <input id="isPayed_" class="form-control" value="" disabled>
+                        <input id="isPayed_" class="form-control" value="" readonly>
                     </div>
                 </div>
                 <div class="mt-2 row pb-4" style="border-bottom: 1px solid black;">
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.city}+':'"></label>
-                        <input id="city_" class="form-control" value="" disabled>
+                        <input id="city_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.address}+':'"></label>
-                        <input id="addressDelivery_" class="form-control" value="" disabled>
+                        <input id="addressDelivery_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{text.company}+':'"></label>
-                        <input id="companyDelivery_" class="form-control" value="" disabled>
+                        <input id="companyDelivery_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{text.contactPerson}+':'"></label>
-                        <input id="personNameDelivery_" class="form-control" value="" disabled>
+                        <input id="personNameDelivery_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.email}+':'"></label>
-                        <input id="emailDelivery_" class="form-control" value="" disabled>
+                        <input id="emailDelivery_" class="form-control" value="" readonly>
                     </div>
                     <div class="col-3">
                         <label class="form-label boldMy" th:text="#{table.header.phone}+':'"></label>
-                        <input id="phoneDelivery_" class="form-control" value="" disabled>
+                        <input id="phoneDelivery_" class="form-control" value="" readonly>
                     </div>
                 </div>
                 <div class="mt-2 d-flex justify-content-center">
@@ -152,6 +152,7 @@
                 request.addEventListener('load', async function () {
                     let data = JSON.parse(request.response);
                     let count = 0;
+                    console.log('data: ',data);
                     data.orderDetails.forEach(item => {
                         count += item.totalSumma = item.price * item.count;
                     });

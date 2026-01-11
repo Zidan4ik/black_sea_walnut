@@ -38,7 +38,7 @@ public class OrderMapper {
 
     public ResponseOrderForAdd toDTOAdd(Order entity) {
         List<ResponseOrderDetailForView> list = entity.getOrderDetails().stream().map(OrderDetailMapper::toDTOView).toList();
-        boolean isUserNull = entity.getUser() != null;
+        User user = entity.getUser();
         return ResponseOrderForAdd
                 .builder()
                 .id(entity.getId())
@@ -51,15 +51,15 @@ public class OrderMapper {
                 .paymentType(entity.getPaymentType())
                 .isPayed(entity.isPayed())
                 .orderStatus(entity.getOrderStatus())
-                .city(isUserNull ? entity.getUser().getCity().toString() : null)
+                .city(user != null && user.getCity() != null? user.getCity().toString() : null)
                 .companyDelivery(entity.getCompanyDelivery())
                 .personNameDelivery(entity.getPersonNameDelivery())
                 .emailDelivery(entity.getEmailDelivery())
                 .phoneDelivery(entity.getPhoneDelivery())
                 .addressDelivery(entity.getAddressDelivery())
                 .orderDetails(list)
-                .isFop(isUserNull && entity.getUser().isFop())
-                .userRegisterType(isUserNull ? entity.getUser().getRegisterType().toString() : RegisterType.fop.toString())
+                .isFop(user != null && user.isFop())
+                .userRegisterType(user != null ? user.getRegisterType().toString() : RegisterType.fop.toString())
                 .build();
     }
 

@@ -13,5 +13,4 @@ public class ResponseOrderDetailForView {
     private int count;
     private int price;
     private int totalSumma;
-    private int mass;
 }
