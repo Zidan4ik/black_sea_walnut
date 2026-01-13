@@ -1,4 +1,5 @@
 function invokeRequest(inputs, page) {
+    console.log(1)
     if (Array.isArray(inputs)) {
         const errorContainer = document.getElementById('error-container');
 
@@ -27,7 +28,6 @@ function invokeRequest(inputs, page) {
             $("#table-pagination-container_").empty();
             invokeBlockUI();
             const params = new URLSearchParams();
-            console.log(inputs);
             for (const name of inputs) {
                 const input = document.querySelector(`[name=${name}]`);
                 if (input) params.append(name, input.value);
@@ -45,7 +45,7 @@ function invokeRequest(inputs, page) {
                 target: '#table-pagination-container_',
                 swap: 'innerHTML'
             });
-        }, 1000);
+        }, 500);
     }
 }
 
@@ -55,6 +55,12 @@ $(document).on('click', '.pagination a', function () {
 });
 
 $(document).ready(function () {
+    document.addEventListener('htmx:afterRequest', function(evt) {
+        if (evt.detail.target.id === 'table-data-container_' ||
+            evt.detail.target.id === 'table-pagination-container_') {
+            $("#card-block").unblock();
+        }
+    });
     invokeRequest(inputs, 0);
 });
 
