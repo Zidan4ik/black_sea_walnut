@@ -15,4 +15,6 @@ public interface CallService {
     void deleteById(Long id);
 
     void save(CallResponseForView dto);
+
+    void deleteAllById(Iterable<? extends Long> ids);
 }

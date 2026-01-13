@@ -69,7 +69,7 @@
                                     <input type="text"
                                            class="form-control input-card-block-spinner"
                                            id="date_"
-                                           placeholder="dd.mm.yyyy"
+                                           placeholder=""
                                            name="date"
                                            autocomplete="off"/>
                                     <span class="input-group-text">
@@ -106,27 +106,27 @@
         let pathToTable = `${contextPath}/admin/calls/table/load`;
         let pathToPagination = `${contextPath}/admin/calls/pagination/load`;
         let timeoutId;
-
-        $(document).on('click', '.btn-danger', function () {
-            let attr = $(this).attr('data-type');
-            if (attr === 'total') {
-                let selectedIds = [];
-                $('.selectors:checked').each(function () {
-                    let id = $(this).attr('data-id');
-                    requestDelete(id)
-                    selectedIds.push(id);
-                });
-            } else if (attr === 'one') {
-                let attrId = this.getAttribute('data-id');
-                requestDelete(attrId);
-            }
-        });
+        let selectors;
 
         $(document).on('click', '#total-delete_', function () {
             $(`#modal-btnDelete_`).attr('data-type', 'total');
-            let modalElement = document.getElementById('ModalForDelete');
-            let modal = new bootstrap.Modal(modalElement);
-            modal.show();
+            let checkedSelectors = [];
+            $('.selectors:checked').each(function () {
+                checkedSelectors.push($(this).attr('data-id'));
+            });
+
+            if (checkedSelectors.length > 0) {
+                confirmAndPathDelete(checkedSelectors)
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.warning} </div>`,
+                    text: messages.noCallAnyoneCalls + '!',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    buttonsStyling: false,
+                });
+            }
         });
 
         $(document).on('click', '.edit-icon', function () {
@@ -137,22 +137,21 @@
         $(document).on('click', '.delete-icon', function () {
             $(`#modal-btnDelete_`).attr('data-type', 'one');
             let id = $(this).data('id');
-            $('#modal-btnDelete_').attr('data-id', id);
-            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-            modal.show();
+            confirmAndPathDelete([id]);
         });
 
-        function requestDelete(id) {
+
+        function requestDelete(ids) {
             let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}/admin/call/${id}/delete`);
-            request.send();
+            request.open('DELETE', `${contextPath}/admin/call/delete`);
+            request.setRequestHeader('Content-Type', 'application/json');
             request.addEventListener('load', function () {
                 if (request.status === 200) {
                     invokeBlockUI();
-                    invokeRequest(inputs,0)
-                    $('#ModalForDelete').modal('hide');
+                    invokeRequest(inputs, 0)
                 }
             });
+            request.send(JSON.stringify(ids));
         }
 
         document.body.addEventListener('htmx:afterSwap', function (event) {

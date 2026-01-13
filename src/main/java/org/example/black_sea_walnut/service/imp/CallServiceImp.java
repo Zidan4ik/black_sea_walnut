@@ -53,4 +53,11 @@ public class CallServiceImp implements CallService {
         callRepository.save(callMapper.toEntityForSaveCall(dto));
         LogUtil.logInfo("Call with details " + dto.toString() + " has been saved.");
     }
+
+    @Override
+    public void deleteAllById(Iterable<? extends Long> ids) {
+        LogUtil.logInfo("Attempting to delete call with Ids: " + ids);
+        callRepository.deleteAllById(ids);
+        LogUtil.logInfo("Call with Ids" + ids + " was deleted successfully.");
+    }
 }

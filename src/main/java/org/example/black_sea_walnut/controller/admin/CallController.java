@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -51,8 +53,15 @@ public class CallController {
         callService.deleteById(id);
         return new ResponseEntity<>("Call was successful deleted!", HttpStatus.OK);
     }
+
+    @DeleteMapping("/call/delete")
+    public ResponseEntity<?> deleteAllCallsByIds(@RequestBody List<Long> ids) {
+        callService.deleteAllById(ids);
+        return new ResponseEntity<>("Calls was successful deleted", HttpStatus.OK);
+    }
+
     @ModelAttribute("isActiveCalls")
-    public boolean toActiveSidebarButton(){
+    public boolean toActiveSidebarButton() {
         return true;
     }
 }

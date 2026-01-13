@@ -1,18 +1,39 @@
 function invokeRequest(inputs, page) {
     if (Array.isArray(inputs)) {
-        $("#table-data-container_ tbody").empty();
-        $("#table-pagination-container_").empty();
+        const errorContainer = document.getElementById('error-container');
+
+        for (const name of inputs) {
+            const input = document.querySelector(`[name=${name}]`);
+            if (input) {
+                let value = input.value;
+
+                if (name === 'id' && value !== '' && !/^\d+$/.test(value)) {
+                    input.classList.add('is-invalid');
+                    if (errorContainer) {
+                        errorContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${messages.invalidNumber} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`;
+                    }
+                    clearTimeout(timeoutId);
+                    return;
+                }
+                input.classList.remove('is-invalid');
+            }
+        }
+        if (errorContainer) errorContainer.innerHTML = '';
+
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-            const params = new URLSearchParams();
+            $("#table-data-container_ tbody").empty();
+            $("#table-pagination-container_").empty();
 
-            inputs.forEach((name) => {
+            const params = new URLSearchParams();
+            for (const name of inputs) {
                 const input = document.querySelector(`[name=${name}]`);
-                if (input) {
-                    params.append(name, input.value);
-                }
-            });
-            // console.log(page);
+                if (input) params.append(name, input.value);
+            }
+
             params.append('page', page);
             params.append('languageCode', document.documentElement.lang);
             params.append('size', $('[name=size]').val());

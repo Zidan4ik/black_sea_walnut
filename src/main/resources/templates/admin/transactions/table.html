@@ -21,7 +21,8 @@
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.transactions}"></h4>
-        <div class="card" id="card-block" style="width: 1220px;">
+<!--        <div id="error-container"></div>-->
+        <div class="card" id="card-block" style="   width: 1220px;">
             <h5 class="card-header" th:text="#{text.transactions}"></h5>
             <div class="card-body">
                 <div class="row mb-3">
@@ -41,6 +42,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="error-container"></div>
                 <div class="table-responsive" style="overflow-x: auto;">
                     <table class="table table-bordered table-hover linkedRow"
                            style="table-layout: fixed; position: static; zoom: 1;"
@@ -71,7 +73,7 @@
                                     <input type="text"
                                            class="form-control input-card-block-spinner"
                                            id="date_"
-                                           placeholder="dd.mm.yyyy"
+                                           placeholder=""
                                            name="date"
                                            autocomplete="off"/>
                                     <span class="input-group-text">

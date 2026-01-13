@@ -38,6 +38,7 @@
                         </div>
                     </div>
                 </div>
+                <div id="error-container"></div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped linkedRow"
                            style="table-layout: fixed; position: static; zoom: 1;"
@@ -96,6 +97,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure to delete it?</h5>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <a type="button" id="modal-btnDelete_" class="btn btn-danger">
+                        Delete
+                    </a>
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+    </div>
+    <!--/ Modal -->
+
     <script th:src="@{/js/table.js}"></script>
     <script>
         const inputs = ['id', 'fullName', 'email', 'totalCount', 'totalPrice', 'dateOfOrdering'];

@@ -15,7 +15,10 @@
     <link th:href="@{/froala_editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/spinkit/spinkit.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/animate-css/animate.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/sweetalert2/sweetalert2.css}"/>
 
+    <script th:src="@{/vuexy/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
     <script type="text/javascript" th:src="@{/froala_editor/js/froala_editor.pkgd.min.js}"></script>
     <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
     <script th:src="@{/htmx/htmx.min.js}"></script>
@@ -152,6 +155,27 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Are you sure to delete it?</h5>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <a type="button" id="modal-btnDelete_" class="btn btn-danger">
+                    Delete
+                </a>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+</div>
+<!--/ Modal -->
+
 <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
 <script>
     function focusInput(inputId) {
@@ -270,6 +294,58 @@
             }
         }
     }
+
+
+    function confirmAndPathDelete(ids) {
+        const messageText = messages.modalDelete;
+
+        Swal.fire({
+            title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.areYouSure + '?'} </div>`,
+            text: messageText + '...',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: messages.yesDeleteId + '!',
+            cancelButtonText: messages.cancel,
+            customClass: {
+                confirmButton: 'btn me-1 btn-danger',
+                cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false,
+            didOpen: ()=>{
+                let cancelButton = Swal.getCancelButton();
+                if(cancelButton){
+                    cancelButton.style.color = '#000000';
+                }
+            }
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'success',
+                    title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.deleted + '!'} </div>`,
+                    text: messages.successDeleted + '.',
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                }).then(() => {
+                    requestDelete(ids);
+                });
+            }
+        });
+    }
+</script>
+<script th:inline="javascript">
+    const messages = {
+        invalidNumber: /*[[#{error.field.invalid.number}]]*/ 'default',
+        areYouSureToDeleteIt: /*[[#{text.areYouSure}]]*/ 'default',
+        noCallAnyoneCalls: /*[[#{text.noCallAnyoneCalls}]]*/ 'default',
+        warning: /*[[#{text.warning}]]*/ 'default',
+        areYouSure: /*[[#{text.areYouSure2}]]*/ 'default',
+        yesDeleteId: /*[[#{text.yesDeleteId}]]*/ 'default',
+        deleted: /*[[#{value.status.deleted}]]*/ 'default',
+        successDeleted: /*[[#{text.successDeleted}]]*/ 'default',
+        modalDelete: /*[[#{text.modal.delete}]]*/ 'default',
+        cancel: /*[[#{value.status.cancel}]]*/ 'default'
+    };
 </script>
 </body>
 </html>
