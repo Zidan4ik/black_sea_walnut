@@ -48,9 +48,6 @@ function getPageWithFilter(page, size) {
     const filterElements = $('.for-filter');
     const filters = getFilters(filterElements);
     const lang = document.documentElement.lang;
-    console.log('current lang: ', lang);
-    console.log(filters);
-    console.log(context_full_path);
     $.ajax({
         type: "GET",
         url: context_full_path + '/data',
@@ -61,7 +58,6 @@ function getPageWithFilter(page, size) {
             ...filters
         },
         success: function (data) {
-            console.log(data);
             content = data.content;
             currentMetaData = data.metadata;
             const containerTable = document.getElementById("table-data-container_");
@@ -72,7 +68,6 @@ function getPageWithFilter(page, size) {
                 });
             } else {
                 const fields = document.querySelectorAll('.fields-entity');
-                console.log(fields.length + 2);
                 containerTable.innerHTML = `<tr>
                                 <td colspan="${fields.length + 2}" style="text-align: center; vertical-align: middle;">
                                 No matching records found</td>
@@ -85,7 +80,6 @@ function getPageWithFilter(page, size) {
 
 function getRowData(element) {
     let row = '<tr>';
-    console.log(element);
     Object.keys(element).forEach(field => {
         const value = element[field] !== null ? element[field] : '';
         row += `<td class="divided-text">${value}</td>`;

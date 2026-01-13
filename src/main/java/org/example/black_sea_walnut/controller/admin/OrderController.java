@@ -21,7 +21,7 @@ public class OrderController {
 
     @GetMapping("/orders")
     public ModelAndView viewOrders() {
-        return new ModelAndView("admin/orders/table");
+        return new ModelAndView("admin/orders/orders");
     }
 
     @GetMapping("/orders/table/load")
@@ -51,7 +51,7 @@ public class OrderController {
 
     @GetMapping("/order/{id}")
     public ModelAndView viewOrder(@PathVariable Long id) {
-        ModelAndView model = new ModelAndView("admin/orders/view");
+        ModelAndView model = new ModelAndView("admin/orders/order");
         model.addObject("id", id);
         return model;
     }

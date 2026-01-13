@@ -152,7 +152,6 @@
                 request.addEventListener('load', async function () {
                     let data = JSON.parse(request.response);
                     let count = 0;
-                    console.log('data: ',data);
                     data.orderDetails.forEach(item => {
                         count += item.totalSumma = item.price * item.count;
                     });

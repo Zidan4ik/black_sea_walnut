@@ -133,7 +133,7 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            requestDelete(id);
+            confirmAndPathDelete(id);
         });
 
         function requestDelete(id) {
@@ -142,7 +142,8 @@
             request.send();
             request.addEventListener('load', function () {
                 if (request.status === 200) {
-                    window.location.pathname = `${contextPath}/admin/order/delete/${id}`;
+                    invokeBlockUI();
+                    invokeRequest(inputs, 0)
                 }
             });
         }
@@ -151,10 +152,13 @@
             if (event.target.id === 'table-data-container_') {
                 const datePicker = $("#dateOfOrdering_");
                 datePicker.datepicker({
-                    format: "dd.mm.yyyy"
+                    format: "dd.mm.yyyy",
+                    autoclose: true,
+                    todayHighlight: true,
                 }).on('changeDate', function () {
                     htmx.trigger($("#dateOfOrdering_")[0], 'input')
                 });
+                $("#card-block").unblock();
             }
         });
 
