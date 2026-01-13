@@ -131,7 +131,7 @@
                                         <label class="form-label" for="tasteName-uk_">Ім'я:</label>
                                         <input class="form-control fields-entity" type="text" id="tasteName-uk_"
                                                data-name="tasteNameUk"
-                                               placeholder="Класичний" style="border: 1px solid rebeccapurple;">
+                                               placeholder="Класичний">
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
                                         <label class="form-label" for="tasteName-en_">Name:</label>
                                         <input class="form-control fields-entity" type="text" id="tasteName-en_"
                                                data-name="tasteNameEn"
-                                               placeholder="Classical" style="border: 1px solid rebeccapurple;">
+                                               placeholder="Classical">
                                     </div>
                                 </div>
                             </div>
@@ -205,9 +205,13 @@
                                         <label class="form-label" for="discountName-uk_">Ім'я:</label>
                                         <input class="form-control fields-entity" type="text"
                                                id="discountName-uk_" data-name="nameUk2"
-                                               placeholder="Новий" style="border: 1px solid rebeccapurple;">
+                                               placeholder="Новий">
                                     </div>
-                                    <div id="percent-block-uk" class="col-md-12"></div>
+                                    <div id="percent-block-uk" class="col-md-12">
+                                        <label class="form-label" for="percent_uk">Відсотків:</label>
+                                        <input class="form-control" type="text" id="percent_uk" data-name="value"
+                                               placeholder="1">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -221,9 +225,13 @@
                                         <label class="form-label" for="discountName-en_">Name:</label>
                                         <input class="form-control fields-entity" type="text" id="discountName-en_"
                                                data-name="nameEn2"
-                                               placeholder="New" style="border: 1px solid rebeccapurple;">
+                                               placeholder="New">
                                     </div>
-                                    <div id="percent-block-en" class="col-md-12"></div>
+                                    <div id="percent-block-en" class="col-md-12">
+                                        <label class="form-label" for="percent_en">Percent:</label>
+                                        <input class="form-control" type="text" id="percent_en" data-name="value"
+                                               placeholder="1">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +253,7 @@
     <div id="shared-tasteId" style="display: none;">
         <label class="form-label" for="tasteId_">Id:</label>
         <input class="form-control" type="text" id="tasteId_" data-name="commonId"
-               placeholder="1" style="border: 1px solid rebeccapurple;">
+               placeholder="1">
     </div>
     <!--/ Taste Id -->
 
@@ -253,17 +261,17 @@
     <div id="shared-discountId" style="display: none;">
         <label class="form-label" for="discountId_">Id:</label>
         <input class="form-control" type="text" id="discountId_" data-name="discountCommonId"
-               placeholder="1" style="border: 1px solid rebeccapurple;">
+               placeholder="1">
     </div>
     <!--/ Discount Id -->
 
-    <!-- Percent -->
-    <div id="shared-percent" style="display: none;">
-        <label class="form-label" for="percent_">Percent:</label>
-        <input class="form-control" type="text" id="percent_" data-name="value"
-               placeholder="1" style="border: 1px solid rebeccapurple;">
-    </div>
-    <!--/ Percent -->
+    <!--    &lt;!&ndash; Percent &ndash;&gt;-->
+    <!--    <div id="shared-percent" style="display: none;">-->
+    <!--        <label class="form-label" for="percent_">Percent:</label>-->
+    <!--        <input class="form-control" type="text" id="percent_" data-name="value"-->
+    <!--               placeholder="1" >-->
+    <!--    </div>-->
+    <!--    &lt;!&ndash;/ Percent &ndash;&gt;-->
 
     <script th:src="@{/js/validator.js}"></script>
     <script th:src="@{/js/copy.js}"></script>
@@ -271,24 +279,16 @@
     <script>
         document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
             tab.addEventListener('shown.bs.tab', function (event) {
-                let attribute = this.getAttribute('data-type');
-                const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
-                let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
+                const attribute = this.getAttribute('data-type');
+                const activatedTabId = event.target?.getAttribute('data-lang');
+                const previousActiveTab = event.relatedTarget?.getAttribute('data-lang');
 
-                if (previousActiveTab && attribute === 'taste') {
-                    copyHTMLBlockInput(`tasteId-block-${previousActiveTab}`, `shared-tasteId`);
-                } else if (previousActiveTab && attribute === 'discount') {
-                    copyHTMLBlockInput(`discountId-block-${previousActiveTab}`, `shared-discountId`);
-                    copyHTMLBlockInput(`percent-block-${previousActiveTab}`, `shared-percent`);
-                }
+                if (!previousActiveTab || !activatedTabId) return;
 
-                if (activatedTabId && attribute === 'taste') {
-                    copyHTMLBlockInput(`shared-tasteId`, `tasteId-block-${activatedTabId}`);
-                } else if (activatedTabId && attribute === 'discount') {
-                    copyHTMLBlockInput(`shared-discountId`, `discountId-block-${activatedTabId}`);
-                    copyHTMLBlockInput(`shared-percent`, `percent-block-${activatedTabId}`);
-                }
-                // localStorage.setItem('activeLang_Global', activatedTabId);
+                const blockName = attribute === 'taste' ? 'tasteId' : 'discountId';
+                const sharedId = `shared-${blockName}`;
+                copyHTMLBlockInput(`${blockName}-block-${previousActiveTab}`, sharedId);
+                copyHTMLBlockInput(sharedId, `${blockName}-block-${activatedTabId}`);
             });
         });
     </script>
@@ -297,12 +297,8 @@
 
         function getFormDataTaste() {
             const resForm = new FormData();
-            // let tasteIdUk = $('input[data-name="tasteIdUk"]');
-            // let tasteIdEn = $('input[data-name="tasteIdEn"]');
-            // if (tasteIdUk && tasteIdEn) {
             resForm.append("tasteIdUk", $('input[data-name="tasteIdUk"]').val());
             resForm.append("tasteIdEn", $('input[data-name="tasteIdEn"]').val());
-            // }
             resForm.append("commonId", $('#tasteId_').val());
             resForm.append("nameUk", $('#tasteName-uk_').val());
             resForm.append("nameEn", $('#tasteName-en_').val());
@@ -313,8 +309,9 @@
             const resForm = new FormData();
             resForm.append("discountIdUk", $('input[data-name="discountIdUk"]').val());
             resForm.append("discountIdEn", $('input[data-name="discountIdEn"]').val());
-            resForm.append("discountCommonId", $('#discountId_').val());
-            resForm.append("value", $('#percent_').val());
+            resForm.append("discountCommonId", $(`input[data-name="discountCommonId"]`).val());
+            resForm.append("value", $(`input[data-name="value"]`).val());
+
             resForm.append("nameUk2", $('#discountName-uk_').val());
             resForm.append("nameEn2", $('#discountName-en_').val());
             return resForm;
@@ -355,6 +352,20 @@
                     clearValid();
                     let data = JSON.parse(error.responseText);
                     validate2(data);
+
+                    if (data.value) {
+                        const message = data.value;
+                        const valueFields = document.querySelectorAll(`[data-name="value"]`);
+                        valueFields.forEach((inputField, index) => {
+                            if (index === 0) return;
+                            inputField.classList.add("errorMy");
+                            let errorMessage = document.createElement("span");
+                            errorMessage.className = "error-message";
+                            errorMessage.style.color = "red";
+                            errorMessage.innerText = message;
+                            inputField.parentNode.appendChild(errorMessage);
+                        });
+                    }
                     console.log("Error submitting form:", error);
                 }
             });
@@ -379,6 +390,10 @@
                     deleteEntityById(`${contextPath}/admin/discount/${id}/delete`);
                 }
             });
+            $(document).on('input', `input[data-name="value"]`, function () {
+                let attrName = $(this).attr('data-name');
+                $(`input[data-name="${attrName}"]`).val($(this).val());
+            });
         }
 
         function addEventListenerButtonAdd() {
@@ -395,10 +410,8 @@
             document.getElementById('btnAdd-discount').addEventListener('click', () => {
                 $('#discountName-uk_').val('');
                 $('#discountName-en_').val('');
-                $('#discountId_').val('');
-                $('#percent_').val('');
-                $('input[data-name="discountIdUk"]').val('');
-                $('input[data-name="discountIdEn"]').val('');
+                $('input[data-name="discountCommonId"]').val('');
+                $('input[data-name="value"]').val('');
                 const modal = new bootstrap.Modal(document.getElementById('ModalForSaveDiscount'));
                 modal.show();
             });
@@ -418,8 +431,6 @@
             addEventListenerButtonAdd();
             copyHTMLBlockInput('shared-tasteId', `tasteId-block-${activeLang}`);
             copyHTMLBlockInput('shared-discountId', `discountId-block-${activeLang}`);
-            copyHTMLBlockInput(`shared-percent`, `percent-block-${activeLang}`);
-
         });
         window.addEventListener('load', function () {
             const targetNode = document.getElementById("languageCode_");
@@ -434,7 +445,7 @@
                     observer.disconnect();
                 });
 
-                observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
+                observer.observe(targetNode, {attributes: true, childList: true, subtree: true});
             }
         });
 

@@ -12,8 +12,8 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @IsExistDiscountValidation
 public class DiscountRequestForAdd {
-    private Long discountIdUk;
-    private Long discountIdEn;
+    private Long discountIdUk; // no delete, is important
+    private Long discountIdEn; // no delete, is important
     @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
     private Long discountCommonId;

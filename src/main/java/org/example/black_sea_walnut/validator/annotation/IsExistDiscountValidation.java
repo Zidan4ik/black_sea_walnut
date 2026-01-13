@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = IsExistDiscountValidator.class)
 public @interface IsExistDiscountValidation {
-    public String message() default "Discount is already exist in database!";
+    public String message() default "{error.field.discount.IsExist}";
 
     public Class<?>[] groups() default {};
 

@@ -33,7 +33,6 @@ function validate(data) {
 function validate2(data) {
     Object.entries(data).forEach(function ([field, message]) {
         const inputField = document.querySelector(`[data-name=${field}]`);
-        // console.log(inputField);
         if (inputField) {
             console.log("Field:", field, "Message:", message);
             inputField.classList.add("errorMy");
