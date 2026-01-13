@@ -142,7 +142,7 @@
 
 <div layout:fragment="modal-content"></div>
 
-<div class="modal fade show" id="ModalForLogout" tabindex="-1" aria-modal="true" role="dialog">
+<div class="modal fade show" id=" " tabindex="-1" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header text-center" style="font-size: 20px" th:text="#{text.areYouSureToExit}"></div>
@@ -199,15 +199,13 @@
     $(document).on("click", ".btn-card-block-spinner", function () {
         invokeBlockUI();
     });
-    $(document).on("change", ".input-card-block-spinner", function () {
-        invokeBlockUI();
-    });
+
     $(document).on("change", ".select-card-block-spinner", function () {
         invokeBlockUI();
     });
 
     $(document).ready(function () {
-        invokeBlockUI();
+        // invokeBlockUI();
         $('#btn-logout').on('click', invokeLogoutModal);
     });
 
@@ -295,7 +293,6 @@
         }
     }
 
-
     function confirmAndPathDelete(ids) {
         const messageText = messages.modalDelete;
 
@@ -311,9 +308,9 @@
                 cancelButton: 'btn btn-label-secondary'
             },
             buttonsStyling: false,
-            didOpen: ()=>{
+            didOpen: () => {
                 let cancelButton = Swal.getCancelButton();
-                if(cancelButton){
+                if (cancelButton) {
                     cancelButton.style.color = '#000000';
                 }
             }

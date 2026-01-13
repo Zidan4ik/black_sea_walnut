@@ -6,7 +6,6 @@ function invokeRequest(inputs, page) {
             const input = document.querySelector(`[name=${name}]`);
             if (input) {
                 let value = input.value;
-
                 if (name === 'id' && value !== '' && !/^\d+$/.test(value)) {
                     input.classList.add('is-invalid');
                     if (errorContainer) {
@@ -22,13 +21,13 @@ function invokeRequest(inputs, page) {
             }
         }
         if (errorContainer) errorContainer.innerHTML = '';
-
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
             $("#table-data-container_ tbody").empty();
             $("#table-pagination-container_").empty();
-
+            invokeBlockUI();
             const params = new URLSearchParams();
+            console.log(inputs);
             for (const name of inputs) {
                 const input = document.querySelector(`[name=${name}]`);
                 if (input) params.append(name, input.value);
