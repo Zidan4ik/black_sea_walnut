@@ -107,8 +107,15 @@ public class NutController {
         nutService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/nut/delete")
+    public ResponseEntity<?> deleteNut2(@RequestBody Long id) {
+        nutService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ModelAttribute("isActiveNuts")
-    public boolean toActiveSidebarButton(){
+    public boolean toActiveSidebarButton() {
         return true;
     }
 }

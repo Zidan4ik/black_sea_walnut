@@ -14,7 +14,8 @@
         .pointer {
             cursor: pointer;
         }
-        .truncate-text{
+
+        .truncate-text {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -33,7 +34,8 @@
                 <div class="row mb-3">
                     <div class="col-sm-12 col-md-6">
                         <div class="d-flex align-items-center">
-                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span th:text="#{text.show}"></span>
+                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
+                                    th:text="#{text.show}"></span>
                                 <select class="form-select mx-2 select-card-block-spinner"
                                         id="pick-size-for-pagination_"
                                         name="size">
@@ -54,7 +56,7 @@
                                 </a>
                             </div>
                             <div class="col-3 text-start" style="font-weight: bold;font-size: large;"
-                            th:text="#{text.button.add}">
+                                 th:text="#{text.button.add}">
                             </div>
                         </div>
                     </div>
@@ -86,7 +88,7 @@
                                     <input type="text"
                                            class="form-control input-card-block-spinner"
                                            id="date_"
-                                           placeholder="dd.mm.yyyy"
+                                           placeholder=""
                                            name="dateOfUpdated"
                                            autocomplete="off"/>
                                     <span class="input-group-text">
@@ -118,22 +120,10 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            $('#modal-btnDelete_').attr('data-id', id);
-            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-            modal.show();
+            confirmAndPathDelete(id, `${contextPath}/admin/nut/delete`, () => {
+                invokeRequest(inputs, 0)
+            })
         });
-
-        function requestDelete(id) {
-            let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}/admin/nut/${id}/delete`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    window.location.reload();
-                }
-            });
-        }
-
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {
@@ -146,13 +136,13 @@
             }
         });
 
-        $(document).ready(function () {
-            $('#modal-btnDelete_').on('click', function () {
-                let attrId = this.getAttribute('data-id');
-                requestDelete(attrId);
-            });
-            selectedLanguage();
-        });
+        // $(document).ready(function () {
+        //     $('#modal-btnDelete_').on('click', function () {
+        //         let id = this.getAttribute('data-id');
+        //         confirmAndPathDelete(id,`${contextPath}/admin/nut/delete`,()=>{invokeRequest(inputs,0)})
+        //     });
+        //     selectedLanguage();
+        // });
 
         $(document).on('change', '.switch-input', function () {
             const formData = new FormData();
@@ -164,7 +154,8 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function () {},
+                success: function () {
+                },
                 error: function (error) {
                     console.log("Error submitting form:", error);
                 }
