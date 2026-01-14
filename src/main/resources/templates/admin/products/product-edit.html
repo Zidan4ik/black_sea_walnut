@@ -441,7 +441,7 @@
                                     </span>
                             </label>
                         </div>
-                        <button id="btn-target_" type="button" class="btn btnTrashMyBefore">
+                        <button id="btn-target_" type="button" class="btn btnTrashMyBefore" th:data-id="${id}">
                             <i class="ti ti-trash" style="font-size: x-large;"></i>
                         </button>
                     </div>
@@ -588,12 +588,15 @@
                         </div>
                     </div>
                 </div>
+
                 <!--/ Modal -->
                 <script>
                     function deleteButtonTarget() {
                         $('#btn-target_').on('click', function () {
-                            const modal = new bootstrap.Modal(document.querySelector("#ModalForDelete"));
-                            modal.show();
+                            let id = $(this).attr('data-id');
+                            confirmAndPathDelete(id,`${contextPath}/admin/product/delete`, function (){
+                                window.location.href = contextPath+`/admin/products`
+                            });
                         });
                     }
                 </script>

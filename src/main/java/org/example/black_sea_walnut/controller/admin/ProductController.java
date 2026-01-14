@@ -47,7 +47,7 @@ public class ProductController {
 
     @GetMapping("/products")
     private ModelAndView viewTransactions() {
-        return new ModelAndView("admin/products/table");
+        return new ModelAndView("admin/products/products");
     }
 
     @GetMapping("/products/table/load")
@@ -127,6 +127,14 @@ public class ProductController {
         productService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @SneakyThrows
+    @DeleteMapping("/product/delete")
+    public ResponseEntity<?> deleteProduct2(@RequestBody Long id) {
+        productService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/product/{id}")
     @ResponseBody
     public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id){

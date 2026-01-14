@@ -350,7 +350,6 @@
 
     function confirmAndPathDelete(ids, path, cb) {
         const messageText = messages.modalDelete;
-
         Swal.fire({
             title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.areYouSure + '?'} </div>`,
             text: messageText + '...',
@@ -390,7 +389,7 @@
         request.open('DELETE', path);
         request.setRequestHeader('Content-Type', 'application/json');
         request.addEventListener('load', function () {
-            if (request.status === 200) {
+            if (request.status === 200 && cb) {
                 cb();
             }
         });
@@ -400,6 +399,7 @@
 <script th:inline="javascript">
     const messages = {
         invalidNumber: /*[[#{error.field.invalid.number}]]*/ 'default',
+        filterProduct: /*[[#{error.filter.product}]]*/ 'default',
         areYouSureToDeleteIt: /*[[#{text.areYouSure}]]*/ 'default',
         noCallAnyoneCalls: /*[[#{text.noCallAnyoneCalls}]]*/ 'default',
         warning: /*[[#{text.warning}]]*/ 'default',

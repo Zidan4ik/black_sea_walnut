@@ -1,24 +1,28 @@
 function invokeRequest(inputs, page) {
     if (Array.isArray(inputs)) {
         const errorContainer = document.getElementById('error-container');
-
+        // console.log(inputs);
+        const validationRules = {
+            id: messages.invalidNumber,
+            priceByUnit: messages.filterProduct
+        }
         for (const name of inputs) {
             const input = document.querySelector(`[name=${name}]`);
-            if (input) {
-                let value = input.value;
-                if (name === 'id' && value !== '' && !/^\d+$/.test(value)) {
-                    input.classList.add('is-invalid');
-                    if (errorContainer) {
-                        errorContainer.innerHTML = `
+            if (!input) continue;
+
+            let value = input.value;
+            if (validationRules[name] && value !== '' && !/^\d+$/.test(value)) {
+                input.classList.add('is-invalid');
+                if (errorContainer) {
+                    errorContainer.innerHTML = `
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            ${messages.invalidNumber} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            ${validationRules[name]} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
-                    }
-                    clearTimeout(timeoutId);
-                    return;
                 }
-                input.classList.remove('is-invalid');
+                return clearTimeout(timeoutId);
             }
+            input.classList.remove('is-invalid');
+
         }
         if (errorContainer) errorContainer.innerHTML = '';
         clearTimeout(timeoutId);
@@ -54,7 +58,7 @@ $(document).on('click', '.pagination a', function () {
 });
 
 $(document).ready(function () {
-    document.addEventListener('htmx:afterRequest', function(evt) {
+    document.addEventListener('htmx:afterRequest', function (evt) {
         if (evt.detail.target.id === 'table-data-container_' ||
             evt.detail.target.id === 'table-pagination-container_') {
             $("#card-block").unblock();
