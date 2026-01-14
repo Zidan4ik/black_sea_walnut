@@ -54,4 +54,10 @@ public class DiscountController {
         discountService.deleteCommonById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/discount/delete")
+    public ResponseEntity<String> deleteTasteById2(@RequestBody Long id) {
+        discountService.deleteCommonById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

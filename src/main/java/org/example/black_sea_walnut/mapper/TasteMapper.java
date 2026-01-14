@@ -25,13 +25,13 @@ public class TasteMapper {
         tasteUk.setId(dto.getTasteIdUk());
         tasteUk.setCommonId(dto.getCommonId());
         tasteUk.setLanguageCode(LanguageCode.uk);
-        tasteUk.setName(dto.getNameUk());
+        tasteUk.setName(dto.getTasteNameUk());
 
         Taste tasteEn = new Taste();
         tasteEn.setId(dto.getTasteIdEn());
         tasteEn.setCommonId(dto.getCommonId());
         tasteEn.setLanguageCode(LanguageCode.en);
-        tasteEn.setName(dto.getNameEn());
+        tasteEn.setName(dto.getTasteNameEn());
         return List.of(tasteUk, tasteEn);
     }
 

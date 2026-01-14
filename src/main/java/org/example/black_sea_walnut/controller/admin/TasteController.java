@@ -57,4 +57,10 @@ public class TasteController {
         tasteService.deleteByCommonId(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/taste/delete")
+    public ResponseEntity<?> deleteTasteById2(@RequestBody Long id){
+        tasteService.deleteByCommonId(id);
+        return new ResponseEntity<>("Taste was successful deleted", HttpStatus.OK);
+    }
 }

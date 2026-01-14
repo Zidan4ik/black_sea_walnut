@@ -133,20 +133,8 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            confirmAndPathDelete(id);
+            confirmAndPathDelete(id,`${contextPath}/admin/order/delete`, ()=>{invokeRequest(inputs,0)});
         });
-
-        function requestDelete(id) {
-            let request = new XMLHttpRequest();
-            request.open('GET', `${contextPath}/admin/order/delete/${id}`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    invokeBlockUI();
-                    invokeRequest(inputs, 0)
-                }
-            });
-        }
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {

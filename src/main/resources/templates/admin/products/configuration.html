@@ -300,8 +300,8 @@
             resForm.append("tasteIdUk", $('input[data-name="tasteIdUk"]').val());
             resForm.append("tasteIdEn", $('input[data-name="tasteIdEn"]').val());
             resForm.append("commonId", $('#tasteId_').val());
-            resForm.append("nameUk", $('#tasteName-uk_').val());
-            resForm.append("nameEn", $('#tasteName-en_').val());
+            resForm.append("tasteNameUk", $('#tasteName-uk_').val());
+            resForm.append("tasteNameEn", $('#tasteName-en_').val());
             return resForm;
         }
 
@@ -378,7 +378,7 @@
                 if ($(this).hasClass('edit-icon') && attribute === 'taste') {
                     requestGetTaste(`${contextPath}/admin/taste/${id}`);
                 } else if ($(this).hasClass('delete-icon') && attribute === 'taste') {
-                    deleteEntityById(`${contextPath}/admin/taste/${id}/delete`);
+                    confirmAndPathDelete(id, `${contextPath}/admin/taste/delete`, requestGetTastes);
                 }
             });
             $("#table-data-container-discounts_").on('click', '.edit-icon, .delete-icon', function () {
@@ -387,7 +387,7 @@
                 if ($(this).hasClass('edit-icon') && attribute === 'discount') {
                     requestGetDiscount(`${contextPath}/admin/discount/${id}`);
                 } else if ($(this).hasClass('delete-icon') && attribute === 'discount') {
-                    deleteEntityById(`${contextPath}/admin/discount/${id}/delete`);
+                    confirmAndPathDelete(id, `${contextPath}/admin/discount/delete`, requestGetDiscounts);
                 }
             });
             $(document).on('input', `input[data-name="value"]`, function () {
@@ -473,16 +473,6 @@
             });
         }
 
-        function deleteEntityById(url) {
-            let request = new XMLHttpRequest();
-            request.open("DELETE", url);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    window.location.reload();
-                }
-            });
-        }
 
         function requestGetDiscount(url) {
             let request = new XMLHttpRequest();

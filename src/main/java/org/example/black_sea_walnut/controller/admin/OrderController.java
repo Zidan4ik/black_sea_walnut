@@ -66,6 +66,11 @@ public class OrderController {
         orderService.deleteById(id);
         return new ModelAndView("redirect:/admin/orders");
     }
+    @DeleteMapping("/order/delete")
+    public ResponseEntity<?> deleteOrder2(@RequestBody Long id){
+        orderService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @ModelAttribute("isActiveOrders")
     public boolean toActiveApplications(){
         return true;

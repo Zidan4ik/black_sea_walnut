@@ -138,21 +138,8 @@
         $(document).on('click', '.delete-icon', function () {
             $(`#modal-btnDelete_`).attr('data-type', 'one');
             let id = $(this).data('id');
-            confirmAndPathDelete([id]);
+            confirmAndPathDelete([id],`${contextPath}/admin/call/delete`, ()=>{invokeRequest(inputs, 0)});
         });
-
-        function requestDelete(ids) {
-            let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}/admin/call/delete`);
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    invokeBlockUI();
-                    invokeRequest(inputs, 0)
-                }
-            });
-            request.send(JSON.stringify(ids));
-        }
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {

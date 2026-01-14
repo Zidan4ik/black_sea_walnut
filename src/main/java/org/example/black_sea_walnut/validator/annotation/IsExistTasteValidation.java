@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = IsExistTasteValidator.class)
 public @interface IsExistTasteValidation {
-    public String message() default "Taste is already exist in database!";
+    public String message() default "{error.field.taste.IsExist}";
 
     public Class<?>[] groups() default {};
 

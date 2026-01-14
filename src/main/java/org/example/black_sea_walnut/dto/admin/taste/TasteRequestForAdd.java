@@ -19,8 +19,8 @@ public class TasteRequestForAdd {
     private Long commonId;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")
-    private String nameUk;
+    private String tasteNameUk;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")
-    private String nameEn;
+    private String tasteNameEn;
 }
