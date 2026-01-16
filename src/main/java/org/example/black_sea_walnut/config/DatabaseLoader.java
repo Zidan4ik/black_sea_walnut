@@ -32,8 +32,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private final RegionService regionService;
     private final CityService cityService;
     private final ClientCategoryService clientCategoryService;
-    private final DiscountRepository discountRepository;
-    private final TasteRepository tasteRepository;
+    private final DiscountService discountService;
+    private final TasteService tasteService;
     private final GalleryRepository galleryRepository;
     private final NutRepository nutRepository;
     private final CallRepository callRepository;
@@ -236,15 +236,43 @@ public class DatabaseLoader implements CommandLineRunner {
                 transaction.setCustomer(faker.name().fullName());
                 transaction.setDate(LocalDateTime.now().minusDays(i));
                 transaction.setSumma(1000 * i);
-                transaction.setPhone(faker.phoneNumber().phoneNumber());
+                transaction.setPhone(faker.numerify("+380#########"));
                 transaction.setEmail(faker.internet().emailAddress());
-                transaction.setPaymentType(i % 2 == 0 ? PaymentType.card : PaymentType.cash);
-                transaction.setPaymentStatus(i % 3 == 0 ? PaymentStatus.payed : PaymentStatus.unPayed);
+                transaction.setPaymentType(faker.options().option(PaymentType.class));
+                transaction.setPaymentStatus(faker.options().option(PaymentStatus.class));
                 transaction.setUser(null);
                 transactionsService.save(transaction);
             }
         }
+
+        if (discountService.getAll().isEmpty()) {
+            List<Discount> discounts = new ArrayList<>();
+            discounts.add(new Discount(null,(long)1,LanguageCode.uk,"Новий",15));
+            discounts.add(new Discount(null,(long)1,LanguageCode.en,"New",15));
+
+            discounts.add(new Discount(null,(long)2,LanguageCode.uk,"Cезон",50));
+            discounts.add(new Discount(null,(long)2,LanguageCode.en,"Seasonal",50));
+
+            discountService.saveAll(discounts);
+        }
+        if (tasteService.getAll().isEmpty()) {
+            List<Taste> tastes = new ArrayList<>();
+
+            tastes.add(new Taste(null, (long) 1, LanguageCode.uk,"Солодкий"));
+            tastes.add(new Taste(null, (long) 1, LanguageCode.en,"Sweet"));
+            tastes.add(new Taste(null, (long) 2, LanguageCode.uk,"Класичний"));
+            tastes.add(new Taste(null, (long) 2, LanguageCode.en,"Classic"));
+
+            tasteService.saveAll(tastes);
+        }
+
         if (productService.getAll().isEmpty()) {
+            Map<Long, List<Discount>> discountGrouped = discountService.findAllGroupedByCommonId();
+            List<Long> keysDiscounts = new ArrayList<>(discountGrouped.keySet());
+
+            Map<Long, List<Taste>> tastesGrouped = tasteService.getAllGroupedByCommonId();
+            ArrayList<Long> keysTastes = new ArrayList<>(tastesGrouped.keySet());
+
             for (int i = 1; i <= 10; i++) {
                 Product product = new Product();
                 product.setArticleId((long) i);
@@ -295,47 +323,19 @@ public class DatabaseLoader implements CommandLineRunner {
                         LocalDateTime.now().plusDays(i),
                         product
                 ));
+                Long randomCommonIdDiscount = keysDiscounts.get(faker.random().nextInt(keysDiscounts.size()));
+                product.setDiscounts(new HashSet<>(discountGrouped.get(randomCommonIdDiscount)));
 
+                Long randomCommonIdTastes = keysTastes.get(faker.random().nextInt(keysTastes.size()));
+                product.setTastes(new HashSet<>(tastesGrouped.get(randomCommonIdTastes)));
                 productService.save(product);
             }
-        }
-        if (discountRepository.findAll().isEmpty()) {
-            List<Discount> discounts = new ArrayList<>();
-            Discount discountUk = new Discount();
-            discountUk.setDiscountCommonId((long) 1);
-            discountUk.setLanguageCode(LanguageCode.uk);
-            discountUk.setName("Новий");
-            discountUk.setValue(15);
-            discounts.add(discountUk);
-            Discount discountEn = new Discount();
-            discountEn.setDiscountCommonId((long) 1);
-            discountEn.setLanguageCode(LanguageCode.en);
-            discountEn.setName("New");
-            discountEn.setValue(15);
-            discounts.add(discountEn);
-
-            discountRepository.saveAll(discounts);
-        }
-        if (tasteRepository.findAll().isEmpty()) {
-            List<Taste> tastes = new ArrayList<>();
-            Taste tasteUk = new Taste();
-            tasteUk.setCommonId((long) 1);
-            tasteUk.setLanguageCode(LanguageCode.uk);
-            tasteUk.setName("Солодкий");
-            tastes.add(tasteUk);
-            Taste tasteEn = new Taste();
-            tasteEn.setCommonId((long) 1);
-            tasteEn.setLanguageCode(LanguageCode.en);
-            tasteEn.setName("Sweet");
-            tastes.add(tasteEn);
-
-            tasteRepository.saveAll(tastes);
         }
         if (galleryRepository.findAll().isEmpty()) {
             List<Gallery> galleries = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 Gallery gallery = new Gallery();
-                gallery.setMediaType(randomEnum(MediaType.class));
+                gallery.setMediaType(faker.options().option(MediaType.class));
                 gallery.setActive(random.nextBoolean());
                 gallery.setTimeUpdate(LocalDateTime.now().minusDays(random.nextInt(30)));
                 gallery.setPathToMedia("/image/default-image-nut.jpg");
@@ -380,8 +380,8 @@ public class DatabaseLoader implements CommandLineRunner {
             List<Call> calls = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 Call call = new Call();
-                call.setPhone(faker.phoneNumber().cellPhone());
-                call.setStatus(randomEnum(CallStatus.class));
+                call.setPhone(faker.numerify("+380#########"));
+                call.setStatus(faker.options().option(CallStatus.class));
                 call.setRegisterCall(LocalDateTime.now().minusDays(random.nextInt(30)));
                 calls.add(call);
             }
@@ -389,8 +389,8 @@ public class DatabaseLoader implements CommandLineRunner {
         }
         if (contactRepository.findAll().isEmpty()) {
             Contact contact = Contact.builder()
-                    .phone1("+380936610366")
-                    .phone2("+380666790166")
+                    .phone1(faker.numerify("+380#########"))
+                    .phone2(faker.numerify("+380#########"))
                     .email("walnut@gmail.com")
                     .addressWork("4145 Leonor Locks")
                     .addressFactory("9051 Mertz Corners")
@@ -409,7 +409,7 @@ public class DatabaseLoader implements CommandLineRunner {
             User admin = new User();
             admin.setFullName("Admin User");
             admin.setEmail("admin@gmail.com");
-            admin.setPhone("+123456789");
+            admin.setPhone(faker.numerify("+380#########"));
             admin.setPassword(passwordEncoder.encode("admin"));
             admin.setPaymentDetails("Bank Account: 1234-5678");
             admin.setDateRegistered(LocalDate.now());
@@ -425,7 +425,7 @@ public class DatabaseLoader implements CommandLineRunner {
             User user = new User();
             user.setFullName("User");
             user.setEmail("user@gmail.com");
-            user.setPhone("+987654321");
+            user.setPhone(faker.numerify("+380#########"));
             user.setPassword(passwordEncoder.encode("user"));
             user.setPaymentDetails("Bank Account: 8765-4321");
             user.setDateRegistered(LocalDate.now());
@@ -452,18 +452,18 @@ public class DatabaseLoader implements CommandLineRunner {
                 order.setPersonalId(faker.number().randomNumber());
                 order.setFio(faker.name().fullName());
                 order.setEmail(faker.internet().emailAddress());
-                order.setPhone(faker.phoneNumber().phoneNumber());
+                order.setPhone(faker.numerify("+380#########"));
                 order.setCountProducts(faker.number().numberBetween(1, 10));
                 order.setTotalPrice(faker.number().numberBetween(100, 1000));
                 order.setCompanyDelivery(faker.company().name());
                 order.setPersonNameDelivery(faker.name().fullName());
                 order.setEmailDelivery(faker.internet().emailAddress());
-                order.setPhoneDelivery(faker.phoneNumber().phoneNumber());
+                order.setPhoneDelivery(faker.numerify("+380#########"));
                 order.setAddressDelivery(faker.address().fullAddress());
-                order.setOrderStatus(randomEnum(OrderStatus.class));
-                order.setDeliveryStatus(randomEnum(DeliveryStatus.class));
-                order.setDeliveryType(randomEnum(DeliveryType.class));
-                order.setPaymentType(randomEnum(PaymentType.class));
+                order.setOrderStatus(faker.options().option(OrderStatus.class));
+                order.setDeliveryStatus(faker.options().option(DeliveryStatus.class));
+                order.setDeliveryType(faker.options().option(DeliveryType.class));
+                order.setPaymentType(faker.options().option(PaymentType.class));
                 order.setPayed(faker.bool().bool());
 
                 int randomDay = new Random().nextInt(daysInMonth) + 1;
@@ -499,7 +499,7 @@ public class DatabaseLoader implements CommandLineRunner {
             List<Manager> managers = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
                 Manager manager = new Manager();
-                manager.setPhone(faker.phoneNumber().phoneNumber());
+                manager.setPhone(faker.numerify("+380#########"));
                 List<ManagerTranslation> translations = new ArrayList<>();
                 for (LanguageCode languageCode : LanguageCode.values()) {
                     ManagerTranslation translation = new ManagerTranslation(

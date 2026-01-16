@@ -47,7 +47,7 @@ public class NewController {
 
     @GetMapping("/news")
     public ModelAndView viewPage() {
-        return new ModelAndView("admin/news/table");
+        return new ModelAndView("admin/news/news");
     }
 
     @GetMapping("/news/table/load")

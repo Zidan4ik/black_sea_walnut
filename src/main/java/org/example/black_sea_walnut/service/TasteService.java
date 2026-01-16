@@ -7,6 +7,7 @@ import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface TasteService {
@@ -31,4 +32,10 @@ public interface TasteService {
     TasteResponseForAdd getByIdInResponseForAdd(Long id);
 
     void deleteByCommonId(Long id);
+
+    List<Taste> getAll();
+
+    void saveAll(List<Taste> tastes);
+
+    Map<Long, List<Taste>> getAllGroupedByCommonId();
 }

@@ -24,10 +24,10 @@ public class TransactionSpecification {
             specification = specification.and(likeCustomer(entity.getCustomer()));
         }
         if (entity.getPhone() != null && !entity.getPhone().isBlank()) {
-            specification = specification.and(likePhone(entity.getCustomer()));
+            specification = specification.and(likePhone(entity.getPhone()));
         }
         if (entity.getEmail() != null && !entity.getEmail().isBlank()) {
-            specification = specification.and(likeEmail(entity.getCustomer()));
+            specification = specification.and(likeEmail(entity.getEmail()));
         }
         if (entity.getDate() != null && !entity.getDate().isBlank()) {
             LocalDate date = LocalDate.parse(entity.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));

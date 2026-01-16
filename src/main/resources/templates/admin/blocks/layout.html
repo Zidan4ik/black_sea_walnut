@@ -262,7 +262,7 @@
     });
 
     $(document).ready(function () {
-        // invokeBlockUI();
+        invokeBlockUI();
         $('#btn-logout').on('click', invokeLogoutModal);
     });
 
@@ -400,6 +400,10 @@
     const messages = {
         invalidNumber: /*[[#{error.field.invalid.number}]]*/ 'default',
         filterProduct: /*[[#{error.filter.product}]]*/ 'default',
+        filterAmount: /*[[#{error.filter.totalAmount}]]*/ 'default',
+        filterPrice: /*[[#{error.filter.totalPrice}]]*/ 'default',
+        filterDate: /*[[#{error.filter.date}]]*/ 'default',
+        filterPhone: /*[[#{error.filter.phone}]]*/ 'default',
         areYouSureToDeleteIt: /*[[#{text.areYouSure}]]*/ 'default',
         noCallAnyoneCalls: /*[[#{text.noCallAnyoneCalls}]]*/ 'default',
         warning: /*[[#{text.warning}]]*/ 'default',

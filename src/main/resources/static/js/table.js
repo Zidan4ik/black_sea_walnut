@@ -1,35 +1,54 @@
 function invokeRequest(inputs, page) {
+    console.log(inputs);
     if (Array.isArray(inputs)) {
         const errorContainer = document.getElementById('error-container');
-        // console.log(inputs);
+
         const validationRules = {
-            id: messages.invalidNumber,
-            priceByUnit: messages.filterProduct
+            id: { msg: messages.invalidNumber, reg: /^\d+$/ },
+            priceByUnit: { msg: messages.filterProduct, reg: /^\d+$/ },
+            totalCount: { msg: messages.filterAmount, reg: /^\d+$/ },
+            totalPrice: { msg: messages.filterPrice, reg: /^\d+$/,},
+            date: { msg: messages.filterDate, reg: /^(0[1-9]|[12]\d|3[01]).(0[1-9]|1[0-2]).\d{4}$/ },
+            phone: { msg: messages.filterPhone, reg: /^(\+38)?\s?\(?\d{3}\)?\s?\d{3}\s?\d{2}\s?\d{2}$/}
         }
+
         for (const name of inputs) {
             const input = document.querySelector(`[name=${name}]`);
             if (!input) continue;
 
             let value = input.value;
-            if (validationRules[name] && value !== '' && !/^\d+$/.test(value)) {
-                input.classList.add('is-invalid');
-                if (errorContainer) {
-                    errorContainer.innerHTML = `
+
+            if (value === '') {
+                input.classList.remove('is-invalid');
+                continue;
+            }
+
+            if (validationRules[name]) {
+                const rule = validationRules[name];
+
+                if (!rule.reg.test(value)) {
+                    input.classList.add('is-invalid');
+                    if (errorContainer) {
+                        errorContainer.innerHTML = `
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            ${validationRules[name]} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            ${rule.msg} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
+                    }
+                    clearTimeout(timeoutId);
+                    return;
                 }
-                return clearTimeout(timeoutId);
             }
             input.classList.remove('is-invalid');
-
         }
+
         if (errorContainer) errorContainer.innerHTML = '';
+
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
             $("#table-data-container_ tbody").empty();
             $("#table-pagination-container_").empty();
             invokeBlockUI();
+
             const params = new URLSearchParams();
             for (const name of inputs) {
                 const input = document.querySelector(`[name=${name}]`);
@@ -51,7 +70,6 @@ function invokeRequest(inputs, page) {
         }, 500);
     }
 }
-
 $(document).on('click', '.pagination a', function () {
     let page = $(this).data('page');
     invokeRequest(inputs, page);

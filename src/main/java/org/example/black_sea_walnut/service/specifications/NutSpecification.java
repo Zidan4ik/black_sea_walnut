@@ -22,8 +22,8 @@ public class NutSpecification {
         if (entity.getTitle() != null && !entity.getTitle().isBlank()) {
             specification = specification.and(likeTitle(entity.getTitle(), languageCode));
         }
-        if (entity.getDateOfUpdated() != null && !entity.getDateOfUpdated().isBlank()) {
-            LocalDate date = LocalDate.parse(entity.getDateOfUpdated(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        if (entity.getDate() != null && !entity.getDate().isBlank()) {
+            LocalDate date = LocalDate.parse(entity.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             specification = specification.and(hasDate(date));
         }
         return specification;

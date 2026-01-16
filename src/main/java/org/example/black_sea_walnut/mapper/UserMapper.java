@@ -36,7 +36,7 @@ public class UserMapper {
                 .id(entity.getId())
                 .fullName(entity.getFullName())
                 .email(entity.getEmail())
-                .dateOfRegistration(DateUtil.toFormatDateFromDB(entity.getDateRegistered(), "dd.MM.yyyy"))
+                .date(DateUtil.toFormatDateFromDB(entity.getDateRegistered(), "dd.MM.yyyy"))
                 .registrationType(entity.getRegisterType().toString())
                 .amountOrders(String.valueOf(amountOrders))
                 .userStatus(entity.getStatus().toString())

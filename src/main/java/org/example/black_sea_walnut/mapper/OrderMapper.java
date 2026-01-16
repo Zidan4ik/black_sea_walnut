@@ -32,7 +32,7 @@ public class OrderMapper {
                 .statusOrder(entity.getOrderStatus())
                 .typePayment(entity.getPaymentType())
                 .isPay(entity.isPayed())
-                .dateOfOrdering(DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
+                .date   (DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
                 .build();
     }
 

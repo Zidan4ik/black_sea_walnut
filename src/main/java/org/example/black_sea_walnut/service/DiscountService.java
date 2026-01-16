@@ -7,6 +7,7 @@ import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.enums.LanguageCode;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface DiscountService {
@@ -32,5 +33,9 @@ public interface DiscountService {
 
     void save(DiscountRequestForAdd dto);
 
+    void saveAll(List<Discount> discount);
+
     void deleteCommonById(Long id);
+
+    Map<Long,List<Discount>> findAllGroupedByCommonId();
 }

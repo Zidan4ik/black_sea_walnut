@@ -51,7 +51,7 @@ public class NutMapper {
         return NutResponseForView
                 .builder()
                 .id(entity.getId())
-                .dateOfUpdated(DateUtil.toFormatDateFromDB(entity.getDate(), "dd.MM.yyyy"))
+                .date(DateUtil.toFormatDateFromDB(entity.getDate(), "dd.MM.yyyy"))
                 .title(translation != null ? translation.getTitle() : null)
                 .description(translation != null ? translation.getDescription() : null)
                 .isActive(entity.isActive())

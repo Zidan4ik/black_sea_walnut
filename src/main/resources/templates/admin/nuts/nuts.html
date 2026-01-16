@@ -89,7 +89,7 @@
                                            class="form-control input-card-block-spinner"
                                            id="date_"
                                            placeholder=""
-                                           name="dateOfUpdated"
+                                           name="date"
                                            autocomplete="off"/>
                                     <span class="input-group-text">
                                         <i class="ti ti-calendar"></i>
@@ -101,14 +101,14 @@
                         </thead>
                     </table>
                 </div>
-                <div id="table-pagination-container_"></div>
+                <div class="p-2" id="table-pagination-container_"></div>
                 <input type="hidden" name="languageCode" value="uk" id="languageCode_">
             </div>
         </div>
     </div>
     <script th:src="@{/js/table.js}"></script>
     <script>
-        const inputs = ['id', 'title', 'dateOfUpdated'];
+        const inputs = ['id', 'title', 'date'];
         let pathToTable = `${contextPath}/admin/nuts/table/load`;
         let pathToPagination = `${contextPath}/admin/nuts/pagination/load`;
         let timeoutId;
@@ -135,14 +135,6 @@
                 });
             }
         });
-
-        // $(document).ready(function () {
-        //     $('#modal-btnDelete_').on('click', function () {
-        //         let id = this.getAttribute('data-id');
-        //         confirmAndPathDelete(id,`${contextPath}/admin/nut/delete`,()=>{invokeRequest(inputs,0)})
-        //     });
-        //     selectedLanguage();
-        // });
 
         $(document).on('change', '.switch-input', function () {
             const formData = new FormData();

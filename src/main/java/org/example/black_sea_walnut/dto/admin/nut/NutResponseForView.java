@@ -9,6 +9,6 @@ public class NutResponseForView {
     private Long id;
     private String title;
     private String description;
-    private String dateOfUpdated;
+    private String date;
     private Boolean isActive;
 }

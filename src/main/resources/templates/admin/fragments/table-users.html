@@ -3,7 +3,7 @@
     <td th:text="${item.id}"></td>
     <td th:text="${item.fullName}"></td>
     <td th:text="${item.email}"></td>
-    <td th:text="${item.dateOfRegistration}"></td>
+    <td th:text="${item.date}"></td>
     <td>
         <span th:if="${item.registrationType == 'fop'}" th:text="#{value.registration-type.fop}"></span>
         <span th:if="${item.registrationType == 'legal'}" th:text="#{value.registration-type.legal}"></span>

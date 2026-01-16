@@ -28,8 +28,8 @@ public class UserSpecification {
         if (dto.getPhone() != null && !dto.getPhone().isBlank()) {
             specification = specification.and(likePhone(dto.getPhone()));
         }
-        if (dto.getDateOfRegistration() != null && !dto.getDateOfRegistration().isBlank()) {
-            LocalDate date = LocalDate.parse(dto.getDateOfRegistration(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        if (dto.getDate() != null && !dto.getDate().isBlank()) {
+            LocalDate date = LocalDate.parse(dto.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             specification = specification.and(hasDate(date));
         }
         if (dto.getUserStatus() != null && !dto.getUserStatus().isBlank()) {

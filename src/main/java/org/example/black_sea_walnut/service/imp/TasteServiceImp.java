@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
+import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.TasteMapper;
@@ -14,10 +15,7 @@ import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -104,5 +102,25 @@ public class TasteServiceImp implements TasteService {
     public void deleteByCommonId(Long id) {
         LogUtil.logInfo("Deleting all tastes by common ID: " + id);
         tasteRepository.deleteAllByCommonId(id);
+    }
+
+    @Override
+    public List<Taste> getAll() {
+        LogUtil.logInfo("Fetching all tastes: ");
+        return tasteRepository.findAll();
+    }
+
+    @Override
+    public void saveAll(List<Taste> tastes) {
+        LogUtil.logInfo("Saving new tastes: " + tastes);
+        tasteRepository.saveAll(tastes);
+    }
+
+    @Override
+    public Map<Long, List<Taste>> getAllGroupedByCommonId() {
+        LogUtil.logInfo("Fetching all tastes by common ids.");
+        Map<Long, List<Taste>> tastes = tasteRepository.findAllGroupedByCommonId();
+        LogUtil.logInfo("Fetched " + tastes.size() + " tastes.");
+        return tastes;
     }
 }

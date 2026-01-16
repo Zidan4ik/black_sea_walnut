@@ -39,20 +39,20 @@ public class Product {
     private String pathToImagePacking;
     private String pathToImageDelivery;
     private String priceByUnit;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "products_discounts",
-            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "articleId"),
-            inverseJoinColumns = @JoinColumn(name = "discount_id", referencedColumnName = "discountCommonId")
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "discount_id")
     )
     private Set<Discount> discounts = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductTranslation> productTranslations = new ArrayList<>();
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "products_tastes",
-            joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "articleId"),
-            inverseJoinColumns = @JoinColumn(name = "taste_id", referencedColumnName = "commonId")
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "taste_id")
     )
     private Set<Taste> tastes = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

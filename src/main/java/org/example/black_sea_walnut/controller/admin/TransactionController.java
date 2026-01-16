@@ -20,7 +20,7 @@ public class TransactionController {
     private final TransactionsService transactionsService;
     @GetMapping("/transactions")
     private ModelAndView viewTransactions(){
-        return new ModelAndView("admin/transactions/table");
+        return new ModelAndView("admin/transactions/transactions");
     }
     @GetMapping("/transactions/table/load")
     public ModelAndView loadTable(@ModelAttribute ResponseTransactionForView responseTransactionForView,

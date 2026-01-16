@@ -19,6 +19,6 @@ public class ResponseOrderForView {
     private PaymentType typePayment;
     private Boolean isPay;
     private OrderStatus statusOrder;
-    private String dateOfOrdering;
+    private String date;
     private DeliveryType typeOfDelivery;
 }

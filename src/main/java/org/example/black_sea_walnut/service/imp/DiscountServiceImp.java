@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -123,10 +124,25 @@ public class DiscountServiceImp implements DiscountService {
     }
 
     @Override
+    public void saveAll(List<Discount> discounts) {
+        LogUtil.logInfo("Saving discounts from DTO: " + discounts);
+        discountRepository.saveAll(discounts);
+        LogUtil.logInfo("Saved discounts from DTO: " + discounts);
+    }
+
+    @Override
     @Transactional
     public void deleteCommonById(Long id) {
         LogUtil.logInfo("Deleting all discounts with common ID: " + id);
         discountRepository.deleteAllByDiscountCommonId(id);
         LogUtil.logInfo("Deleted all discounts with common ID: " + id);
+    }
+
+    @Override
+    public Map<Long, List<Discount>> findAllGroupedByCommonId() {
+        LogUtil.logInfo("Fetching all discounts by common ids.");
+        Map<Long, List<Discount>> discounts = discountRepository.findAllGroupedByCommonId();
+        LogUtil.logInfo("Fetched " + discounts.size() + " discounts.");
+        return discounts;
     }
 }

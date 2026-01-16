@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import jakarta.persistence.criteria.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -87,7 +86,7 @@ class UserSpecificationTest {
         dto.setFullName("");
         dto.setEmail("");
         dto.setPhone("");
-        dto.setDateOfRegistration("");
+        dto.setDate("");
         dto.setUserStatus("");
         dto.setRegistrationType("");
         Specification<User> specification = UserSpecification.getSpecification(dto);
@@ -98,7 +97,7 @@ class UserSpecificationTest {
     @Test
     void testGetSpecification_WithDateOfRegistrationFilter() {
         String dateString = "23.03.2025";
-        dto.setDateOfRegistration(dateString);
+        dto.setDate(dateString);
         LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         LocalDateTime startDay = date.atStartOfDay();
         LocalDateTime endDay = date.atTime(LocalTime.MAX);

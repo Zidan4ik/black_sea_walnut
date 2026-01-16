@@ -42,8 +42,8 @@ public class OrderSpecification {
         if (response.getIsPay() != null) {
             specification = specification.and(hasTruePayment(response.getIsPay()));
         }
-        if (response.getDateOfOrdering() != null && !response.getDateOfOrdering().isBlank()) {
-            LocalDate date = LocalDate.parse(response.getDateOfOrdering(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        if (response.getDate() != null && !response.getDate().isBlank()) {
+            LocalDate date = LocalDate.parse(response.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             specification = specification.and(hasDateOfOrdering(date));
         }
         return specification;
