@@ -90,7 +90,7 @@ public class ProductController {
     public ResponseEntity<?> saveProduct(@Valid ProductRequestForAdd dto,
                                          BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
+            if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 

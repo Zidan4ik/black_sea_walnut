@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = NumberNullValidator.class)
 public @interface NumberNullValidation {
-    public String message() default "The number should be present!";
+    public String message() default "{error.field.empty.number}";
     public Class<?>[] groups() default {};
     public Class<? extends Payload>[] payload() default {};
 }

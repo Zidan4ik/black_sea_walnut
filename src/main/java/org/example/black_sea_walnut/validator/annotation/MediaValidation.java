@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = MediaValidator.class)
 public @interface MediaValidation {
-    public String message() default "Invalid file type!";
+    public String message() default "{error.file.valid}";
 
     String[] allowedTypes() default {};
 

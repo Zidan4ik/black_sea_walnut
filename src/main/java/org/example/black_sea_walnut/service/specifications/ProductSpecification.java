@@ -25,12 +25,12 @@ public class ProductSpecification {
         if (entity.getPriceByUnit() != null && !entity.getPriceByUnit().isBlank()) {
             specification = specification.and(equalPriceByUnit(Integer.parseInt(entity.getPriceByUnit())));
         }
-        if (entity.getTaste() != null) {
-            specification = specification.and(hasTaste(entity.getTaste(), languageCode));
-        }
-        if (entity.getDiscount() != null) {
-            specification = specification.and(hasDiscount(entity.getDiscount(), languageCode));
-        }
+//        if (entity.getTaste() != null) {
+//            specification = specification.and(hasTaste(entity.getTaste(), languageCode));
+//        }
+//        if (entity.getDiscount() != null) {
+//            specification = specification.and(hasDiscount(entity.getDiscount(), languageCode));
+//        }
         return specification;
     }
 

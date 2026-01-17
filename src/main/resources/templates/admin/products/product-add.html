@@ -69,7 +69,40 @@
                 <div class="tab-pane fade show active" id="navs-uk" role="tabpanel"
                      data-bs-toggle="tab">
                     <div class="row">
-                        <div id="header-block-uk"></div>
+                        <!--                        <div id="header-block-uk"></div>-->
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 data-name="name-product" class="mb-0 me-3"></h4>
+                            <div class="d-flex align-items-center me-3 pe-3">
+                                <label class="switch switch-success">
+                                    <input data-name="status" type="checkbox" class="switch-input"/>
+                                    <span class="switch-toggle-slider">
+                                        <span class="switch-on"></span>
+                                        <span class="switch-off"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="col-3 d-flex align-items-center flex-wrap me-2 ms-2">
+                                <label class="form-label me-2 mb-0">Артикул: </label>
+                                <div class="input-group input-group-merge" style="width: 73%;">
+                                    <input class="form-control" data-name="articleId" placeholder="">
+                                    <span class="input-group-text">
+                                        <i class="ti ti-edit"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-3 d-flex align-items-center flex-wrap">
+                                <label class="form-label me-2 mb-0" for="amount_uk">Кількість: </label>
+                                <div class="d-flex align-items-center amount-block"><i
+                                        class="ti ti-chevron-left icon-hover-arrow me-2" data-name="arrow-left"></i>
+                                    <input class="form-control text-center errorMy" id="amount_uk" data-name="amount"
+                                           style="width: 50px;" value="1">
+                                    <i class="ti ti-chevron-right icon-hover-arrow ms-2" data-name="arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
 
                         <div id="image-block-uk" class="col-12 col-sm-5 mb-3"
                              style="text-align: center;">
@@ -79,6 +112,7 @@
                                 <div class="col-6">
                                     <label for="name-uk_" class="form-label bold">Назва:</label>
                                     <input class="form-control" id="name-uk_" type="text" data-name="nameUk"
+                                           data-sync="name"
                                            placeholder=""/>
                                 </div>
                                 <div class="col-6">
@@ -89,21 +123,30 @@
                                     </select>
                                 </div>
                                 <div class="col-6">
-                                    <label for="energyMass_" class="form-label bold">Енергетична маса, Ккал:</label>
-                                    <div id="energy-mass-block-uk"></div>
+                                    <label class="form-label bold">Енергетична маса, Ккал:</label>
+                                    <div id="energy-mass-block-uk">
+                                        <input class="form-control" data-name="energyMass" type="text" placeholder=""/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="mass_" class="form-label bold">Маса,
+                                    <label class="form-label bold">Маса,
                                         Ккал:</label>
-                                    <div id="mass-block-uk"></div>
+                                    <div id="mass-block-uk">
+                                        <input class="form-control" data-name="mass" type="text" placeholder=""/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="currentPrice_" class="form-label bold">Поточна ціна:</label>
-                                    <div id="old-price-block-uk"></div>
+                                    <label class="form-label bold">Поточна ціна:</label>
+                                    <div id="old-price-block-uk">
+                                        <input class="form-control" data-name="oldPrice" type="text" placeholder=""
+                                               disabled/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="newPrice_" class="form-label bold">Нова ціна:</label>
-                                    <div id="new-price-block-uk"></div>
+                                    <label class="form-label bold">Нова ціна:</label>
+                                    <div id="new-price-block-uk">
+                                        <input class="form-control" data-name="newPrice" type="text" placeholder=""/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <label for="discounts-uk_" class="form-label bold">Статус знижки:</label>
@@ -186,16 +229,48 @@
                 <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
                      data-bs-toggle="tab">
                     <div class="row">
-                        <div id="header-block-en"></div>
 
-                        <div id="image-block-en" class="col-12 col-sm-5 mb-3"
-                             style="text-align: center;">
+                        <div class="d-flex align-items-center mb-3">
+                            <h4 data-name="name-product" class="mb-0 me-3"></h4>
+                            <div class="d-flex align-items-center me-3 pe-3">
+                                <label class="switch switch-success">
+                                    <input data-name="status" type="checkbox" class="switch-input"/>
+                                    <span class="switch-toggle-slider">
+                                        <span class="switch-on"></span>
+                                        <span class="switch-off"></span>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="col-3 d-flex align-items-center flex-wrap me-2 ms-2">
+                                <label class="form-label me-2 mb-0">Article: </label>
+                                <div class="input-group input-group-merge" style="width: 73%;">
+                                    <input class="form-control" data-name="articleId" placeholder="">
+                                    <span class="input-group-text">
+                                        <i class="ti ti-edit"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-3 d-flex align-items-center flex-wrap">
+                                <label class="form-label me-2 mb-0" for="amount_en">Amount: </label>
+                                <div class="d-flex align-items-center amount-block"><i
+                                        class="ti ti-chevron-left icon-hover-arrow me-2" data-name="arrow-left"></i>
+                                    <input class="form-control text-center errorMy" id="amount_en" data-name="amount"
+                                           style="width: 50px;" value="1">
+                                    <i class="ti ti-chevron-right icon-hover-arrow ms-2" data-name="arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="image-block-en" class="col-12 col-sm-5 mb-3" style="text-align: center;"></div>
                         <div class="col-12 col-sm-7 mb-3">
                             <div class="row g-3">
                                 <div class="col-6">
                                     <label for="name-en_" class="form-label bold">Name:</label>
                                     <input class="form-control" id="name-en_" type="text" data-name="nameEn"
+                                           data-sync="name"
                                            placeholder=""/>
                                 </div>
                                 <div class="col-6">
@@ -206,20 +281,29 @@
                                     </select>
                                 </div>
                                 <div class="col-6">
-                                    <label for="energyMass_" class="form-label bold">Energy mass, kkal:</label>
-                                    <div id="energy-mass-block-en"></div>
+                                    <label class="form-label bold">Energy mass, kkal:</label>
+                                    <div id="energy-mass-block-en">
+                                        <input class="form-control" data-name="energyMass" type="text" placeholder=""/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="mass_" class="form-label bold">Mass, kkal:</label>
-                                    <div id="mass-block-en"></div>
+                                    <label class="form-label bold">Mass, kkal:</label>
+                                    <div id="mass-block-en">
+                                        <input class="form-control" data-name="mass" type="text" placeholder=""/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="currentPrice_" class="form-label bold">Current price:</label>
-                                    <div id="old-price-block-en"></div>
+                                    <label class="form-label bold">Current price:</label>
+                                    <div id="old-price-block-en">
+                                        <input class="form-control" data-name="oldPrice" type="text" placeholder=""
+                                               disabled/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <label for="newPrice_" class="form-label bold">New price:</label>
-                                    <div id="new-price-block-en"></div>
+                                    <label class="form-label bold">New price:</label>
+                                    <div id="new-price-block-en">
+                                        <input class="form-control" data-name="newPrice" type="text" placeholder=""/>
+                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <label for="discounts-en_" class="form-label bold">Status discount:</label>
@@ -332,7 +416,7 @@
                         <button type="button" data-type="image-description"
                                 class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
                                 style="width: 55%;"
-                        th:text="#{text.button.change}">
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="image-description"
                                 class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -420,41 +504,6 @@
                 </div>
                 <!--/ Delivery Image Block -->
 
-                <!-- Header Base -->
-                <div id="shared-header" style="display: none;">
-                    <div class="d-flex align-items-center mb-3">
-                        <h4 id="name-product_" class="mb-0 me-3"></h4>
-                        <div class="d-flex align-items-center me-3 pe-3">
-                            <label class="switch switch-success">
-                                <input id="status_" type="checkbox" class="switch-input"/>
-                                <span class="switch-toggle-slider">
-                                        <span class="switch-on"></span>
-                                        <span class="switch-off"></span>
-                                    </span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="col-3 d-flex align-items-center me-2 ms-2">
-                            <label class="form-label me-2" for="articleId_" th:text="#{text.article}+':'"></label>
-                            <div class="input-group input-group-merge" style="width: 73%;">
-                                <input class="form-control" id="articleId_" data-name="articleId" placeholder="">
-                                    <span class="input-group-text">
-                                        <i class="ti ti-edit"></i>
-                                    </span>
-                            </div>
-                        </div>
-                        <div class="col-3 d-flex align-items-center flex-wrap">
-                            <label class="form-label me-2" for="amount_" th:text="#{text.amount}+':'"></label>
-                            <i class="ti ti-chevron-left icon-hover-arrow me-2" id="arrow-left"></i>
-                            <input class="form-control text-center errorMy" id="amount_" data-name="amount"
-                                   style="width: 20%;">
-                            <i class="ti ti-chevron-right icon-hover-arrow ms-2" id="arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                <!--/ Header Base -->
-
                 <!-- Image Base -->
                 <div id="shared-image" class="shared-image" style="display: none;">
                     <!-- Основне фото -->
@@ -485,7 +534,7 @@
                             <button type="button" data-type="image2"
                                     class="btn btn-label-success position-absolute top-50 start-50 translate-middle btn-select"
                                     style="width: 50%"
-                            th:text="#{text.button.change}">
+                                    th:text="#{text.button.change}">
                             </button>
                             <button type="button" data-type="image2"
                                     class="btn btnTrashMyBefore position-absolute top-0 end-0 btn-delete">
@@ -532,34 +581,9 @@
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
                     <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
-                    th:text="#{text.button.save}"></button>
+                            th:text="#{text.button.save}"></button>
                 </div>
                 <!--/ Button save Base -->
-
-                <!-- Energy Mass Base -->
-                <div id="shared-energy-mass" style="display: none;">
-                    <input class="form-control" id="energyMass_" data-name="energyMass" type="text" placeholder=""/>
-                </div>
-                <!--/ Energy Mass Base -->
-
-                <!-- Mass Base -->
-                <div id="shared-mass" style="display: none;">
-                    <input class="form-control" id="mass_" data-name="mass" type="text" placeholder=""/>
-                </div>
-                <!--/ Mass Base -->
-
-                <!-- Old price -->
-                <div id="shared-old-price">
-                    <input class="form-control" id="currentPrice_" data-name="oldPrice" type="text" placeholder=""
-                    disabled/>
-                </div>
-                <!--/ Old price -->
-
-                <!-- New price -->
-                <div id="shared-new-price">
-                    <input class="form-control" id="newPrice_" data-name="newPrice" type="text" placeholder=""/>
-                </div>
-                <!--/ New price -->
 
 
                 <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
@@ -614,29 +638,19 @@
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
                                 copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
-                                copyHTMLBlockHeader(`header-block-${previousActiveTab}`, 'shared-header');
                                 copyHTMLBlockTextImage(`image-block-description-${previousActiveTab}`, 'shared-image-description');
                                 copyHTMLBlockTextImage(`image-block-packing-${previousActiveTab}`, 'shared-image-packing');
                                 copyHTMLBlockTextImage(`image-block-payment-${previousActiveTab}`, 'shared-image-payment');
                                 copyHTMLBlockTextImage(`image-block-delivery-${previousActiveTab}`, 'shared-image-delivery');
-                                copyHTMLBlockInput(`energy-mass-block-${previousActiveTab}`, 'shared-energy-mass');
-                                copyHTMLBlockInput(`mass-block-${previousActiveTab}`, 'shared-mass');
-                                copyHTMLBlockInput(`old-price-block-${previousActiveTab}`, 'shared-old-price');
-                                copyHTMLBlockInput(`new-price-block-${previousActiveTab}`, 'shared-new-price');
                             }
 
                             if (activatedTabId) {
                                 copyHTMLBlockImage('shared-image', `image-block-${activatedTabId}`);
                                 copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
-                                copyHTMLBlockHeader('shared-header', `header-block-${activatedTabId}`);
                                 copyHTMLBlockTextImage('shared-image-description', `image-block-description-${activatedTabId}`);
                                 copyHTMLBlockTextImage('shared-image-packing', `image-block-packing-${activatedTabId}`);
                                 copyHTMLBlockTextImage('shared-image-payment', `image-block-payment-${activatedTabId}`);
                                 copyHTMLBlockTextImage('shared-image-delivery', `image-block-delivery-${activatedTabId}`);
-                                copyHTMLBlockInput('shared-energy-mass', `energy-mass-block-${activatedTabId}`);
-                                copyHTMLBlockInput('shared-mass', `mass-block-${activatedTabId}`);
-                                copyHTMLBlockInput('shared-old-price', `old-price-block-${activatedTabId}`);
-                                copyHTMLBlockInput('shared-new-price', `new-price-block-${activatedTabId}`);
                             }
                         });
                     });
@@ -645,21 +659,21 @@
                         let activeLang = getActiveLangTab();
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
-                        copyHTMLBlockHeader('shared-header', `header-block-${activeLang}`);
                         copyHTMLBlockTextImage('shared-image-description', `image-block-description-${activeLang}`);
                         copyHTMLBlockTextImage('shared-image-packing', `image-block-packing-${activeLang}`);
                         copyHTMLBlockTextImage('shared-image-payment', `image-block-payment-${activeLang}`);
                         copyHTMLBlockTextImage('shared-image-delivery', `image-block-delivery-${activeLang}`);
-                        copyHTMLBlockInput('shared-energy-mass', `energy-mass-block-${activeLang}`);
-                        copyHTMLBlockInput('shared-mass', `mass-block-${activeLang}`);
-                        copyHTMLBlockInput('shared-old-price', `old-price-block-${activeLang}`);
-                        copyHTMLBlockInput('shared-new-price', `new-price-block-${activeLang}`);
+
                         addEventListenerNameManager();
                         getTastesAndDiscounts();
                         addEventListenerForSwitch();
                         selectedLanguage();
+                        addEventListenerCounter();
+                        addEventListenerSyncFields('[data-name="status"], [data-name="articleId"]'+
+                            ', [data-name="amount"], [data-name="energyMass"], [data-name="mass"], [data-name="newPrice"]');
                     });
                     const url = `${contextPath}/admin/product/save`;
+
                     function getActiveLangTab() {
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
                     }
@@ -740,17 +754,17 @@
                         const resForm = new FormData();
                         resForm.append("nameUk", $('#name-uk_').val());
                         resForm.append("nameEn", $('#name-en_').val());
-                        resForm.append("amount", $('#amount_').val());
-                        resForm.append("articleId", $('#articleId_').val());
-                        resForm.append("isActive", $('#status_').val());
+                        resForm.append("articleId", $(`[data-name="articleId"]`).val());
+                        resForm.append("amount", $(`[data-name="amount"]`).val());
+                        resForm.append("isActive", $(`[data-name="status"]`).is(':checked'));
                         resForm.append("recipeUk", $('#recipe-uk_').val());
                         resForm.append("recipeEn", $('#recipe-en_').val());
                         resForm.append("conditionExploitationUk", $('#condition-exploitation-uk_').val());
                         resForm.append("conditionExploitationEn", $('#condition-exploitation-en_').val());
-                        resForm.append("newPrice", $('#newPrice_').val());
+                        resForm.append("newPrice", $('[data-name="newPrice"]').val());
 
-                        resForm.append("energyMass", $('#energyMass_').val());
-                        resForm.append("mass", $('#mass_').val());
+                        resForm.append("energyMass", $(`[data-name="energyMass"]`).val());
+                        resForm.append("mass", $('[data-name="mass"]').val());
                         resForm.append("discountId", $('#discounts-uk_').val());
                         resForm.append("tasteId", $('#tastes-uk_').val());
 
@@ -781,7 +795,6 @@
                                 resForm.append(fileObj.fieldName, file);
                             }
                         });
-                        resForm.append("isActive", $("#status_").prop('checked'));
                         return resForm;
                     }
                 </script>

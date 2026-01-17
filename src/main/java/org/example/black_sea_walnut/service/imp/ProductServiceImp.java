@@ -30,12 +30,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -114,10 +113,9 @@ public class ProductServiceImp implements ProductService {
             product = mapper.toEntityForRequestAdd(dto);
         }
 
-        product.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())
-                .stream().filter(d -> d.getLanguageCode().equals(LanguageCode.en)).collect(Collectors.toSet())));
-        product.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())
-                .stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).collect(Collectors.toSet())));
+        product.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())));
+        product.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())));
+
 
         Product productSaved = save(product);
 

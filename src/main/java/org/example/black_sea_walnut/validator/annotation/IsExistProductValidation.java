@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = IsExistProductValidator.class)
 public @interface IsExistProductValidation {
-    public String message() default "Product is already exist in database!";
+    public String message() default "{error.field.product.isExist}";
 
     public Class<?>[] groups() default {};
 

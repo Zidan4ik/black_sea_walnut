@@ -31,35 +31,41 @@ function validate(data) {
 }
 
 function validate2(data) {
+    // document.querySelectorAll('.error-message').forEach(el => el.remove());
+    // document.querySelectorAll('.errorMy').forEach(el => el.classList.remove('errorMy'));
+
     Object.entries(data).forEach(function ([field, message]) {
-        const inputField = document.querySelector(`[data-name=${field}]`);
-        if (inputField) {
+        const inputFields = document.querySelectorAll(`[data-name="${field}"]`);
+
+        if (inputFields.length > 0) {
             console.log("Field:", field, "Message:", message);
-            inputField.classList.add("errorMy");
-            let errorMessage = document.createElement("span");
-            errorMessage.className = "error-message";
-            errorMessage.style.color = "red";
-            errorMessage.innerText = message;
-            if (inputField.getAttribute("class") === "files") {
-                inputField.parentNode.append(errorMessage);
-            } else if (inputField.id === 'amount_') {
-                let parentDiv = inputField.closest('div');
-                if (parentDiv)
-                    parentDiv.appendChild(errorMessage);
-            } else {
-                inputField.parentNode.appendChild(errorMessage);
-            }
+
+            inputFields.forEach(inputField=>{
+                inputField.classList.add("errorMy");
+                let errorMessage = document.createElement("small");
+                errorMessage.className = "error-message text-danger fw-bold mt-1 d-block";
+                errorMessage.innerText = message;
+
+                const parent = inputField.parentElement;
+                if (parent.classList.contains('input-group-merge')) {
+                    parent.parentElement.appendChild(errorMessage);
+                } else if (inputField.classList.contains("files")) {
+                    parent.append(errorMessage);
+                } else if (field === 'amount') {
+                    const amountBlock = inputField.closest('.amount-block') || parent;
+                    amountBlock.appendChild(errorMessage);
+                } else {
+                    parent.appendChild(errorMessage);
+                }
+            });
         }
     });
 }
 
 function validate3(data) {
     Object.entries(data).forEach(function ([field, message]) {
-        // console.log(field);
-        // console.log(message);
         const escapedField = CSS.escape(field);
         const inputField = document.querySelector(`[data-error=${escapedField}]`);
-        // console.log(inputField);
         if (inputField) {
             console.log("Field:", field, "Message:", message);
             inputField.classList.add("errorMy");
@@ -105,37 +111,3 @@ function validate4(data) {
         });
     });
 }
-
-
-// function validateNested(data, parentKey = "") {
-//     Object.entries(data).forEach(function ([field, message]) {
-//         const fullKey = parentKey ? `${parentKey}.${field}` : field; // Об'єднуємо ключі для вкладених об'єктів
-//         console.log(fullKey);
-//         const inputField = document.querySelector(`[data-name="${fullKey}"]`);
-//
-//         if (typeof message === "object" && message !== null) {
-//             // Якщо значення — вкладений об'єкт, виконуємо рекурсію
-//             validateNested(message, fullKey);
-//         } else {
-//             if (inputField) {
-//                 console.log("Field:", fullKey, "Message:", message);
-//
-//                 inputField.classList.add("errorMy");
-//
-//                 let errorMessage = document.createElement("span");
-//                 errorMessage.className = "error-message";
-//                 errorMessage.style.color = "red";
-//                 errorMessage.innerText = message;
-//
-//                 if (inputField.getAttribute("class") === "files") {
-//                     inputField.parentNode.append(errorMessage);
-//                 } else if (inputField.id === "amount_") {
-//                     let parentDiv = inputField.closest("div");
-//                     if (parentDiv) parentDiv.appendChild(errorMessage);
-//                 } else {
-//                     inputField.parentNode.appendChild(errorMessage);
-//                 }
-//             }
-//         }
-//     });
-// }
