@@ -31,12 +31,8 @@ function validate(data) {
 }
 
 function validate2(data) {
-    // document.querySelectorAll('.error-message').forEach(el => el.remove());
-    // document.querySelectorAll('.errorMy').forEach(el => el.classList.remove('errorMy'));
-
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-name="${field}"]`);
-
         if (inputFields.length > 0) {
             console.log("Field:", field, "Message:", message);
 
@@ -52,7 +48,7 @@ function validate2(data) {
                 } else if (inputField.classList.contains("files")) {
                     parent.append(errorMessage);
                 } else if (field === 'amount') {
-                    const amountBlock = inputField.closest('.amount-block') || parent;
+                    const amountBlock = inputField.closest('.error-message-server') || parent;
                     amountBlock.appendChild(errorMessage);
                 } else {
                     parent.appendChild(errorMessage);

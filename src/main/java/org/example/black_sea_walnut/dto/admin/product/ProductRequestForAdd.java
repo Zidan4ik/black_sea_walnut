@@ -27,6 +27,7 @@ public class ProductRequestForAdd {
     private Long articleId;
     private Boolean isActive;
     @Min(value = 0, message = "{error.field.valid.min.value}")
+    @NumberNullValidation(message ="{error.field.empty.number}")
     private Long amount;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")

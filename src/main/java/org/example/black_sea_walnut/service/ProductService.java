@@ -47,4 +47,6 @@ public interface ProductService {
     void increaseCountItems(Long productId);
 
     void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName);
+
+    void updateBasicFields(Product product, ProductRequestForAdd dto);
 }

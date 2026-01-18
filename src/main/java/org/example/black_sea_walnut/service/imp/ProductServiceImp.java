@@ -11,10 +11,12 @@ import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.*;
+import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.repository.ProductRepository;
+import org.example.black_sea_walnut.repository.TransactionsRepository;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
@@ -32,11 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +47,7 @@ public class ProductServiceImp implements ProductService {
     private final ImageServiceImp imageServiceImp;
     private final ProductMapper productMapper;
     private final HistoryPricesService historyPricesService;
+    private final TransactionsRepository transactionsRepository;
 
     @Value("${upload.path}")
     private String contextPath;
@@ -90,45 +90,46 @@ public class ProductServiceImp implements ProductService {
     public Product save(ProductRequestForAdd dto) {
         LogUtil.logInfo("Saving product: " + dto);
         Product product;
-
         if (dto.getId() != null) {
             product = getById(dto.getId());
-
-            processImage(dto.getImage1(), dto.getPathToImage1(), product::setPathToImage1, product, "pathToImage1");
-            processImage(dto.getImage2(), dto.getPathToImage2(), product::setPathToImage2, product, "pathToImage2");
-            processImage(dto.getImage3(), dto.getPathToImage3(), product::setPathToImage3, product, "pathToImage3");
-            processImage(dto.getImage4(), dto.getPathToImage4(), product::setPathToImage4, product, "pathToImage4");
-            processImage(dto.getImageDescription(), dto.getPathToImageDescription(), product::setPathToImageDescription, product, "pathToImageDescription");
-            processImage(dto.getImagePacking(), dto.getPathToImagePacking(), product::setPathToImagePacking, product, "pathToImagePacking");
-            processImage(dto.getImagePayment(), dto.getPathToImagePayment(), product::setPathToImagePayment, product, "pathToImagePayment");
-            processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery, product, "pathToImageDelivery");
-
+            updateBasicFields(product, dto);
             if (dto.getNewPrice() != null) {
                 product.setPriceByUnit(String.valueOf(dto.getNewPrice()));
                 product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
-            } else {
-                dto.setNewPrice(dto.getCurrentPrice());
             }
         } else {
             product = mapper.toEntityForRequestAdd(dto);
         }
-
+        updateProductImages(dto, product);
         product.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())));
         product.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())));
+        Product productSaved = productRepository.save(product);
+        savePhysicalImages(dto, productSaved);
+        return productSaved;
+    }
 
+    private void updateProductImages(ProductRequestForAdd dto, Product product) {
+        processImage(dto.getImage1(), dto.getPathToImage1(), product::setPathToImage1, product, "pathToImage1");
+        processImage(dto.getImage2(), dto.getPathToImage2(), product::setPathToImage2, product, "pathToImage2");
+        processImage(dto.getImage3(), dto.getPathToImage3(), product::setPathToImage3, product, "pathToImage3");
+        processImage(dto.getImage4(), dto.getPathToImage4(), product::setPathToImage4, product, "pathToImage4");
 
-        Product productSaved = save(product);
+        processImage(dto.getImageDescription(), dto.getPathToImageDescription(), product::setPathToImageDescription, product, "pathToImageDescription");
+        processImage(dto.getImagePacking(), dto.getPathToImagePacking(), product::setPathToImagePacking, product, "pathToImagePacking");
+        processImage(dto.getImagePayment(), dto.getPathToImagePayment(), product::setPathToImagePayment, product, "pathToImagePayment");
+        processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery, product, "pathToImageDelivery");
+    }
 
+    private void savePhysicalImages(ProductRequestForAdd dto, Product productSaved) {
         imageServiceImp.save(dto.getImage1(), productSaved.getPathToImage1());
         imageServiceImp.save(dto.getImage2(), productSaved.getPathToImage2());
         imageServiceImp.save(dto.getImage3(), productSaved.getPathToImage3());
         imageServiceImp.save(dto.getImage4(), productSaved.getPathToImage4());
+
         imageServiceImp.save(dto.getImageDescription(), productSaved.getPathToImageDescription());
         imageServiceImp.save(dto.getImagePacking(), productSaved.getPathToImagePacking());
         imageServiceImp.save(dto.getImagePayment(), productSaved.getPathToImagePayment());
         imageServiceImp.save(dto.getImageDelivery(), productSaved.getPathToImageDelivery());
-        LogUtil.logInfo("Product saved successfully with ID: " + productSaved.getId());
-        return productSaved;
     }
 
     @SneakyThrows
@@ -143,6 +144,46 @@ public class ProductServiceImp implements ProductService {
         } else {
             pathSetter.accept("");
         }
+    }
+
+    @Override
+    public void updateBasicFields(Product product, ProductRequestForAdd dto) {
+        List<ProductTranslation> productTranslations = product.getProductTranslations();
+        for (LanguageCode code : LanguageCode.values()) {
+            ProductTranslation translation = productTranslations.stream()
+                    .filter(t -> t.getLanguageCode().equals(code))
+                    .findFirst()
+                    .orElseGet(() -> {
+                        ProductTranslation pt = new ProductTranslation();
+                        pt.setLanguageCode(code);
+                        pt.setProduct(product);
+                        productTranslations.add(pt);
+                        return pt;
+                    });
+
+            if (code == LanguageCode.uk) {
+                translation.setName(dto.getNameUk());
+                translation.setRecipe(dto.getRecipeUk());
+                translation.setConditionExploitation(dto.getConditionExploitationUk());
+                translation.setDescriptionProduct(dto.getDescriptionProductUk());
+                translation.setDescriptionPacking(dto.getDescriptionPackingUk());
+                translation.setDescriptionPayment(dto.getDescriptionPaymentUk());
+                translation.setDescriptionDelivery(dto.getDescriptionDeliveryUk());
+            } else if (code == LanguageCode.en) {
+                translation.setName(dto.getNameEn());
+                translation.setRecipe(dto.getRecipeEn());
+                translation.setConditionExploitation(dto.getConditionExploitationEn());
+                translation.setDescriptionProduct(dto.getDescriptionProductEn());
+                translation.setDescriptionPacking(dto.getDescriptionPackingEn());
+                translation.setDescriptionPayment(dto.getDescriptionPaymentEn());
+                translation.setDescriptionDelivery(dto.getDescriptionDeliveryEn());
+            }
+        }
+        product.setActive(dto.getIsActive());
+        product.setArticleId(dto.getArticleId());
+        product.setTotalCount(dto.getAmount());
+        product.setMassEnergy(dto.getEnergyMass() != null ? dto.getEnergyMass().intValue() : 0);
+        product.setMass(dto.getMass() != null ? Math.toIntExact(dto.getMass()) : 0);
     }
 
     @Override

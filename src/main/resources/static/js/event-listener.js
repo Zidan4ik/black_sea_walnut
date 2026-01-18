@@ -7,7 +7,7 @@ function addEventListenerCounter() {
         if (isRight) {
             amount += 1;
         } else {
-            amount = amount > 1 ? amount - 1 : 1;
+            amount = amount > 0 ? amount - 1 : 0;
         }
         $(`[data-name="amount"]`).val(amount).attr('value', amount)
     });
@@ -37,7 +37,7 @@ function addEventListenerSyncFields(selectors) {
         } else {
             $allElements.val(val);
 
-            const isValid = /^\d+$/.test(val) || val === '';
+            const isValid = /^-?\d+$/.test(val) || val === '';
 
             $allElements.each(function () {
                 const $el = $(this);
@@ -46,6 +46,7 @@ function addEventListenerSyncFields(selectors) {
                 const $targetContainer = ($parent.hasClass('input-group-merge') || $parent.hasClass('amount-block')) ? $parent.parent() : $parent;
                 if (isValid) {
                     $targetContainer.find('.error-message').remove();
+                    isValidFields = true;
                 } else {
                     if ($targetContainer.find('.error-message').length === 0) {
                         const errorHtml = `
@@ -53,9 +54,28 @@ function addEventListenerSyncFields(selectors) {
                                 <i class="bi bi-exclamation-circle me-1"></i> ${messages.invalidNumber}
                             </small>`;
                         $targetContainer.append(errorHtml);
+                        isValidFields = false;
                     }
                 }
             });
         }
+    });
+}
+
+function clearErrorWhenChangeValue(selectors) {
+    $(document).on('input', selectors, function () {
+        const $input = $(this);
+        const dataName = $input.data('name');
+
+        if (!dataName) return;
+
+        const $allElements = $(`[data-name="${dataName}"]`);
+
+        $allElements.each(function () {
+            const $el = $(this);
+            const $parent = $el.parent();
+            let $target = $parent.hasClass('input-group-merge') ? $parent.parent() : $parent;
+            $target.find('.error-message').remove();
+        });
     });
 }

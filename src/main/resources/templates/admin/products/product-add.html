@@ -93,7 +93,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-3 d-flex align-items-center flex-wrap">
+                            <div class="col-3 d-flex align-items-center flex-wrap error-message-server">
                                 <label class="form-label me-2 mb-0" for="amount_uk">Кількість: </label>
                                 <div class="d-flex align-items-center amount-block"><i
                                         class="ti ti-chevron-left icon-hover-arrow me-2" data-name="arrow-left"></i>
@@ -253,7 +253,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-3 d-flex align-items-center flex-wrap">
+                            <div class="col-3 d-flex align-items-center flex-wrap error-message-server">
                                 <label class="form-label me-2 mb-0" for="amount_en">Amount: </label>
                                 <div class="d-flex align-items-center amount-block"><i
                                         class="ti ti-chevron-left icon-hover-arrow me-2" data-name="arrow-left"></i>
@@ -671,8 +671,10 @@
                         addEventListenerCounter();
                         addEventListenerSyncFields('[data-name="status"], [data-name="articleId"]'+
                             ', [data-name="amount"], [data-name="energyMass"], [data-name="mass"], [data-name="newPrice"]');
+                        clearErrorWhenChangeValue('[data-name="nameUk"],[data-name="nameEn"]');
                     });
                     const url = `${contextPath}/admin/product/save`;
+                    let isValidFields = true;
 
                     function getActiveLangTab() {
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
@@ -731,6 +733,10 @@
                     }
 
                     function saveRequest(url) {
+                        if(!isValidFields){
+                            console.error("Validation Error: Previous fields weren't validate for request!");
+                            return;
+                        }
                         let formData = getFormData();
                         $.ajax({
                             type: "post",
