@@ -81,6 +81,9 @@
                                     </span>
                                 </label>
                             </div>
+                            <button data-name="btn-target" type="button" class="btn btnTrashMyBefore">
+                                <i class="ti ti-trash" style="font-size: x-large;"></i>
+                            </button>
                         </div>
 
                         <div class="d-flex align-items-start mb-3">
@@ -240,6 +243,9 @@
                                     </span>
                                 </label>
                             </div>
+                            <button data-name="btn-target" type="button" class="btn btnTrashMyBefore">
+                                <i class="ti ti-trash" style="font-size: x-large;"></i>
+                            </button>
                         </div>
 
                         <div class="d-flex align-items-start mb-3">
@@ -616,8 +622,8 @@
                 <!--/ Modal -->
                 <script>
                     function deleteButtonTarget() {
-                        $('#btn-target_').on('click', function () {
-                            let id = $(this).attr('data-id');
+                        $('[data-name="btn-target"]').on('click', function () {
+                            let id = $('#id_').val();
                             confirmAndPathDelete(id, `${contextPath}/admin/product/delete`, function () {
                                 window.location.href = contextPath + `/admin/products`
                             });
