@@ -93,6 +93,12 @@ public class NewController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("/new/delete")
+    public ResponseEntity<?> deleteNew2(@RequestBody Long id) {
+        newService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(value = "/new/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> saveNew(@ModelAttribute @Valid NewRequestForAdd dto,
                                      BindingResult bindingResult,

@@ -93,12 +93,18 @@
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 mb-3 text-center">
-                            <label for="dateOfPublication_" class="form-label"
+                            <label class="form-label"
                                    style="display: block; margin-bottom: 5px;">
                                 Дата публікування:
                             </label>
                             <div id="date-of-publication-block-ua" class="input-group input-group-merge"
                                  style="width:20%; justify-content: center; display: inline-flex;" data-lang="ua">
+                                <input type="text" class="form-control" data-name="dateOfPublication"
+                                       placeholder="" name="dateOfPublication" data-error="dateOfPublication"
+                                       autocomplete="off" th:value="${news.dateOfPublication}"/>
+                                <span class="input-group-text" onclick="focusInput(this)">
+                                    <i class="ti ti-calendar"></i>
+                                </span>
                             </div>
                         </div>
                         <div id="save-block-ua" class="col-12 col-sm-12 mb-3 text-center">
@@ -135,12 +141,18 @@
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 mb-3 text-center">
-                            <label for="dateOfPublication_" class="form-label"
+                            <label  class="form-label"
                                    style="display: block; margin-bottom: 5px;">
                                 Date of publication:
                             </label>
-                            <div id="date-of-publication-block-eng" class="input-group input-group-merge"
-                                 style="width:20%; justify-content: center; display: inline-flex;">
+                            <div id="date-of-publication-block-en" class="input-group input-group-merge"
+                                 style="width:20%; justify-content: center; display: inline-flex;" data-lang="ua">
+                                <input type="text" class="form-control" data-name="dateOfPublication"
+                                       placeholder="" data-error="dateOfPublication"
+                                       autocomplete="off" th:value="${news.dateOfPublication}"/>
+                                <span class="input-group-text" onclick="focusInput('dateOfPublication')">
+                                    <i class="ti ti-calendar"></i>
+                                </span>
                             </div>
                         </div>
                         <div id="save-block-eng" class="col-12 col-sm-12 mb-3 text-center">
@@ -181,17 +193,6 @@
                 </div>
                 <!--/ Image Base -->
 
-                <!-- Date of publication Base -->
-                <div id="shared-date" style="display: none;">
-                    <input th:field="*{news.dateOfPublication}" type="text" class="form-control"
-                           id="dateOfPublication_"
-                           placeholder="dd.mm.yyyy" name="dateOfPublication"/>
-                    <span class="input-group-text" onclick="focusInput('date-of-publication_')">
-                                <i class="ti ti-calendar"></i>
-                        </span>
-                </div>
-                <!--/ Date of publication Base -->
-
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
                     <button class="btn btn-green" type="submit" id="btn-save_" style="width: 25%;"
@@ -203,6 +204,8 @@
                 <script th:src="@{/js/image.js}"></script>
                 <script th:src="@{/js/validator.js}"></script>
                 <script th:src="@{/js/copy.js}"></script>
+                <script th:src="@{/js/event-listener.js}"></script>
+
                 <script>
                     const url = null;
                     document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
@@ -210,17 +213,13 @@
                             const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
                             let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
 
-                            console.log(`Switched to tab: ${activatedTabId}`);
-
                             if (previousActiveTab) {
                                 copyHTMLBlockImage(`image-block-${previousActiveTab}`, 'shared-image');
-                                copyHTMLBlockDate(`date-of-publication-block-${previousActiveTab}`, 'shared-date');
                                 copyHTMLBlockSave(`save-block-${previousActiveTab}`, 'shared-save');
                             }
 
                             if (activatedTabId) {
                                 copyHTMLBlockImage('shared-image', `image-block-${activatedTabId}`);
-                                copyHTMLBlockDate('shared-date', `date-of-publication-block-${activatedTabId}`);
                                 copyHTMLBlockSave('shared-save', `save-block-${activatedTabId}`);
                             }
                         });
@@ -229,7 +228,6 @@
                     $(document).ready(function () {
                         let activeLang = getActiveLangTab();
                         copyHTMLBlockImage('shared-image', `image-block-${activeLang}`);
-                        copyHTMLBlockDate('shared-date', `date-of-publication-block-${activeLang}`);
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
 
                         let descriptionUA = document.getElementById("hidden-description-ua_").value;
@@ -244,12 +242,10 @@
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    console.log('UA: ', html);
                                     $("#hidden-description-ua_").val(html);
                                 }
                             }
                         });
-
                         var editor_eng = new FroalaEditor('#description_eng', {
                             height: 12 * 20,
                             scrollableContainer: '#description_eng',
@@ -259,13 +255,14 @@
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    console.log('EN: ', html);
                                     $("#hidden-description-eng_").val(html);
                                 }
                             }
                         });
-
                         selectedLanguage();
+
+                        addEventListenerSyncDate();
+                        clearErrorWhenChangeValue('[data-name="titleUA"],[data-name="titleENG"]');
                     });
 
                     function getActiveLangTab() {
@@ -280,11 +277,16 @@
                         }
                     });
 
+                    document.body.addEventListener('htmx:confirm',function(event){
+                        if($('.is-invalid').length > 0){
+                            event.preventDefault();
+                        }
+                    });
                     document.body.addEventListener('htmx:responseError', function (event) {
                         if (event.detail.xhr.status === 400) {
                             clearValid();
                             let data = JSON.parse(event.detail.xhr.responseText);
-                            validate(data);
+                            validate2(data);
                         }
                     });
                 </script>

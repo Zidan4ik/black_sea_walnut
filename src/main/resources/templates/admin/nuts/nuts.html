@@ -91,7 +91,7 @@
                                            placeholder=""
                                            name="date"
                                            autocomplete="off"/>
-                                    <span class="input-group-text">
+                                    <span class="input-group-text" onclick="focusInput(this)">
                                         <i class="ti ti-calendar"></i>
                                     </span>
                                 </div>
@@ -122,7 +122,7 @@
             let id = $(this).data('id');
             confirmAndPathDelete(id, `${contextPath}/admin/nut/delete`, () => {
                 invokeRequest(inputs, 0)
-            })
+            });
         });
 
         document.body.addEventListener('htmx:afterSwap', function (event) {

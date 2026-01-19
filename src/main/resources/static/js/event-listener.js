@@ -79,3 +79,44 @@ function clearErrorWhenChangeValue(selectors) {
         });
     });
 }
+
+function addEventListenerSyncDate() {
+    const selector = '[data-name="dateOfPublication"]';
+    let $dateFields = $(selector);
+    $dateFields.datepicker({
+        format: "dd.mm.yyyy",
+        autoclose: true,
+        forceParse: false
+    });
+
+    $dateFields.datepicker("update");
+    $dateFields.trigger('change');
+
+    const dateRegex = /^(0[1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+
+    $(document).on('input change', selector, function (e) {
+        const $current = $(this);
+        const value = $current.val();
+        const $allInputs = $(selector);
+
+        $allInputs.not($current).val(value);
+
+        const isInvalid = value !== "" && !dateRegex.test(value);
+
+        $allInputs.each(function () {
+            const $el = $(this);
+            const $parent = $el.closest('.col-12');
+
+            $parent.find('.error-message').remove();
+            $el.removeClass('is-invalid');
+
+            if (isInvalid) {
+                $el.addClass('is-invalid');
+                $parent.append(`
+                    <small class="error-message text-danger fw-bold mt-1 d-block">
+                        <i class="bi bi-exclamation-circle me-1"></i> ${messages.filterDate}
+                    </small>`);
+            }
+        });
+    });
+}

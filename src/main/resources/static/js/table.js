@@ -1,5 +1,4 @@
 function invokeRequest(inputs, page) {
-    console.log(inputs);
     if (Array.isArray(inputs)) {
         const errorContainer = document.getElementById('error-container');
 

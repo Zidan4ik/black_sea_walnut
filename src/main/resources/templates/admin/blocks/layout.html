@@ -235,13 +235,11 @@
 
 <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
 <script>
-    function focusInput(inputId) {
-        const input = document.getElementById(inputId);
-        input.focus();
-        $(input).datepicker({
-            showOnFocus: true,
-            format: "dd.mm.yyyy"
-        });
+    function focusInput(element) {
+        const $input = $(element).closest('.input-group').find('input');
+        if ($input.length > 0) {
+            $input.focus();
+        }
     }
 </script>
 <script th:src="@{/vuexy/assets/vendor/js/helpers.js}"></script>
@@ -378,7 +376,7 @@
                         confirmButton: 'btn btn-success'
                     }
                 }).then(() => {
-                    requestDeleteObjects(ids,path,cb);
+                    requestDeleteObjects(ids, path, cb);
                 });
             }
         });

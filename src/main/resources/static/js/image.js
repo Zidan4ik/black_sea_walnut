@@ -6,7 +6,14 @@ function addEventListenersImage() {
         document.getElementById('img_').src = path_default_image;
         document.getElementById('img_').style.display = 'block';
         document.getElementById('video_').style.display = 'none';
-        document.getElementById('hidden-path-to-media_').value = null;
+        let $input_hidden_path_to_media = document.getElementById('hidden-path-to-media_');
+        if($input_hidden_path_to_media){
+            $input_hidden_path_to_media.value = null
+        }
+        let $el = $(this);
+        console.log($el);
+        console.log($el.parent())
+        $el.parent().find('small.error-message').remove();
     });
 
     document.getElementById('btn-select_').addEventListener('click', function () {

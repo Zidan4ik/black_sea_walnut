@@ -31,12 +31,13 @@ function validate(data) {
 }
 
 function validate2(data) {
+    console.log(data);
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-name="${field}"]`);
         if (inputFields.length > 0) {
             console.log("Field:", field, "Message:", message);
 
-            inputFields.forEach(inputField=>{
+            inputFields.forEach(inputField => {
                 inputField.classList.add("errorMy");
                 let errorMessage = document.createElement("small");
                 errorMessage.className = "error-message text-danger fw-bold mt-1 d-block";
@@ -65,17 +66,12 @@ function validate3(data) {
         if (inputField) {
             console.log("Field:", field, "Message:", message);
             inputField.classList.add("errorMy");
-            let errorMessage = document.createElement("span");
-            errorMessage.className = "error-message";
+            let errorMessage = document.createElement("small");
+            errorMessage.className = "error-message text-danger fw-bold mt-1 d-block";
             errorMessage.style.color = "red";
             errorMessage.innerText = message;
             if (inputField.getAttribute("class") === "files") {
-                console.log(field);
                 inputField.parentNode.append(errorMessage);
-            } else if (inputField.id === 'amount_') {
-                let parentDiv = inputField.closest('div');
-                if (parentDiv)
-                    parentDiv.appendChild(errorMessage);
             } else {
                 inputField.parentNode.appendChild(errorMessage);
             }

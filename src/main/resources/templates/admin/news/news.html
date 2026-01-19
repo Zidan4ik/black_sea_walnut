@@ -79,7 +79,7 @@
                                            placeholder=""
                                            name="date"
                                            autocomplete="off" />
-                                    <span class="input-group-text">
+                                    <span class="input-group-text" onclick="focusInput(this)">
                                         <i class="ti ti-calendar"></i>
                                      </span>
                                 </div>
@@ -102,7 +102,6 @@
         let pathToPagination = `${contextPath}/admin/news/pagination/load`;
         let timeoutId;
 
-
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {
                 const datePicker = $("#date_");
@@ -122,19 +121,10 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            requestDelete(id);
-        });
-
-        function requestDelete(id) {
-            let request = new XMLHttpRequest();
-            request.open('GET', `${contextPath}/admin/new/delete/${id}`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    window.location.reload();
-                }
+            confirmAndPathDelete(id, `${contextPath}/admin/new/delete`, () => {
+                invokeRequest(inputs, 0)
             });
-        }
+        });
     </script>
 </div>
 <!--/ Content -->
