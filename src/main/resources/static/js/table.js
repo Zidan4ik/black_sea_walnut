@@ -46,13 +46,13 @@ function invokeRequest(inputs, page) {
             return;
         }
 
+        if (errorContainer) errorContainer.innerHTML = '';
+
         const currentSerialized = JSON.stringify(currentData) + page + $('[name=size]').val();
         if (currentSerialized === lastSerializedData) {
             return;
         }
         lastSerializedData = currentSerialized;
-
-        if (errorContainer) errorContainer.innerHTML = '';
 
         invokeBlockUI();
         clearTimeout(timeoutId);

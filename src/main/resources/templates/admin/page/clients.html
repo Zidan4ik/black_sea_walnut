@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
-                <div id="save-block-uk"></div>
+                <div class="d-flex justify-content-center pt-3" id="save-block-uk"></div>
             </div>
             <!--/ UK Form -->
 
@@ -210,7 +210,7 @@
                     </div>
                 </div>
                 <div style="border-bottom: 1px solid #dbdade;margin-top: 10px;"></div>
-                <div id="save-block-en"></div>
+                <div class="d-flex justify-content-center pt-3" id="save-block-en"></div>
             </div>
             <!--/ EN Form -->
 
@@ -257,7 +257,7 @@
 
             <!-- Banner Client Base -->
             <div id="shared-image-clients-banner" style="display: none;">
-                <div class="position-relative">
+                <div class="position-relative text-center">
                     <img id="clientsBannerFile" data-name="clientsBannerFile"
                          th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
@@ -281,7 +281,7 @@
 
             <!-- Banner Client Base -->
             <div id="shared-image-clients-eco-production" style="display: none;">
-                <div class="position-relative">
+                <div class="position-relative text-center">
                     <img id="clientsEcoProductionFile" data-name="clientsEcoProductionFile"
                          th:src="@{'/image/default-image.jpg'}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
@@ -393,7 +393,6 @@
                             copyHTMLBlockSwitch('shared-status-clients-eco-production', `status-clients-eco-production-${activatedTabId}`);
                         }
 
-                        // copyHTMLBlockImage(`container-clients-block-images-${previousActiveTab}`, `container-clients-block-images-${activatedTabId}`);
                         addEventListenerForMediaFiles(activatedTabId);
                     });
                 });
@@ -445,10 +444,10 @@
                         if (value === 'block') {
                             let blockParent = $(`div[data-id="${id}"]`);
                             if (blockParent.attr('data-type') === 'old') {
-                                let val = $(`#id-${id}`).val();
-                                $('#modal-btnDelete_').attr('data-id', val);
-                                const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-                                modal.show();
+                                let id_ = $(`#id-${id}`).val();
+                                confirmAndPathDelete(id_,`${contextPath}/admin/client/delete`,()=>{
+                                   $(`div.row.container-mini[data-id="${id}"]`).remove();
+                                });
                             }
                             if (blockParent.attr('data-type') === 'new') {
                                 blockParent.remove();
@@ -461,17 +460,6 @@
                             $(`#file-clientsFileImage${id}`).val('');
                             $(`input[data-pathValue="clientsFileImage${id}"]`).val('');
                         }
-                    });
-                    $('#modal-btnDelete_').on('click', function () {
-                        let attrId = this.getAttribute('data-id');
-                        let request = new XMLHttpRequest();
-                        request.open("DELETE", `${contextPath}/admin/client/${attrId}/delete`);
-                        request.send();
-                        request.addEventListener('load', function () {
-                            if (request.status === 200) {
-                                window.location.pathname = contextPath + '/admin/page/clients';
-                            }
-                        });
                     });
 
                     function deleteBlockClient(id) {
@@ -649,7 +637,7 @@
                         const idDescriptionBlock = `edit-description-block-${lang}-${counter}`;
                         let langError = lang === 'uk' ? 'Uk' : 'En';
                         return `<div class="col-5">
-                <div class="position-relative" id="image-block-${lang}">
+                <div class="position-relative text-center" id="image-block-${lang}">
                     <img id="clientsFileImage${counterId}-${lang}" data-name="clientsFileImage${counterId}"
                          src="${data.pathToImage}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
@@ -719,7 +707,7 @@
                         const container = document.getElementById(`container-clients-block-images-${lang}`);
                         const addButtonContainer = document.getElementById(`add-button-container-${lang}`);
                         const newBlock = document.createElement('div');
-                        newBlock.className = 'row';
+                        newBlock.className = 'row container-mini';
                         newBlock.dataset.id = counterId;
                         newBlock.dataset.type = type;
                         newBlock.innerHTML = generateBlock(lang, data);

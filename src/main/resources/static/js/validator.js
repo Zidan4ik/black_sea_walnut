@@ -9,7 +9,6 @@ function clearValid() {
 
 function validate(data) {
     Object.entries(data).forEach(function ([field, message]) {
-        console.log("Field:", field, "Message:", message);
         const inputField = document.getElementById(field + `_`);
         if (inputField) {
             inputField.classList.add("errorMy");
@@ -31,7 +30,7 @@ function validate(data) {
 }
 
 function validate2(data) {
-    console.log(data);
+    console.log (data);
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-name="${field}"]`);
         if (inputFields.length > 0) {
@@ -60,21 +59,23 @@ function validate2(data) {
 }
 
 function validate3(data) {
+    console.log (data);
     Object.entries(data).forEach(function ([field, message]) {
-        const escapedField = CSS.escape(field);
-        const inputField = document.querySelector(`[data-error=${escapedField}]`);
-        if (inputField) {
-            console.log("Field:", field, "Message:", message);
-            inputField.classList.add("errorMy");
-            let errorMessage = document.createElement("small");
-            errorMessage.className = "error-message text-danger fw-bold mt-1 d-block";
-            errorMessage.style.color = "red";
-            errorMessage.innerText = message;
-            if (inputField.getAttribute("class") === "files") {
-                inputField.parentNode.append(errorMessage);
-            } else {
-                inputField.parentNode.appendChild(errorMessage);
-            }
+        const inputFields = document.querySelectorAll(`[data-error="${field}"]`);
+        if (inputFields.length > 0) {
+            inputFields.forEach(inputField => {
+                inputField.classList.add("errorMy");
+                let errorMessage = document.createElement("small");
+                errorMessage.className = "error-message text-danger fw-bold mt-1 d-block";
+                errorMessage.innerText = message;
+
+                const parent = inputField.parentElement;
+                if (inputField.classList.contains("files")) {
+                    parent.append(errorMessage);
+                } else {
+                    parent.appendChild(errorMessage);
+                }
+            });
         }
     });
 }
@@ -82,9 +83,7 @@ function validate3(data) {
 function validate4(data) {
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-error="${field}"]`);
-        console.log(inputFields);
         inputFields.forEach((inputField) => {
-            console.log("Field:", field, "Message:", message);
             inputField.classList.add("errorMy");
 
             let div = document.createElement("div");

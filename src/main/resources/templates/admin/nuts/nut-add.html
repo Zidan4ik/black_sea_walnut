@@ -262,6 +262,7 @@
                         copyHTMLBlockSave('shared-save', `save-block-${activeLang}`);
                         copyHTMLBlockSwitch('shared-switch', `switch-block-${activeLang}`);
                         selectedLanguage();
+                        clearErrorWhenChangeValue('[data-name="titleUk"], [data-name="titleEn"]');
                     });
                     const url = `${contextPath}/admin/nut/save`;
 

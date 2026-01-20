@@ -7,12 +7,10 @@ function addEventListenersImage() {
         document.getElementById('img_').style.display = 'block';
         document.getElementById('video_').style.display = 'none';
         let $input_hidden_path_to_media = document.getElementById('hidden-path-to-media_');
-        if($input_hidden_path_to_media){
+        if ($input_hidden_path_to_media) {
             $input_hidden_path_to_media.value = null
         }
         let $el = $(this);
-        console.log($el);
-        console.log($el.parent())
         $el.parent().find('small.error-message').remove();
     });
 
@@ -72,7 +70,7 @@ function addEventListenersImage2() {
     });
     document.querySelectorAll(".btn-delete").forEach(function (button) {
         button.addEventListener('click', function () {
-            let attribute = this.getAttribute("data-type");
+            let attribute = $(this).data('type');
             let input = document.getElementById("file-" + attribute);
             let elementById = document.getElementById(attribute);
             elementById.src = path_default_image;
@@ -81,6 +79,9 @@ function addEventListenersImage2() {
             if ($input) {
                 $input.value = '';
             }
+            let $el = $(this);
+            let $container = attribute === 'fileSvg' ? $el.closest('.mb-3.row') : $el.parent();
+            $container.find('small.error-message').remove();
         });
     });
 }
