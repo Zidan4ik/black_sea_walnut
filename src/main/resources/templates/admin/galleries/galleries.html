@@ -23,6 +23,7 @@
         <div>
             <h3 class="text-center" th:text="#{text.imagesAndVideos}"></h3>
             <div class="row" id="container-gallery">
+                <div id="gallery-items-wrapper" class="row col-12" style="display: contents;"></div>
                 <div class="col-6 d-flex align-items-center" id="add-button-container"
                      style="height: 263px;margin-left: 15px;">
                     <button type="button" id="btn-add" class="btn btn-success btn-image"
@@ -79,12 +80,15 @@
             $(container).on('click', '.btn-delete', function () {
                 if ($(this).attr('data-typeDelete') === 'delete-image') return;
                 let parentContainer = $(this).closest('.row')[0];
-                let attributeId = parentContainer.getAttribute('data-id');
+                let id = parentContainer.getAttribute('data-id');
 
                 if (parentContainer.getAttribute('data-type') === 'old') {
-                    $('#modal-btnDelete_').attr('data-id', attributeId);
-                    const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-                    modal.show();
+                    // $('#modal-btnDelete_').attr('data-id', attributeId);
+                    // const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
+                    // modal.show();
+                    confirmAndPathDelete(id,`${contextPath}/admin/gallery/delete`,()=>{
+                        invokeRequestGalleries();
+                    })
                 } else {
                     parentContainer.remove();
                 }
@@ -106,10 +110,9 @@
         function invokeRequestGalleries() {
             const params = new URLSearchParams();
             params.append('languageCode', document.documentElement.lang);
-
             htmx.ajax('GET', `${pathToTable}?${params.toString()}`, {
-                target: '#add-button-container',
-                swap: 'beforebegin'
+                target: '#gallery-items-wrapper',
+                swap: 'innerHTML'
             });
         }
     </script>
