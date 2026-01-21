@@ -18,7 +18,8 @@ public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String productName;
+    private String productNameUk;
+    private String productNameEn;
     private int count;
     private int unitPrice;
     private int mass;

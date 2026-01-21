@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 @Configuration
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class DatabaseLoader implements CommandLineRunner {
     private final NutRepository nutRepository;
     private final CallRepository callRepository;
     private final ContactRepository contactRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final DeliverPriceRepository deliverPriceRepository;
     private final PasswordEncoder passwordEncoder;
     private final ManagerRepository managerRepository;
@@ -71,15 +70,21 @@ public class DatabaseLoader implements CommandLineRunner {
                 newService.save(new_);
             }
         }
-
         if (countryService.getAll().isEmpty()) {
-            IntStream.range(0,3).forEach(i->{
-                Country country = countryService.save(new Country(faker.country().name()));
-                IntStream.range(0,3).forEach(r->{
-                    Region region = regionService.save(new Region(faker.address().state(),country));
-                    IntStream.range(0,3).forEach(c->{
-                        cityService.save(new City(faker.address().city(), region));
-                    });
+            Map<String, List<String>> ukraineData = Map.of(
+                    "Київська область", List.of("Київ", "Біла Церква", "Бровари", "Бориспіль", "Ірпінь"),
+                    "Львівська область", List.of("Львів", "Дрогобич", "Трускавець", "Стрий", "Самбір"),
+                    "Рівненська область", List.of("Рівне", "Вараш", "Дубно", "Костопіль", "Сарни"),
+                    "Харківська область", List.of("Харків", "Лозова", "Ізюм", "Чугуїв", "Куп'янськ"),
+                    "Одеська область", List.of("Одеса", "Чорноморськ", "Ізмаїл", "Білгород-Дністровський", "Подільськ")
+            );
+
+            Country ukraine = countryService.save(new Country("Ukraine"));
+
+            ukraineData.forEach((regionName, cities)->{
+                Region region = regionService.save(new Region(regionName, ukraine));
+                cities.forEach(cityName->{
+                    cityService.save(new City(cityName,region));
                 });
             });
         }
@@ -247,21 +252,21 @@ public class DatabaseLoader implements CommandLineRunner {
 
         if (discountService.getAll().isEmpty()) {
             List<Discount> discounts = new ArrayList<>();
-            discounts.add(new Discount(null,(long)1,LanguageCode.uk,"Новий",15));
-            discounts.add(new Discount(null,(long)1,LanguageCode.en,"New",15));
+            discounts.add(new Discount(null, (long) 1, LanguageCode.uk, "Новий", 15));
+            discounts.add(new Discount(null, (long) 1, LanguageCode.en, "New", 15));
 
-            discounts.add(new Discount(null,(long)2,LanguageCode.uk,"Cезон",50));
-            discounts.add(new Discount(null,(long)2,LanguageCode.en,"Seasonal",50));
+            discounts.add(new Discount(null, (long) 2, LanguageCode.uk, "Cезон", 50));
+            discounts.add(new Discount(null, (long) 2, LanguageCode.en, "Seasonal", 50));
 
             discountService.saveAll(discounts);
         }
         if (tasteService.getAll().isEmpty()) {
             List<Taste> tastes = new ArrayList<>();
 
-            tastes.add(new Taste(null, (long) 1, LanguageCode.uk,"Солодкий"));
-            tastes.add(new Taste(null, (long) 1, LanguageCode.en,"Sweet"));
-            tastes.add(new Taste(null, (long) 2, LanguageCode.uk,"Класичний"));
-            tastes.add(new Taste(null, (long) 2, LanguageCode.en,"Classic"));
+            tastes.add(new Taste(null, (long) 1, LanguageCode.uk, "Солодкий"));
+            tastes.add(new Taste(null, (long) 1, LanguageCode.en, "Sweet"));
+            tastes.add(new Taste(null, (long) 2, LanguageCode.uk, "Класичний"));
+            tastes.add(new Taste(null, (long) 2, LanguageCode.en, "Classic"));
 
             tasteService.saveAll(tastes);
         }
@@ -405,7 +410,7 @@ public class DatabaseLoader implements CommandLineRunner {
                     .build();
             contactRepository.save(contact);
         }
-        if (userRepository.findAll().isEmpty()) {
+        if (userService.getAll().isEmpty()) {
             User admin = new User();
             admin.setFullName("Admin User");
             admin.setEmail("admin@gmail.com");
@@ -438,28 +443,40 @@ public class DatabaseLoader implements CommandLineRunner {
             user.setAddress("User Address");
             user.setCompany("User Company");
 
-            userRepository.save(admin);
-            userRepository.save(user);
+            userService.save(admin);
+            userService.save(user);
         }
+
         if (orderRepository.findAll().isEmpty()) {
+            List<User> users = userService.getAll();
+
             List<Order> orders = new ArrayList<>();
             LocalDate today = LocalDate.now();
             int year = today.getYear();
             int month = today.getMonthValue();
             int daysInMonth = today.lengthOfMonth();
+
+            Faker fakerUk = new Faker(new Locale("uk"));
+            Faker fakerEn = new Faker(new Locale("en"));
+
             for (int i = 0; i < 50; i++) {
+                User user = faker.options().nextElement(users);
+
                 Order order = new Order();
                 order.setPersonalId(faker.number().randomNumber());
-                order.setFio(faker.name().fullName());
-                order.setEmail(faker.internet().emailAddress());
-                order.setPhone(faker.numerify("+380#########"));
+                order.setFio(user.getFullName());
+                order.setEmail(user.getEmail());
+                order.setPhone(user.getPhone());
                 order.setCountProducts(faker.number().numberBetween(1, 10));
                 order.setTotalPrice(faker.number().numberBetween(100, 1000));
+
                 order.setCompanyDelivery(faker.company().name());
                 order.setPersonNameDelivery(faker.name().fullName());
-                order.setEmailDelivery(faker.internet().emailAddress());
-                order.setPhoneDelivery(faker.numerify("+380#########"));
-                order.setAddressDelivery(faker.address().fullAddress());
+
+                order.setEmailDelivery(null);
+                order.setPhoneDelivery(null);
+
+                order.setAddressDelivery(user.getAddress());
                 order.setOrderStatus(faker.options().option(OrderStatus.class));
                 order.setDeliveryStatus(faker.options().option(DeliveryStatus.class));
                 order.setDeliveryType(faker.options().option(DeliveryType.class));
@@ -473,7 +490,8 @@ public class DatabaseLoader implements CommandLineRunner {
                 List<OrderDetail> orderDetails = new ArrayList<>();
                 for (int j = 0; j < 3; j++) {
                     OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.setProductName(faker.commerce().productName());
+                    orderDetail.setProductNameUk(fakerUk.commerce().productName());
+                    orderDetail.setProductNameEn(fakerEn.commerce().productName());
                     orderDetail.setUnitPrice(faker.number().numberBetween(50, 500));
                     orderDetail.setCount(faker.number().numberBetween(1, 5));
                     orderDetail.setOrder(order);
@@ -490,7 +508,7 @@ public class DatabaseLoader implements CommandLineRunner {
                 }
                 order.setDeliveryPrices(deliveryPrices);
 
-                order.setUser(userRepository.findAll().get(faker.number().numberBetween(0, (int) userRepository.count())));
+                order.setUser(user);
                 orders.add(order);
             }
             orderRepository.saveAll(orders);

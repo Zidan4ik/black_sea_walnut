@@ -18,7 +18,7 @@ public class OrderDetailMapper {
         return ResponseOrderDetailForView
                 .builder()
                 .id(entity.getId())
-                .productName(entity.getProductName())
+                .productName(entity.getProductNameUk())
                 .count(entity.getCount())
                 .price(entity.getUnitPrice())
                 .totalSumma(entity.getSummaWithDiscount())
@@ -29,7 +29,7 @@ public class OrderDetailMapper {
         Product existingProduct = productService.getByArticleId(dto.getArticleProduct());
 
         OrderDetail entity = new OrderDetail();
-        entity.setProductName(entity.getProductName());
+        entity.setProductNameUk(entity.getProductNameUk());
         entity.setCount(dto.getAmount());
         entity.setUnitPrice(dto.getPrice());
         entity.setMass(dto.getMass());

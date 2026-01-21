@@ -78,7 +78,7 @@ public class OrderMapper {
         return OrderResponseForStatsProducts
                 .builder()
                 .article(String.valueOf(entity.getId()))
-                .nameUk(entity.getProductName())
+                .nameUk(entity.getProductNameUk())
                 .count(String.valueOf(entity.getCount()))
                 .summa(String.valueOf(entity.getSummaWithDiscount()))
                 .build();

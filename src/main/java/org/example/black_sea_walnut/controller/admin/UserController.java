@@ -1,6 +1,7 @@
 package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 
@@ -18,12 +19,17 @@ import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.OrderService;
 import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
+import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
+import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
+import org.example.black_sea_walnut.validator.groupValidation.PhoneValidGroups;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -67,7 +73,7 @@ public class UserController {
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
-    
+
     @GetMapping("/user/{id}/edit")
     public ModelAndView viewUser(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("admin/users/user-edit");
@@ -102,8 +108,8 @@ public class UserController {
     }
 
     @PostMapping("/user-individual/save")
-    public ResponseEntity<?> saveUserIndividual(@Valid UserIndividualRequestForAdd dto,
-                                                BindingResult bindingResult) {
+    public ResponseEntity<?> saveUserIndividual(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
+                                                    UserIndividualRequestForAdd dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -118,8 +124,8 @@ public class UserController {
     }
 
     @PostMapping("/user-fop/save")
-    public ResponseEntity<?> saveUserFop(@Valid UserFopRequestForView dto,
-                                         BindingResult bindingResult) {
+    public ResponseEntity<?> saveUserFop(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
+                                             UserFopRequestForView dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -134,8 +140,8 @@ public class UserController {
     }
 
     @PostMapping("/user-legal/save")
-    public ResponseEntity<?> saveUserLegal(@Valid UserLegalRequestForView dto,
-                                           BindingResult bindingResult) {
+    public ResponseEntity<?> saveUserLegal(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
+                                               UserLegalRequestForView dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -159,8 +165,9 @@ public class UserController {
         userService.save(userById);
         return new ResponseEntity<>("User with id:" + id + " was changed!", HttpStatus.OK);
     }
+
     @ModelAttribute("isActiveUsers")
-    public boolean toActiveSidebarButton(){
+    public boolean toActiveSidebarButton() {
         return true;
     }
 }

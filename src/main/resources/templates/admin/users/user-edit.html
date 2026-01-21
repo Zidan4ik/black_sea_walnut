@@ -11,6 +11,31 @@
     <link rel="stylesheet" th:href="@{/css/button.css}"/>
     <link rel="stylesheet" th:href="@{/css/icon.css}"/>
     <link rel="stylesheet" th:href="@{/css/text.css}"/>
+
+    <style>
+        .user-status-icon {
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            color: #6c757d;
+        }
+
+        .user-status-icon:hover {
+            color: #ff5050;
+            filter: drop-shadow(0 0 12px rgb(148, 51, 51));
+            transform: scale(1.05);
+        }
+
+        .user-status-icon i {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .user-status-icon:hover i {
+            color: #ff5050;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
 <!-- Content -->
@@ -27,13 +52,13 @@
                 </div>
                 <div class="col-auto" style="padding-right: 5px;" th:text="#{text.users}"></div>
                 <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;" data-text="fullName"></div>
+                <div class="col-auto" style="padding-left: 5px;font-weight: bold;" data-text="fullName"></div>
             </div>
             <div class="row">
                 <div class="col-auto text-start">
                     <span class="title-out-user" data-text="fullName"></span>
                 </div>
-                <div class="col-auto d-flex align-items-center">
+                <div class="col-auto d-flex align-items-center p-0">
                     <a class="user-status-icon" type="button" th:data-id="${id}">
                         <i th:classappend="${userStatus != 'isActive'? 'ti-arrow-back-up':'ti-forbid'}"
                            class="ti"></i>
@@ -56,13 +81,13 @@
                      style="flex: 1;">
                     <img id="fileImage" data-name="fileImage"
                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
-                         alt="error" style="width: 80%; height: 250px; display: block;">
+                         alt="error" style="width: 100%; height: 250px; display: block;">
                     <button type="button" data-type="fileImage"
                             class="btn btn-outline-success btn-select"
                             style="width: 80%;margin-top: 10px;" th:text="#{text.button.change}">
                     </button>
                     <a type="button" data-type="fileImage"
-                       class="btnTrashMyBefore position-absolute btn-delete" style="right: 25px;">
+                       class="btnTrashMyBefore position-absolute btn-delete" style="right: 5px;padding-top: 5px;">
                         <i class="ti ti-trash" style="font-size: x-large;"></i>
                     </a>
                 </div>
@@ -84,7 +109,7 @@
                         <div>
                             <label for="phone_" class="form-label bold" th:text="#{table.header.phone}+'*'"></label>
                             <input class="form-control" id="phone_" type="text" data-name="phone"
-                                   placeholder="38067123123"/>
+                                   placeholder="+38067123123"/>
                         </div>
                         <div>
                             <label for="email_" class="form-label bold" th:text="#{table.header.email}+'*'"></label>
@@ -98,14 +123,14 @@
                             <label for="region_" class="form-label bold" th:text="#{text.regions}+'*'"></label>
                             <select class="form-select mx-2 select-card-block-spinner ms-0"
                                     id="region_" data-name="regionForDeliveryId">
-                                <option value="" selected></option>
+                                <option th:text="#{text.regions}" value="" selected></option>
                             </select>
                         </div>
                         <div>
                             <label for="city_" class="form-label bold" th:text="#{text.locality}+'*'"></label>
                             <select class="form-select mx-2 select-card-block-spinner ms-0"
-                                    id="city_" data-name="cityForDeliveryId">
-                                <option value="" selected></option>
+                                    id="city_" data-name="cityForDeliveryId" disabled>
+                                <option th:text="#{text.cities}" value="" selected></option>
                             </select>
                         </div>
                         <div>
@@ -135,15 +160,13 @@
                             <div>
                                 <select class="form-select mx-2 select-card-block-spinner ms-0"
                                         id="regionAdditionallyId_" data-name="regionAdditionallyId">
-                                    <option value="" selected disabled th:text="#{text.regions}+'*'"></option>
-                                    <option value=""></option>
+                                    <option value="" selected th:text="#{text.regions}+'*'"></option>
                                 </select>
                             </div>
                             <div>
                                 <select class="form-select mx-2 select-card-block-spinner ms-0"
-                                        id="cityAdditionallyId_" data-name="cityAdditionallyId">
-                                    <option value="" selected disabled th:text="#{text.cities}+'*'"></option>
-                                    <option value=""></option>
+                                        id="cityAdditionallyId_" data-name="cityAdditionallyId" disabled>
+                                    <option value="" selected th:text="#{text.cities}+'*'"></option>
                                 </select>
                             </div>
                             <div>
@@ -235,9 +258,8 @@
                 let id = $('#id_').val();
                 let pathToTable = `${contextPath}/admin/user/${id}/orders/table/load`;
                 requestGetUser(id);
+
                 invokeRequest(pathToTable);
-                getRegions();
-                getCities();
                 addEventListenersImage2();
                 saveUser();
                 selectedLanguage();
@@ -262,6 +284,44 @@
             }
         </script>
         <script>
+
+            async function initLocationSelectors() {
+                await getRegions();
+                addEventListenerChangeRegion($("#region_"), $("#city_"));
+                addEventListenerChangeRegion($("#regionAdditionallyId_"), $("#cityAdditionallyId_"));
+            }
+
+            function addEventListenerChangeRegion(elR, elC) {
+                elR.on('change', function () {
+                    let regionId = $(this).val();
+                    const option = elC.find('option:first').prop('outerHTML');
+                    elC.html(option);
+                    if (!regionId && regionId === '') {
+                        elC.prop('disabled', true);
+                    } else {
+                        elC.prop('disabled', false);
+                        getCities(regionId, elC);
+                    }
+                });
+            }
+
+            function getRegions() {
+               return $.get(`${contextPath}/admin/regions/get`).done(function (data){
+                   fillDataInSelectors(data, $("#regionAdditionallyId_"));
+                   fillDataInSelectors(data, $("#region_"));
+               });
+            }
+
+            function getCities(regionId, elSelector) {
+                return $.get(`${contextPath}/admin/cities?regionId=${regionId}`).done(function (data){
+                    const firstOption = elSelector.find('option:first').prop('outerHTML');
+                    elSelector.html(firstOption);
+
+                    fillDataInSelectors(data, elSelector);
+                    elSelector.prop('disabled', false);
+                });
+            }
+
             function fillDataInSelectors(arr, elSelector) {
                 if (elSelector) {
                     arr.forEach(function (el) {
@@ -271,36 +331,6 @@
                         elSelector.append(option);
                     });
                 }
-            }
-
-            function getRegions() {
-                let request = new XMLHttpRequest();
-                request.open("GET", `${contextPath}/admin/regions/get`);
-                request.send();
-                request.addEventListener('load', function () {
-                    if (request.status === 200) {
-                        let data = JSON.parse(request.response);
-                        let el = document.getElementById("region_");
-                        let el2 = document.getElementById("regionAdditionallyId_");
-                        fillDataInSelectors(data, el);
-                        fillDataInSelectors(data, el2);
-                    }
-                });
-            }
-
-            function getCities() {
-                let request = new XMLHttpRequest();
-                request.open("GET", `${contextPath}/admin/cities/get`);
-                request.send();
-                request.addEventListener('load', function () {
-                    if (request.status === 200) {
-                        let data = JSON.parse(request.response);
-                        let el = document.getElementById("city_");
-                        let el2 = document.getElementById("cityAdditionallyId_");
-                        fillDataInSelectors(data, el);
-                        fillDataInSelectors(data, el2);
-                    }
-                });
             }
 
             function saveRequest(url) {
@@ -329,20 +359,21 @@
                 resForm.append("fullName", $('#fullName_').val());
                 resForm.append('phone', $('#phone_').val());
                 resForm.append('email', $('#email_').val());
-                let region = $('#region_').val();
-                if(region){
-                    resForm.append('regionForDeliveryId', value);
+                let regionId = $('#region_').val();
+                if (regionId) {
+                    resForm.append('regionForDeliveryId', regionId);
                 }
 
-                let city = $('#city_').val();
-                if(city){
-                    resForm.append('cityForDeliveryId', city);
+                let cityId = $('#city_').val();
+                if (cityId) {
+                    resForm.append('cityForDeliveryId', cityId);
                 }
 
                 let department = $('#departmentForDelivery_').val();
-                if(department){
+                if (department) {
                     resForm.append('departmentForDelivery', department);
                 }
+
                 resForm.append("pathToImage", $(`input[data-name="pathToImage"]`).val());
                 let file = $('#file-fileImage')[0].files[0];
                 if (file) {
@@ -371,56 +402,58 @@
         </script>
 
         <script>
-            function requestGetUser(id) {
-                let request = new XMLHttpRequest();
-                let url1 = `${contextPath}/admin/user/${id}`;
-                request.open("GET", url1);
-                request.send();
-                request.addEventListener('load', function () {
-                    if (request.status === 200) {
-                        let data = JSON.parse(request.response);
-                        userStatus = data.registrationType;
-                        $(`#registrationType_`).val(returnUserStatus(userStatus));
-                        let currentLang = getCurrentLang();
-                        if (userStatus === 'legal' || userStatus === 'fop') {
-                            if (userStatus === 'legal') {
-                                $(`#container-index_`).css("display", 'block');
-                                $(`#container-okpo_`).css("display", 'block');
-                            } else if (userStatus === 'fop') {
-                                $(`#container-edrpou_`).css("display", 'block');
-                            }
-                            $(`#container-user-details_`).css("display", 'flex');
-                            $(`#title-registration_`).text(returnUserStatus(userStatus));
-                        }
-                        for (let key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"], select[data-name="${key}"]`);
-                                if (input) {
-                                    if (input.hasClass('files')) {
-                                        let img = input.attr('data-image');
-                                        let $input = $(`#${img}`);
-                                        if ($input && data[key] !== null) {
-                                            $input.attr('src', data[key] === '' ? path_default_image : contextPath + data[key]);
-                                            input.val(data[key]);
-                                        }
-                                    } else {
-                                        if (key === 'cityForDeliveryId') {
-                                            $('#city_').val(data[key]);
-                                        } else if (key === 'regionForDeliveryId') {
-                                            $('#region_').val(data[key]);
-                                        } else if (key === 'fullName') {
-                                            $(`span[data-text="fullName"]`).text(data[key]);
-                                            $(`div[data-text="fullName"]`).text(data[key]);
-                                            input.val(data[key]);
-                                        } else {
-                                            input.val(data[key]);
-                                        }
-                                    }
+            async function requestGetUser(id) {
+                let data = await $.get(`${contextPath}/admin/user/${id}`);
+                console.log(data);
+                userStatus = data.registrationType;
+                $(`#registrationType_`).val(returnUserStatus(userStatus));
+                if (userStatus === 'legal' || userStatus === 'fop') {
+                    if (userStatus === 'legal') {
+                        $(`#container-index_`).css("display", 'block');
+                        $(`#container-okpo_`).css("display", 'block');
+                    } else if (userStatus === 'fop') {
+                        $(`#container-edrpou_`).css("display", 'block');
+                    }
+                    $(`#container-user-details_`).css("display", 'flex');
+                    $(`#title-registration_`).text(returnUserStatus(userStatus));
+                }
+                for (let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (!data[key]) continue;
+                        let input = $(`input[data-name="${key}"], textarea[data-name="${key}"], div[data-name="${key}"], select[data-name="${key}"]`);
+                        if (input) {
+                            if (input.hasClass('files')) {
+                                let img = input.attr('data-image');
+                                let $input = $(`#${img}`);
+                                if ($input && data[key] !== null) {
+                                    $input.attr('src', data[key] === '' ? path_default_image : contextPath + data[key]);
+                                    input.val(data[key]);
+                                }
+                            } else {
+                                if (key === 'fullName') {
+                                    $(`span[data-text="fullName"]`).text(data[key]);
+                                    $(`div[data-text="fullName"]`).text(data[key]);
+                                    input.val(data[key]);
+                                } else {
+                                    input.val(data[key]);
                                 }
                             }
                         }
                     }
-                });
+                }
+                await initLocationSelectors();
+
+                if(data.regionForDeliveryId != null && data.cityForDeliveryId !== null){
+                    $('#region_').val(data.regionForDeliveryId);
+                    await getCities(data.regionForDeliveryId,$('#city_'));
+                    $('#city_').val(data.cityForDeliveryId);
+                }
+
+                if(data.regionAdditionallyId != null &&  data.cityAdditionallyId !== null){
+                    $('#regionAdditionallyId_').val(data.regionAdditionallyId);
+                    await getCities(data.regionAdditionallyId,$('#cityAdditionallyId_'));
+                    $('#cityAdditionallyId_').val(data.cityAdditionallyId);
+                }
             }
 
             $(document).on('click', '.user-status-icon', function () {
