@@ -49,6 +49,7 @@ function invokeRequest(inputs, page) {
         if (errorContainer) errorContainer.innerHTML = '';
 
         const currentSerialized = JSON.stringify(currentData) + page + $('[name=size]').val();
+        console.log('Equaling: ', currentSerialized, ' ', lastSerializedData)
         if (currentSerialized === lastSerializedData) {
             return;
         }
@@ -92,7 +93,7 @@ $(document).on('click', '.pagination a', function () {
     }
 });
 
-$(document).on("change", ".select-card-block-spinner", function () {
+$(document).on("change", "label.pick-size-for-pagination_ .select-card-block-spinner", function () {
     invokeBlockUI();
 });
 

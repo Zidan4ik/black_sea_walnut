@@ -17,6 +17,9 @@
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/spinkit/spinkit.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/animate-css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/sweetalert2/sweetalert2.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 
     <script th:src="@{/vuexy/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
     <script type="text/javascript" th:src="@{/froala_editor/js/froala_editor.pkgd.min.js}"></script>
@@ -29,136 +32,6 @@
             contextPath = contextPath.slice(0, -1);
         }
     </script>
-    <style>
-        .active-buttonMy {
-            background: currentColor;
-        }
-
-        .btn-logout {
-            background: #334A2E;
-            border: #334A2E;
-        }
-
-        .btn-logout:hover {
-            background: #083b08 !important;
-        }
-
-        .btn-green {
-            background: #337D5A;
-            border: #337D5A;
-            color: white;
-        }
-
-        .btn-green:hover {
-            color: white;
-            background: #276046 !important;
-        }
-
-        .button-dropdown:hover {
-            background: rgba(108, 184, 108, 0.57) !important;
-            color: white;
-        }
-
-        .button-dropdown-logout:hover {
-            background: rgba(255, 36, 43, 0.57) !important;
-            color: white;
-        }
-
-        .btn-logout:focus,
-        .btn-logout[aria-expanded="true"] {
-            background: #083b08 !important;
-            box-shadow: none;
-        }
-
-        .title-out {
-            font-size: large;
-            font-weight: bold;
-            color: green;
-        }
-
-        .title-out-user {
-            font-size: x-large;
-            font-weight: bold;
-            color: black;
-        }
-
-        .sk-primary .sk-rect {
-            background-color: green;
-        }
-
-        .sidebar-title {
-            color: #029f02 !important;
-            border-bottom: 1px solid #029f02 !important;;
-        }
-
-        .sidebar-icon-green {
-            color: #029f02 !important;
-            fill: #029f02 !important;
-            stroke: #029f02 !important;
-        }
-
-        .sidebar-icon-white {
-            color: #ffffff;
-        }
-
-        .datepicker table tr td.active,
-        .datepicker table tr td.active:hover,
-        .datepicker table tr td.active.disabled,
-        .datepicker table tr td.active.disabled:hover {
-            background-image: none !important;
-            background-color: #28a745 !important;
-            color: #fff !important;
-        }
-
-        .datepicker table tr td.today,
-        .datepicker table tr td.today:hover,
-        .datepicker table tr td.today.disabled,
-        .datepicker table tr td.today.disabled:hover {
-            background-color: #e2f2e6 !important;
-            border-color: #28a745 !important;
-        }
-
-        .datepicker table tr td.day:hover,
-        .datepicker table tr td.day.focused {
-            background: #f0fdf4 !important;
-            cursor: pointer;
-        }
-
-        .form-control {
-            border-color: #ced4da;
-        }
-
-        .form-control:focus {
-            color: #212529;
-            background-color: #fff;
-            border-color: #28a745 !important;
-            outline: 0;
-            box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25) !important;
-        }
-
-        #dateOfOrdering_:focus {
-            border-color: #28a745 !important;
-            box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25) !important;
-        }
-
-        .input-group-merge .form-control:focus,
-        .input-group-merge .form-control:focus ~ .input-group-text {
-            border-color: #28a745 !important;
-        }
-
-        .input-group-merge:focus-within {
-            box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25);
-            border-radius: 0.375rem;
-        }
-
-        .input-group-merge .form-control:focus {
-            box-shadow: none !important;
-        }
-
-        .input-group-merge .form-control:focus ~ .input-group-text i {
-            color: #28a745;
-        }
-    </style>
 </head>
 
 <body>

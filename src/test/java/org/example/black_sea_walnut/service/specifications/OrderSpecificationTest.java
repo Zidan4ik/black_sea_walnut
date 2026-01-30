@@ -28,7 +28,7 @@ class OrderSpecificationTest {
                 .statusDelivery(DeliveryStatus.await)
                 .statusOrder(OrderStatus.new_)
                 .isPay(true)
-                .dateOfOrdering("01.03.2024").build();
+                .date("01.03.2024").build();
 
         Specification<Order> specification = OrderSpecification.getSpecification(response);
         assertNotNull(specification);
@@ -65,10 +65,10 @@ class OrderSpecificationTest {
     @Test
     void testGetSpecificationWithDate() {
         ResponseOrderForView response = ResponseOrderForView.builder()
-                .dateOfOrdering("15.01.2024")
+                .date("15.01.2024")
                 .fullName("")
                 .email("")
-                .dateOfOrdering("")
+                .date("")
                 .build();
 
         Specification<Order> specification = OrderSpecification.getSpecification(response);

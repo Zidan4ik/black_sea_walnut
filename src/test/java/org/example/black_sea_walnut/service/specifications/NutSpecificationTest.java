@@ -30,7 +30,7 @@ class NutSpecificationTest {
         NutResponseForView dto = NutResponseForView.builder()
                 .id(1L)
                 .title("Test Title")
-                .dateOfUpdated("15.03.2024")
+                .date("15.03.2024")
                 .build();
         Join<Object, Object> join = mock(Join.class);
         when(root.join("translations")).thenReturn(join);
@@ -69,7 +69,7 @@ class NutSpecificationTest {
     void testGetSpecification_withNoFields() {
         NutResponseForView dto = NutResponseForView.builder()
                 .title("")
-                .dateOfUpdated("")
+                .date("")
                 .build();
         Specification<Nut> spec = NutSpecification.getSpecification(dto, LanguageCode.en);
         Predicate predicate = spec.toPredicate(root, query, criteriaBuilder);

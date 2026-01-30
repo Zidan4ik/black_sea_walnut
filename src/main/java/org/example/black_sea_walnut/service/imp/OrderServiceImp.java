@@ -73,6 +73,18 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public PageResponse<OrderUserResponseForView> getAllByUser(Long userId, OrderUserResponseForView response, Pageable pageable, LanguageCode code) {
+        LogUtil.logInfo("Fetching orders with user id: " + userId + " with filter: " + response + " and page request: " + pageable);
+        Specification<Order> specification = OrderSpecification.getSpecification(response,userId);
+        Page<Order> page = orderRepository.findAll(specification, pageable);
+        List<OrderUserResponseForView> responsesDtoAdd = page.map(mapper::toResponseForUserOrderView).stream().toList();
+        LogUtil.logInfo("Fetched " + responsesDtoAdd.size() + " orders.");
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
     public PageResponse<OrderResponseForAccount> getAll(User user, Pageable pageable, LanguageCode code) {
         LogUtil.logInfo("Fetching orders for userId: " + user.getId() + " with page request: " + pageable);
         Specification<Order> spec = Specification.where(OrderSpecification.hasUser(user));

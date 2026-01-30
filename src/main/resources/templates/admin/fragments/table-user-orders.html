@@ -2,22 +2,22 @@
 <tr th:if="${data.size()>0}" th:each="item : ${data}">
     <td style="text-align: center;" th:text="${item.id}"></td>
     <td style="text-align: center;" th:text="${item.date}"></td>
-    <td style="text-align: center;" th:text="${item.statusOrder}">
+    <td style="text-align: center;">
         <span th:if="${item.statusOrder == 'inProgress'}" th:text="#{value.status.inProcess}"></span>
         <span th:if="${item.statusOrder == 'new_'}" th:text="#{value.status.new}"></span>
         <span th:if="${item.statusOrder == 'close'}" th:text="#{value.status.close}"></span>
         <span th:if="${item.statusOrder == 'cancel'}" th:text="#{value.status.cancel}"></span>
     </td>
     <td style="text-align: center;" th:text="${item.price}"></td>
-    <td style="text-align: center;" th:text="${item.statusPayment}">
-        <span th:if="${item.statusPayment == 'payed'}" th:text="#{value.status.payed}"></span>
-        <span th:if="${item.statusPayment == 'unPayed'}" th:text="#{value.status.unPayed}"></span>
-        <span th:if="${item.statusPayment == 'inProcess'}" th:text="#{value.status.inProcess}"></span>
+    <td style="text-align: center;">
+        <span th:if="${item.typePayment == 'card'}" th:text="#{value.status.card}"></span>
+        <span th:if="${item.typePayment == 'cash'}" th:text="#{value.status.cash}"></span>
+        <span th:if="${item.typePayment == 'invoice'}" th:text="#{value.status.invoice}"></span>
     </td>
     <td>
         <div class="text-center" style="width: auto;">
-            <a class="edit-icon" type="button" th:data-id="${item.id}">
-                <i class="ti ti-eye" style="font-size: x-large;"></i>
+            <a th:href="@{/admin/order/{id} (id=${item.id})}" class="view-icon" type="button" th:data-id="${item.id}">
+                <i class="ti ti-eye eye-icon-preview" style="font-size: x-large;"></i>
             </a>
         </div>
     </td>

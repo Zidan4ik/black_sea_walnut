@@ -70,7 +70,7 @@ public class OrderMapper {
                 .date(DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
                 .statusOrder(entity.getOrderStatus().toString())
                 .price(String.valueOf(entity.getTotalPrice()))
-                .statusPayment(entity.getPaymentType().toString())
+                .typePayment(entity.getPaymentType().toString())
                 .build();
     }
 

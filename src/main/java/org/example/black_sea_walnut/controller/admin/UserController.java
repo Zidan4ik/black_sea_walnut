@@ -3,9 +3,11 @@ package org.example.black_sea_walnut.controller.admin;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.language.bm.Lang;
 import org.example.black_sea_walnut.dto.PageResponse;
 
 import org.example.black_sea_walnut.dto.admin.order.OrderUserResponseForView;
+import org.example.black_sea_walnut.dto.admin.order.ResponseOrderForView;
 import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
 import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForView;
 import org.example.black_sea_walnut.dto.admin.user.request.UserIndividualRequestForAdd;
@@ -14,6 +16,7 @@ import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAd
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
@@ -24,6 +27,7 @@ import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValida
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
 import org.example.black_sea_walnut.validator.groupValidation.PhoneValidGroups;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -84,10 +88,28 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}/orders/table/load")
-    public ModelAndView loadOrdersTable(@PathVariable Long id) {
+    public ModelAndView loadOrdersTable(@PathVariable Long id,
+                                        @ModelAttribute OrderUserResponseForView responseOrder,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(defaultValue = "5") int size,
+                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-user-orders");
-        List<OrderUserResponseForView> allByUser = orderService.getAllByUser(userService.getById(id));
-        model.addObject("data", allByUser);
+        PageRequest pageRequest = PageRequest.of(page, size);
+        PageResponse<OrderUserResponseForView> pageResponse = orderService.getAllByUser(id, responseOrder, pageRequest, LanguageCode.fromString(languageCode));
+        model.addObject("data", pageResponse.getContent());
+        return model;
+    }
+
+    @GetMapping("/user/{id}/pagination/load")
+    public ModelAndView loadPagination(@PathVariable Long id,
+                                       @ModelAttribute OrderUserResponseForView responseOrder,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "5") int size,
+                                       @RequestParam String languageCode) {
+        ModelAndView model = new ModelAndView("admin/fragments/pagination");
+        PageRequest pageable = PageRequest.of(page, size);
+        PageResponse<OrderUserResponseForView> pageResponse = orderService.getAllByUser(id, responseOrder, pageable, LanguageCode.fromString(languageCode));
+        model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
 

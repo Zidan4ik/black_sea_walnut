@@ -8,8 +8,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.transactions}"></title>
-    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
-    <link rel="stylesheet" th:href="@{/css/table.css}"/>
     <style>
         .pointer {
             cursor: pointer;
@@ -22,7 +20,7 @@
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.transactions}"></h4>
 <!--        <div id="error-container"></div>-->
-        <div class="card" id="card-block" style="   width: 1220px;">
+        <div class="card" id="card-block" style="width: 1220px;">
             <h5 class="card-header" th:text="#{text.transactions}"></h5>
             <div class="card-body">
                 <div class="row mb-3">

@@ -21,6 +21,8 @@ public interface OrderService {
 
     PageResponse<ResponseOrderForView> getAll(ResponseOrderForView response, Pageable pageable, LanguageCode code);
 
+    PageResponse<OrderUserResponseForView> getAllByUser(Long userId, OrderUserResponseForView response, Pageable pageable, LanguageCode code);
+
     PageResponse<OrderResponseForAccount> getAll(User user, Pageable pageable, LanguageCode code);
 
     PageResponse<OrderResponseForAccount> getAll(Pageable pageable, LanguageCode code);

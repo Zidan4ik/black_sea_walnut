@@ -10,5 +10,5 @@ public class OrderUserResponseForView {
     private String date;
     private String statusOrder;
     private String price;
-    private String statusPayment;
+    private String typePayment;
 }
