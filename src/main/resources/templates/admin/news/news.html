@@ -8,11 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.news}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
-    <style>
-        .pointer {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <!-- Content -->
@@ -120,9 +115,7 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            confirmAndPathDelete(id, `${contextPath}/admin/new/delete`, () => {
-                invokeRequest(inputs, 0)
-            });
+            confirmAndPathDelete(id, `${contextPath}/admin/new/delete`, () => {invokeRequest(inputs, 0,true)});
         });
     </script>
 </div>

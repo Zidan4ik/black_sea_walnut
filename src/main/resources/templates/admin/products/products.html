@@ -7,11 +7,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.products}"></title>
-    <style>
-        .pointer {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <!-- Content -->
@@ -116,7 +111,7 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            confirmAndPathDelete(id,`${contextPath}/admin/product/${id}/delete`,()=>{invokeRequest(inputs,0)});
+            confirmAndPathDelete(id,`${contextPath}/admin/product/${id}/delete`,()=>{invokeRequest(inputs,0,true)});
         });
 
         $(document).on('htmx:afterSwap', (event) => {

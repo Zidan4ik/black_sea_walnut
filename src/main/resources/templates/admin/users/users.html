@@ -118,6 +118,8 @@
         </div>
     </div>
     <script th:src="@{/js/table.js}"></script>
+    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
+
     <script>
         const inputs = ['id', 'fio', 'email', 'date', 'registrationType', 'userStatus', 'phone'];
         let pathToTable = `${contextPath}/admin/users/table/load`;
@@ -131,22 +133,8 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            $('#modal-btnDelete_').attr('data-id', id);
-            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-            modal.show();
+            confirmAndPathDelete(id,`${contextPath}/admin/user/delete`,()=>{invokeRequest(inputs,0,true)});
         });
-
-        function requestDelete(id) {
-            let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}/admin/user/${id}/delete`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    loadNews(inputs, 0);
-                    $('#ModalForDelete').modal('hide');
-                }
-            });
-        }
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {
@@ -180,6 +168,7 @@
             });
             selectedLanguage();
         });
+
         $(document).on('change', '.switch-input', function () {
             const formData = new FormData();
             formData.append('id', $(this).prop('id'));
@@ -201,26 +190,5 @@
     </script>
 </div>
 <!--/ Content -->
-
-<!-- Modal -->
-<div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Are you sure to delete it?</h5>
-            </div>
-            <div class="modal-footer justify-content-end">
-                <a type="button" id="modal-btnDelete_" class="btn btn-danger">
-                    Delete
-                </a>
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
-</div>
-<!--/ Modal -->
 </body>
 </html>

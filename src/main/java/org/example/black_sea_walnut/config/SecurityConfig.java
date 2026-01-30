@@ -38,8 +38,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers("/web/cart").permitAll()
-                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN")
-                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN","SUPER_ADMIN")
+                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","SUPER_ADMIN")
                                 .anyRequest().permitAll())
                 .formLogin(
                         login -> login
@@ -77,7 +77,7 @@ public class SecurityConfig {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                 Authentication authentication) throws IOException, ServletException {
                 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-                if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+                if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIN") || a.getAuthority().equals("SUPER_ADMIN"))) {
                     response.sendRedirect("/Walnut-R.Pravnyk/admin/statistic");
                 } else {
                     response.sendRedirect("/Walnut-R.Pravnyk/web/main");
@@ -85,11 +85,4 @@ public class SecurityConfig {
             }
         };
     }
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> web.ignoring()
-//                .requestMatchers("/style/**", "/js/**", "/vuexy/**", "/portier_digital/**",
-//                        "/jquery/**");
-//    }
 }

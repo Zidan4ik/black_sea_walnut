@@ -115,7 +115,9 @@ public class UserServiceImp implements UserService {
         LogUtil.logInfo("Saving user with email: " + entity.getEmail());
         if (entity.getId() == null && !entity.getPassword().isEmpty()) {
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-            entity.setRole(Role.USER);
+            if(entity.getRole() == null){
+                entity.setRole(Role.USER);
+            }
         }
         User savedUser = userRepository.save(entity);
         LogUtil.logInfo("User saved with id: " + savedUser.getId());
@@ -393,5 +395,14 @@ public class UserServiceImp implements UserService {
         LogUtil.logInfo("Deleting password reset token: " + token);
         passwordResetTokenService.deleteTokenByToken(token);
         LogUtil.logInfo("Token deleted successfully: " + token);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        User userById = getById(id);
+        if(userById.getRole()==Role.SUPER_ADMIN){
+            throw new SecurityException("Cannot delete user with SUPER_ADMIN role");
+        }
+        userRepository.deleteById(id);
     }
 }

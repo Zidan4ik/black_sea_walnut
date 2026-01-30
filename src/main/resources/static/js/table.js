@@ -1,6 +1,6 @@
 let lastSerializedData = "";
 
-function invokeRequest(inputs, page) {
+function invokeRequest(inputs, page, forceUpdate = false) {
     if (Array.isArray(inputs)) {
         const errorContainer = document.getElementById('error-container');
 
@@ -15,7 +15,6 @@ function invokeRequest(inputs, page) {
 
         let hasError = false;
         let currentData = {};
-
         for (const name of inputs) {
             const input = document.querySelector(`[name=${name}]`);
             if (!input) continue;
@@ -49,8 +48,7 @@ function invokeRequest(inputs, page) {
         if (errorContainer) errorContainer.innerHTML = '';
 
         const currentSerialized = JSON.stringify(currentData) + page + $('[name=size]').val();
-        console.log('Equaling: ', currentSerialized, ' ', lastSerializedData)
-        if (currentSerialized === lastSerializedData) {
+        if (!forceUpdate && currentSerialized === lastSerializedData) {
             return;
         }
         lastSerializedData = currentSerialized;
@@ -99,7 +97,6 @@ $(document).on("change", "label.pick-size-for-pagination_ .select-card-block-spi
 
 $(document).ready(function () {
     document.addEventListener('htmx:afterRequest', function (evt) {
-        console.log(evt.detail.target.id);
         if (evt.detail.target.id === 'table-data-container_' ||
             evt.detail.target.id === 'table-pagination-container_') {
             $("#card-block").unblock();

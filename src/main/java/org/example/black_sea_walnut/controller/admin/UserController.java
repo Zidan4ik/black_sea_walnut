@@ -1,5 +1,6 @@
 package org.example.black_sea_walnut.controller.admin;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -131,7 +133,7 @@ public class UserController {
 
     @PostMapping("/user-individual/save")
     public ResponseEntity<?> saveUserIndividual(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
-                                                    UserIndividualRequestForAdd dto, BindingResult bindingResult) {
+                                                UserIndividualRequestForAdd dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -147,7 +149,7 @@ public class UserController {
 
     @PostMapping("/user-fop/save")
     public ResponseEntity<?> saveUserFop(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
-                                             UserFopRequestForView dto, BindingResult bindingResult) {
+                                         UserFopRequestForView dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -163,7 +165,7 @@ public class UserController {
 
     @PostMapping("/user-legal/save")
     public ResponseEntity<?> saveUserLegal(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
-                                               UserLegalRequestForView dto, BindingResult bindingResult) {
+                                           UserLegalRequestForView dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -186,6 +188,18 @@ public class UserController {
             userById.setStatus(UserStatus.isActive);
         userService.save(userById);
         return new ResponseEntity<>("User with id:" + id + " was changed!", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<?> deleteUserModal(@RequestBody Long id) {
+        try {
+            userService.deleteUserById(id);
+            return ResponseEntity.ok().body("User with id: " + id + " was deleted!");
+        } catch (SecurityException ex){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        } catch (EntityNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User wasn't found!");
+        }
     }
 
     @ModelAttribute("isActiveUsers")

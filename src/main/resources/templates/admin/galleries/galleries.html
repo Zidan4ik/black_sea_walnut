@@ -83,9 +83,6 @@
                 let id = parentContainer.getAttribute('data-id');
 
                 if (parentContainer.getAttribute('data-type') === 'old') {
-                    // $('#modal-btnDelete_').attr('data-id', attributeId);
-                    // const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-                    // modal.show();
                     confirmAndPathDelete(id,`${contextPath}/admin/gallery/delete`,()=>{
                         invokeRequestGalleries();
                     })

@@ -62,6 +62,12 @@ public class ManagerController {
         return new ResponseEntity<>("Manager was successful deleted!", HttpStatus.OK);
     }
 
+    @DeleteMapping("/manager/delete")
+    public ResponseEntity<?> deleteManagerForModal(@RequestBody Long id) {
+        managerService.deleteById(id);
+        return new ResponseEntity<>("Manager was successful deleted!", HttpStatus.OK);
+    }
+
     @PostMapping("/manager/save")
     public ResponseEntity<?> saveManager(@Valid @ModelAttribute ManagerDTO dto,
                                          BindingResult bindingResult) {

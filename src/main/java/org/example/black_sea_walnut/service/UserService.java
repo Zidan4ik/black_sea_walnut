@@ -71,4 +71,6 @@ public interface UserService {
     void resetUserPassword(User user, String newPassword);
 
     void deleteTokenByToken(String token);
+
+    void deleteUserById(Long id);
 }

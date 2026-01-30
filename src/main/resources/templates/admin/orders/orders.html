@@ -132,7 +132,7 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            confirmAndPathDelete(id,`${contextPath}/admin/order/delete`, ()=>{invokeRequest(inputs,0)});
+            confirmAndPathDelete(id,`${contextPath}/admin/order/delete`, ()=>{invokeRequest(inputs,0,true)});
         });
 
         document.body.addEventListener('htmx:afterSwap', function (event) {

@@ -8,10 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.nuts}"></title>
     <style>
-        .pointer {
-            cursor: pointer;
-        }
-
         .truncate-text {
             white-space: nowrap;
             overflow: hidden;
@@ -19,7 +15,7 @@
             display: block;
         }
 
-        .truncate-text p{
+        .truncate-text p {
             margin: 0 !important;
         }
     </style>
@@ -121,9 +117,7 @@
 
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
-            confirmAndPathDelete(id, `${contextPath}/admin/nut/delete`, () => {
-                invokeRequest(inputs, 0)
-            });
+            confirmAndPathDelete(id, `${contextPath}/admin/nut/delete`, () => {invokeRequest(inputs, 0,true)});
         });
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
@@ -155,7 +149,7 @@
             });
         });
 
-        $(document).ready(function (){
+        $(document).ready(function () {
             selectedLanguage();
         });
     </script>

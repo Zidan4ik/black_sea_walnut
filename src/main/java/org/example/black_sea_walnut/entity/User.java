@@ -42,9 +42,9 @@ public class User {
     private String company;
     @ManyToOne
     private Manager manager;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Basket basket;
     @ManyToOne
     @Enumerated(EnumType.STRING)

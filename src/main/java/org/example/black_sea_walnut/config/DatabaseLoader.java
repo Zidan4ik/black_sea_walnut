@@ -411,11 +411,27 @@ public class DatabaseLoader implements CommandLineRunner {
             contactRepository.save(contact);
         }
         if (userService.getAll().isEmpty()) {
+            User superAdmin = new User();
+            superAdmin.setFullName("Super Admin");
+            superAdmin.setEmail("owner@gmail.com");
+            superAdmin.setPhone(faker.numerify("+380#########"));
+            superAdmin.setPassword("owner");
+            superAdmin.setPaymentDetails("Bank Account: 1111-1111");
+            superAdmin.setDateRegistered(LocalDate.now());
+            superAdmin.setRegisterType(RegisterType.fop);
+            superAdmin.setFop(true);
+            superAdmin.setEnable(true);
+            superAdmin.setStatus(UserStatus.isActive);
+            superAdmin.setRole(Role.SUPER_ADMIN);
+            superAdmin.setDepartment(1);
+            superAdmin.setAddress("Admin Address");
+            superAdmin.setCompany("Admin Company");
+
             User admin = new User();
             admin.setFullName("Admin User");
             admin.setEmail("admin@gmail.com");
             admin.setPhone(faker.numerify("+380#########"));
-            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setPassword("admin");
             admin.setPaymentDetails("Bank Account: 1234-5678");
             admin.setDateRegistered(LocalDate.now());
             admin.setRegisterType(RegisterType.individual);
@@ -431,7 +447,7 @@ public class DatabaseLoader implements CommandLineRunner {
             user.setFullName("User");
             user.setEmail("user@gmail.com");
             user.setPhone(faker.numerify("+380#########"));
-            user.setPassword(passwordEncoder.encode("user"));
+            user.setPassword("user");
             user.setPaymentDetails("Bank Account: 8765-4321");
             user.setDateRegistered(LocalDate.now());
             user.setRegisterType(RegisterType.legal);
@@ -443,6 +459,7 @@ public class DatabaseLoader implements CommandLineRunner {
             user.setAddress("User Address");
             user.setCompany("User Company");
 
+            userService.save(superAdmin);
             userService.save(admin);
             userService.save(user);
         }

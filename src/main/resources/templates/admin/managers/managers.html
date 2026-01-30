@@ -5,11 +5,6 @@
         xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="#{text.managers}"></title>
-    <style>
-        .pointer {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <!-- Content -->
@@ -189,69 +184,11 @@
         let pathToPagination = `${contextPath}/admin/managers/pagination/load`;
         let timeoutId;
 
-        $(document).on('click', '.btn-danger', function () {
-            let attr = $(this).attr('data-type');
-            if (attr === 'total') {
-                let selectedIds = [];
-                $('.selectors:checked').each(function () {
-                    let id = $(this).attr('data-id');
-                    requestDelete(id)
-                    selectedIds.push(id);
-                });
-            } else if (attr === 'one') {
-                let attrId = this.getAttribute('data-id');
-                requestDelete(attrId);
-            }
-        });
-
-        $(document).on('click', '#total-delete_', function () {
-            $(`#modal-btnDelete_`).attr('data-type', 'total');
-            let modalElement = document.getElementById('ModalForDelete');
-            let modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        });
-
-        function requestGetManager(url) {
-            let request = new XMLHttpRequest();
-            request.open("GET", url);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    let data = JSON.parse(request.response);
-                    const modal = new bootstrap.Modal(document.querySelector("#ModalManager"));
-                    modal.show();
-                    for (let key in data) {
-                        if (data.hasOwnProperty(key) && data[key] !== '') {
-                            let input = $(`input[data-name="${key}"]`);
-                            if (input) {
-                                input.val(data[key]);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-
         $(document).on('click', '.delete-icon', function () {
             $(`#modal-btnDelete_`).attr('data-type', 'one');
             let id = $(this).data('id');
-            $('#modal-btnDelete_').attr('data-id', id);
-            const modal = new bootstrap.Modal(document.getElementById('ModalForDelete'));
-            modal.show();
+            confirmAndPathDelete(id,`${contextPath}/admin/manager/delete`,()=>{invokeRequest(inputs,0,true);});
         });
-
-        function requestDelete(id) {
-            let request = new XMLHttpRequest();
-            request.open('DELETE', `${contextPath}/admin/manager/${id}/delete`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    loadNews(inputs, 0);
-                    $('#ModalForDelete').modal('hide');
-                }
-            });
-        }
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
             if (event.target.id === 'table-data-container_') {
