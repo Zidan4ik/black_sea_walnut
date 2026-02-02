@@ -26,7 +26,7 @@
             <a th:if="${item.userStatus.equals('isActive')}" class="btn btn-sm btn-github user-status-icon" type="button" th:data-id="${item.id}">
                 <i class="ti ti-forbid"></i>
             </a>
-            <a class="btn btn-sm btn-github delete-icon" type="button" th:data-id="${item.id}">
+            <a sec:authorize="hasAuthority('SUPER_ADMIN')" class="btn btn-sm btn-github delete-icon" type="button" th:data-id="${item.id}">
                 <i class="ti ti-trash"></i>
             </a>
         </div>

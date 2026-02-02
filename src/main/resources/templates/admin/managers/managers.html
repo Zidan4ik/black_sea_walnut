@@ -5,6 +5,29 @@
         xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:text="#{text.managers}"></title>
+    <style>
+        .nav-tabs .nav-link {
+            color: rgba(0, 128, 0, 0.4) !important;
+            border: none !important;
+            box-shadow: 0 -2px 0 rgba(0, 128, 0, 0.2) inset !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #008000 !important;
+            background: none !important;
+            box-shadow: 0 -2px 0 #008000 inset !important;
+            font-weight: bold;
+        }
+
+        .nav-tabs .nav-link i {
+            color: inherit;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: rgba(0, 128, 0, 0.7) !important;
+        }
+    </style>
 </head>
 <body>
 <!-- Content -->
@@ -100,7 +123,7 @@
                         <li class="nav-item">
                             <button type="button" class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
-                                    data-lang="en" data-type="taste">
+                                    style="" data-lang="en" data-type="taste">
                             <span class="d-none d-sm-block">
                                 <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
                             </span>
@@ -116,23 +139,23 @@
                             <div class="row">
                                 <div class="d-flex flex-column align-items-center justify-content-center gap-4">
                                     <div class="col-md-12">
-                                        <label class="form-label" for="phone_">Телефон:</label>
+                                        <label class="form-label" >Телефон:</label>
                                         <div id="phone-block-uk" class="col-md-12">
-                                            <input class="form-control" type="text" id="phone_" data-name="phone"
-                                                   placeholder="+380666790166" style="border: 1px solid rebeccapurple;">
+                                            <input class="form-control" type="text" data-name="phone"
+                                                   placeholder="+380666790166" style="border: 1px solid #1b861c;">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Ім'я:</label>
                                         <input class="form-control fields-entity" type="text" id="name-uk_"
                                                data-name="nameUk"
-                                               placeholder="Дмитро" style="border: 1px solid rebeccapurple;">
+                                               placeholder="Дмитро" style="border: 1px solid #1b861c;">
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Прізвище:</label>
                                         <input class="form-control fields-entity" type="text" id="surname-uk_"
                                                data-name="surnameUk"
-                                               placeholder="Іванов" style="border: 1px solid rebeccapurple;">
+                                               placeholder="Іванов" style="border: 1px solid #1b861c;">
                                     </div>
                                 </div>
                             </div>
@@ -143,21 +166,23 @@
                             <div class="row">
                                 <div class="d-flex flex-column align-items-center justify-content-center gap-4">
                                     <div class="col-md-12">
-                                        <label class="form-label" for="phone_">Phone:</label>
+                                        <label class="form-label">Phone:</label>
                                         <div id="phone-block-en" class="col-md-12">
+                                            <input class="form-control" type="text" data-name="phone" data-skip-validation="true"
+                                                   placeholder="+380666790166" style="border: 1px solid #1b861c;">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Name:</label>
                                         <input class="form-control fields-entity" type="text" id="name-en_"
                                                data-name="nameEn" placeholder="Dmytro"
-                                               style="border: 1px solid rebeccapurple;">
+                                               style="border: 1px solid #1b861c;">
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Surname:</label>
                                         <input class="form-control fields-entity" type="text" id="surname-en_"
                                                data-name="surnameEn" placeholder="Ivanov"
-                                               style="border: 1px solid rebeccapurple;">
+                                               style="border: 1px solid #1b861c;">
                                     </div>
                                 </div>
                             </div>
@@ -177,6 +202,7 @@
     <script th:src="@{/js/table.js}"></script>
     <script th:src="@{/js/validator.js}"></script>
     <script th:src="@{/js/copy.js}"></script>
+    <script th:src="@{/js/event-listener.js}"></script>
 
     <script>
         const inputs = ['id', 'name', 'surname', 'phone'];
@@ -201,32 +227,15 @@
             }
         });
     </script>
-</div>
-<!--/ Content -->
-
-<!-- Modal -->
-<div layout:fragment="modal-content" class="modal fade" id="ModalForDelete" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 id="modal-title" th:text="#{text.areYouSure}"></h5>
-            </div>
-            <div class="modal-footer justify-content-end">
-                <a type="button" id="modal-btnDelete_" class="btn btn-danger"
-                   th:text="#{text.button.delete}">
-                </a>
-                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal"
-                        th:text="#{value.status.cancel}">
-                </button>
-            </div>
-        </div>
-    </div>
 
     <script>
         $(document).ready(function () {
             addEventListenerActions();
             addEventListenerButtonAdd();
             selectedLanguage();
+            addEventListenerSyncFields(`[data-name="phone"]`);
+            clearErrorWhenChangeValue('[data-name="nameUk"],[data-name="nameEn"],[data-name="surnameUk"]' +
+                ',[data-name="surnameEn"]')
         });
 
         function addEventListenerActions() {
@@ -237,7 +246,7 @@
                 }
             });
         }
-        
+
         function addEventListenerButtonAdd() {
             document.getElementById('btnAdd-manager').addEventListener('click', () => {
                 $('#name-uk_').val('');
@@ -249,7 +258,6 @@
                 const modal = new bootstrap.Modal(document.getElementById('ModalManager'));
                 modal.show();
             });
-
 
             $("#save-manager_").on('click', function () {
                 requestSave();
@@ -300,24 +308,15 @@
         function getFormData() {
             const resForm = new FormData();
             resForm.append("id", $('#id_').val());
-            resForm.append("phone", $('#phone_').val());
+            resForm.append("phone", $('[data-name="phone"]').val());
             resForm.append("nameUk", $('#name-uk_').val());
             resForm.append("nameEn", $('#name-en_').val());
             resForm.append("surnameUk", $('#surname-uk_').val());
             resForm.append("surnameEn", $('#surname-en_').val());
             return resForm;
         }
-
-        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
-            tab.addEventListener('shown.bs.tab', function (event) {
-                let attribute = this.getAttribute('data-type');
-                const activatedTabId = event.target ? event.target.getAttribute('data-lang') : null;
-                let previousActiveTab = event.relatedTarget ? event.relatedTarget.getAttribute('data-lang') : null;
-                copyHTMLBlockInput(`phone-block-${previousActiveTab}`, `phone-block-${activatedTabId}`);
-            });
-        });
     </script>
 </div>
-<!--/ Modal -->
+<!--/ Content -->
 </body>
 </html>

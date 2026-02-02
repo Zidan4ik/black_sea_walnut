@@ -198,7 +198,7 @@ public class UserController {
         } catch (SecurityException ex){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
         } catch (EntityNotFoundException ex){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User wasn't found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
 

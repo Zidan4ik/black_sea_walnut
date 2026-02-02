@@ -127,7 +127,7 @@
                             </select>
                         </div>
                         <div>
-                            <label for="city_" class="form-label bold" th:text="#{text.locality}+'*'"></label>
+                            <label for="city_" class="form-label bold" th:text="#{table.header.city}+'*'"></label>
                             <select class="form-select mx-2 select-card-block-spinner ms-0"
                                     id="city_" data-name="cityForDeliveryId" disabled>
                                 <option th:text="#{text.cities}" value="" selected></option>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row g-3" id="container-user-details_" style="display: none">
+                <div class="row g-3 pt-3" id="container-user-details_" style="display: none">
                     <div class="col-6">
                         <h5 th:text="#{text.props}+':'"></h5>
                         <div id="container-okpo_" style="display: none;">
@@ -160,13 +160,13 @@
                             <div>
                                 <select class="form-select mx-2 select-card-block-spinner ms-0"
                                         id="regionAdditionallyId_" data-name="regionAdditionallyId">
-                                    <option value="" selected th:text="#{text.regions}+'*'"></option>
+                                    <option value="" selected th:text="#{text.regions}"></option>
                                 </select>
                             </div>
                             <div>
                                 <select class="form-select mx-2 select-card-block-spinner ms-0"
                                         id="cityAdditionallyId_" data-name="cityAdditionallyId" disabled>
-                                    <option value="" selected th:text="#{text.cities}+'*'"></option>
+                                    <option value="" selected th:text="#{text.cities}"></option>
                                 </select>
                             </div>
                             <div>
@@ -490,7 +490,6 @@
                     }
                 }
                 await initLocationSelectors();
-
                 if (data.regionForDeliveryId != null && data.cityForDeliveryId !== null) {
                     $('#region_').val(data.regionForDeliveryId);
                     await getCities(data.regionForDeliveryId, $('#city_'));

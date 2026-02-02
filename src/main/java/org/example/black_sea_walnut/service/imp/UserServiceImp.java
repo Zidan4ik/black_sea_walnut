@@ -32,6 +32,8 @@ import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +58,7 @@ public class UserServiceImp implements UserService {
     private final PasswordResetTokenService passwordResetTokenService;
     private final VerificationTokenRepository tokenRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final MessageSource messageSource;
 
     @Value("${upload.path}")
     private String contextPath;
@@ -87,7 +91,7 @@ public class UserServiceImp implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> {
                     LogUtil.logError("User with id: " + id + " was not found!", null);
-                    return new EntityNotFoundException("User with id:" + id + " was not found!");
+                    return new EntityNotFoundException(getMessage("error.notfoundUser") + " Id: " + id);
                 });
     }
 
@@ -115,7 +119,7 @@ public class UserServiceImp implements UserService {
         LogUtil.logInfo("Saving user with email: " + entity.getEmail());
         if (entity.getId() == null && !entity.getPassword().isEmpty()) {
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-            if(entity.getRole() == null){
+            if (entity.getRole() == null) {
                 entity.setRole(Role.USER);
             }
         }
@@ -127,113 +131,90 @@ public class UserServiceImp implements UserService {
     @SneakyThrows
     @Override
     public User save(UserFopRequestForView dto) {
+        User userToSave;
         if (dto.getId() != null) {
-            User userById = getById(dto.getId());
+            userToSave = getById(dto.getId());
+
             if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userById.getPathToImage());
+                imageService.deleteByPath(userToSave.getPathToImage());
             }
+
             if (dto.getFileImage() != null) {
                 String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
                 dto.setPathToImage(generatedPath);
             }
-            dto.setPassword(userById.getPassword());
-            dto.setRole(dto.getRole());
-            dto.setStatus(userById.getStatus().toString());
-            dto.setRegistrationType(userById.getRegisterType().toString());
+
+            userMapper.updateEntityFromRequest(dto, userToSave);
+        } else {
+            userToSave = userMapper.toEntityFromRequest(dto);
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
-        User userMapped = userMapper.toEntityFromRequest(dto);
-        Long cityId = dto.getCityForDeliveryId();
-        if (cityId != null) {
-            userMapped.setCity(cityService.getById(cityId)
-                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + cityId + " was not found!")));
-        }
-        Long cityAdditionallyId = dto.getCityAdditionallyId();
-        if (cityAdditionallyId != null) {
-            userMapped.setCityAdditional(cityService.getById(cityAdditionallyId)
-                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + cityAdditionallyId + " was not found!")));
-        }
-        Long regionId = dto.getRegionForDeliveryId();
-        if (regionId != null) {
-            userMapped.setRegion(regionService.getById(regionId)
-                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + regionId + " was not found!")
-                    ));
-        }
-        Long regionAdditionallyId = dto.getRegionAdditionallyId();
-        if (regionAdditionallyId != null) {
-            userMapped.setRegionAdditional(regionService.getById(regionAdditionallyId)
-                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + regionAdditionallyId + " was not found!")));
-        }
-        return save(userMapped);
+
+
+        userToSave.setCity(findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
+        userToSave.setCityAdditional(findOrThrow(dto.getCityAdditionallyId(), cityService::getById, "City"));
+        userToSave.setRegion(findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
+        userToSave.setRegionAdditional(findOrThrow(dto.getRegionAdditionallyId(), regionService::getById, "Region"));
+
+        return save(userToSave);
     }
 
     @SneakyThrows
     @Override
     public User save(UserIndividualRequestForAdd dto) {
+        User userToSave;
         if (dto.getId() != null) {
-            User userById = getById(dto.getId());
+            userToSave = getById(dto.getId());
+
             if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userById.getPathToImage());
+                imageService.deleteByPath(userToSave.getPathToImage());
             }
+
             if (dto.getFileImage() != null) {
                 String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
                 dto.setPathToImage(generatedPath);
             }
-            dto.setPassword(userById.getPassword());
-            dto.setRole(userById.getRole());
-            dto.setStatus(userById.getStatus().toString());
-            dto.setRegistrationType(userById.getRegisterType().toString());
+
+            userMapper.updateEntityFromRequest(dto,userToSave);
+        }else{
+            userToSave = userMapper.toEntityFromRequest(dto);
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
-        User userMapped = userMapper.toEntityFromRequest(dto);
-        if (dto.getCityForDeliveryId() != null) {
-            userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
-                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
 
-        }
-        if (dto.getRegionForDeliveryId() != null) {
-            userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
-                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
-        }
-        return save(userMapped);
+        userToSave.setCity(findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
+        userToSave.setRegion(findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
+
+        return save(userToSave);
     }
 
     @SneakyThrows
     @Override
     public User save(UserLegalRequestForView dto) {
+        User userToSave;
         if (dto.getId() != null) {
-            User userById = getById(dto.getId());
+            userToSave = getById(dto.getId());
+
             if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userById.getPathToImage());
+                imageService.deleteByPath(userToSave.getPathToImage());
             }
+
             if (dto.getFileImage() != null) {
                 String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
                 dto.setPathToImage(generatedPath);
             }
-            dto.setPassword(userById.getPassword());
-            dto.setRole(dto.getRole());
-            dto.setStatus(userById.getStatus().toString());
-            dto.setRegistrationType(userById.getRegisterType().toString());
+
+            userMapper.updateEntityFromRequest(dto,userToSave);
+        }else{
+            userToSave = userMapper.toEntityFromRequest(dto);
         }
         imageService.save(dto.getFileImage(), dto.getPathToImage());
-        User userMapped = userMapper.toEntityFromRequest(dto);
-        if (dto.getCityForDeliveryId() != null) {
-            userMapped.setCity(cityService.getById(dto.getCityForDeliveryId())
-                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityForDeliveryId() + " was not found!")));
-        }
-        if (dto.getCityAdditionallyId() != null) {
-            userMapped.setCityAdditional(cityService.getById(dto.getCityAdditionallyId())
-                    .orElseThrow(() -> new EntityNotFoundException("City with id:" + dto.getCityAdditionallyId() + " was not found!")));
-        }
-        if (dto.getRegionForDeliveryId() != null) {
-            userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId())
-                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionForDeliveryId() + " was not found!")));
-        }
-        if (dto.getRegionAdditionallyId() != null) {
-            userMapped.setRegionAdditional(regionService.getById(dto.getRegionAdditionallyId())
-                    .orElseThrow(() -> new EntityNotFoundException("Region with id:" + dto.getRegionAdditionallyId() + " was not found!")));
-        }
-        return save(userMapped);
+
+        userToSave.setCity(findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
+        userToSave.setCityAdditional(findOrThrow(dto.getCityAdditionallyId(), cityService::getById, "City"));
+        userToSave.setRegion(findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
+        userToSave.setRegionAdditional(findOrThrow(dto.getRegionAdditionallyId(), regionService::getById, "Region"));
+
+        return save(userToSave);
     }
 
     @SneakyThrows
@@ -399,10 +380,25 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void deleteUserById(Long id) {
-        User userById = getById(id);
-        if(userById.getRole()==Role.SUPER_ADMIN){
-            throw new SecurityException("Cannot delete user with SUPER_ADMIN role");
+        User user = getById(id);
+        if (user == null) {
+            throw new EntityNotFoundException(getMessage("error.notfoundUser"));
+        }
+        if (user.getRole() == Role.SUPER_ADMIN) {
+            throw new SecurityException(getMessage("error.delete.superAdmin"));
         }
         userRepository.deleteById(id);
+    }
+
+    private String getMessage(String code) {
+        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+    }
+
+    private <T> T findOrThrow(Long id, Function<Long, Optional<T>> findMethod, String entityName) {
+        if (id == null) return null;
+        return findMethod.apply(id).
+                orElseThrow(() -> new EntityNotFoundException
+                        (entityName + " with id: " + id + " was not found!")
+                );
     }
 }

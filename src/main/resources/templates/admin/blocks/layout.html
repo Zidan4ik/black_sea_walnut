@@ -232,16 +232,8 @@
             }
         }).then(function (result) {
             if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.deleted + '!'} </div>`,
-                    text: messages.successDeleted + '.',
-                    customClass: {
-                        confirmButton: 'btn btn-success'
-                    }
-                }).then(() => {
-                    requestDeleteObjects(ids, path, cb);
-                });
+                requestDeleteObjects(ids, path, cb);
+
             }
         });
     }
@@ -251,8 +243,30 @@
         request.open('DELETE', path);
         request.setRequestHeader('Content-Type', 'application/json');
         request.addEventListener('load', function () {
-            if (request.status === 200 && cb) {
-                cb();
+            if (request.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.deleted + '!'} </div>`,
+                    text: messages.successDeleted + '.',
+                    customClass: {
+                        confirmButton: 'btn btn-success'
+                    }
+                }).then(() => {
+                    if (cb) cb();
+                });
+            } else {
+                let errorMessage;
+                if (request.responseText) {
+                    errorMessage = request.responseText;
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.error + '!'} </div>`,
+                    text: errorMessage,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    }
+                });
             }
         });
         request.send(JSON.stringify(ids));
@@ -267,6 +281,7 @@
         filterPrice: /*[[#{error.filter.totalPrice}]]*/ 'default',
         filterDate: /*[[#{error.filter.date}]]*/ 'default',
         filterPhone: /*[[#{error.filter.phone}]]*/ 'default',
+        lengthPhone: /*[[#{error.phone.length}]]*/ 'default',
         areYouSureToDeleteIt: /*[[#{text.areYouSure}]]*/ 'default',
         noCallAnyoneCalls: /*[[#{text.noCallAnyoneCalls}]]*/ 'default',
         warning: /*[[#{text.warning}]]*/ 'default',
@@ -275,7 +290,8 @@
         deleted: /*[[#{value.status.deleted}]]*/ 'default',
         successDeleted: /*[[#{text.successDeleted}]]*/ 'default',
         modalDelete: /*[[#{text.modal.delete}]]*/ 'default',
-        cancel: /*[[#{value.status.cancel}]]*/ 'default'
+        cancel: /*[[#{value.status.cancel}]]*/ 'default',
+        error: /*[[#{text.error}]]*/ 'default',
     };
 </script>
 </body>

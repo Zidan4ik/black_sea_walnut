@@ -260,4 +260,34 @@ public class UserMapper {
                 .index(entity.getIndexAdditional())
                 .build();
     }
+
+    public void updateEntityFromRequest(UserFopRequestForView dto, User entity){
+        entity.setFullName(dto.getFullName());
+        entity.setPhone(dto.getPhone());
+        entity.setEmail(dto.getEmail());
+        entity.setDepartment(Integer.parseInt(dto.getDepartmentForDelivery()));
+        entity.setPaymentDetails(dto.getEdrpou());
+        entity.setAddressAdditional(dto.getAddressAdditionally());
+        entity.setPathToImage(dto.getPathToImage());
+    }
+
+    public void updateEntityFromRequest(UserIndividualRequestForAdd dto, User entity){
+        entity.setFullName(dto.getFullName());
+        entity.setPhone(dto.getPhone());
+        entity.setEmail(dto.getEmail());
+        entity.setDepartment(Math.toIntExact(dto.getDepartmentForDeliveryId()));
+        entity.setDepartment(dto.getDepartmentForDeliveryId());
+        entity.setPathToImage(dto.getPathToImage());
+    }
+
+    public void updateEntityFromRequest(UserLegalRequestForView dto, User entity){
+        entity.setFullName(dto.getFullName());
+        entity.setPhone(dto.getPhone());
+        entity.setEmail(dto.getEmail());
+        entity.setDepartment(Integer.parseInt(dto.getDepartmentForDelivery()));
+        entity.setPaymentDetails(dto.getOkpo());
+        entity.setAddressAdditional(dto.getAddressAdditionally());
+        entity.setIndexAdditional(dto.getIndexLawful());
+        entity.setPathToImage(dto.getPathToImage());
+    }
 }

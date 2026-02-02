@@ -4,6 +4,7 @@ function addEventListenerCounter() {
         const $parent = $(this).parent();
         const $input = $parent.find(`[data-name="amount"]`);
         let amount = parseInt($input.val(), 10) || 0;
+
         if (isRight) {
             amount += 1;
         } else {
@@ -22,40 +23,69 @@ function addEventListenerNameManager() {
     });
 }
 
-function addEventListenerSyncFields(selectors) {
-    $(document).on('input change', selectors, function () {
-        const $input = $(this);
-        const dataName = $input.data('name');
+function validateFieldValue(value, dataName) {
+    if (value === '') return {isValid: true, message: ''};
+    if (dataName === 'phone') {
+        const formatRegex = /^\+380\d{9}$/;
 
+        if (value.length > 13) {
+            return {
+                isValid: false,
+                message: messages.lengthPhone
+            }
+        }
+
+        if (!formatRegex.test(value)) {
+            return {
+                isValid: false,
+                message: messages.filterPhone
+            };
+        }
+    } else {
+        let isNumber = /^-?\d+$/.test(value);
+        return {
+            isValid: isNumber,
+            message: isNumber ? '' : messages.invalidNumber
+        };
+    }
+
+    return {isValid: true, message: ''}
+}
+
+function addEventListenerSyncFields(selectors) {
+    $(document).on('input', selectors, function () {
+        const $input = $(this);
+        console.log($input);
+
+        const dataName = $input.data('name');
         if (!dataName) return;
 
         const $allElements = $(`[data-name="${dataName}"]`);
         const val = $input.val();
 
-        if ($input.is(':checkbox')) {
+        let checkbox = $input.is(':checkbox');
+        if (checkbox) {
             $allElements.prop('checked', this.checked);
         } else {
             $allElements.val(val);
-
-            const isValid = /^-?\d+$/.test(val) || val === '';
+            const result = validateFieldValue(val, dataName);
+            isValidFields = result.isValid;
 
             $allElements.each(function () {
                 const $el = $(this);
                 const $parent = $el.parent();
+                const $targetContainer = ($parent.hasClass('input-group-merge') || $parent.hasClass('amount-block'))
+                    ? $parent.parent()
+                    : $parent;
 
-                const $targetContainer = ($parent.hasClass('input-group-merge') || $parent.hasClass('amount-block')) ? $parent.parent() : $parent;
-                if (isValid) {
-                    $targetContainer.find('.error-message').remove();
-                    isValidFields = true;
-                } else {
-                    if ($targetContainer.find('.error-message').length === 0) {
-                        const errorHtml = `
+                $targetContainer.find('.error-message').remove();
+                console.log(result);
+                if (!result.isValid) {
+                    const errorHtml = `
                            <small class="error-message text-danger fw-bold mt-1 d-block">
-                                <i class="bi bi-exclamation-circle me-1"></i> ${messages.invalidNumber}
+                                <i class="bi bi-exclamation-circle me-1"></i> ${result.message}
                             </small>`;
-                        $targetContainer.append(errorHtml);
-                        isValidFields = false;
-                    }
+                    $targetContainer.append(errorHtml);
                 }
             });
         }
