@@ -129,8 +129,22 @@
     });
 
     function invokeLogoutModal() {
-        let modal = new bootstrap.Modal(document.querySelector("#ModalForLogout"));
-        modal.show();
+        Swal.fire({
+            title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.warning + '!'} </div>`,
+            icon: 'warning',
+            text: messages.youSureLogout + '?',
+            confirmButtonText: messages.exit,
+            cancelButtonText: messages.cancel,
+            customClass: {
+                confirmButton: 'btn btn-danger me-3',
+                cancelButton: 'btn btn-label-secondary'
+            },
+            buttonsStyling: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${contextPath}/logout`
+            }
+        });
     }
 
     function invokeBlockUI() {
@@ -233,7 +247,6 @@
         }).then(function (result) {
             if (result.isConfirmed) {
                 requestDeleteObjects(ids, path, cb);
-
             }
         });
     }
@@ -286,6 +299,8 @@
         noCallAnyoneCalls: /*[[#{text.noCallAnyoneCalls}]]*/ 'default',
         warning: /*[[#{text.warning}]]*/ 'default',
         areYouSure: /*[[#{text.areYouSure2}]]*/ 'default',
+        youSureLogout: /*[[#{text.areYouSure.logout}]]*/ 'default',
+        exit: /*[[#{value.status.exit}]]*/ 'default',
         yesDeleteId: /*[[#{text.yesDeleteId}]]*/ 'default',
         deleted: /*[[#{value.status.deleted}]]*/ 'default',
         successDeleted: /*[[#{text.successDeleted}]]*/ 'default',

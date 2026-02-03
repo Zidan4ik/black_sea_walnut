@@ -114,7 +114,9 @@
             });
 
             if (checkedSelectors.length > 0) {
-                confirmAndPathDelete(checkedSelectors)
+                confirmAndPathDelete(checkedSelectors, `${contextPath}/admin/call/delete`, () => {
+                    invokeRequest(inputs, 0, true)
+                });
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -135,7 +137,9 @@
         $(document).on('click', '.delete-icon', function () {
             $(`#modal-btnDelete_`).attr('data-type', 'one');
             let id = $(this).data('id');
-            confirmAndPathDelete([id],`${contextPath}/admin/call/delete`, ()=>{invokeRequest(inputs, 0)});
+            confirmAndPathDelete([id], `${contextPath}/admin/call/delete`, () => {
+                invokeRequest(inputs, 0, true);
+            });
         });
 
         document.body.addEventListener('htmx:afterSwap', function (event) {
