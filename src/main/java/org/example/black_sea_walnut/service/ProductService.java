@@ -38,7 +38,9 @@ public interface ProductService {
 
     boolean isExistById(Long id);
 
-    List<ProductResponseForViewInTable> getRandomProductsBySize(int size, LanguageCode code);
+    List<ProductResponseForViewInTable> getRandomProductsBySizeForDto(int size, LanguageCode code);
+
+    List<Product> getRandomProductsBySize(int size);
 
     List<Integer> getAllMasses();
 

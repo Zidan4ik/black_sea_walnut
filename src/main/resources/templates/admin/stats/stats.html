@@ -11,20 +11,16 @@
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/apex-charts/apex-charts.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <style>
-        .pointer {
-            cursor: pointer;
-        }
-
         .header-mini-table {
             color: black !important;
             background-color: lightgrey !important;
             width: auto !important;
+            text-align: center;
         }
     </style>
     <style>
-        /* Основний стиль повзунка */
         #scrollbar {
-            -webkit-appearance: none; /* Прибираємо стандартний стиль */
+            -webkit-appearance: none;
             width: 100%;
             height: 8px;
             background: #dcf5dd;
@@ -38,7 +34,6 @@
             opacity: 1;
         }
 
-        /* Стилізація "ручки" (повзунка) */
         #scrollbar::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -153,15 +148,174 @@
     <script th:src="@{/js/pagination.js}"></script>
 
     <script>
-        function calculatePercentage(options) {
-            var dataPoint = options.data[0].dataPoints;
-            var total = dataPoint.reduce((sum, item) => sum + item.y, 0); // Сума всіх значень
+        let timeoutId;
+        $(document).ready(function () {
+            selectedLanguage();
+            $(`#dateAmountOrdersByMonth_`).datepicker({
+                format: "dd.mm.yyyy",
+                autoclose: true
+            }).datepicker("setDate", new Date());
 
-            for (var i = 0; i < dataPoint.length; i++) {
-                options.data[0].dataPoints[i].percentage = ((dataPoint[i].y / total) * 100).toFixed(2);
+            $(`#dateAmountProducts_`).datepicker({
+                format: "dd.mm.yyyy",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+
+            $(`#dateAmountUsers_`).datepicker({
+                format: "dd.mm.yyyy",
+                autoclose: true
+            }).datepicker("setDate", new Date());
+
+            addListeners();
+        });
+
+        window.addEventListener('load', function () {
+            let dateNow = new Date().toLocaleDateString('uk-UA');
+            let size = $('#size-amount-products_').val();
+
+            invokeBlockUI();
+            Promise.all([
+                requestGetUsersByDate(dateNow),
+                requestByDateOrder(dateNow),
+                requestGetProducts(size, dateNow)
+            ])
+                .then(() => {
+                    console.log("Всі дані завантажено успішно");
+                }).catch(err => {
+                console.error("Один із запитів завершився помилкою", err);
+            }).finally(() => {
+                setTimeout(() => $('#card-block').unblock(), 1000);
+            });
+        });
+
+        function addListeners() {
+            $(`#dateAmountProducts_`).on('change', function () {
+                let size = $('#size-amount-products_').val();
+                requestGetProducts(size, this.value);
+            });
+
+            $('#size-amount-products_').on('change', function () {
+                let size = this.value;
+                let date = $(`#dateAmountProducts_`).val();
+                $('#text-amount-products_').text(size);
+                requestGetProducts(size, date);
+            });
+
+            $('#dateAmountOrdersByMonth_').on('change', function () {
+                requestByDateOrder(this.value);
+            });
+
+            $('#dateAmountUsers_').on('change', function () {
+                requestGetUsersByDate(this.value);
+            });
+        }
+
+        function requestByDateOrder(date) {
+            return $.ajax({
+                url: `${contextPath}/admin/orders/getByDate`,
+                type: 'GET',
+                data: {date: date},
+                dataType: 'json'
+            }).done(function (data) {
+                const noExistContainer = $("#chart-orders-noExist");
+                const scrollbar = $('#scrollbar');
+
+                if (!data || data.length === 0) {
+
+                    noExistContainer.html(`<h5>${messages.dataTableNoExist}</h5>`);
+                    scrollbar.css('display', 'none');
+
+                    let chartElement = document.querySelector("#chart-orders");
+                    if (chartElement && chartElement.chart) {
+                        chartElement.chart.destroy();
+                        chartElement.chart = null;
+                    }
+                } else {
+                    let outputData = data.map(item => [item.date, item.count]);
+
+                    scrollbar.css('display', outputData.length <= 7 ? 'none' : 'flex');
+
+                    loadChartOrders(outputData);
+                    noExistContainer.html('');
+                }
+            }).fail(function (xhr) {
+                console.error("Помилка завантаження замовлень:", xhr.status);
+            });
+        }
+
+
+        function requestGetUsersByDate(data) {
+            return $.ajax({
+                url: contextPath + `/admin/stats/users/get?date=${data}`,
+                data: {data: data}
+            }).then(data => {
+                if (!data || data.length === 0) {
+                    const noExistText = getCurrentLang() === 'uk' ? 'Дані відсутні' : 'No data';
+                    $("#chart-users").html(`<h5>${noExistText}</h5>`);
+                } else {
+                    let labels = data.map(item => returnUserStatus2(item.status));
+                    let count = data.map(item => item.count);
+                    loadChartUsers(labels, count);
+                }
+            });
+        }
+
+        function requestGetProducts(size, date) {
+            return $.ajax({
+                url: `${contextPath}/admin/stats/products/get`,
+                type: 'GET',
+                data: {date: date, size: size},
+                dataType: 'json'
+            }).done(function (data) {
+                console.log(data);
+
+                let arrayUnderLang = data.map(item => ({
+                    article: item.article,
+                    name: getCurrentLang() === 'uk' ? item.nameUk : item.nameEn,
+                    count: item.count,
+                    summa: item.summa
+                }));
+
+                let chartArray = arrayUnderLang.map(item => ({
+                    y: parseInt(item.count) || 0,
+                    label: item.name
+                }));
+
+                if (data.length > 0) loadChartProducts(chartArray);
+
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    loadTable(arrayUnderLang);
+                }, 1000);
+            }).fail(function (xhr) {
+                console.error("Помилка завантаження продуктів:", xhr.status);
+            });
+        }
+
+        function returnUserStatus2(status) {
+            let currentLang = $('#languageCode_').val();
+            if (status === 'legal') {
+                if (currentLang === 'uk') {
+                    return 'Юридичне обличчя';
+                } else if (currentLang === 'en') {
+                    return 'Legal';
+                }
+            } else if (status === 'fop') {
+                if (currentLang === 'uk') {
+                    return 'Фоп';
+                } else if (currentLang === 'en') {
+                    return 'Fop';
+                }
+            } else if (status === 'individual') {
+                if (currentLang === 'uk') {
+                    return 'Фізичне обличчя';
+                } else if (currentLang === 'en') {
+                    return 'Individual';
+                }
             }
         }
     </script>
+
     <script>
         function loadChartOrders(data) {
             let element = document.querySelector("#chart-orders");
@@ -294,171 +448,12 @@
             chart.render();
         }
 
-    </script>
-    <script>
-        $(document).ready(function () {
-            selectedLanguage();
-            $(`#dateAmountOrdersByMonth_`).datepicker({
-                format: "dd.mm.yyyy",
-                autoclose: true
-            }).datepicker("setDate", new Date());
+        function calculatePercentage(options) {
+            const dataPoint = options.data[0].dataPoints;
+            const total = dataPoint.reduce((sum, item) => sum + item.y, 0); // Сума всіх значень
 
-            $(`#dateAmountProducts_`).datepicker({
-                format: "dd.mm.yyyy",
-                autoclose: true
-            }).datepicker("setDate", new Date());
-
-            $(`#dateAmountUsers_`).datepicker({
-                format: "dd.mm.yyyy",
-                autoclose: true
-            }).datepicker("setDate", new Date());
-
-            addListeners();
-        });
-
-        window.addEventListener('load', function () {
-            let dateNow = new Date().toLocaleDateString('uk-UA');
-            requestGetUsersByDate(dateNow);
-            requestByDateOrder(dateNow);
-            let size = $('#size-amount-products_').val();
-            let date = dateNow;
-            invokeBlockUI();
-            requestGetProducts(size, date);
-        });
-
-        function addListeners() {
-            $(`#dateAmountProducts_`).on('change', function () {
-                let size = $('#size-amount-products_').val();
-                requestGetProducts(size, this.value);
-            });
-
-            $('#size-amount-products_').on('change', function () {
-                let size = this.value;
-                let date = $(`#dateAmountProducts_`).val();
-                $('#text-amount-products_').text(size);
-                requestGetProducts(size, date);
-            });
-
-            $('#dateAmountOrdersByMonth_').on('change', function () {
-                requestByDateOrder(this.value);
-            });
-
-            $('#dateAmountUsers_').on('change', function () {
-                requestGetUsersByDate(this.value);
-            });
-        }
-
-        function requestByDateOrder(date) {
-            let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `/admin/orders/getByDate?date=${date}`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    let data = JSON.parse(request.response);
-                    if (!data || data.length === 0) {
-                        const noExistText = document.documentElement.lang === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
-                        $("#chart-orders-noExist").html(`<h5>${noExistText}</h5>`);
-                        $('#scrollbar').css('display', 'none');
-                        let chartElement = document.querySelector("#chart-orders");
-                        if (chartElement.chart) {
-                            chartElement.chart.destroy();
-                            chartElement.chart = null;
-                        }
-                        return;
-                    } else {
-                        var outputData = data.map(function (item) {
-                            return [item.date, item.count];
-                        });
-                        if (outputData.length <= 7) {
-                            $('#scrollbar').css('display', 'none');
-                        } else {
-                            $('#scrollbar').css('display', 'flex');
-                        }
-                        loadChartOrders(outputData);
-                        $("#chart-orders-noExist").html('');
-                    }
-                }
-            });
-        }
-
-        function requestGetUsersByDate(date) {
-            let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `/admin/stats/users/get?date=${date}`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    let data = JSON.parse(request.response);
-                    if (!data || data.length === 0) {
-                        const noExistText = document.documentElement.lang === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
-                        $("#chart-users").html(`<h5>${noExistText}</h5>`);
-                        return;
-                    }
-                    let labels = [];
-                    let count = [];
-                    data.map(function (item) {
-                        labels.push(returnUserStatus2(item.status));
-                        count.push(item.count);
-                    });
-                    loadChartUsers(labels, count);
-                }
-            });
-        }
-
-        let timeoutId;
-
-        function requestGetProducts(size, date) {
-            let request = new XMLHttpRequest();
-            request.open("GET", contextPath + `/admin/stats/products/get?date=${date}&size=${size}`);
-            request.send();
-            request.addEventListener('load', function () {
-                if (request.status === 200) {
-                    let data = JSON.parse(request.response);
-                    let arrayUnderLang = [];
-
-                    data.forEach(function (item) {
-                        arrayUnderLang.push({
-                            article: item.article,
-                            name: getCurrentLang() === 'uk' ? item.nameUk : item.nameEn,
-                            count: item.count,
-                            summa: item.summa
-                        });
-                    });
-
-                    let array = arrayUnderLang.map(item => ({
-                        y: parseInt(item.count),
-                        label: item.name
-                    }));
-
-                    loadChartProducts(array);
-                    $(`#table-data-container_`).empty();
-                    clearTimeout(timeoutId);
-                    setTimeout(() => {
-                        loadTable(arrayUnderLang);
-                    }, 1000)
-                }
-            });
-        }
-
-        function returnUserStatus2(status) {
-            let currentLang = $('#languageCode_').val();
-            if (status === 'legal') {
-                if (currentLang === 'uk') {
-                    return 'Юридичне обличчя';
-                } else if (currentLang === 'en') {
-                    return 'Legal';
-                }
-            } else if (status === 'fop') {
-                if (currentLang === 'uk') {
-                    return 'Фоп';
-                } else if (currentLang === 'en') {
-                    return 'Fop';
-                }
-            } else if (status === 'individual') {
-                if (currentLang === 'uk') {
-                    return 'Фізичне обличчя';
-                } else if (currentLang === 'en') {
-                    return 'Individual';
-                }
+            for (let i = 0; i < dataPoint.length; i++) {
+                options.data[0].dataPoints[i].percentage = ((dataPoint[i].y / total) * 100).toFixed(2);
             }
         }
     </script>

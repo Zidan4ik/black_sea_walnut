@@ -10,6 +10,7 @@ import org.example.black_sea_walnut.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class DatabaseLoader implements CommandLineRunner {
     private Faker faker = new Faker();
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
         if (newService.getAll().isEmpty()) {
@@ -272,14 +274,21 @@ public class DatabaseLoader implements CommandLineRunner {
         }
 
         if (productService.getAll().isEmpty()) {
+            List<String> productsUa = new ArrayList<>(Arrays.asList(
+                    "Генмайча", "Кукіча", "Чай з фундуком", "Кеш'ю", "Фісташки", "Арахіс", "Пекан", "Кедрові горіхи", "Макадамія", "Бразильський горіх"));
+
+            List<String> productsEn = new ArrayList<>(Arrays.asList(
+                    "Genmaicha", "Kukicha", "Hazelnut tea", "Cashew", "Pistachios", "Peanut", "Pecan", "Pine nuts", "Macadamia", "Brazil nut"));
+
             Map<Long, List<Discount>> discountGrouped = discountService.findAllGroupedByCommonId();
             List<Long> keysDiscounts = new ArrayList<>(discountGrouped.keySet());
 
             Map<Long, List<Taste>> tastesGrouped = tasteService.getAllGroupedByCommonId();
             ArrayList<Long> keysTastes = new ArrayList<>(tastesGrouped.keySet());
 
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i < 10; i++) {
                 Product product = new Product();
+
                 product.setArticleId((long) i);
                 product.setActive(faker.random().nextBoolean());
                 product.setTotalCount((long) faker.number().numberBetween(1, 100));
@@ -298,7 +307,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
                 product.getProductTranslations().add(new ProductTranslation(
                         LanguageCode.uk,
-                        "Продукт " + i,
+                        productsUa.get(i),
                         faker.lorem().paragraph(),
                         faker.lorem().paragraph(),
                         faker.lorem().paragraph(),
@@ -309,7 +318,7 @@ public class DatabaseLoader implements CommandLineRunner {
                 ));
                 product.getProductTranslations().add(new ProductTranslation(
                         LanguageCode.en,
-                        "Product " + i,
+                        productsEn.get(i),
                         faker.lorem().paragraph(),
                         faker.lorem().paragraph(),
                         faker.lorem().paragraph(),
@@ -336,6 +345,7 @@ public class DatabaseLoader implements CommandLineRunner {
                 productService.save(product);
             }
         }
+
         if (galleryRepository.findAll().isEmpty()) {
             List<Gallery> galleries = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
@@ -464,9 +474,9 @@ public class DatabaseLoader implements CommandLineRunner {
             userService.save(user);
         }
 
+
         if (orderRepository.findAll().isEmpty()) {
             List<User> users = userService.getAll();
-
             List<Order> orders = new ArrayList<>();
             LocalDate today = LocalDate.now();
             int year = today.getYear();
@@ -505,16 +515,49 @@ public class DatabaseLoader implements CommandLineRunner {
                 order.setDateOfOrdering(randomDate);
 
                 List<OrderDetail> orderDetails = new ArrayList<>();
+
                 for (int j = 0; j < 3; j++) {
+                    List<Product> randomProducts = productService.getRandomProductsBySize(1);
+                    if(randomProducts.isEmpty()) continue;
+                    Product product = randomProducts.get(0);
+
                     OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.setProductNameUk(fakerUk.commerce().productName());
-                    orderDetail.setProductNameEn(fakerEn.commerce().productName());
-                    orderDetail.setUnitPrice(faker.number().numberBetween(50, 500));
-                    orderDetail.setCount(faker.number().numberBetween(1, 5));
+
+                    int unitPrice = Integer.parseInt(product.getPriceByUnit().replaceAll("[^0-9]", ""));
+                    int count = faker.number().numberBetween(1, 5);
+
+                    int discountPercent = 0;
+                    if (product.getDiscounts() != null && !product.getDiscounts().isEmpty()) {
+                        discountPercent = product.getDiscounts().iterator().next().getValue();
+                    }
+
+                    int discountSumForUnit = (unitPrice * discountPercent) / 100;
+                    int discountUnitPrice = unitPrice - discountSumForUnit;
+
+                    int summaWithoutDiscount = unitPrice * count;
+                    int summaDiscount = discountSumForUnit * count;
+                    int summaWithDiscount = discountUnitPrice * count;
+
                     orderDetail.setOrder(order);
+                    orderDetail.setProducts(List.of(product));
+                    orderDetail.setCount(count);
+                    orderDetail.setUnitPrice(unitPrice);
+                    orderDetail.setMass(product.getMass());
+
+                    orderDetail.setDiscountPercent(discountPercent);
+                    orderDetail.setDiscountSumForUnit(discountSumForUnit);
+                    orderDetail.setDiscountUnitPrice(discountUnitPrice);
+
+                    orderDetail.setSummaWithoutDiscount(summaWithoutDiscount);
+                    orderDetail.setSummaDiscount(summaDiscount);
+                    orderDetail.setSummaWithDiscount(summaWithDiscount);
+
+                    if (!product.getProductTranslations().isEmpty()) {
+                        orderDetail.setProductNameUk(product.getProductTranslations().get(0).getName());
+                    }
+
                     orderDetails.add(orderDetail);
                 }
-                order.setOrderDetails(orderDetails);
 
                 List<DeliveryPrice> deliveryPrices = new ArrayList<>();
                 for (int k = 0; k < 2; k++) {
@@ -523,8 +566,9 @@ public class DatabaseLoader implements CommandLineRunner {
                     deliverPriceRepository.save(deliveryPrice);
                     deliveryPrices.add(deliveryPrice);
                 }
-                order.setDeliveryPrices(deliveryPrices);
 
+                order.setOrderDetails(orderDetails);
+                order.setDeliveryPrices(deliveryPrices);
                 order.setUser(user);
                 orders.add(order);
             }

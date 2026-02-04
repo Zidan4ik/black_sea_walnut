@@ -23,8 +23,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     boolean existsById(@NonNull Long id);
 
-    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT :size", nativeQuery = true)
-    List<Product> findRandomProducts(@Param("size") int size);
+    @Query(value = "SELECT * FROM products WHERE RAND()<0.5 ORDER BY RAND() LIMIT :size", nativeQuery = true)
+    List<Product> findSortedProductsBySize(@Param("size") int size);
 
     @Query("SELECT p.mass FROM Product p GROUP BY p.mass")
     List<Integer> getAllMasses();

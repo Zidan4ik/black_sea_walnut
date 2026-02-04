@@ -74,9 +74,7 @@ public class ProductServiceImp implements ProductService {
         LogUtil.logInfo("Fetching all products with filters");
         Page<Product> page = productRepository.findAll(ProductSpecification2.getSpecification(response, code), pageable);
         List<ProductResponseForViewInTable> responseDTOView = page.map(p -> mapper.toResponseForViewInProduction(p, code)).toList();
-        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(
-                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
-        ));
+        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()));
     }
 
     @Override
@@ -150,16 +148,13 @@ public class ProductServiceImp implements ProductService {
     public void updateBasicFields(Product product, ProductRequestForAdd dto) {
         List<ProductTranslation> productTranslations = product.getProductTranslations();
         for (LanguageCode code : LanguageCode.values()) {
-            ProductTranslation translation = productTranslations.stream()
-                    .filter(t -> t.getLanguageCode().equals(code))
-                    .findFirst()
-                    .orElseGet(() -> {
-                        ProductTranslation pt = new ProductTranslation();
-                        pt.setLanguageCode(code);
-                        pt.setProduct(product);
-                        productTranslations.add(pt);
-                        return pt;
-                    });
+            ProductTranslation translation = productTranslations.stream().filter(t -> t.getLanguageCode().equals(code)).findFirst().orElseGet(() -> {
+                ProductTranslation pt = new ProductTranslation();
+                pt.setLanguageCode(code);
+                pt.setProduct(product);
+                productTranslations.add(pt);
+                return pt;
+            });
 
             if (code == LanguageCode.uk) {
                 translation.setName(dto.getNameUk());
@@ -198,11 +193,10 @@ public class ProductServiceImp implements ProductService {
     @Override
     public Product getByArticleId(Long id) {
         LogUtil.logInfo("Fetching product by article ID: " + id);
-        return productRepository.getByArticleId(id)
-                .orElseThrow(() -> {
-                    LogUtil.logError("Product not found with article ID: " + id, null);
-                    return new EntityNotFoundException("Product with article id:" + id + " was not found!");
-                });
+        return productRepository.getByArticleId(id).orElseThrow(() -> {
+            LogUtil.logError("Product not found with article ID: " + id, null);
+            return new EntityNotFoundException("Product with article id:" + id + " was not found!");
+        });
     }
 
     @Override
@@ -252,11 +246,18 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<ProductResponseForViewInTable> getRandomProductsBySize(int size, LanguageCode code) {
-        return productRepository.findRandomProducts(size).stream().map(p -> {
+    public List<ProductResponseForViewInTable> getRandomProductsBySizeForDto(int size, LanguageCode code) {
+        return productRepository.findSortedProductsBySize(size).stream().map(p -> {
             p.setHistoryPrices(historyPricesService.getLastTwoDataByProduct(p));
             return productMapper.toResponseForViewInMain(p, code);
         }).toList();
+    }
+
+    @Override
+    public List<Product> getRandomProductsBySize(int size) {
+        return productRepository.findSortedProductsBySize(size).stream()
+                .peek(p -> p.setHistoryPrices(
+                        historyPricesService.getLastTwoDataByProduct(p))).toList();
     }
 
     @Override

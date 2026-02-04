@@ -30,17 +30,15 @@ function getFilters(filters) {
 }
 
 function loadTable(data) {
-    const containerTable = document.getElementById("table-data-container_");
-    containerTable.innerHTML = '';
-    const noExistText = getCurrentLang() === 'uk' ? 'Дані в таблиці відсутні' : 'No data available in table';
+    const containerTable = $("#table-data-container_");
+    containerTable.empty();
     if (data.length > 0) {
-        data.forEach(function (element) {
-            containerTable.innerHTML += getRowData(element);
-        });
+        let rows = data.map(el=>getRowData(el)).join('');
+        containerTable.append(rows);
     } else {
-        containerTable.innerHTML += `<td colspan="4" style="text-align: center; color: gray; font-style: italic;">
-${noExistText}
-    </td>`;
+        containerTable.append(`<td colSpan="4" style="text-align: center; color: gray; font-style: italic;">
+            ${messages.dataTableNoExist}
+        </td>`);
     }
 }
 

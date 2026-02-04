@@ -37,7 +37,7 @@ public class WebMainController {
 
     @GetMapping("/main/data")
     public ResponseEntity<MainResponseForView> getDataForMainPage(@RequestParam("lang") String lang) {
-        List<ProductResponseForViewInTable> response = productService.getRandomProductsBySize(5, LanguageCode.fromString(lang));
+        List<ProductResponseForViewInTable> response = productService.getRandomProductsBySizeForDto(5, LanguageCode.fromString(lang));
         BlockResponseForAddInMain banner = historyMainService.getByPageTypeInResponseMainBlock(PageType.main_banner);
         ProductionResponseForAddInMain production = historyMainService.getByPageTypeInResponseProductionBlock(PageType.main_production);
         FactoryBlockResponseForAddInMain factory = historyMainService.getByPageTypeInResponseFactoryBlock(PageType.main_factory_about);

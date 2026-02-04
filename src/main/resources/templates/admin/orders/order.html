@@ -155,6 +155,8 @@
                     data.orderDetails.forEach(item => {
                         count += item.totalSumma = item.price * item.count;
                     });
+                    console.log(data.orderDetails);
+                    console.log(data);
                     loadTable(data.orderDetails);
                     document.getElementById('total-summa_').textContent = count;
 
