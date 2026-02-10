@@ -13,18 +13,23 @@
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/fonts/tabler-icons.css}">
     <link th:href="@{/froala_editor/css/froala_style.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/froala_editor/css/froala_editor.pkgd.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/froala_editor/css/themes/dark.min.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/spinkit/spinkit.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/animate-css/animate.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/sweetalert2/sweetalert2.css}"/>
-    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
-    <link rel="stylesheet" th:href="@{/css/table.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <link rel="stylesheet" class="template-customizer-core-css" th:href="@{/vuexy/assets/vendor/css/core.css}"/>
+    <link rel="stylesheet" class="template-customizer-theme-css"
+          th:href="@{/vuexy/assets/vendor/css/theme-default.css}"/>
+    <link rel="stylesheet" th:href="@{/vuexy/assets/css/demo.css}"/>
 
     <script th:src="@{/vuexy/assets/vendor/libs/sweetalert2/sweetalert2.js}"></script>
     <script type="text/javascript" th:src="@{/froala_editor/js/froala_editor.pkgd.min.js}"></script>
     <script th:src="@{/jquery/jquery-3.7.1.min.js}"></script>
     <script th:src="@{/htmx/htmx.min.js}"></script>
+
+    <script th:src="@{/vuexy/assets/vendor/js/helpers.js}"></script>
+    <script th:src="@{/vuexy/assets/vendor/js/template-customizer.js}"></script>
 
     <script th:inline="javascript">
         let contextPath = '[[@{/}]]'.replaceAll("\"", "");
@@ -32,6 +37,25 @@
             contextPath = contextPath.slice(0, -1);
         }
     </script>
+
+    <style>
+        #template-customizer,
+        .template-customizer-open,
+        .template-customizer-core {
+            display: none !important;
+            visibility: hidden !important;
+        }
+    </style>
+
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <link rel="stylesheet" th:href="@{/css/table.css}"/>
+    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/text.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin/sidebar.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin/basic.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin/validation.css}"/>
 </head>
 
 <body>
@@ -124,13 +148,61 @@
 <script th:src="@{/js/messageLocal.js}"></script>
 
 <script>
+    let current_mode;
     $(document).ready(function () {
         $('#btn-logout').on('click', invokeLogoutModal);
     });
 
+    function syncThemeIcon() {
+        const themeIcon = document.getElementById('theme-icon');
+        if (!themeIcon) return;
+
+        let skin = 'light';
+
+        if (window.templateCustomizer && typeof window.templateCustomizer.getThemeSkin === 'function') {
+            skin = window.templateCustomizer.getThemeSkin();
+        } else {
+            skin = document.documentElement.classList.contains('dark-style') ? 'dark' : 'light';
+            current_mode = skin;
+        }
+
+        if (skin === 'dark') {
+            themeIcon.classList.remove('ti-sun');
+            themeIcon.classList.add('ti-moon');
+        } else {
+            themeIcon.classList.remove('ti-moon');
+            themeIcon.classList.add('ti-sun');
+        }
+    }
+
+    syncThemeIcon();
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const themeToggler = document.getElementById('theme-toggler');
+
+        syncThemeIcon();
+
+        if (themeToggler) {
+            themeToggler.addEventListener('click', function () {
+                const customizer = window.templateCustomizer;
+                const currentSkin = document.documentElement.classList.contains('dark-style') ? 'dark' : 'light';
+                const newSkin = (currentSkin === 'dark') ? 'light' : 'dark';
+
+                if (customizer) {
+                    customizer.setStyle(newSkin);
+                }
+
+                setTimeout(syncThemeIcon, 10);
+            });
+        }
+
+        const configEl = document.getElementById('template-customizer');
+        if (configEl) configEl.remove();
+    });
+
     function invokeLogoutModal() {
         Swal.fire({
-            title: `<div style="width: 100%; margin-top: -35px; margin-left: 15px;"> ${messages.warning + '!'} </div>`,
+            title: `<div style="width: 100%; margin-top: -35px;"> ${messages.warning + '!'} </div>`,
             icon: 'warning',
             text: messages.youSureLogout + '?',
             confirmButtonText: messages.exit,
@@ -231,19 +303,15 @@
             text: messageText + '...',
             icon: 'warning',
             showCancelButton: true,
+            focusConfirm: false,
             confirmButtonText: messages.yesDeleteId + '!',
             cancelButtonText: messages.cancel,
             customClass: {
-                confirmButton: 'btn me-1 btn-danger',
-                cancelButton: 'btn btn-label-secondary'
+                confirmButton: 'btn me-3 btn-danger',
+                cancelButton: current_mode ? 'btn btn-label-dark' : 'btn btn-label-secondary',
+                popup: current_mode ? 'swal-dark-popup' : ''
             },
             buttonsStyling: false,
-            didOpen: () => {
-                let cancelButton = Swal.getCancelButton();
-                if (cancelButton) {
-                    cancelButton.style.color = '#000000';
-                }
-            }
         }).then(function (result) {
             if (result.isConfirmed) {
                 requestDeleteObjects(ids, path, cb);
@@ -284,6 +352,8 @@
         });
         request.send(JSON.stringify(ids));
     }
+
+
 </script>
 <script th:inline="javascript">
     const messages = {

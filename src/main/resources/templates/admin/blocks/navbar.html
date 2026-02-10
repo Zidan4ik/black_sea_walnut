@@ -1,17 +1,17 @@
 <div th:fragment="navbar" style="margin-bottom: 1px;border-bottom: 1px solid #334A2E">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-succes">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbar-ex-7">
                 <div class="navbar-nav me-auto">
-                    <div class="btn-group">
-                        <button type="button" class="dropdown-toggle hide-arrow" data-bs-toggle="dropdown"
-                                style="all: unset; cursor: pointer;">
+                    <div class="btn-group align-items-center">
+                        <button type="button" class="dropdown-toggle hide-arrow custom-btn-color"
+                                data-bs-toggle="dropdown"
+                                style="all: unset; cursor: pointer; padding: 6px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor" stroke-width="2"
                                  stroke-linecap="round" stroke-linejoin="round"
-                                 class="icon icon-tabler icons-tabler-outline icon-tabler-language rounded-pill"
-                                 style="stroke: #334A2E;">
+                                 class="icon icon-tabler-language">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                 <path d="M4 5h7"/>
                                 <path d="M9 3v2c0 4.418 -2.239 8 -5 8"/>
@@ -21,20 +21,30 @@
                             </svg>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item button-dropdown" href="javascript:void(0);" data-lang="en">EN</a></li>
-                            <li><a class="dropdown-item button-dropdown" href="javascript:void(0);" data-lang="uk">UK</a></li>
+                            <li><a class="dropdown-item button-dropdown" href="javascript:void(0);"
+                                   data-lang="en">EN</a></li>
+                            <li><a class="dropdown-item button-dropdown" href="javascript:void(0);"
+                                   data-lang="uk">UK</a></li>
                         </ul>
+
+                        <button id="theme-toggler" class="custom-btn-color"
+                                style="border: none; background: transparent;">
+                            <i id="theme-icon" class="ti ti-sun" style="font-size: 28px;"></i>
+                        </button>
+
                     </div>
                 </div>
                 <div class="btn-group dropstart">
-                    <button type="button" class="btn btn-logout btn-icon rounded-pill dropdown-toggle hide-arrow"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="ti ti-user-circle rounded-block"
-                           style="color: whitesmoke;font-size: xx-large;"></i>
+                    <button type="button" class="btn btn-icon rounded-pill dropdown-toggle hide-arrow custom-btn-color"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            style="background: transparent; border: none;">
+                        <i class="ti ti-user-circle" style="font-size: 32px;"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a id="btn-logout" class="button-dropdown-logout dropdown-item" href="javascript:void(0);"
-                        th:text="#{value.status.exit}"></a></li>
+                        <li>
+                            <a id="btn-logout" class="button-dropdown-logout dropdown-item" href="javascript:void(0);"
+                               th:text="#{value.status.exit}">Вихід</a>
+                        </li>
                     </ul>
                 </div>
             </div>

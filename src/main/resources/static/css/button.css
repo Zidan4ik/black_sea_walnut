@@ -1,4 +1,4 @@
-.btn-image {
+html body .btn-image {
     position: absolute;
     top: 19%;
     width: 30%;
@@ -7,4 +7,54 @@
     border: #337D5A;
     border-radius: 0;
     box-shadow: none !important;
+}
+
+html body .btnTrashMyBefore {
+    border: none !important;
+    background: none !important;
+    border-radius: 0 0 0 8px !important;
+    padding: 8px !important;
+    z-index: 10;
+    color: #4b4b4b !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none !important;
+}
+
+html.dark-style .btnTrashMyBefore {
+    color: #ffff !important;
+}
+
+html body .btnTrashMyBefore:hover {
+    color: #ff4c51 !important;
+    transform: scale(1.1) !important;
+}
+
+html body .btn-gallery-add{
+    background-color: #337D5A;border-color: #337D5A;border-radius: 50%;width: 20%;height: 45%;
+}
+
+html.dark-style .swal2-popup {
+    background-color: #2f3349 !important;
+    color: #cfd3ed !important;
+}
+
+html.dark-style .swal2-title,
+html.dark-style .swal2-html-container {
+    color: #cfd3ed !important;
+}
+
+html.dark-style .btn-label-dark {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: none;
+}
+
+html.dark-style .btn-label-dark:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+html.dark-style .btn-danger {
+    background-color: #ea5455 !important;
+    border-color: #ea5455 !important;
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(234, 84, 85, 0.4) !important;
 }

@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.service;
 import org.example.black_sea_walnut.dto.admin.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
+import org.example.black_sea_walnut.entity.Product;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface OrderDetailService {
     OrderDetail getById(Long id);
 
     void deleteById(Long id);
+
+    List<OrderDetail> findAllByProductsContaining(Product product);
 
 }

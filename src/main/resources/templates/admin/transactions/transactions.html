@@ -124,7 +124,10 @@
             if (event.target.id === 'table-data-container_') {
                 const datePicker = $("#date_");
                 datePicker.datepicker({
-                    format: "dd.mm.yyyy"
+                    format: "dd.mm.yyyy",
+                    autoclose: true,         // Календар закриється після вибору
+                    todayHighlight: true,    // Підсвічувати сьогоднішню дату
+                    orientation: "bottom"    // Щоб не перекривав інпут
                 }).on('changeDate', function () {
                     htmx.trigger($("#date_")[0], 'input')
                 });

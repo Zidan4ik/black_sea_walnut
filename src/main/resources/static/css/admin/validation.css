@@ -1,0 +1,17 @@
+html body .input-group-merge:has(.is-invalid){
+    border-color: #ff4c51 !important;
+
+    &:focus-within {
+        box-shadow: 0 0 0 0.25rem rgba(255, 76, 81, 0.1) !important;
+    }
+
+    & i { color: #ff4c51 !important; }
+}
+
+html body .form-control.is-invalid:not(.input-group .form-control){
+    border-color: #ff4c51 !important;
+
+    &:focus-within {
+        box-shadow: 0 0 0 0.25rem rgba(255, 76, 81, 0.1) !important;
+    }
+}

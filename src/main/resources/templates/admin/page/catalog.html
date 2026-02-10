@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.catalog} +' '+#{text.page}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -277,7 +274,8 @@
             <script>
                 function getFroalaEditor(idElementEditor) {
                     return new FroalaEditor(`#${idElementEditor}`, {
-                        height: 12 * 10,
+                        theme: current_mode,
+                        height: 120,
                         width: 700,
                         scrollableContainer: `#${idElementEditor}`,
                         events: {

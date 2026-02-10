@@ -1,0 +1,180 @@
+html body .input-group.input-group-merge {
+    border: 1.5px solid transparent;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+}
+
+html body :not(.input-group *) .form-control {
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+}
+
+html body .input-group-merge :is(.form-control, .input-group-text) {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+html.light-style {
+
+    & :is(.form-control, .form-select, textarea) {
+        border: 1.5px solid #d9dee3;
+        background-color: #fff;
+
+        &:not(.is-invalid, .input-group *) {
+            &:hover {
+                border-color: #334A2E !important;
+            }
+
+            &:focus-within {
+                border-color: #334A2E !important;
+                box-shadow: 0 0 0 0.25rem rgba(51, 74, 46, 0.1) !important;
+            }
+        }
+    }
+
+    & .input-group-merge {
+        border-color: rgb(217, 222, 227) !important;
+        background-color: #fff !important;
+
+        & .input-group-text, & .form-control {
+            background-color: transparent !important;
+        }
+
+        &:not(:has(.is-invalid)) {
+            &:focus-within {
+                border-color: #334A2E !important;
+                box-shadow: 0 0 0 0.25rem rgba(51, 74, 46, 0.1) !important;
+
+                & i {
+                    color: #334A2E !important;
+                }
+            }
+
+            &:hover {
+                border-color: #334A2E !important;
+            }
+        }
+    }
+}
+
+html.dark-style {
+
+    & :is(.form-control, .form-select, textarea) {
+        border: 1.5px solid rgb(57, 61, 89);
+        background-color: #1a1c2e;
+
+        &:not(.is-invalid, .input-group *) {
+            &:hover {
+                border-color: #334A2E !important;
+            }
+
+            &:focus-within {
+                border-color: #334A2E !important;
+                background-color: #121421 !important;
+                box-shadow: 0 0 0 0.25rem rgba(55, 251, 142, 0.1) !important;
+            }
+        }
+    }
+
+    & .input-group-merge {
+        border-color: rgb(57, 61, 89) !important;
+        background-color: #1a1c2e !important;
+
+        & .input-group-text, & .form-control {
+            background-color: transparent !important;
+        }
+
+        &:not(:has(.is-invalid)) {
+            &:focus-within {
+                border-color: #334A2E !important;
+                background-color: #121421 !important;
+                box-shadow: 0 0 0 0.25rem rgba(55, 251, 142, 0.1) !important;
+
+                & i {
+                    color: #a1a9cb !important;
+                }
+            }
+
+            &:hover {
+                border-color: #334A2E !important;
+            }
+        }
+    }
+}
+
+.datepicker table tr td.active,
+.datepicker table tr td.active.active,
+.datepicker table tr td.active:hover {
+    background-color: #4CAF50 !important;
+    background-image: none !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3) !important;
+}
+
+.datepicker table tr td.today {
+    background-color: rgba(76, 175, 80, 0.1) !important;
+    color: #4CAF50 !important;
+    border: 1px solid rgba(76, 175, 80, 0.3) !important;
+}
+
+.datepicker table tr td.day:hover,
+.datepicker table tr td.focused {
+    background: rgba(76, 175, 80, 0.1) !important;
+    color: #4CAF50 !important;
+}
+
+.datepicker .prev:hover,
+.datepicker .next:hover {
+    background: rgba(76, 175, 80, 0.45) !important;
+    color: #33c138 !important;
+    border-radius: 50% !important;
+}
+
+.datepicker .prev, .datepicker .next {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+}
+
+.datepicker .prev::after, .datepicker .next::after {
+    font-size: 14px;
+    color: inherit;
+}
+
+html.dark-style .datepicker {
+    background-color: #2f3349 !important;
+    color: #cfd3ed !important;
+    border: 1px solid #44475a !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-style .datepicker table tr td.active {
+    background-color: #37fb8e !important;
+    color: #1a1c2e !important;
+    box-shadow: 0 0 15px rgba(55, 251, 142, 0.4) !important;
+}
+
+html.dark-style .datepicker table tr td.day:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #37fb8e !important;
+}
+
+html.dark-style .datepicker table tr th.dow {
+    color: #a1acb8;
+    font-weight: 500;
+}
+
+html body .form-check-input{
+    &:checked, &:focus {
+        background-color: #334A2E;
+        border-color: #334A2E;
+    }
+    html.light-style &:focus{
+        box-shadow: 0 0 0 0.25rem rgba(82, 111, 75, 0.42) !important;
+    }
+    html.dark-style &:focus{
+        box-shadow: 0 0 0 0.25rem rgba(125, 155, 117, 0.42) !important;
+    }
+}

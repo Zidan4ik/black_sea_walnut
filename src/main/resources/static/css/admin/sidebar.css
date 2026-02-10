@@ -1,0 +1,44 @@
+    .layout-menu.layout-menu{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    html.light-style #layout-menu.layout-menu {
+        background-color: #334A2E !important;
+    }
+
+    html.dark-style #layout-menu.layout-menu {
+        background-color: #2b3048 !important;
+    }
+
+    .menu-icon {
+        transition: all 0.3s ease;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    html .menu-item.active > .menu-link {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    html .menu-link:hover .menu-icon,
+    html .menu-item.active .menu-icon,
+    html .sidebar-icon-light {
+        color: #37fb8e !important;
+        fill: #37fb8e !important;
+        stroke: #37fb8e !important;
+        filter: drop-shadow(0 0 5px rgba(55, 251, 142, 0.6));
+    }
+
+    html .menu-link:hover span,
+    html .menu-item.active .menu-link span,
+    html .sidebar-title {
+        color: #28c76f !important;
+        font-weight: bold;
+    }
+
+    html .menu-link .menu-icon {
+        color: #ffffff;
+        fill: #ffffff;
+    }

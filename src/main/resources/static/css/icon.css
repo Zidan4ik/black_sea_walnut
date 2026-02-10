@@ -2,191 +2,122 @@
     color: green;
     font-size: 30px;
     border-radius: 50%;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
 }
-
 .icon-hover-arrow:hover {
     background-color: rgba(0, 128, 0, 0.2);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transform: scale(1.1);
-    border-radius: 50%;
 }
 
-.btnTrashMyBefore {
-    color: black;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    box-shadow: none !important;
+.custom-btn-color,
+.btn-logout i {
+    transition: all 0.3s ease;
+    color: #334A2E !important;
+    stroke: #334A2E;
 }
 
-.btnTrashMyBefore:hover {
-    color: red !important;
-    box-shadow: none !important;
-    transform: scale(1.1) !important;
-}
-/* не focus/active */
-
-.active-buttonMy {
-    background: currentColor;
+.custom-btn-color:hover,
+.btn-logout:hover i {
+    color: #4CAF50 !important;
+    stroke: #4CAF50;
+    filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.5));
+    transform: scale(1.05);
 }
 
-.btn-logout {
-    background: #334A2E;
-    border: #334A2E;
+.dark-style .custom-btn-color,
+.dark-style .btn-logout i {
+    color: #A3BFA1 !important;
+    stroke: #A3BFA1;
 }
 
-.btn-logout:hover {
-    background: #083b08 !important;
+.dark-style .custom-btn-color:hover,
+.dark-style .btn-logout:hover i {
+    color: #CCFF00 !important;
+    stroke: #CCFF00;
+    filter: drop-shadow(0 0 8px rgba(204, 255, 0, 0.6));
 }
 
-.btn-green {
-    background: #337D5A;
-    border: #337D5A;
-    color: white;
+.dropdown-item {
+    transition: all 0.2s ease-in-out;
 }
 
-.btn-green:hover {
-    color: white;
-    background: #276046 !important;
+.light-style .button-dropdown:hover {
+    background-color: #A3BFA1 !important;
+    color: #FFFFFF !important;
 }
 
-.button-dropdown:hover {
-    background: rgba(108, 184, 108, 0.57) !important;
-    color: white;
+.dark-style .button-dropdown:hover {
+    background-color: #A3BFA1 !important;
+    color: #000000 !important;
 }
 
-.button-dropdown-logout:hover {
-    background: rgba(255, 36, 43, 0.57) !important;
-    color: white;
+.light-style .button-dropdown-logout:hover {
+    background-color: rgba(255, 61, 0, 0.15) !important;
+    color: #000000 !important;
 }
 
-.btn-logout:focus,
-.btn-logout[aria-expanded="true"] {
-    background: #083b08 !important;
-    box-shadow: none;
+.dark-style .button-dropdown-logout:hover {
+    background-color: rgba(255, 61, 0, 0.3) !important;
+    color: #FFFFFF !important;
 }
 
-.title-out {
-    font-size: large;
-    font-weight: bold;
-    color: green;
+.custom-btn-color {
+    transition: all 0.3s ease;
+    color: #334A2E !important;
+    stroke: #334A2E;
 }
 
-.title-out-user {
-    font-size: x-large;
-    font-weight: bold;
-    color: black;
+.custom-btn-color:hover {
+    color: #4CAF50 !important;
+    stroke: #4CAF50;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 5px rgba(76, 175, 80, 0.3));
 }
 
-.sk-primary .sk-rect {
-    background-color: green;
+.dark-style .custom-btn-color {
+    color: #A3BFA1 !important;
+    stroke: #A3BFA1;
 }
 
-.sidebar-title {
-    color: #029f02 !important;
-    border-bottom: 1px solid #029f02 !important;;
+.dark-style .custom-btn-color:hover {
+    color: #CCFF00 !important;
+    stroke: #CCFF00;
 }
 
-.sidebar-icon-green {
-    color: #029f02 !important;
-    fill: #029f02 !important;
-    stroke: #029f02 !important;
-}
-
-.sidebar-icon-white {
-    color: #ffffff;
-}
-
-.datepicker table tr td.active,
-.datepicker table tr td.active:hover,
-.datepicker table tr td.active.disabled,
-.datepicker table tr td.active.disabled:hover {
-    background-image: none !important;
-    background-color: #28a745 !important;
-    color: #fff !important;
-}
-
-.datepicker table tr td.today,
-.datepicker table tr td.today:hover,
-.datepicker table tr td.today.disabled,
-.datepicker table tr td.today.disabled:hover {
-    background-color: #e2f2e6 !important;
-    border-color: #28a745 !important;
-}
-
-.datepicker table tr td.day:hover,
-.datepicker table tr td.day.focused {
-    background: #f0fdf4 !important;
-    cursor: pointer;
-}
-
-.form-control {
-    border-color: #ced4da;
-}
-
-.form-control:focus {
-    color: #212529;
-    background-color: #fff;
-    border-color: #28a745 !important;
-    outline: 0;
-    box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25) !important;
-}
-
-#dateOfOrdering_:focus {
-    border-color: #28a745 !important;
-    box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25) !important;
-}
-
-.input-group-merge .form-control:focus,
-.input-group-merge .form-control:focus ~ .input-group-text {
-    border-color: #28a745 !important;
-}
-
-.input-group-merge:focus-within {
-    box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25);
-    border-radius: 0.375rem;
-}
-
-.input-group-merge .form-control:focus {
-    box-shadow: none !important;
-}
-
-.input-group-merge .form-control:focus ~ .input-group-text i {
-    color: #28a745;
-}
-
-.form-select {
-    border-color: #ced4da;
-}
-
-.form-select:focus,
-#pick-type-of-payment_:focus {
-    color: #212529;
-    background-color: #fff;
-    border-color: #28a745 !important;
-    outline: 0;
-    box-shadow: 0 0 0 0.05rem rgba(40, 167, 69, 0.25) !important;
-
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2328a745' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
-
-    background-size: 16px 16px !important;
+.sk-wave.sk-primary .sk-rect {
+    background-color: #A3BFA1 !important;
 }
 
 .eye-icon-preview {
-    font-size: x-large;
-    color: #28a745;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
     cursor: pointer;
     padding: 5px;
-    border-radius: 50%;
+    border-radius: 6px;
 }
 
-.eye-icon-preview:hover {
-    color: #218838;
-    background-color: rgba(40, 167, 69, 0.1);
-    box-shadow: 0 0 12px rgba(40, 167, 69, 0.4);
+html.light-style .eye-icon-preview {
+    color: #677788;
+}
+
+html.light-style .eye-icon-preview:hover {
+    color: #334A2E !important;
+    background-color: rgba(51, 74, 46, 0.08);
     transform: scale(1.1);
 }
 
-.pointer {
-    cursor: pointer;
+html.dark-style .eye-icon-preview {
+    color: #a1acb8;
+}
+
+html.dark-style .eye-icon-preview:hover {
+    color: #37fb8e !important;
+    background-color: rgba(55, 251, 142, 0.1);
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 5px rgba(55, 251, 142, 0.4));
+}
+
+.view-icon {
+    text-decoration: none !important;
+    display: inline-block;
 }

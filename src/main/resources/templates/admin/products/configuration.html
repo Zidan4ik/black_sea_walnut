@@ -8,41 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.configuration}"></title>
     <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <style>
-        .icon-plus {
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            display: inline-block;
-            cursor: pointer;
-            margin-bottom: 7px;
-        }
-
-        .icon-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: #337D5A;
-            cursor: pointer;
-        }
-
-        .icon-container:hover {
-            background-color: #165f16 !important;
-        }
-
-        .edit-icon:hover {
-            color: red;
-            cursor: pointer;
-        }
-
-        .delete-icon:hover {
-            color: red;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/admin/product-configuration.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -53,7 +19,7 @@
                 <h4 class="fw-bold" th:text="#{text.tastes}"></h4>
                 <div class="icon-container" id="btnAdd-taste" data-modal="ModalForSaveTaste"
                      aria-hidden="true">
-                    <span class="icon-plus">+</span>
+                    <span class="icon-plus"></span>
                 </div>
                 <div class="table-responsive mt-3">
                     <table class="table table-bordered">
@@ -73,7 +39,7 @@
                 <h4 class="fw-bold" th:text="#{text.discount}"></h4>
                 <div class="icon-container" id="btnAdd-discount" data-modal="ModalForSaveDiscount"
                      aria-hidden="true">
-                    <span class="icon-plus">+</span>
+                    <span class="icon-plus"></span>
                 </div>
                 <div class="table-responsive mt-3">
                     <table class="table table-bordered">

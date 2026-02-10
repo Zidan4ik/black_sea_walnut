@@ -48,6 +48,7 @@ public class ProductServiceImp implements ProductService {
     private final ProductMapper productMapper;
     private final HistoryPricesService historyPricesService;
     private final TransactionsRepository transactionsRepository;
+    private final OrderDetailServiceImp orderDetailService;
 
     @Value("${upload.path}")
     private String contextPath;
@@ -229,6 +230,13 @@ public class ProductServiceImp implements ProductService {
             imageServiceImp.deleteByPath(product.getPathToImagePacking());
         if (product.getPathToImagePayment() != null && product.getPathToImagePayment().isEmpty())
             imageServiceImp.deleteByPath(product.getPathToImagePayment());
+
+        List<OrderDetail> allByProductsContaining = orderDetailService.findAllByProductsContaining(product);
+        for (OrderDetail detail: allByProductsContaining){
+            detail.getProducts().remove(product);
+            orderDetailService.save(detail);
+        }
+
         productRepository.deleteById(id);
         LogUtil.logInfo("Product deleted successfully: " + id);
     }

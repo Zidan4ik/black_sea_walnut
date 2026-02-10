@@ -1,22 +1,75 @@
-.nav-tabs .nav-item {
-    flex: 0 0 auto;
-    width: auto;
-    margin-right: 10px;
+html .nav-tabs .nav-link {
+    border: none !important;
+    font-weight: 500;
+    padding: 10px 15px;
+    position: relative;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: background 0.2s ease, padding 0.2s ease;
 }
 
-.nav-link.active {
-    background: none !important;
+html .nav-tabs .nav-link:focus,
+html .nav-tabs .nav-link:focus-visible,
+html .nav-tabs .nav-link:active,
+html .nav-tabs .nav-link.active {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: inherit;
 }
 
-.nav-link:hover, .nav-link:focus {
+html .nav-tabs .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+
+    transition: width 0.3s ease, left 0.3s ease;
+    transform: translateX(-50%);
+    border-radius: 10px;
+}
+
+html .nav-tabs .nav-link.active::after,
+html .nav-tabs .nav-link:hover::after {
+    width: 100%;
+}
+
+html.light-style .nav-tabs .nav-link {
+    color: #677788 !important;
+}
+
+html.light-style .nav-tabs .nav-link.active {
     color: #334A2E !important;
-    box-shadow: 0 -2px 0 #334A2E inset;
 }
 
-.nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus, .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus {
-    box-shadow: 0 -2px 0 #334A2E inset;
+html.light-style .nav-tabs .nav-link::after {
+    background-color: #334A2E;
 }
 
-.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-    color: #334A2E;
+html.light-style .nav-tabs .nav-link:hover {
+    color: #334A2E !important;
+    background: rgba(51, 74, 46, 0.05) !important;
+}
+
+
+html.dark-style .nav-tabs .nav-link {
+    color: #a1acb8 !important;
+}
+
+html.dark-style .nav-tabs .nav-link.active {
+    color: #37fb8e !important;
+}
+
+html.dark-style .nav-tabs .nav-link::after {
+    background-color: #37fb8e;
+    box-shadow: 0 0 8px rgba(55, 251, 142, 0.5);
+}
+
+html.dark-style .nav-tabs .nav-link:hover {
+    color: #37fb8e !important;
+    background: rgba(55, 251, 142, 0.1) !important;
 }

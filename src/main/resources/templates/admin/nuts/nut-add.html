@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.addNewNut}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -161,11 +158,11 @@
                     <div class="row gap-3" style="margin: 3px;">
                         <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-select"
                                 style="width: 25%;"
-                        th:text="#{text.button.change}">
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-delete"
                                 style="width: 25%;"
-                        th:text="#{text.button.delete}">
+                                th:text="#{text.button.delete}">
                         </button>
                     </div>
                 </div>
@@ -180,11 +177,11 @@
                              style="width: 100%; height: 255px; display: block; margin: 0 auto;">
                         <button type="button" data-type="fileImage" class="btn btn-success btn-image btn-select"
                                 style="left: 13%;"
-                        th:text="#{text.button.change}">
+                                th:text="#{text.button.change}">
                         </button>
                         <button type="button" data-type="fileImage" class="btn btn-success btn-image btn-delete"
                                 style="right: 13%;"
-                        th:text="#{text.button.delete}">
+                                th:text="#{text.button.delete}">
                         </button>
                     </div>
                 </div>
@@ -193,7 +190,7 @@
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
                     <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
-                    th:text="#{text.button.save}"></button>
+                            th:text="#{text.button.save}"></button>
                 </div>
                 <!--/ Button save Base -->
 
@@ -211,12 +208,10 @@
                     }
                 </script>
                 <script>
-                    const editorDescProductUK = getFroalaEditor("edit-description-uk");
-                    const editorDescProductEN = getFroalaEditor("edit-description-en");
-
                     function getFroalaEditor(idElementEditor) {
                         return new FroalaEditor(`#${idElementEditor}`, {
-                            height: 12 * 10,
+                            theme: current_mode,
+                            height: 120,
                             width: 700,
                             scrollableContainer: `#${idElementEditor}`,
                             events: {
@@ -263,7 +258,11 @@
                         copyHTMLBlockSwitch('shared-switch', `switch-block-${activeLang}`);
                         selectedLanguage();
                         clearErrorWhenChangeValue('[data-name="titleUk"], [data-name="titleEn"]');
+
+                        const editorDescProductUK = getFroalaEditor("edit-description-uk");
+                        const editorDescProductEN = getFroalaEditor("edit-description-en");
                     });
+
                     const url = `${contextPath}/admin/nut/save`;
 
                     function getActiveLangTab() {

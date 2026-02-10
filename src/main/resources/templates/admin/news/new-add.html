@@ -130,7 +130,7 @@
                                 <input id="title-eng_" type="text" class="form-control" name="titleENG"
                                        placeholder="Export Support Center"
                                        aria-describedby="defaultFormControlHelp" data-error="titleENG"
-                                data-name="titleENG"/>
+                                       data-name="titleENG"/>
                                 <div id="error-titleENG" class="error-message" style="color: red;"></div>
                             </div>
                             <div class="mb-3">
@@ -208,32 +208,7 @@
                     let url = null;
                     let descriptionUA = document.getElementById("hidden-description-ua_").value;
                     let descriptionEN = document.getElementById("hidden-description-eng_").value;
-                    var editor_ua = new FroalaEditor('#description_ua', {
-                        height: 12 * 20,
-                        scrollableContainer: '#description_ua',
-                        events: {
-                            'initialized': function () {
-                                this.html.set(descriptionUA || '');
-                            },
-                            'contentChanged': function () {
-                                const html = this.html.get();
-                                $("#hidden-description-ua_").val(html);
-                            }
-                        }
-                    });
-                    var editor_eng = new FroalaEditor('#description_eng', {
-                        height: 12 * 20,
-                        scrollableContainer: '#description_eng',
-                        events: {
-                            'initialized': function () {
-                                this.html.set(descriptionEN || '');
-                            },
-                            'contentChanged': function () {
-                                const html = this.html.get();
-                                $("#hidden-description-eng_").val(html);
-                            }
-                        }
-                    });
+
 
                     document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
                         tab.addEventListener('shown.bs.tab', function (event) {
@@ -259,6 +234,35 @@
                         selectedLanguage();
                         addEventListenerSyncDate();
                         clearErrorWhenChangeValue('[data-name="titleUA"],[data-name="titleENG"]');
+
+                        var editor_ua = new FroalaEditor('#description_ua', {
+                            theme: current_mode,
+                            height: 120,
+                            scrollableContainer: '#description_ua',
+                            events: {
+                                'initialized': function () {
+                                    this.html.set(descriptionUA || '');
+                                },
+                                'contentChanged': function () {
+                                    const html = this.html.get();
+                                    $("#hidden-description-ua_").val(html);
+                                }
+                            }
+                        });
+                        var editor_eng = new FroalaEditor('#description_eng', {
+                            theme: current_mode,
+                            height: 120,
+                            scrollableContainer: '#description_eng',
+                            events: {
+                                'initialized': function () {
+                                    this.html.set(descriptionEN || '');
+                                },
+                                'contentChanged': function () {
+                                    const html = this.html.get();
+                                    $("#hidden-description-eng_").val(html);
+                                }
+                            }
+                        });
                     });
 
                     function getActiveLangTab() {
@@ -274,8 +278,8 @@
                         }
                     });
 
-                    document.body.addEventListener('htmx:confirm',function(event){
-                        if($('.is-invalid').length > 0){
+                    document.body.addEventListener('htmx:confirm', function (event) {
+                        if ($('.is-invalid').length > 0) {
                             event.preventDefault();
                         }
                     });

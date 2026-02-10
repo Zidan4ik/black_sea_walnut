@@ -234,7 +234,8 @@
                         let descriptionEN = document.getElementById("hidden-description-eng_").value;
 
                         var editor_ua = new FroalaEditor('#description_ua', {
-                            height: 12 * 20,
+                            theme: current_mode,
+                            height: 120,
                             scrollableContainer: '#description_ua',
                             events: {
                                 'initialized': function () {
@@ -247,7 +248,8 @@
                             }
                         });
                         var editor_eng = new FroalaEditor('#description_eng', {
-                            height: 12 * 20,
+                            theme: current_mode,
+                            height: 120,
                             scrollableContainer: '#description_eng',
                             events: {
                                 'initialized': function () {

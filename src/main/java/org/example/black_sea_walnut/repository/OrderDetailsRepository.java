@@ -2,6 +2,7 @@ package org.example.black_sea_walnut.repository;
 
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,4 +39,6 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Long>
     );
 
     List<OrderDetail> getAllByOrder(Order order);
+
+    List<OrderDetail> findAllByProductsContaining(Product product);
 }

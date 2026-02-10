@@ -7,7 +7,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Gallery</title>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -24,10 +23,9 @@
             <h3 class="text-center" th:text="#{text.imagesAndVideos}"></h3>
             <div class="row" id="container-gallery">
                 <div id="gallery-items-wrapper" class="row col-12" style="display: contents;"></div>
-                <div class="col-6 d-flex align-items-center" id="add-button-container"
-                     style="height: 263px;margin-left: 15px;">
-                    <button type="button" id="btn-add" class="btn btn-success btn-image"
-                            style="background-color: #337D5A;border-color: #337D5A;border-radius: 50%;width: 20%;height: 45%;">
+                <div class="col-6 d-flex align-items-center pt-3" id="add-button-container"
+                     style="height: 263px;margin-left: 24px;">
+                    <button type="button" id="btn-add" class="btn btn-success btn-gallery-add">
                         <i class="ti ti-plus" style="border: white;font-size: 100px;"></i>
                     </button>
                 </div>
@@ -241,7 +239,7 @@
 
         function addNewGallery() {
             const newBlock = document.createElement('div');
-            newBlock.className = 'col-6 row';
+            newBlock.className = 'col-6 row pt-3';
             let UUID = new Date().getTime();
             newBlock.dataset.id = UUID;
             newBlock.dataset.type = 'new';
@@ -253,9 +251,9 @@
                                     <label class="form-label" style="color: #AAAAAA;">Png, jpg, jpeg, mp4, avi до 15 МБ</label>
                                     <div class="d-flex justify-content-center gap-3">
                                         <button type="button" class="btn btn-success btn-image btn-select"
-                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A;">Змінити</button>
+                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A; position: relative;">Змінити</button>
                                         <button type="button" class="btn btn-success btn-image btn-delete" data-typedelete="delete-image"
-                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A;">Видалити</button>
+                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A; position: relative;">Видалити</button>
                                     <input type="file" id="file-image${UUID}" data-type="image${UUID}" class="files"
                                            accept="image/*" style="display: none;" data-error="file">
                                     <input type="hidden" data-name="pathToImage${UUID}" data-image="image${UUID}"
@@ -298,9 +296,9 @@
                                     <label class="form-label" style="color: #AAAAAA;">Png, jpg, jpeg, mp4, avi to 15 MB</label>
                                     <div class="d-flex justify-content-center gap-3">
                                         <button type="button" class="btn btn-success btn-image btn-select"
-                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A;">Change</button>
+                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A; position: relative;">Change</button>
                                         <button type="button" class="btn btn-success btn-image btn-delete" data-typedelete="delete-image"
-                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A;">Delete</button>
+                                        data-type="image${UUID}" style="background-color: #337D5A;border-color: #337D5A; position: relative;">Delete</button>
                                     <input type="file" id="file-image${UUID}" data-type="image${UUID}" class="files"
                                            accept="image/*" style="display: none;" data-error="file">
                                     <input type="hidden" data-name="pathToImage${UUID}" data-image="image${UUID}"

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.mapper.OrderDetailMapper;
 import org.example.black_sea_walnut.repository.OrderDetailsRepository;
 import org.example.black_sea_walnut.service.OrderDetailService;
@@ -77,5 +78,10 @@ public class OrderDetailServiceImp implements OrderDetailService {
     public void deleteById(Long id) {
         LogUtil.logInfo("Deleting order detail with id: " + id);
         orderDetailsRepository.deleteById(id);
+    }
+
+    @Override
+    public List<OrderDetail> findAllByProductsContaining(Product product) {
+        return orderDetailsRepository.findAllByProductsContaining(product);
     }
 }

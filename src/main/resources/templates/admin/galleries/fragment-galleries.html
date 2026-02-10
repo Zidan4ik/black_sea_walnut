@@ -8,12 +8,12 @@
         <div class="d-flex justify-content-center gap-3">
             <button type="button" class="btn btn-success btn-image btn-select"
                     th:data-type="'image'+${p.getId()}"
-                    style="background-color: #337D5A;border-color: #337D5A;"
+                    style="background-color: #337D5A;border-color: #337D5A; position: relative;"
                     th:text="#{text.button.change}">
             </button>
             <button type="button" class="btn btn-success btn-image btn-delete"
                     th:data-type="'image'+${p.getId()}" data-typeDelete="delete-image"
-                    style="background-color: #337D5A;border-color: #337D5A;"
+                    style="background-color: #337D5A;border-color: #337D5A; position: relative;"
                     th:text="#{text.button.delete}">
             </button>
             <input type="file" th:id="'file-image'+${p.getId()}" th:data-type="'image'+${p.getId()}" class="files"

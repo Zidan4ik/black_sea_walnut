@@ -7,10 +7,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{table.header.product}"></title>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
-    <link rel="stylesheet" th:href="@{/css/text.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -74,7 +70,7 @@
                             <h4 data-name="name-product" class="mb-0 me-3"></h4>
                             <div class="d-flex align-items-center me-3 pe-3">
                                 <label class="switch switch-success">
-                                    <input data-name="isActive" type="checkbox" class="switch-input"/>
+                                    <input data-name="status" type="checkbox" class="switch-input"/>
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -231,12 +227,11 @@
                 <div class="tab-pane fade mb-5" id="navs-en" role="tabpanel"
                      data-bs-toggle="tab">
                     <div class="row">
-                        <!--                        <div id="header-block-en"></div>-->
                         <div class="d-flex align-items-center mb-3">
                             <h4 data-name="name-product" class="mb-0 me-3"></h4>
                             <div class="d-flex align-items-center me-3 pe-3">
                                 <label class="switch switch-success">
-                                    <input data-name="isActive" type="checkbox" class="switch-input"/>
+                                    <input data-name="status" type="checkbox" class="switch-input"/>
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -648,7 +643,8 @@
                 <script>
                     function getFroalaEditor(idElementEditor) {
                         return new FroalaEditor(`#${idElementEditor}`, {
-                            height: 12 * 10,
+                            theme: current_mode,
+                            height: 120,
                             width: 700,
                             scrollableContainer: `#${idElementEditor}`,
                             events: {
@@ -763,7 +759,6 @@
                                 fillDataInSelectors(data.tastesEn, selectorTasteEn);
                                 fillDataInSelectors(data.discountsUk, selectorDiscountUk);
                                 fillDataInSelectors(data.discountsEn, selectorDiscountEn);
-
                                 requestGetProduct();
                             }
                         });
@@ -864,9 +859,7 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                console.log(data);
                                 for (let key in data) {
-                                    // console.log(key,' ',typeof data[key], " ", data[key]);
                                     if (data.hasOwnProperty(key)) {
                                         let input = $(`input[data-name="${key}"], textarea[data-name="${key}"],
                                         div[data-name="${key}"], select[data-name="${key}"]`);
@@ -888,9 +881,7 @@
                                                 }
                                             } else {
                                                 if (typeof data[key] === 'object') {
-                                                    console.log(key,' ',typeof data[key], " ", data[key]);
                                                     let obj = data[key];
-                                                    console.log(obj);
                                                     for (const name in obj) {
                                                         if (name === 'id') {
                                                             $(`#idPrices_`).val(obj[name]);
@@ -899,7 +890,7 @@
                                                         }
                                                     }
                                                 } else if (typeof data[key] === 'boolean') {
-                                                    input.prop('checked',data[key]);
+                                                    input.prop('checked', data[key]);
                                                 } else {
                                                     if (key === 'tasteId' || key === 'discountId') {
                                                         input.val(data[key] || "");
@@ -908,7 +899,7 @@
                                                         const $h4 = $parent.find('h4[data-name="name-product"]');
                                                         $h4.text(data[key]);
                                                         input.val(data[key]);
-                                                    }  else {
+                                                    } else {
                                                         input.val(data[key]);
                                                     }
                                                 }

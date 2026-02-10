@@ -34,7 +34,7 @@
 <div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.managers}"></h4>
-        <div class="card" id="card-block" style="width: 1220px;">
+        <div class="card" id="card-block">
             <h5 class="card-header" th:text="#{text.managers}"></h5>
             <div class="card-body">
                 <div class="row mb-3">
@@ -142,20 +142,20 @@
                                         <label class="form-label" >Телефон:</label>
                                         <div id="phone-block-uk" class="col-md-12">
                                             <input class="form-control" type="text" data-name="phone"
-                                                   placeholder="+380666790166" style="border: 1px solid #1b861c;">
+                                                   placeholder="+380666790166" >
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Ім'я:</label>
                                         <input class="form-control fields-entity" type="text" id="name-uk_"
                                                data-name="nameUk"
-                                               placeholder="Дмитро" style="border: 1px solid #1b861c;">
+                                               placeholder="Дмитро">
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Прізвище:</label>
                                         <input class="form-control fields-entity" type="text" id="surname-uk_"
                                                data-name="surnameUk"
-                                               placeholder="Іванов" style="border: 1px solid #1b861c;">
+                                               placeholder="Іванов">
                                     </div>
                                 </div>
                             </div>
@@ -169,20 +169,18 @@
                                         <label class="form-label">Phone:</label>
                                         <div id="phone-block-en" class="col-md-12">
                                             <input class="form-control" type="text" data-name="phone" data-skip-validation="true"
-                                                   placeholder="+380666790166" style="border: 1px solid #1b861c;">
+                                                   placeholder="+380666790166">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Name:</label>
                                         <input class="form-control fields-entity" type="text" id="name-en_"
-                                               data-name="nameEn" placeholder="Dmytro"
-                                               style="border: 1px solid #1b861c;">
+                                               data-name="nameEn" placeholder="Dmytro">
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label" for="name-uk_">Surname:</label>
                                         <input class="form-control fields-entity" type="text" id="surname-en_"
-                                               data-name="surnameEn" placeholder="Ivanov"
-                                               style="border: 1px solid #1b861c;">
+                                               data-name="surnameEn" placeholder="Ivanov">
                                     </div>
                                 </div>
                             </div>

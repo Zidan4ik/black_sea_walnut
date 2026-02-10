@@ -1,21 +1,21 @@
-.pagination-icon {
+html body .pagination-icon {
     background: #334A2E;
     border: #334A2E;
 }
 
-.pagination-number {
+html body .pagination-number {
     background-color: #5C9D4F;
     border: #5C9D4F;
     color: white;
 }
 
-.pagination-icon:hover {
+html body .pagination-icon:hover {
     color: white;
     background-color: #41613c;
     border: #334A2E;
 }
 
-.page-item.active .page-link {
+html body .page-item.active .page-link {
     color: white;
     background-color: #83e371;
     border: #5C9D4F;
