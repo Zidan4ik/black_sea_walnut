@@ -51,7 +51,7 @@ public class DatabaseLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if (newService.getAll().isEmpty()) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 5; i++) {
                 New new_ = new New();
                 new_.setActive(faker.bool().bool());
                 new_.setDateOfPublication(faker.date().past(30, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -158,6 +158,9 @@ public class DatabaseLoader implements CommandLineRunner {
             History catalogEcologically = new History(null, true, PageType.catalog_ecologically_pure_walnut, null, new ArrayList<>(), new ArrayList<>());
             catalogEcologically.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Екологічно чистий горіх", "Підзаголовок", "Опис", catalogEcologically));
             catalogEcologically.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Ecologically Pure Walnut", "Subtitle", "Description", catalogEcologically));
+            catalogEcologically.setHistoryMedia(List.of(new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", catalogEcologically),
+                    new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", catalogEcologically),
+                    new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", catalogEcologically)));
             historyService.save(catalogEcologically);
 
             History factoryBanner = new History(null, true, PageType.factory_banner, null, new ArrayList<>(), new ArrayList<>());
@@ -166,10 +169,14 @@ public class DatabaseLoader implements CommandLineRunner {
             factoryBanner.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Factory Banner", "Subtitle", "Factory banner description", factoryBanner));
             historyService.save(factoryBanner);
 
-            History catalogBlock = new History(null, true, PageType.factory_block2, null, new ArrayList<>(), new ArrayList<>());
-            catalogBlock.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Блок фабрики", "Підзаголовок", "Опис блоку", catalogBlock));
-            catalogBlock.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Factory Block", "Subtitle", "Block description", catalogBlock));
-            historyService.save(catalogBlock);
+            History factoryTwoBlock = new History(null, true, PageType.factory_block2, null, new ArrayList<>(), new ArrayList<>());
+            factoryTwoBlock.getTranslations().add(new HistoryTranslation(null, LanguageCode.uk, "Блок фабрики", "Підзаголовок", "Опис блоку", factoryTwoBlock));
+            factoryTwoBlock.getTranslations().add(new HistoryTranslation(null, LanguageCode.en, "Factory Block", "Subtitle", "Block description", factoryTwoBlock));
+            factoryTwoBlock.setHistoryMedia(List.of(
+                    new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", factoryTwoBlock),
+                    new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", factoryTwoBlock),
+                    new HistoryMedia(null, MediaType.image, "/image/default-image-nut.jpg", factoryTwoBlock)));
+            historyService.save(factoryTwoBlock);
 
             History clientBanner = new History(null, true, PageType.clients_banner, null, new ArrayList<>(), new ArrayList<>());
             clientBanner.setBanner(new Banner(null, "/image/default-image-nut.jpg", MediaType.image, clientBanner));
@@ -369,12 +376,14 @@ public class DatabaseLoader implements CommandLineRunner {
             galleryRepository.saveAll(galleries);
         }
         if (nutRepository.findAll().isEmpty()) {
+            List<String> iconPaths = List.of("/image/eco.svg","/image/funduk.svg","/image/shipovnik.svg");
             List<Nut> nuts = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
+                int indexIcon = faker.random().nextInt(iconPaths.size());
                 Nut nut = new Nut();
                 nut.setActive(random.nextBoolean());
                 nut.setPathToImage("/image/default-image-nut.jpg");
-                nut.setPathToSvg("/image/default-image-nut.jpg");
+                nut.setPathToSvg(iconPaths.get(indexIcon));
                 nut.setDate(LocalDate.now().minusDays(random.nextInt(365)));
 
                 List<NutTranslation> translations = new ArrayList<>();
@@ -482,9 +491,6 @@ public class DatabaseLoader implements CommandLineRunner {
             int year = today.getYear();
             int month = today.getMonthValue();
             int daysInMonth = today.lengthOfMonth();
-
-            Faker fakerUk = new Faker(new Locale("uk"));
-            Faker fakerEn = new Faker(new Locale("en"));
 
             for (int i = 0; i < 50; i++) {
                 User user = faker.options().nextElement(users);

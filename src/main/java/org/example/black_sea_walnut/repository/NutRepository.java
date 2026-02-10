@@ -9,8 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface NutRepository extends JpaRepository<Nut, Long>, JpaSpecificationExecutor<Nut> {
     @NonNull
     Page<Nut> findAll(Specification<Nut> specification, @NonNull Pageable pageable);
+
+    List<Nut> getAllByIsActive(boolean isActive);
 }

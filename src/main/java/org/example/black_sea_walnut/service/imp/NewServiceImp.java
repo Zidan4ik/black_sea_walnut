@@ -91,6 +91,12 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
+    public List<NewRequestForAdd> getAllActiveInResponseForAdd() {
+        LogUtil.logInfo("Fetching all active news in DTO response format");
+        return newRepository.getAllByIsActive(true).stream().map(mapper::toDtoAdd).toList();
+    }
+
+    @Override
     @Transactional
     public New save(New entity) {
         LogUtil.logInfo("Saving news entity with ID: " + entity.getId());

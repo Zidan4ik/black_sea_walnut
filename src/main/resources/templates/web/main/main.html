@@ -248,10 +248,12 @@
     }
 
     function buildNuts(nuts) {
-        if (nuts.length === 0) return;
-        else if (nuts.length > 0) {
-            let $container = $(`#container-nuts`);
-            if ($container) {
+        let $container = $(`#container-nuts`);
+
+        if($container.length){
+            if (nuts.length === 0) {
+                $container.closest('section.benefit').remove();
+            } else if (nuts.length > 0) {
                 nuts.forEach(function (item) {
                     $container.append(getRowNut(item))
                 });
@@ -284,15 +286,19 @@
         if (!item) return;
         const block = $('#main-production');
         if (block.length) {
-            const lang = getCurrentLang();
-            const title = lang === 'uk' ? item.mainProductionTitleUk : (lang === 'en' ? item.mainProductionTitleEn : '');
-            const description = lang === 'uk' ? item.mainProductionDescriptionUk : (lang === 'en' ? item.mainProductionDescriptionEn : '');
-            block.append(`
+            if (item.mainProductionIsActive === false) {
+                block.remove();
+            } else {
+                const lang = getCurrentLang();
+                const title = lang === 'uk' ? item.mainProductionTitleUk : (lang === 'en' ? item.mainProductionTitleEn : '');
+                const description = lang === 'uk' ? item.mainProductionDescriptionUk : (lang === 'en' ? item.mainProductionDescriptionEn : '');
+                block.append(`
              <div class="col-12">
                     <h2>${title}</h2>
                     <p>${description}</p>
                 </div>
         `);
+            }
         }
     }
 </script>

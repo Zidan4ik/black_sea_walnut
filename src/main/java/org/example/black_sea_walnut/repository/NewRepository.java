@@ -20,4 +20,6 @@ public interface NewRepository extends JpaRepository<New, Long>, JpaSpecificatio
 
     @Query("SELECT n FROM New n WHERE n.id!=:currentId ORDER BY n.id DESC LIMIT :size")
     List<New> getNewsThreeLast(@Param("size") int size,@Param("currentId") Long id);
+
+    List<New> getAllByIsActive(boolean isActive);
 }

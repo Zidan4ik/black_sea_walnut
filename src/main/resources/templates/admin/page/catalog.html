@@ -356,7 +356,7 @@
                         $(this).parent().parent().remove();
                     });
 
-                    $('#btn-add-media-block').on('click', function () {
+                    $('#btn-add-media-block').off('click').on('click', function () {
                         addMediaImageBlock('new');
                     });
                 }
@@ -431,6 +431,7 @@
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
                             let data = JSON.parse(request.response);
+                            console.log(data);
                             for (let key in data) {
                                 let nestedObject = data[key];
                                 if (typeof nestedObject === 'object' && nestedObject !== null) {
@@ -499,7 +500,8 @@
                                             style="left: 22%;top:42%;position: absolute; width: 57%;">Змінити
                                          </button>
                                         <button type="button" data-type="image${UUID}" data-typedelete="delete-image"
-                                        class="btn btnTrashMyBefore position-absolute top-0 end-0 me-2 mt-2 btn-delete">
+                                        class="btn btnTrashMyBefore position-absolute top-0 end-0 me-2 mt-2 btn-delete"
+                                        style="margin-right: 20px !important;">
                                          <i class="ti ti-trash" style="font-size: x-large;"></i>
                                         </button>
                                   </div>

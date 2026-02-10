@@ -23,6 +23,8 @@ public interface NutService {
 
     List<NutResponseForAdd> getAllInResponseForAdd();
 
+    List<NutResponseForAdd> getAllActiveInResponseForAdd();
+
     PageResponse<NutResponseForView> getAll(NutResponseForView response, Pageable pageable, LanguageCode code);
 
     void deleteById(Long id);

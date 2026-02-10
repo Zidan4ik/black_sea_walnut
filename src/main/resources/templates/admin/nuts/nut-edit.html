@@ -212,7 +212,8 @@
                 <script>
                     function getFroalaEditor(idElementEditor) {
                         return new FroalaEditor(`#${idElementEditor}`, {
-                            height: 12 * 10,
+                            theme: current_mode,
+                            height: 120,
                             width: 700,
                             scrollableContainer: `#${idElementEditor}`,
                             events: {

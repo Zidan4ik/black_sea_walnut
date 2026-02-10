@@ -44,8 +44,8 @@ public class WebMainController {
         NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
         AimBlockResponseForAddInMain aim = historyMainService.getByPageTypeInResponseAimBlock(PageType.main_aim);
         EcoProductionResponseForAddInMain eco = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
-        List<NutResponseForAdd> nuts = nutService.getAllInResponseForAdd();
-        List<NewRequestForAdd> news = newService.getAllInResponseForAdd();
+        List<NutResponseForAdd> nuts = nutService.getAllActiveInResponseForAdd();
+        List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
         ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
         return new ResponseEntity<>(
                 MainResponseForView.builder()

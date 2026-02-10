@@ -250,8 +250,13 @@
 
     function buildBanner(item, idContainer) {
         const bannerData = mapBannerData(item);
-        if (!bannerData || !bannerData.isActive) return;
         const container = $(`#${idContainer}`);
+
+        if (!bannerData || !bannerData.isActive) {
+            container.remove();
+            return;
+        }
+
         if (container.length) {
             container.css("background-image", `url(${bannerData.imagePath !== path_default_image ? contextPath + bannerData.imagePath : path_default_image})`);
             const title = getLocalizedContent(bannerData, 'title');
@@ -280,12 +285,15 @@
 
     function buildBannerTwo(item, idContainer) {
         const bannerData = mapBannerData(item);
-        if (!bannerData || !bannerData.isActive) return;
         const container = $(`#${idContainer}`);
+
         if (container.length) {
-            const title = getLocalizedContent(bannerData, 'title');
-            const description = getLocalizedContent(bannerData, 'description');
-            container.append(`
+            if (!bannerData || !bannerData.isActive) {
+                container.remove();
+            } else {
+                const title = getLocalizedContent(bannerData, 'title');
+                const description = getLocalizedContent(bannerData, 'description');
+                container.append(`
             		<section class="eco overlay" style="background-image: url(${bannerData.imagePath !== path_default_image ? contextPath + bannerData.imagePath : path_default_image})" data-scrollax="properties: { translateY: '30%' }">
 			<div class="container">
 				<div class="row align-items-center justify-content-center">
@@ -298,32 +306,35 @@
 			</div>
 		</section>
         `);
+            }
         }
     }
 
     function buildPost(item, idContainer) {
         const postData = mapBannerData(item);
-        if (!postData || !postData.isActive) return;
-
         const container = $(`#${idContainer}`);
+
         if (container.length) {
-            const title = getLocalizedContent(postData, 'title');
-            const subtitle = getLocalizedContent(postData, 'subtitle');
-            const description = getLocalizedContent(postData, 'description');
-            let images = postData["images"];
-            let htmlImages = images.map(function (item) {
-                let path = '';
-                if (contextPath.length > 1) {
-                    path = contextPath.replace(/\/+$/, '');
-                }
-                return `<div class="swiper-slide">
+            if (!postData || !postData.isActive) {
+                container.remove();
+            } else {
+                const title = getLocalizedContent(postData, 'title');
+                const subtitle = getLocalizedContent(postData, 'subtitle');
+                const description = getLocalizedContent(postData, 'description');
+                let images = postData["images"];
+                let htmlImages = images.map(function (item) {
+                    let path = '';
+                    if (contextPath.length > 1) {
+                        path = contextPath.replace(/\/+$/, '');
+                    }
+                    return `<div class="swiper-slide">
                                                     <div class="manufacturer__item">
                                                         <img src="${path + item.pathToImage}" alt="alt">
                                                     </div>
                                                 </div>`
-            }).join("");
+                }).join("");
 
-            container.append(`
+                container.append(`
                     <div class="container">
                                 <div class="row align-items-center">
                                     <div class="col-md-5">
@@ -348,19 +359,22 @@
                                 </div>
                             </div>
         `);
+            }
         }
     }
 
     function buildNumber(item, idContainer) {
-        if (!item || !item.mainNumberIsActive) return;
         const container = $(`#${idContainer}`);
         if (container.length) {
-            const lang = getCurrentLang();
-            const description1 = lang === 'uk' ? item.mainNumberDescriptionUk1 : (lang === 'en' ? item.mainNumberDescriptionEn1 : '');
-            const description2 = lang === 'uk' ? item.mainNumberDescriptionUk2 : (lang === 'en' ? item.mainNumberDescriptionEn2 : '');
-            const description3 = lang === 'uk' ? item.mainNumberDescriptionUk3 : (lang === 'en' ? item.mainNumberDescriptionEn3 : '');
-            const description4 = lang === 'uk' ? item.mainNumberDescriptionUk4 : (lang === 'en' ? item.mainNumberDescriptionEn4 : '');
-            container.append(`
+            if (!item || !item.mainNumberIsActive) {
+                container.remove();
+            } else {
+                const lang = getCurrentLang();
+                const description1 = lang === 'uk' ? item.mainNumberDescriptionUk1 : (lang === 'en' ? item.mainNumberDescriptionEn1 : '');
+                const description2 = lang === 'uk' ? item.mainNumberDescriptionUk2 : (lang === 'en' ? item.mainNumberDescriptionEn2 : '');
+                const description3 = lang === 'uk' ? item.mainNumberDescriptionUk3 : (lang === 'en' ? item.mainNumberDescriptionEn3 : '');
+                const description4 = lang === 'uk' ? item.mainNumberDescriptionUk4 : (lang === 'en' ? item.mainNumberDescriptionEn4 : '');
+                container.append(`
                      <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-12">
@@ -406,6 +420,7 @@
         </div>
 
         `);
+            }
         }
     }
 
@@ -503,23 +518,22 @@
     }
 
     function buildNews(news, idContainer) {
-        if (news.length === 0) {
-            $('#container-navigation-news').css('display', 'none');
-            $('.wraper').css('display', 'none');
-        } else if (news.length > 0) {
-            let $container = $(`#${idContainer}`);
-            if ($container.length) {
+        let $container = $(`#${idContainer}`);
+
+        if ($container.length) {
+            if (news.length < 3) {
+                $container.closest('section.gray_section').remove();
+            } else {
                 let counter = 0;
+
                 for (let item of news) {
                     if (counter === 5) break;
                     $container.append(getRowNew(item));
                     counter++;
                 }
-            }
-            if (news.length <= 3) {
-                $('.nav-buttons').remove();
-                if (news.length < 3) {
-                    $('#container-block-move-news').remove();
+
+                if (news.length === 3) {
+                    $('#container-navigation-news').remove();
                 }
             }
         }

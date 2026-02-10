@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.mainPage}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -898,7 +895,7 @@
 
 
                     resForm.append("requestFactoryForAdd.mainFactoryId", $("#mainFactoryId_").val());
-                    resForm.append("requestFactoryForAdd.mainFactoryIsActive", $("#status-factory_").val());
+                    resForm.append("requestFactoryForAdd.mainFactoryIsActive", $("#status-factory_").prop('checked'));
                     resForm.append("requestFactoryForAdd.mainFactoryTitleUk", $("#main-factory-title-uk_").val());
                     resForm.append("requestFactoryForAdd.mainFactoryTitleEn", $("#main-factory-title-en_").val());
                     resForm.append("requestFactoryForAdd.mainFactoryDescriptionUk", $("#main-factory-description-uk_").val());

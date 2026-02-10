@@ -93,6 +93,13 @@ public class NutServiceImp implements NutService {
     }
 
     @Override
+    public List<NutResponseForAdd> getAllActiveInResponseForAdd() {
+        LogUtil.logInfo("Fetching all nuts active in response for add");
+        return nutRepository.getAllByIsActive(true).stream()
+                .map(mapper::toResponseForAdd).toList();
+    }
+
+    @Override
     public PageResponse<NutResponseForView> getAll(NutResponseForView response, Pageable pageable, LanguageCode code) {
         LogUtil.logInfo("Fetching paginated Nuts");
         Page<Nut> page = nutRepository.findAll(NutSpecification.getSpecification(response, code), pageable);
