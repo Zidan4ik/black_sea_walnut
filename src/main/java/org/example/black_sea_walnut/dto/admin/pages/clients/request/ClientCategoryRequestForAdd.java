@@ -16,16 +16,16 @@ public class ClientCategoryRequestForAdd {
     private MediaType mediaTypeSvg;
     private MediaType mediaTypeImage;
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 100,message = "{error.field.valid.length.title}")
+    @Length(max = 100, message = "{error.field.valid.length.title}")
     private String clientsCategoryTitleUk;
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 100,message = "{error.field.valid.length.title}")
+    @Length(max = 100, message = "{error.field.valid.length.title}")
     private String clientsCategoryTitleEn;
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 100,message = "{error.field.valid.length.title}")
+    @Length(max = 100, message = "{error.field.valid.length.title}")
     private String clientsCategorySubtitleUk;
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 100,message = "{error.field.valid.length.title}")
+    @Length(max = 100, message = "{error.field.valid.length.title}")
     private String clientsCategorySubtitleEn;
     @Size(max = 500, message = "{error.field.valid.size}")
     private String clientsCategoryDescriptionUk;
@@ -37,6 +37,6 @@ public class ClientCategoryRequestForAdd {
     private String clientsCategoryPathToSvg;
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile clientsCategoryFileImage;
-    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
+    @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg", "image/svg+xml"})
     private MultipartFile clientsCategoryFileSvg;
 }

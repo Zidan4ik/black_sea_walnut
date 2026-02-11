@@ -20,7 +20,11 @@ public interface GalleryService {
 
     List<GalleryResponseForAdd> getAllInResponseByLanguageCode(LanguageCode code);
 
+    List<GalleryResponseForAdd> getAllInResponseByLanguageCodeByActive(LanguageCode code, boolean isActive);
+
     PageResponse<GalleryResponseForAdd> getAllInResponseByLanguageCode(Pageable pageable, LanguageCode code);
+
+    PageResponse<GalleryResponseForAdd> getAllInResponseByLanguageCodeAndIsActive(Pageable pageable, LanguageCode code, boolean isActive);
 
     void deleteById(Long id);
 

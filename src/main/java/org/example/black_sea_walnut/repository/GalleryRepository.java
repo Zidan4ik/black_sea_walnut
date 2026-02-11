@@ -20,6 +20,9 @@ public interface GalleryRepository extends JpaRepository<Gallery, Long>, JpaSpec
     @Query("SELECT g FROM Gallery g JOIN g.translations t WHERE t.languageCode=:languageCode")
     List<Gallery> findAllByLanguageCode(@Param("languageCode") LanguageCode languageCode);
 
+    List<Gallery> findAllByTranslations_LanguageCodeAndIsActive(LanguageCode languageCode, boolean isActive);
+
     @NonNull
     Page<Gallery> findAll(Specification<Gallery> specification, @NonNull Pageable pageable);
+
 }

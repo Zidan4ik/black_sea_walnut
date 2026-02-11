@@ -41,17 +41,6 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
         dto.setMediaTypeSvg(ImageUtil.getMediaType(dto.getClientsCategoryFileSvg()));
         dto.setMediaTypeImage(ImageUtil.getMediaType(dto.getClientsCategoryFileImage()));
 
-        if (dto.getClientsCategoryFileImage() != null) {
-            String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
-            dto.setClientsCategoryPathToImage(generatedPath);
-            LogUtil.logInfo("Generated image path for category: " + generatedPath);
-        }
-        if (dto.getClientsCategoryFileSvg() != null) {
-            String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
-            dto.setClientsCategoryPathToSvg(generatedPath);
-            LogUtil.logInfo("Generated SVG path for category: " + generatedPath);
-        }
-
         if (dto.getClientsCategoryId() != null) {
             LogUtil.logInfo("ClientCategoryId provided: " + dto.getClientsCategoryId());
             ClientCategory clientCategoryById = getById(dto.getClientsCategoryId());
@@ -66,10 +55,22 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
                 imageService.deleteByPath(clientCategoryById.getPathToSvg());
             }
 
+            if (dto.getClientsCategoryFileImage() != null) {
+                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
+                dto.setClientsCategoryPathToImage(generatedPath);
+                LogUtil.logInfo("Generated image path for category: " + generatedPath);
+            }
+            if (dto.getClientsCategoryFileSvg() != null) {
+                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
+                dto.setClientsCategoryPathToSvg(generatedPath);
+                LogUtil.logInfo("Generated SVG path for category: " + generatedPath);
+            }
+
             clientCategoryById.setPathToImage(dto.getClientsCategoryPathToImage());
             clientCategoryById.setPathToSvg(dto.getClientsCategoryPathToSvg());
             clientCategoryById.setMediaTypeImage(dto.getMediaTypeImage());
             clientCategoryById.setMediaTypeSvg(dto.getMediaTypeSvg());
+            clientCategoryById.setActive(dto.getClientsCategoryIsActive());
             LogUtil.logInfo("Updated ClientCategory with new paths.");
         }
 
@@ -93,6 +94,14 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
     public List<ClientCategoryResponseForAdd> getAllInResponse() {
         LogUtil.logInfo("Converting all ClientCategories to response DTOs.");
         List<ClientCategoryResponseForAdd> response = getAll().stream().map(clientsMapper::toResponseCategoryForAdd).toList();
+        LogUtil.logInfo("Converted " + response.size() + " ClientCategories to response DTOs.");
+        return response;
+    }
+
+    @Override
+    public List<ClientCategoryResponseForAdd> getAllInResponseByIsActive(boolean isActive) {
+        LogUtil.logInfo("Converting all ClientCategories to response DTOs.");
+        List<ClientCategoryResponseForAdd> response = clientCategoryRepository.getAllByIsActive(isActive).stream().map(clientsMapper::toResponseCategoryForAdd).toList();
         LogUtil.logInfo("Converted " + response.size() + " ClientCategories to response DTOs.");
         return response;
     }

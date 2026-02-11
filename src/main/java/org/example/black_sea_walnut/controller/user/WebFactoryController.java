@@ -45,7 +45,7 @@ public class WebFactoryController {
         EcoProductionResponseForAddInMain ecology = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
         ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
         List<NewRequestForAdd> news = newService.getAllInResponseForAdd();
-        List<GalleryResponseForAdd> gallery = galleryService.getAllInResponseByLanguageCode(LanguageCode.fromString(lang));
+        List<GalleryResponseForAdd> gallery = galleryService.getAllInResponseByLanguageCodeByActive(LanguageCode.fromString(lang),true);
         return new ResponseEntity<>(FactoryResponseForView
                 .builder()
                 .banner(banner)

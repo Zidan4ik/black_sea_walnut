@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.clients} + ' ' + #{text.page}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -355,7 +352,8 @@
             <script>
                 function getFroalaEditor(idElementEditor) {
                     return new FroalaEditor(`#${idElementEditor}`, {
-                        height: 12 * 10,
+                        theme: current_mode,
+                        height: 120,
                         width: 700,
                         scrollableContainer: `#${idElementEditor}`,
                         events: {
@@ -436,7 +434,9 @@
 
                         imageElementUk.attr('src', URL.createObjectURL(file));
                         imageElementEn.attr('src', URL.createObjectURL(file));
-                        $(`input[data-pathValue="${attribute}"]`).val('');
+
+                        let $el = $(`input[data-pathValue="${attribute}"]`);
+                        if ($el.length > 0) $el.val('');
                     });
                     $(container).on('click', '.btn-delete-media', function () {
                         let value = $(this).data('type');
@@ -445,8 +445,8 @@
                             let blockParent = $(`div[data-id="${id}"]`);
                             if (blockParent.attr('data-type') === 'old') {
                                 let id_ = $(`#id-${id}`).val();
-                                confirmAndPathDelete(id_,`${contextPath}/admin/client/delete`,()=>{
-                                   $(`div.row.container-mini[data-id="${id}"]`).remove();
+                                confirmAndPathDelete(id_, `${contextPath}/admin/client/delete`, () => {
+                                    $(`div.row.container-mini[data-id="${id}"]`).remove();
                                 });
                             }
                             if (blockParent.attr('data-type') === 'new') {
@@ -489,7 +489,6 @@
             <script>
                 function saveRequest(url) {
                     let formData = getFormCatalog();
-
                     $.ajax({
                         type: "post",
                         url: url,
@@ -550,15 +549,18 @@
                         resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryIsActive`, $(`input[data-id="status-client-${id}"]`).prop('checked'));
                         resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryDescriptionUk`, $(`#hidden-edit-description-block-uk-${id}`).html());
                         resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryDescriptionEn`, $(`#hidden-edit-description-block-en-${id}`).html());
+
                         resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryPathToImage`, $(`input[data-name="pathToImage${id}"]`).val());
                         resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryPathToSvg`, $(`input[data-name="pathToSvg${id}"]`).val());
 
                         let fileImg = $(`#file-clientsFileImage${id}`)[0].files[0];
                         let fileSvg = $(`#file-clientsFileSvg${id}`)[0].files[0];
+
                         if (fileImg)
                             resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryFileImage`, fileImg);
                         if (fileSvg)
                             resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryFileSvg`, fileSvg);
+
                         let idRes = $(`#id-${id}`).val();
                         if (idRes !== undefined)
                             resForm.append(`requestClientCategoryForAdd[${counterAppend}].clientsCategoryId`, idRes)
@@ -575,6 +577,7 @@
                     request.addEventListener('load', function () {
                         if (request.status === 200) {
                             let data = JSON.parse(request.response);
+                            // console.log(data);
                             for (let key in data) {
                                 let nestedObject = data[key];
                                 if (Array.isArray(nestedObject)) {
@@ -590,7 +593,6 @@
                                                     let img = input.attr('data-image');
                                                     let $input = $(`#${img}`);
                                                     if ($input && nestedObject[nestedKey] && nestedObject[nestedKey] !== null) {
-
                                                         $input.attr('src', contextPath + nestedObject[nestedKey]);
                                                         input.val(nestedObject[nestedKey]);
                                                     }
@@ -609,6 +611,7 @@
                                                             isActiveEl.checked = nestedObject[nestedKey];
                                                         }
                                                     } else if (nestedKey === 'clientsBlockFiles') {
+                                                        console.log(1);
                                                         let array = nestedObject[nestedKey];
                                                         if (Array.isArray(array)) {
                                                             array.forEach(function (el) {
@@ -633,18 +636,23 @@
                 function addMediaImageBlock(type, data) {
                     let counterId = counter.toString();
 
+                    const imageSrc = (data && data.clientCategoryPathToImage)
+                        ? contextPath + data.clientCategoryPathToImage : path_default_image;
+                    const svgSrc = (data && data.clientCategoryPathToSvg)
+                        ? contextPath + data.clientCategoryPathToSvg : path_default_image;
+
                     const generateBlock = (lang, data) => {
                         const idDescriptionBlock = `edit-description-block-${lang}-${counter}`;
                         let langError = lang === 'uk' ? 'Uk' : 'En';
                         return `<div class="col-5">
                 <div class="position-relative text-center" id="image-block-${lang}">
                     <img id="clientsFileImage${counterId}-${lang}" data-name="clientsFileImage${counterId}"
-                         src="${data.pathToImage}"
+                         src="${imageSrc}"
                          alt="error" style="width: 100%; height: 255px; display: block; margin: 0 auto;"
                          data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileImage">
                     <button type="button" data-id="${counterId}" data-name="clientsFileImage${counterId}"
                             class="btn btn-outline-success btn-select-media"
-                            style="left: 13%;top:25%;position: absolute;width: 35%;">Змінити банер</button>
+                            style="left: 13%;top:25%;position: absolute;">Змінити банер</button>
                     <button type="button" data-type="image" data-id="${counterId}"
                             class="btn btn-outline-success btn-delete-media"
                             style="right: 13%;top:25%;position: absolute;width: 35%;">Видалити</button>
@@ -657,7 +665,7 @@
                 <div class="col-1 d-flex align-items-center" id="status-client-category-${lang}">
                     <label class="switch switch-success">
                         <input data-id="status-client-${counterId}" data-name="clientsCategoryIsActive" type="checkbox" class="switch-input common-switch"
-                        checked="${data.isActive}">
+                        ${data.isActive ? 'checked' : ''}>
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
@@ -682,10 +690,10 @@
                            value="${data.subtitle}">
                 </div>
                 <div class="col-12 mb-3 row">
-                    <label for="clientsFileSvg" class="form-label" style="color: black; font-size: large;">Іконка:</label>
+                    <label for="clientsFileSvg" class="form-label" style="font-weight: bold; font-size: large;">Іконка:</label>
                     <div id="image-svg-block-${lang}">
                         <img id="clientsFileSvg${counterId}-${lang}" data-name="clientsFileSvg${counterId}"
-                        src="${data.pathToSvg}" data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileSvg"
+                        src="${svgSrc}" data-error="requestClientCategoryForAdd[${counterId}].clientsCategoryFileSvg"
                              alt="error" style="width: 100px;height: 60px;">
                         <div class="row gap-3" style="margin: 3px;">
                             <button type="button" data-name="clientsFileSvg${counterId}" class="btn btn-outline-success btn-select-media" style="width: 60%;">Змінити</button>
@@ -723,7 +731,7 @@
                         description: data !== undefined ? data.clientCategoryDescriptionUk : '',
                         isActive: data !== undefined ? data.clientCategoryIsActive : false,
                         pathToImage: data !== undefined ? (data.clientCategoryPathToImage !== '' ? contextPath + data.clientCategoryPathToImage : path_default_image) : path_default_image,
-                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ?contextPath + data.clientCategoryPathToSvg : path_default_image) : path_default_image
+                        pathToSvg: data !== undefined ? (data.clientCategoryPathToSvg !== '' ? contextPath + data.clientCategoryPathToSvg : path_default_image) : path_default_image
                     };
                     let dataEn = {
                         title: data !== undefined ? data.clientCategoryTitleEn : '',
@@ -743,14 +751,14 @@
                         `;
                     }
                     inputsContainer.innerHTML += `
-        <input type="file" id="file-clientsFileImage${counterId}" data-type="clientsFileImage${counterId}" class="files-media"
-               accept="image/*" style="display: none;" data-error="file">
-        <input type="hidden" data-name="pathToImage${counterId}" data-pathValue="clientsFileImage${counterId}"
-               class="files-media" data-error="pathToMediaFile" value="${data !== undefined ? data.clientCategoryPathToImage : ''}">
-        <input type="file" id="file-clientsFileSvg${counterId}" data-type="clientsFileSvg${counterId}" class="files-media"
-               accept="image/*" style="display: none;" data-error="file">
-        <input type="hidden" data-name="pathToSvg${counterId}" data-pathValue="clientsFileSvg${counterId}"
-               class="files-media" data-error="pathToMediaFileSvg" value="${data !== undefined ? data.clientCategoryPathToSvg : ''}">`;
+                    <input type="file" id="file-clientsFileImage${counterId}" data-type="clientsFileImage${counterId}" class="files-media"
+                           accept="image/*" style="display: none;" data-error="file">
+                        <input type="hidden" data-name="pathToImage${counterId}" data-pathValue="clientsFileImage${counterId}"
+                               class="files-media" data-error="pathToMediaFile" value="${data !== undefined ? data.clientCategoryPathToImage : ''}">
+                            <input type="file" id="file-clientsFileSvg${counterId}" data-type="clientsFileSvg${counterId}" class="files-media"
+                                   accept="image/*" style="display: none;" data-error="file">
+                                <input type="hidden" data-name="pathToSvg${counterId}" data-pathValue="clientsFileSvg${counterId}"
+                                       class="files-media" data-error="pathToMediaFileSvg" value="${data !== undefined ? data.clientCategoryPathToSvg : ''}">`;
                     counter++;
                 }
             </script>

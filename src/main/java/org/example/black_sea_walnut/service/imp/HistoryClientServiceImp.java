@@ -51,7 +51,7 @@ public class HistoryClientServiceImp implements HistoryClientService {
     @Override
     public List<ClientCategoryResponseForAdd> getAllInResponseCategoryBlock() {
         LogUtil.logInfo("Fetching all ClientCategoryResponseForAdd");
-        List<ClientCategoryResponseForAdd> response = clientCategoryService.getAllInResponse();
+        List<ClientCategoryResponseForAdd> response = clientCategoryService.getAllInResponseByIsActive(true);
         LogUtil.logInfo("Fetched ClientCategoryResponseForAdd: " + response);
         return response;
     }

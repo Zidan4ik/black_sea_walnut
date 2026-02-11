@@ -83,6 +83,24 @@
             line-height: 18px;
             letter-spacing: 0.01em;
         }
+
+        /* Стилі для картинки, щоб вона поводилася як іконка */
+        .header-nav-img {
+            width: 24px; /* Задайте розмір, який був у nut-icon */
+            height: 24px;
+            object-fit: contain; /* Щоб фото не розтягувалося, а вписувалося в квадрат */
+            vertical-align: middle; /* Вирівнювання по центру тексту */
+            margin-right: 8px; /* Відступ до тексту, якщо він не заданий у li */
+
+            /* Якщо при ховері на <li> іконка змінювала колір,
+               картинці можна додати фільтр або прозорість */
+            transition: all 0.3s ease;
+        }
+
+        /* Якщо <li> активний, можна підсвітити картинку */
+        li.active .header-nav-img {
+            filter: brightness(1.2);
+        }
     </style>
 </head>
 
@@ -425,18 +443,17 @@
     }
 
     function buildGallery(items, containerId) {
-        if (!items || items.length === 0) return;
+        const container = $(`#${containerId}`);
 
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        let html = "";
-        for (let i = 0; i < items.length; i += 6) {
-            const group = items.slice(i, i + 6);
-
-            // html += `<div class="row">`;
-
-            if (group[0]) {
-                html += `
+        if (container.length) {
+            if (!items || items.length === 0) {
+                container.closest('section.gallery_section').remove();
+            } else {
+                let html = "";
+                for (let i = 0; i < items.length; i += 6) {
+                    const group = items.slice(i, i + 6);
+                    if (group[0]) {
+                        html += `
                 <div class="col-lg-7 col-md-6 col-12">
                     <div class="wrap">
                         <div class="benefit__item" style="background-image: url(${contextPath + group[0].pathToMediaFile})"></div>
@@ -447,10 +464,10 @@
                     </div>
                 </div>
             `;
-            }
+                    }
 
-            if (group[1]) {
-                html += `
+                    if (group[1]) {
+                        html += `
                 <div class="col-lg-5 col-md-6 col-12">
                     <div class="wrap">
                         <div class="benefit__item" style="background-image: url(${contextPath + group[1].pathToMediaFile})"></div>
@@ -461,10 +478,10 @@
                     </div>
                 </div>
             `;
-            }
+                    }
 
-            if (group[2]) {
-                html += `
+                    if (group[2]) {
+                        html += `
                 <div class="col-lg-12 col-md-12 col-12">
                     <div class="wrap">
                         <a class="benefit__item overlay benefit__item_video_text" style="background-image: url(${contextPath + group[2].pathToMediaFile})">
@@ -474,10 +491,10 @@
                     </div>
                 </div>
             `;
-            }
+                    }
 
-            if (group[3]) {
-                html += `
+                    if (group[3]) {
+                        html += `
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
                         <div class="benefit__item item_small" style="background-image: url(${contextPath + group[3].pathToMediaFile})"></div>
@@ -488,10 +505,10 @@
                     </div>
                 </div>
             `;
-            }
+                    }
 
-            if (group[4] && group[5]) {
-                html += `
+                    if (group[4] && group[5]) {
+                        html += `
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="wrap item_small">
                         <div class="benefit__item item_small" style="background-image: url(${contextPath + group[4].pathToMediaFile})"></div>
@@ -510,11 +527,12 @@
                     </div>
                 </div>
             `;
+                    }
+                    html += `</div>`;
+                }
+                container.html(html);
             }
-            html += `</div>`;
         }
-
-        container.innerHTML = html;
     }
 
     function buildNews(news, idContainer) {
@@ -588,16 +606,23 @@
     }
 
     function buildCategories(categories, idContainerHeader, idContainerContent) {
-        if (categories.length === 0) return;
-        else if (categories.length > 0) {
-            for (let item of categories) {
+        if (!categories || categories.length === 0) {
+            $('#container-categories-content').closest('section.payment').remove();
+            return;
+        }
+
+        const $container = $('#container-categories-content');
+
+        if ($container.length) {
+            categories.forEach(item => {
                 getRowCategory(item, idContainerHeader, idContainerContent);
-            }
+            });
         }
     }
 
     function getRowCategory(item, idContainerHeader, idContainerContent) {
         const postData = mapBannerData(item);
+        console.log(postData);
         if (!postData || !postData.isActive) return;
 
         let $containerHeader = $(`#${idContainerHeader}`);
@@ -610,7 +635,7 @@
 
             $containerHeader.append(`
                                 <li class="${isFirst ? 'active' : ''}">
-                                    <i class="nut-icon icons-supermarket"></i>
+                                    <img src="${contextPath + postData.svgPath}" class="header-nav-img" alt="icon">
                                     <span>${title}</span>
                                 </li>`
             );

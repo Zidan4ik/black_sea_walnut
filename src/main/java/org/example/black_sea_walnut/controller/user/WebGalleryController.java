@@ -25,7 +25,7 @@ public class WebGalleryController {
     @GetMapping("/gallery/load")
     public ModelAndView getDataForGalleryPage(Pageable pageable) {
         ModelAndView model = new ModelAndView("web/gallery/gallery-list");
-        PageResponse<GalleryResponseForAdd> response = galleryService.getAllInResponseByLanguageCode(pageable, LanguageCode.uk);
+        PageResponse<GalleryResponseForAdd> response = galleryService.getAllInResponseByLanguageCodeAndIsActive(pageable, LanguageCode.uk,true);
         model.addObject("gallery",response.getContent());
         model.addObject("totalPages",response.getMetadata().getTotalPages());
         return model;

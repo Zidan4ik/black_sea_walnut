@@ -51,14 +51,14 @@ public class ImageServiceImp implements ImageService {
     @Override
     public void deleteByPath(String path) throws IOException {
         LogUtil.logInfo("Attempting to delete file/folder at path: " + path);
-        Path path_ = Path.of("." + path);
+        Path path_ = Path.of(path); // can add '.' in parameter for deleting files from current folder project
         Path lockFile = Path.of(path_ + ".lock");
         if (Files.exists(lockFile)) {
             LogUtil.logWarning("Deletion blocked: lock file exists for " + path);
             return;
         }
 
-        if (path != null && !path.isEmpty() && Files.exists(path_)) {
+        if (!path.isEmpty() && Files.exists(path_)) {
             Files.walkFileTree(path_, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {

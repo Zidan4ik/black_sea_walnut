@@ -29,7 +29,7 @@ class GallerySpecificationsTest {
         when(root.join("translations")).thenReturn(join);
         when(cb.equal(path, code)).thenReturn(predicate);
 
-        Specification<Gallery> spec = GallerySpecifications.getSpecification(code);
+        Specification<Gallery> spec = GallerySpecifications.getSpecification(code,null);
         spec.toPredicate(root, query, cb);
 
         verify(root).join("translations");

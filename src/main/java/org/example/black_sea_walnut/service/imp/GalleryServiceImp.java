@@ -92,9 +92,30 @@ public class GalleryServiceImp implements GalleryService {
     }
 
     @Override
+    public List<GalleryResponseForAdd> getAllInResponseByLanguageCodeByActive(LanguageCode languageCode, boolean isActive) {
+        LogUtil.logInfo("Fetching gallery responses for add with language code: " + languageCode);
+        List<GalleryResponseForAdd> responses = getAllByLanguageCode(languageCode).stream()
+                .map(mapper::toResponseForAdd)
+                .toList();
+        LogUtil.logInfo("Fetched " + responses.size() + " gallery responses for language code: " + languageCode);
+        return responses;
+    }
+
+    @Override
     public PageResponse<GalleryResponseForAdd> getAllInResponseByLanguageCode(Pageable pageable, LanguageCode code) {
         LogUtil.logInfo("Fetching paginated gallery responses for add with language code: " + code);
-        Page<Gallery> page = galleryRepository.findAll(GallerySpecifications.getSpecification(code), pageable);
+        Page<Gallery> page = galleryRepository.findAll(GallerySpecifications.getSpecification(code,null), pageable);
+        List<GalleryResponseForAdd> responsesDtoAdd = page.map(mapper::toResponseForAdd).stream().toList();
+        LogUtil.logInfo("Fetched " + responsesDtoAdd.size() + " gallery responses for language code: " + code);
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
+    public PageResponse<GalleryResponseForAdd> getAllInResponseByLanguageCodeAndIsActive(Pageable pageable, LanguageCode code, boolean isActive) {
+        LogUtil.logInfo("Fetching paginated gallery responses for add with language code: " + code);
+        Page<Gallery> page = galleryRepository.findAll(GallerySpecifications.getSpecification(code,isActive), pageable);
         List<GalleryResponseForAdd> responsesDtoAdd = page.map(mapper::toResponseForAdd).stream().toList();
         LogUtil.logInfo("Fetched " + responsesDtoAdd.size() + " gallery responses for language code: " + code);
         return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(

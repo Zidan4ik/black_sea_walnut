@@ -40,7 +40,7 @@ public class WebClientsController {
         ClientBannerResponseForAdd banner = historyClientService.getByPageTypeInResponseBannerBlock(PageType.clients_banner);
         ClientEcoProductionResponseForAdd eco = historyClientService.getByPageTypeInResponseEcoProductionBlock(PageType.clients_eco_production);
         List<ClientCategoryResponseForAdd> categories = historyClientService.getAllInResponseCategoryBlock();
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
         NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
 
         return new ResponseEntity<>(ClientsResponseForView.builder()

@@ -15,6 +15,8 @@ public interface ClientCategoryService {
 
     List<ClientCategoryResponseForAdd> getAllInResponse();
 
+    List<ClientCategoryResponseForAdd> getAllInResponseByIsActive(boolean isActive);
+
     ClientCategory getById(Long id);
 
     void deleteById(Long id);
