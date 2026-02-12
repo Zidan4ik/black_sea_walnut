@@ -40,7 +40,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-lg-3">
                                         <div class="production__filter_title">
-                                            <p>Фільтр</p>
+                                            <p th:text="#{text.filter}"></p>
                                             <i class="nut-icon icons-settings"></i>
                                         </div>
                                     </div>
@@ -54,16 +54,14 @@
                                 <div class="row">
                                     <div class="col-lg-5 align-self-center">
                                         <div class="production__filter_price">
-											<span>
-													Коштовність
-											</span>
+											<span th:text="#{text.jewel}"></span>
                                             <i class="nut-icon icons-arrow-down" style="font-size: large"></i>
                                             <i class="nut-icon icons-right-top" style="font-size: large"></i>
                                         </div>
                                     </div>
                                     <div class="col-lg-7">
                                         <div class="production__filter_button">
-                                            <a id="button-filter" class="button">Застосувати</a>
+                                            <a id="button-filter" class="button" th:text="#{text.apply}"></a>
                                             <a class="button_close"><i class="nut-icon icons-close-button"></i><span> Скинути</span></a>
                                         </div>
                                     </div>
@@ -176,12 +174,12 @@
                 let data = JSON.parse(request.response);
                 const containerTastes = $('#container-tasteFilter');
                 containerTastes.append(`<select id="tasteFilter" name="tasteFilter" class="selectMy" style="width: 80%;">
-                                            <option value="">Всі</option>
+                                            <option value="">${messages.all}</option>
                                         </select>`);
 
                 const containerMasses = $('#container-massFilter');
                 containerMasses.append(`<select id="massFilter"  name="massFilter" class="selectMy">
-                                            <option value="">Всі</option>
+                                            <option value="">${messages.all}</option>
                                         </select>`);
 
                 const selectedTastes = $('#tasteFilter');

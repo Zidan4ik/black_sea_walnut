@@ -15,12 +15,10 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-lg-4 col-12 d-lg-flex d-none justify-content-center">
-<!--                    <p th:text="#{text.yourPersonalDiscount5}"></p>-->
-                </div>
+                <div class="col-lg-4 col-12 d-lg-flex d-none justify-content-center"></div>
                 <div class="col-lg-4 col-12">
                     <div class="wrap">
-                        <ul class="log_in d-lg-flex d-none">
+                        <ul class="log_in">
                             <li>
                                 <a th:if="${currentUser}">
                                     <a data-bs-toggle="dropdown" type="button" style="border: none;background:none;">
@@ -56,10 +54,10 @@
                             </li>
                         </ul>
                         <div id="lang-menu" class="lang-menu">
-                            <span class="title">Uk</span>
+                            <span class="title" th:text="${#locale.language}">uk</span>
                             <ul>
-                                <li><a class="button-dropdown" href="javascript:void(0);" data-lang="en">En</a></li>
-                                <li><a class="button-dropdown" href="javascript:void(0);" data-lang="uk">Uk</a></li>
+                                <li><a class="button-dropdown" href="javascript:void(0);" data-lang="en">en</a></li>
+                                <li><a class="button-dropdown" href="javascript:void(0);" data-lang="uk">uk</a></li>
                             </ul>
                         </div>
                     </div>

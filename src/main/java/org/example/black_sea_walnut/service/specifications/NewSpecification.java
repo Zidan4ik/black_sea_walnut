@@ -18,11 +18,14 @@ public class NewSpecification {
             specification = specification.and(hasId(entity.getId()));
         }
         if (entity.getTitle() != null && !entity.getTitle().isBlank()) {
-            specification = specification.and(likeTitle(entity.getTitle(),code));
+            specification = specification.and(likeTitle(entity.getTitle(), code));
         }
         if (entity.getDate() != null && !entity.getDate().isBlank()) {
             LocalDate date = LocalDate.parse(entity.getDate(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
             specification = specification.and(hasDate(date));
+        }
+        if (entity.getIsActive() != null) {
+            specification = specification.and(isActive(entity.getIsActive()));
         }
         return specification;
     }
@@ -30,6 +33,11 @@ public class NewSpecification {
     private static Specification<New> hasId(Long id) {
         return ((root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.get("id"), id));
+    }
+
+    private static Specification<New> isActive(boolean isActive) {
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("isActive"), isActive));
     }
 
     private static Specification<New> likeTitle(String title, LanguageCode code) {

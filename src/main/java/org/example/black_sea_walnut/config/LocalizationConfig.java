@@ -24,10 +24,10 @@ public class LocalizationConfig implements WebMvcConfigurer {
     public LocaleResolver localeResolver() {
         CookieLocaleResolver clr = new CookieLocaleResolver();
         clr.setDefaultLocale(new Locale("uk"));
-        clr.setCookieDomain("localhost");
-        clr.setCookiePath("/");
         clr.setCookieName("lang");
+        clr.setCookiePath("/");
         clr.setCookieMaxAge(Duration.ofDays(30));
+        clr.setCookieDomain("localhost");
         return clr;
     }
 

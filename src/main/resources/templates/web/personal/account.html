@@ -71,7 +71,6 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-<!--                            <span class="discount" th:text="#{text.personalDiscount}"></span>-->
                         </div>
                     </div>
                 </div>
@@ -304,13 +303,12 @@
         let rowData = row.find('td').map(function () {
             return $(this).text().trim();
         }).get().join('\t');
-        let keyCopy = await changeLanguage('text.copied', getCurrentLang());
-        let keyCopyDesc = await changeLanguage('text.copyDesc', getCurrentLang());
+
         navigator.clipboard.writeText(rowData).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: keyCopy,
-                text: keyCopyDesc,
+                title: messages.copied + "!",
+                text: messages.copyDataToBuffer,
                 timer: 2000,
                 showConfirmButton: false
             });
@@ -347,7 +345,7 @@
                     let img = input.data('image');
                     let $input = $(`#${img}`);
                     if ($input.length && value) {
-                        $input.css('background-image', `url('${value}')`);
+                        $input.css('background-image', `url('${contextPath + value}')`);
                     }
                 }
                 input.val(value);

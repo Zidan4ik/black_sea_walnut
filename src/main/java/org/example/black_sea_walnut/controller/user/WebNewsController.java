@@ -41,7 +41,7 @@ public class WebNewsController {
             @RequestParam(defaultValue = "4") int size,
             @RequestParam(name = "lang") String languageCode) {
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseNewForViewInWeb> pageResponse = newService.getAll(pageable, LanguageCode.fromString(languageCode));
+        PageResponse<ResponseNewForViewInWeb> pageResponse = newService.getAllByActive(pageable, LanguageCode.fromString(languageCode),true);
         return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 
@@ -57,9 +57,9 @@ public class WebNewsController {
     @GetMapping("/new/{id}/data")
     public ResponseEntity<?> getNewsPageDate(@RequestParam(name = "lang") String code,
                                              @PathVariable Long id) {
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
         NewResponseInWeb new_ = newService.getByIdInResponseForWeb(id, LanguageCode.fromString(code));
-        List<NewResponseInWeb> news = newService.getAllBySizeAmongLast(3, LanguageCode.fromString(code),id);
+        List<NewResponseInWeb> news = newService.getAllBySizeAmongLast(2, LanguageCode.fromString(code),id);
         return new ResponseEntity<>(NewResponseForView
                 .builder()
                 .contacts(contacts)

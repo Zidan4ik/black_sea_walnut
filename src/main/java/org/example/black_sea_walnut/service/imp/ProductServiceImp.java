@@ -141,7 +141,7 @@ public class ProductServiceImp implements ProductService {
             String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(image);
             pathSetter.accept(generatedPath);
         } else {
-            pathSetter.accept("");
+            pathSetter.accept(imagePath);
         }
     }
 

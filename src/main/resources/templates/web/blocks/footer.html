@@ -39,10 +39,10 @@
                             <a th:href="@{/web/clients}" th:text="#{text.wholesaleAndCorporateClients}"></a>
                         </li>
                         <li>
-                            <a th:href="@{/web/news}" >Новости и статьи</a>
+                            <a th:href="@{/web/news}" th:text="#{text.newsAndArticles}"></a>
                         </li>
                         <li>
-                            <a class="moveToContacts" >Контакты</a>
+                            <a class="moveToContacts" th:text="#{text.contacts}"></a>
                         </li>
                     </ul>
                 </div>
@@ -87,7 +87,7 @@
                             <i class="nut-icon icons-phone"></i>
                             <ul>
                                 <li>
-                                    <a href="tel:${item.phone1}"><span>+38 (044)</span> 750-50-11</a>
+                                    <a href="tel:${item.phone1}"><span>${item.phone1}</span></a>
                                 </li>
                                 <li>
                                     <a href="tel:${item.phone2}"><span>${item.phone2}</span></a>
@@ -114,11 +114,11 @@
                     <address class="bottom_address">
                         <ul>
                             <li>
-                                <b>Офис и отдел продаж</b>
+                                <b>${messages.officeAndSalesDepartment}</b>
                                 <p>${item.addressWork}</p>
                             </li>
                             <li>
-                                <b>Производство</b>
+                                <b>${messages.production}</b>
                                 <p>${item.addressFactory}</p>
                             </li>
                         </ul>

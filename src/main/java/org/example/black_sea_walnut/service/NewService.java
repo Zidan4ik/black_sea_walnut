@@ -17,6 +17,8 @@ public interface NewService {
 
     PageResponse<ResponseNewForViewInWeb> getAll(Pageable pageable, LanguageCode code);
 
+    PageResponse<ResponseNewForViewInWeb> getAllByActive(Pageable pageable, LanguageCode code, boolean isActive);
+
     List<New> getAll();
 
     List<NewRequestForAdd> getAllInResponseForAdd();

@@ -12,7 +12,8 @@
         <li class="page-item prev"
             th:classappend="${pageData.page == 0} ? 'disabled' : 'pointer'" style="margin-right: 5px;">
             <a class="page-link pagination-icon pagination btn-card-block-spinner"
-               th:data-page="${pageData.page - 1}">
+               th:data-page="${pageData.page - 1}" style="border-radius: 0.25rem;"
+               th:styleappend="${pageData.page == 0}? 'background-color: #d9d9d9;' : ''">
                 <i class="ti ti-chevron-left ti-sm"
                    th:styleappend="${pageData.page == 0}? '' : 'color:white;'"></i></a>
         </li>

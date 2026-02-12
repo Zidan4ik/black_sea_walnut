@@ -445,6 +445,7 @@ public class DatabaseLoader implements CommandLineRunner {
             superAdmin.setDepartment(1);
             superAdmin.setAddress("Admin Address");
             superAdmin.setCompany("Admin Company");
+            superAdmin.setPathToImage("");
 
             User admin = new User();
             admin.setFullName("Admin User");
@@ -461,6 +462,7 @@ public class DatabaseLoader implements CommandLineRunner {
             admin.setDepartment(1);
             admin.setAddress("Admin Address");
             admin.setCompany("Admin Company");
+            admin.setPathToImage("");
 
             User user = new User();
             user.setFullName("User");
@@ -477,6 +479,7 @@ public class DatabaseLoader implements CommandLineRunner {
             user.setDepartment(2);
             user.setAddress("User Address");
             user.setCompany("User Company");
+            user.setPathToImage("");
 
             userService.save(superAdmin);
             userService.save(admin);

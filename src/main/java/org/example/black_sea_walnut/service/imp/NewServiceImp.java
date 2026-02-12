@@ -54,6 +54,17 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
+    public PageResponse<ResponseNewForViewInWeb> getAllByActive(Pageable pageable, LanguageCode code, boolean isActive) {
+        LogUtil.logInfo("Fetching all news for web");
+        ResponseNewForView response = ResponseNewForView.builder().isActive(isActive).build();
+        Page<New> page = newRepository.findAll(NewSpecification.getSpecification(response, code), pageable);
+        List<ResponseNewForViewInWeb> responsesDtoAdd = page.map(t -> mapper.toDtoViewForWeb(t, code)).stream().toList();
+        return new PageResponse<>(responsesDtoAdd, new PageResponse.Metadata(
+                page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()
+        ));
+    }
+
+    @Override
     public New getById(Long id) {
         LogUtil.logInfo("Fetching news by ID: " + id);
         return newRepository.findById(id).orElseThrow(

@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout=""
+      th:lang="${#locale.language}"
       lang="uk"
       dir="ltr"
       data-theme="theme-default"
@@ -7,10 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="My description">
-    <!-- Responsive -->
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <!--    <meta name="apple-mobile-web-app-capable" content="yes">-->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -45,8 +44,8 @@
         if (contextPath !== "/" && contextPath.endsWith("/")) {
             contextPath = contextPath.slice(0, -1);
         }
-        const path_default_image = contextPath + "/app/uploads/image/default-image.jpg";
-        const path_default_preview_image = contextPath + "/app/uploads/image/video-preview.jpg";
+        const path_default_image = contextPath + "/image/default-image.jpg";
+        const path_default_preview_image = contextPath + "/image/video-preview.jpg";
     </script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -84,20 +83,16 @@
             letter-spacing: 0.01em;
         }
 
-        /* Стилі для картинки, щоб вона поводилася як іконка */
         .header-nav-img {
-            width: 24px; /* Задайте розмір, який був у nut-icon */
+            width: 24px;
             height: 24px;
-            object-fit: contain; /* Щоб фото не розтягувалося, а вписувалося в квадрат */
-            vertical-align: middle; /* Вирівнювання по центру тексту */
-            margin-right: 8px; /* Відступ до тексту, якщо він не заданий у li */
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 8px;
 
-            /* Якщо при ховері на <li> іконка змінювала колір,
-               картинці можна додати фільтр або прозорість */
             transition: all 0.3s ease;
         }
 
-        /* Якщо <li> активний, можна підсвітити картинку */
         li.active .header-nav-img {
             filter: brightness(1.2);
         }
@@ -114,7 +109,7 @@
                 <div class="row align-items-center no-gutters item_row">
                     <div class="col-md-5 col-12">
                         <div class="item_title">
-                            <p>Орех соленый 80г.</p>
+                            <p th:text="#{text.cartProduct}"></p>
                         </div>
                     </div>
                     <div class="col-md-7 col-12">
@@ -171,9 +166,7 @@
     <div class="modal fade show" id="ModalForLeftCall" tabindex="-1" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content text-center">
-                <div class="modal-header text-center" style="font-size: 20px">
-                    Введіть свій номер телефона, і ми вам перетелефонуємо
-                </div>
+                <div class="modal-header text-center" style="font-size: 20px" th:text="#{text.enterYouPhoneNumber}"></div>
                 <div class="modal-body d-flex justify-content-center" data-error="phone">
                     <input
                             class="form-control" type="text" id="input-number-user" style="width: 80%"/>
@@ -201,22 +194,18 @@
 
 <script>
     function selectedLanguage() {
+        let currentLang = getCookie("lang");
+
+        if (currentLang) {
+            document.documentElement.lang = currentLang;
+            $('#lang-menu').find('span.title').text(currentLang);
+        }
+
         $(".button-dropdown").on("click", function () {
             let lang = $(this).attr("data-lang");
             if (lang) {
                 setCookie("lang", lang, 30);
                 window.location.reload();
-            }
-        });
-
-        window.addEventListener("load", function () {
-            let lang = getCookie("lang");
-            if (lang) {
-                document.documentElement.lang = lang;
-                let $languageCode = $("#languageCode_");
-                if ($languageCode) {
-                    $languageCode.val(lang);
-                }
             }
         });
     }
@@ -622,7 +611,6 @@
 
     function getRowCategory(item, idContainerHeader, idContainerContent) {
         const postData = mapBannerData(item);
-        console.log(postData);
         if (!postData || !postData.isActive) return;
 
         let $containerHeader = $(`#${idContainerHeader}`);
@@ -841,6 +829,11 @@
         addEventListenerCart();
         selectedLanguage();
         showModelCalls();
+
+        // let current_lang = getCookie("lang");
+        // $('#lang-menu').find('span.title').text(current_lang);
+        // console.log(current_lang);
+
     });
 
     function showModelCalls() {
@@ -1121,7 +1114,6 @@
 
     function invokeRequestCartData() {
         let request = new XMLHttpRequest();
-        let pathName = location.pathname.substring(1, location.pathname.length);
         request.open("GET", contextPath + `/web/cart/get`)
         request.send();
         request.addEventListener('load', async function () {
@@ -1196,6 +1188,16 @@
             showConfirmButton: false
         });
     }
+</script>
+<script th:inline="javascript">
+    const messages = {
+        copyDataToBuffer: /*[[#{text.copyDesc}]]*/ 'default',
+        copied: /*[[#{text.copied}]]*/ 'default',
+        read: /*[[#{text.read}]]*/ 'default',
+        officeAndSalesDepartment: /*[[#{text.officeAndSalesDepartment}]]*/ 'default',
+        production: /*[[#{text.production}]]*/ 'default',
+        all: /*[[#{value.status.all}]]*/ 'default',
+    };
 </script>
 </body>
 </html>

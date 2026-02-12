@@ -5,12 +5,6 @@
 <head>
     <title th:text="#{text.newsAndArticles}"></title>
     <style>
-        /*.wraper p {*/
-        /*    white-space: nowrap;*/
-        /*    overflow: hidden;*/
-        /*    text-overflow: ellipsis;*/
-        /*    max-width: 100%;*/
-        /*}*/
         p {
             overflow: hidden;
             display: -webkit-box;
@@ -56,14 +50,14 @@
             <div class="row align-items-center justify-content-center">
                 <div class="col-12">
                     <h1 th:text="#{text.newsAndArticles}"></h1>
-                    <p>Свежие новости и полезная информация</p>
+                    <p th:text="#{text.latestNews}"></p>
                 </div>
             </div>
             <div class="row justify-content-center align-items-center"
                  id="table-data-container_"></div>
             <div class="row">
                 <div class="wrapper">
-                    <a id="getProducts" class="button button_transparent">Переглянути ще</a>
+                    <a id="getProducts" class="button button_transparent" th:text="#{text.view.more}"></a>
                 </div>
             </div>
         </div>
@@ -105,10 +99,27 @@
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
-                let data = JSON.parse(request.response);
-                buildNewsGrid(data.content, 'table-data-container_')
-                if (data.metadata.totalPages === (++currentPage)) {
-                    $('#getProducts').css('display', 'none');
+                try {
+                    const data = JSON.parse(request.response);
+                    const containerId = 'table-data-container_';
+                    const $container = $(`#${containerId}`);
+
+                    if (data.content && data.content.length > 0) {
+                        buildNewsGrid(data.content, containerId);
+
+                        if (data.metadata.totalPages <= currentPage + 1) {
+                            $('#getProducts').hide();
+                        }
+
+                        currentPage++;
+                    } else {
+                        if ($container.length && currentPage === 0) {
+                            $container.closest('section.benefit-news').remove();
+                        }
+                        $('#getProducts').hide();
+                    }
+                } catch (e) {
+                    console.error("Помилка парсингу JSON:", e);
                 }
             }
         });
@@ -116,7 +127,7 @@
 
     function buildNewsGrid(items, containerId) {
         if (!items || items.length === 0) return;
-
+        console.log(items);
         const container = document.getElementById(containerId);
         if (!container) return;
         let html = "";
@@ -134,7 +145,7 @@
                 html += `
                     <div class="col-lg-8 py-4">
                         <div class="benefit-news__img">
-                        ${isImage ? `<img src="${(pathToImage1 !== '' ? contextPath + pathToImage1: path_default_image) || path_default_image}" class="card-img-top" alt="error"
+                        ${isImage ? `<img src="${(pathToImage1 !== '' ? contextPath + pathToImage1 : path_default_image) || path_default_image}" class="card-img-top" alt="error"
 style="height: 526px;">` : ''}
                         ${!isImage ? `<div class="video-container" style="position: relative; width: 100%;">
                         <img src="${path_default_preview_image}" class="video-preview"
@@ -145,7 +156,7 @@ style="height: 526px;">` : ''}
                                        padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
                             ▶
                         </button>
-                        <video src="${(pathToImage1.trim() !== '' ? contextPath + pathToImage1: path_default_image) || path_default_image}" class="video-player"
+                        <video src="${(pathToImage1.trim() !== '' ? contextPath + pathToImage1 : path_default_image) || path_default_image}" class="video-player"
                                style="width: 100%;height: 526px; display: none;" controls></video>
                     </div>` : ''}
                         </div>
@@ -156,7 +167,7 @@ style="height: 526px;">` : ''}
                                 <div class="item_data">${group[0].date}</div>
                                 <h3>${group[0].title}</h3>
                                 <p class="mb-3 text-limit" style="${marginBottom}">${group[0].description}</p>
-                                <a href="${contextPath}/web/new/${group[0].id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                <a href="${contextPath}/web/new/${group[0].id}">${messages.read} <i class="nut-icon icons-read-more"></i></a>
                             </div>
                         </div>
                     </div>
@@ -173,7 +184,7 @@ style="height: 526px;">` : ''}
                     <div class="col-lg-4 col-md-6 col-12 py-4">
                         <div class="news__item">
                             <span class="video_wrap">
-                            ${isImage ? `<img src="${(pathToImage !== '' ? contextPath + pathToImage: path_default_image) || path_default_image}" class="card-img-top" alt="error"
+                            ${isImage ? `<img src="${(pathToImage !== '' ? contextPath + pathToImage : path_default_image) || path_default_image}" class="card-img-top" alt="error"
                             style="height: 220px;">` : ''}
                             ${!isImage ? `<div class="video-container" style="position: relative; width: 100%;">
                                 <img src="${path_default_preview_image}" class="video-preview"
@@ -183,7 +194,7 @@ style="height: 526px;">` : ''}
                                                background: rgba(0, 0, 0, 0.6); color: white; border: none;
                                                padding: 15px; font-size: 24px; border-radius: 50%; cursor: pointer;">
                                     ▶</button>
-                                <video src="${(pathToImage !== '' ? contextPath + pathToImage: path_default_image) || path_default_image}" class="video-player"
+                                <video src="${(pathToImage !== '' ? contextPath + pathToImage : path_default_image) || path_default_image}" class="video-player"
                                        style="width: 100%;height: 220px; display: none;" controls></video>
                                         </div>` : ''}
                                     </span>
@@ -191,7 +202,7 @@ style="height: 526px;">` : ''}
                                         <div class="item_data">${group[j].date}</div>
                                         <h3>${group[j].title}</h3>
                                         <p class="text-limit" style="${marginBottom}">${group[j].description.substring(0, 100)}</p>
-                                        <a href="${contextPath}/web/new/${group[j].id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                        <a href="${contextPath}/web/new/${group[j].id}">${messages.read} <i class="nut-icon icons-read-more"></i></a>
                                     </div>
                                 </div>
                             </div> `;

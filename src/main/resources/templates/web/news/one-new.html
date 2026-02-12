@@ -22,7 +22,7 @@
             <div class="breadcrumbs">
                 <ul>
                     <li>
-                        <a href="/static">Главная</a>
+                        <a th:href="@{/web/main}" th:text="#{text.main}">Главная</a>
                     </li>
                     <li id="container-new-header"></li>
                 </ul>
@@ -30,7 +30,7 @@
         </div>
     </section>
 
-    <div class="single-news">
+    <div class="single-news" style="padding-bottom: 60px;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
@@ -51,9 +51,7 @@
                             <div class="banner">
                                 <div class="banner__title"
                                      th:text="#{text.sidebar.header1} + ' ' +#{text.sidebar.header2}"></div>
-                                <div class="banner__descr">
-                                    Приєднуйтесь до нас у соц. мережах
-                                </div>
+                                <div class="banner__descr" th:text="#{text.joinUsSocialMedia}"></div>
                                 <ul class="banner__social">
                                     <li>
                                         <a class="facebook-link"><i class="nut-icon icons-facebook"></i></a>
@@ -83,7 +81,7 @@
 
     function invokeRequestNewData() {
         let request = new XMLHttpRequest();
-        let lang = getCurrentLang();
+        let lang = getCookie("lang");
         let pathname = location.pathname;
         request.open("GET", `/${pathname.substring(1, pathname.length)}/data?lang=${lang}`)
         request.send();
@@ -138,7 +136,7 @@
                                         <div class="aside__item_title">
                                             ${item.title}
                                         </div>
-                                        <a href="${contextPath}/web/new/${item.id}">Читати <i class="nut-icon icons-read-more"></i></a>
+                                        <a href="${contextPath}/web/new/${item.id}">${messages.read} <i class="nut-icon icons-read-more"></i></a>
                                     </div>
                                 </li>`);
             });

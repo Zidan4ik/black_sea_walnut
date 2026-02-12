@@ -87,7 +87,7 @@
                                                     <strong th:text="#{text.expirationDate}"></strong>
                                                 </div>
                                                 <div class="col-md-7">
-                                                    <span>12 месяцев, с даты расфасовки (указана на упаковке)</span>
+                                                    <span th:text="#{text.expirationDateWeb}"></span>
                                                 </div>
                                             </div>
                                         </li>
@@ -137,10 +137,10 @@
                 <div class="container">
                     <div class="row">
                         <ul class="tabs__caption">
-                            <li class="active"><span>Описание</span></li>
-                            <li><span>Упаковка</span></li>
-                            <li><span>Оплата</span></li>
-                            <li><span>Доставка</span></li>
+                            <li class="active"><span th:text="#{text.description}"></span></li>
+                            <li><span th:text="#{text.packaging}"></span></li>
+                            <li><span th:text="#{text.payment}"></span></li>
+                            <li><span th:text="#{text.delivery}"></span></li>
                         </ul>
                     </div>
                 </div>
@@ -208,13 +208,11 @@
     function invokeRequestProductData() {
         let request = new XMLHttpRequest();
         let lang = getCurrentLang();
-        let pathName = location.pathname.substring(1, location.pathname.length);
         request.open("GET", `${location.pathname}/data?lang=${lang}`)
         request.send();
         request.addEventListener('load', function () {
             if (request.status === 200) {
                 let data = JSON.parse(request.response);
-                console.log(data);
                 buildProduct(data.product);
                 buildContacts(data.contacts);
             }
@@ -226,19 +224,12 @@
         $(`#product-article`).text(item.articleId);
         $(`#product-taste`).text(item.taste);
         $(`#hidden-count`).val(item.amount);
-
-        let discountEl = $(`#product-discount`);
-        if (!item.discount) {
-            console.log(1);
-            // discountEl.parent().remove();
-        } else {
-            discountEl.text(item.discount);
-        }
         $(`#product-storage`).text(item.recipe);
         $(`#product-mass`).text(item.mass);
         $(`#product-energy-mass`).text(item.energyMass);
         $(`#product-instruction`).text(item.conditionExploitation);
         $(`#product-old-price`).text(item.oldPrice);
+
         if (item.newPrice === '0') {
             $('#product-old-price').parent().find('span').css('color', 'green');
             $('#product-new-price').parent().remove();
@@ -248,12 +239,14 @@
                 'color': 'grey',
                 'text-decoration': 'line-through'
             });
-            $('#product-new-price').parent().find('span').css('color','green');
+            $('#product-new-price').parent().find('span').css('color', 'green');
         }
-        $(`#image-description`).attr('src', contextPath + item.pathToImageDescription || path_default_image);
-        $(`#image-packing`).attr('src', contextPath + item.pathToImagePacking || path_default_image);
-        $(`#image-payment`).attr('src', contextPath + item.pathToImagePayment || path_default_image);
-        $(`#image-delivery`).attr('src', contextPath + item.pathToImageDelivery || path_default_image);
+
+        $(`#image-description`).attr('src', item.pathToImageDescription ? contextPath + item.pathToImageDescription : path_default_image);
+        $(`#image-packing`).attr('src', item.pathToImagePacking ? contextPath + item.pathToImagePacking : path_default_image);
+        $(`#image-payment`).attr('src', item.pathToImagePacking ? contextPath + item.pathToImagePayment : path_default_image);
+        $(`#image-delivery`).attr('src', item.pathToImagePacking ? contextPath + item.pathToImageDelivery : path_default_image);
+
         $(`#container-description-desc`).html(item.descriptionProduct);
         $(`#container-packing-desc`).html(item.descriptionPacking);
         $(`#container-payment-desc`).html(item.descriptionPayment);
@@ -264,10 +257,10 @@
         let disColor = discountItem === 'new' || discountItem === 'новий' ? 'icons-novinka' : 'icons-actciya';
         if (imageContainer.length) {
             imageContainer.append(`<div class="product__item">
-                            ${item.discount?`<div class="sticker">
+                            ${item.discount ? `<div class="sticker">
                                 <i class="nut-icon ${disColor}"></i>
                                 <p id="product-discount">${discountItem}</p>
-                            </div>`:``}
+                            </div>` : ``}
                             <div class="products-container swiper-container">
                                 <div class="swiper-wrapper">
                                     ${item.pathToImage1 ? `
