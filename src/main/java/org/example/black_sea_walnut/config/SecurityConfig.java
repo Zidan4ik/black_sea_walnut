@@ -37,22 +37,25 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/web/cart").permitAll()
-                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN","SUPER_ADMIN")
-                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","SUPER_ADMIN")
+//                                .requestMatchers("/web/cart").permitAll()
+//                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN","SUPER_ADMIN")
+//                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","SUPER_ADMIN")
                                 .anyRequest().permitAll())
                 .formLogin(
-                        login -> login
-                                .loginPage("/login")
-                                .loginProcessingUrl("/process_login")
-                                .successHandler(authenticationSuccessHandler())
-                                .failureUrl("/login?error")
-                                .permitAll())
+                        AbstractHttpConfigurer::disable
+//                        login -> login
+//                                .loginPage("/login")
+//                                .loginProcessingUrl("/process_login")
+//                                .successHandler(authenticationSuccessHandler())
+//                                .failureUrl("/login?error")
+//                                .permitAll()
+                )
                 .logout(
-                        logout -> logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login?logout")
-                                .permitAll()
+                        AbstractHttpConfigurer::disable
+//                        logout -> logout
+//                                .logoutUrl("/logout")
+//                                .logoutSuccessUrl("/login?logout")
+//                                .permitAll()
                 )
                 .build();
     }
@@ -78,7 +81,7 @@ public class SecurityConfig {
                                                 Authentication authentication) throws IOException, ServletException {
                 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
                 if (authorities.stream().anyMatch(a -> a.getAuthority().equals("ADMIN") || a.getAuthority().equals("SUPER_ADMIN"))) {
-                    response.sendRedirect("/Walnut-R.Pravnyk/admin/statistic");
+                    response.sendRedirect("/Walnut-R.Pravnyk/admin/users");
                 } else {
                     response.sendRedirect("/Walnut-R.Pravnyk/web/main");
                 }
