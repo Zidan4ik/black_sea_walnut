@@ -51,8 +51,8 @@ class TasteServiceImpTest {
                 .build();
 
         tasteRequestForAdd = TasteRequestForAdd.builder()
-                .nameUk("Ванілка")
-                .nameEn("Vanilla")
+                .tasteNameUk("Ванілка")
+                .tasteNameEn("Vanilla")
                 .build();
     }
 

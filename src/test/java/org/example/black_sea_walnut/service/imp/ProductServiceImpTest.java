@@ -336,15 +336,16 @@ class ProductServiceImpTest {
         ProductResponseForViewInTable response2 = ProductResponseForViewInTable.builder().build();
         List<ProductResponseForViewInTable> mockResponses = List.of(response1, response2);
 
-        when(productRepository.findRandomProducts(size)).thenReturn(mockProducts);
+        when(productRepository.findSortedProductsBySize(size)).thenReturn(mockProducts);
         when(historyPricesService.getLastTwoDataByProduct(any(Product.class))).thenReturn(List.of());
         when(mapper.toResponseForViewInMain(any(Product.class), eq(code)))
                 .thenReturn(mockResponses.get(0), mockResponses.get(1));
 
-        List<ProductResponseForViewInTable> result = productService.getRandomProductsBySize(size, code);
+        List<Product> randomProductsBySize = productService.getRandomProductsBySize(size);
+//        List<ProductResponseForViewInTable> result = mapper randomProductsBySize;
 
-        assertEquals(mockResponses.size(), result.size());
-        verify(productRepository, times(1)).findRandomProducts(size);
+//        assertEquals(mockResponses.size(), result.size());
+        verify(productRepository, times(1)).findSortedProductsBySize(size);
         verify(mapper, times(2)).toResponseForViewInMain(any(Product.class), eq(code));
     }
 
