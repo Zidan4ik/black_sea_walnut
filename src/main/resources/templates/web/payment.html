@@ -13,8 +13,6 @@
     <h2>Pay with Stripe</h2>
     <form id="payment-form">
         <div class="card-box">
-            <!--            <label for="card-element">Credit or Debit Card</label>-->
-            <!--            <div id="card-element" class="card_input"></div>-->
             <label for="card-number-element">Card number:</label>
             <div id="card-number-element" class="card_input"></div>
             <label for="card-expiry-element">Date expired:</label>
@@ -31,8 +29,6 @@
         const paymentForm = document.getElementById('payment-form');
         const elements = stripe.elements();
 
-        // const card = elements.create('card');
-        // card.mount('#card-element');
         const style = {
             base: {
                 fontSize: '14px',

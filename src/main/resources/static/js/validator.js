@@ -7,30 +7,7 @@ function clearValid() {
     });
 }
 
-function validate(data) {
-    Object.entries(data).forEach(function ([field, message]) {
-        const inputField = document.getElementById(field + `_`);
-        if (inputField) {
-            inputField.classList.add("errorMy");
-            let errorMessage = document.createElement("span");
-            errorMessage.className = "error-message";
-            errorMessage.style.color = "red";
-            errorMessage.innerText = message;
-            if (inputField.id === 'dateOfPublication_') {
-                errorMessage.style.display = "block";
-                inputField.parentNode.parentNode.appendChild(errorMessage);
-            } else if (inputField.id === 'file_') {
-                const imgElement = document.getElementById('img_');
-                imgElement.parentNode.append(errorMessage);
-            } else {
-                inputField.parentNode.appendChild(errorMessage);
-            }
-        }
-    });
-}
-
 function validate2(data) {
-    console.log (data);
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-name="${field}"]`);
         if (inputFields.length > 0) {
@@ -59,7 +36,6 @@ function validate2(data) {
 }
 
 function validate3(data) {
-    console.log (data);
     Object.entries(data).forEach(function ([field, message]) {
         const inputFields = document.querySelectorAll(`[data-error="${field}"]`);
         if (inputFields.length > 0) {

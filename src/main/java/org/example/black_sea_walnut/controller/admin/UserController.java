@@ -23,16 +23,12 @@ import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.OrderService;
 import org.example.black_sea_walnut.service.UserService;
-import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
-import org.example.black_sea_walnut.validator.groupValidation.PhoneValidGroups;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -40,7 +36,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller

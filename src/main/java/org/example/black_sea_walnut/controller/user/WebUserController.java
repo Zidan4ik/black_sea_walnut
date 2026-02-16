@@ -11,7 +11,9 @@ import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
+import org.example.black_sea_walnut.validator.groupValidation.OrderedPasswordValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
+import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroups;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -150,7 +152,9 @@ public class WebUserController {
     }
 
     @PostMapping("/account/password-new/save")
-    public ResponseEntity<?> saveNewPassword(@ModelAttribute @Valid PasswordDto dto,
+    public ResponseEntity<?> saveNewPassword(@ModelAttribute
+                                             @Validated(OrderedPasswordValidation.class)
+                                             PasswordDto dto,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
@@ -169,7 +173,6 @@ public class WebUserController {
             userService.save(user);
         }
         return ResponseEntity.ok().build();
-
     }
 
     @GetMapping("/address/load")
@@ -230,24 +233,27 @@ public class WebUserController {
         userService.save(dto);
         return ResponseEntity.ok().build();
     }
+
     @PostMapping("/address-ur/save")
     public ResponseEntity<?> saveAddressUr(@ModelAttribute AddressDtoLegal dto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity
-                    .status(HttpStatus.valueOf(400))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errors);
-        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            if (bindingResult.hasErrors()) {
+                Map<String, String> errors = new HashMap<>();
+                bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+                return ResponseEntity
+                        .status(HttpStatus.valueOf(400))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(errors);
+            }
+
             User user = userService.getByEmail(userDetails.getUsername()).orElseThrow(
                     (() -> new EntityNotFoundException("User with email: " + userDetails.getUsername() + " was not found!"))
             );
             dto.setId(user.getId());
+            userService.save(dto);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        userService.save(dto);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

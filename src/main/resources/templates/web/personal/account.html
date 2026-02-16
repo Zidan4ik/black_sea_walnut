@@ -65,8 +65,9 @@
                                     <li>
                                         <p th:text="#{text.cartPersonalManager}"></p>
                                     </li>
-                                    <li><i class="nut-icon icons-phone"></i> <a href="tel:+380677771412">+38 067 777 14
-                                        12</a></li>
+                                    <li><i class="nut-icon icons-phone"></i>
+                                        <a href="tel:+380677771412">+380677771412</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -394,10 +395,10 @@
     }
 
     $('#container-content').on('click', '#btn-save', function () {
-        let isAuthorized = $('[data-isAuthorized]');
+        let isAuthorized = $('[data-isauthorized]').data("isauthorized");
         let status = $('[data-status]');
         let assignment = $('[data-assignment]');
-        if (isAuthorized.length) {
+        if (isAuthorized) {
             if (!assignment.length) return;
             if (status.length) {
                 if (assignment.attr('data-assignment') === 'info-user') {
@@ -449,7 +450,6 @@
     });
 
     /* Password Save*/
-
     async function savePassword(formData) {
         const url = contextPath + `/web/account/password-new/save`;
         try {
@@ -465,7 +465,7 @@
         } catch (error) {
             let data = JSON.parse(error.message);
             clearValid();
-            validate4(data);
+            validate2(data);
         }
     }
 
