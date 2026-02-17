@@ -76,7 +76,7 @@ class BasketServiceImpTest {
     @Test
     void getAllInResponseForCart_ReturnsList() {
         when(basketRepository.getAllByUser(user)).thenReturn(Collections.singletonList(basket));
-        List<BasketResponseForCart> result = basketService.getAllInResponseForCart(user);
+        List<BasketResponseForCart> result = basketService.getAllInResponseForCart(user,LanguageCode.en);
         assertNotNull(result);
         assertEquals(1, result.size());
         verify(basketRepository, times(1)).getAllByUser(user);
@@ -187,7 +187,7 @@ class BasketServiceImpTest {
     @Test
     void buyProduct_ShouldCreateNewBasket_WhenBasketDoesNotExist() {
         when(productService.getById(1L)).thenReturn(product);
-        when(basketRepository.getBasketByUserAndProductName(user, "Test Product")).thenReturn(null);
+        when(basketRepository.getBasketByUserAndArticleId(user, 1L)).thenReturn(null);
 
         ProductTranslation translation = new ProductTranslation();
         translation.setLanguageCode(LanguageCode.uk);
@@ -204,7 +204,7 @@ class BasketServiceImpTest {
     @Test
     void buyProduct_ShouldUpdateBasket_WhenBasketExists() {
         when(productService.getById(1L)).thenReturn(product);
-        when(basketRepository.getBasketByUserAndProductName(user, "Test Product")).thenReturn(basket);
+        when(basketRepository.getBasketByUserAndArticleId(user, 1L)).thenReturn(basket);
 
         ProductTranslation translation = new ProductTranslation();
         translation.setLanguageCode(LanguageCode.uk);
