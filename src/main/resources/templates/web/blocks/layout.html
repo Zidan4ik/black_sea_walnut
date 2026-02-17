@@ -687,9 +687,14 @@
     }
 
     $(document).on('click', `.moveToContacts`, function () {
-        const targetElement = document.getElementById('container-contacts');
-        if (targetElement) {
-            targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+        const child = document.getElementById('container-contacts');
+        if (child) {
+            const targetElement = child.closest('footer.footer__bottom');
+            if(targetElement){
+                targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }else{
+                child.scrollIntoView({behavior: 'smooth', block: 'start'});
+            }
         }
     });
 

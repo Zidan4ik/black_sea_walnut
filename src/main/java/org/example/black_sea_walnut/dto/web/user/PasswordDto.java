@@ -12,10 +12,10 @@ import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroup
 @MatchNewPassword(groups = PasswordValidGroups.NotBlankConfirm.class)
 public class PasswordDto {
     @MatchCurrentPasswordValidation(groups = PasswordValidGroups.NotMatchCurrentPasswordValidation.class)
-    @NotBlank(message = "{error.field.empty}", groups = PasswordValidGroups.NotBlankCheck.class)
+    @NotBlank(message = "{error.field.password.empty}", groups = PasswordValidGroups.NotBlankCheck.class)
     private String currentPassword;
-    @NotBlank(message = "{error.field.empty}", groups = PasswordValidGroups.NotBlankNew.class)
+    @NotBlank(message = "{error.field.password.empty}", groups = PasswordValidGroups.NotBlankNew.class)
     private String newPassword;
-    @NotBlank(message = "{error.field.empty}", groups = PasswordValidGroups.NotBlankConfirm.class)
+    @NotBlank(message = "{error.field.password.empty}", groups = PasswordValidGroups.NotBlankConfirm.class)
     private String confirmPassword;
 }

@@ -20,6 +20,7 @@ import org.example.black_sea_walnut.service.CountryService;
 import org.example.black_sea_walnut.service.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
+import org.example.black_sea_walnut.validator.groupValidation.OrderedPasswordValidation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,8 +76,9 @@ public class AuthorizationController {
         return new ModelAndView("web/thanks");
     }
 
-    @PostMapping("/user-fiz/save")
-    public ResponseEntity<?> saveUser(@Valid UserRequestForRegistration user,
+    @PostMapping("/user/save")
+    public ResponseEntity<?> saveUser(@Validated({OrderedPasswordValidation.class, Default.class})
+                                      UserRequestForRegistration user,
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();

@@ -155,12 +155,21 @@
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
-                                    <input id="fio" data-error="fio" type="text"
-                                           th:placeholder="#{table.header.fio}+'*'">
-                                    <input id="email" data-error="email" type="email"
-                                           th:placeholder="#{table.header.email}+'*'">
-                                    <input id="phone" data-error="phone" type="tel"
-                                           th:placeholder="#{table.header.phone}+'*'">
+
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fio" data-name="fio" type="text"
+                                               th:placeholder="#{table.header.fio}+'*'">
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="email" data-name="email" type="email"
+                                               th:placeholder="#{table.header.email}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="phone" data-name="phone" type="tel"
+                                               th:placeholder="#{table.header.phone}+'*'">
+                                    </div>
+
                                     <div class="form__title" th:text="'2. '+#{table.header.typeOfDelivery}"></div>
                                     <fieldset id="group1" class="radio__wrapper radio__wrapper_click">
 
@@ -371,7 +380,7 @@
         } catch (error) {
             let data = JSON.parse(error.message);
             clearValid();
-            validate4(data);
+            validate2(data);
         }
     }
 </script>

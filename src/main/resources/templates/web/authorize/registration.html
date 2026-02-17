@@ -63,22 +63,38 @@
                         <form>
                             <div class="row">
                                 <div class="col-lg-5 col-md-6">
-                                    <input id="fiz-fio" type="text" required="required" data-error="fullName"
-                                           th:placeholder="#{table.header.fio}+'*'">
-                                    <input id="fiz-email" type="email" required="required" data-error="email"
-                                           th:placeholder="#{table.header.email}+'*'">
-                                    <input id="fiz-phone" type="tel" required="required" data-error="phone"
-                                           th:placeholder="#{table.header.phone}+'*'">
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fiz-fio" type="text" required="required"
+                                               data-name="fullName"
+                                               th:placeholder="#{table.header.fio}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fiz-email" type="email" required="required"
+                                               data-name="email"
+                                               th:placeholder="#{table.header.email}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fiz-phone" type="tel" required="required"
+                                               data-name="phone"
+                                               th:placeholder="#{table.header.phone}+'*'">
+                                    </div>
                                     <div class="form__title" th:text="'2. '+#{table.header.address}"></div>
                                     <div id="fiz-selectors"></div>
-                                    <input id="fiz-address" style="display: none;" type="text"
-                                           th:placeholder="#{table.header.address}">
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fiz-address" style="display: none;" type="text"
+                                               th:placeholder="#{table.header.address}">
+                                    </div>
                                     <div class="form__title" th:text="'3. '+#{text.password}"></div>
-                                    <input id="fiz-password" type="password" required="required" data-error="password"
-                                           th:placeholder="#{text.password}+'*'">
-                                    <input id="fiz-confirm-password" type="password" required="required"
-                                           data-error="passwordConfirm"
-                                           th:placeholder="#{text.confirmPassword}+'*'">
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fiz-password" type="password" required="required"
+                                               data-name="password"
+                                               th:placeholder="#{text.password}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="fiz-confirm-password" type="password" required="required"
+                                               data-name="passwordConfirm"
+                                               th:placeholder="#{text.confirmPassword}+'*'">
+                                    </div>
                                 </div>
                                 <div class="col-lg-5 col-md-6 offset-lg-1">
                                     <div class="wrapper">
@@ -114,21 +130,38 @@
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-5 col-md-6">
-                                    <input id="ur-fio" type="text" required="required" data-error="fullName"
-                                           th:placeholder="#{table.header.fio}+'*'">
-                                    <input id="ur-email" type="email" required="required" data-error="email"
-                                           th:placeholder="#{table.header.email}+'*'">
-                                    <input id="ur-phone" type="tel" required="required" data-error="phone"
-                                           th:placeholder="#{table.header.phone}+'*'">
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="ur-fio" type="text" required="required"
+                                               data-name="fullName"
+                                               th:placeholder="#{table.header.fio}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="ur-email" type="email" required="required"
+                                               data-name="email"
+                                               th:placeholder="#{table.header.email}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="ur-phone" type="tel" required="required"
+                                               data-name="phone"
+                                               th:placeholder="#{table.header.phone}+'*'">
+                                    </div>
                                     <div class="form__title" th:text="'2. ' + #{table.header.address}"></div>
                                     <div id="ur-selectors"></div>
-                                    <input id="ur-address" type="text" th:placeholder="#{table.header.address}">
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="ur-address" type="text"
+                                               th:placeholder="#{table.header.address}">
+                                    </div>
                                     <div class="form__title" th:text="'3. '+#{text.password}"></div>
-                                    <input id="ur-password" type="password" required="required" data-error="password"
-                                           th:placeholder="#{text.password}+'*'">
-                                    <input id="ur-confirm-password" type="password" required="required"
-                                           data-error="passwordConfirm"
-                                           th:placeholder="#{text.confirmPassword}+'*'">
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="ur-password" type="password" required="required"
+                                               data-name="password"
+                                               th:placeholder="#{text.password}+'*'">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <input class="m-0" id="ur-confirm-password" type="password" required="required"
+                                               data-name="passwordConfirm"
+                                               th:placeholder="#{text.confirmPassword}+'*'">
+                                    </div>
                                 </div>
                                 <div class="col-lg-5 col-md-6 offset-lg-1">
                                     <div class="wrapper">
@@ -150,22 +183,36 @@
                                         <div class="box-wrap">
                                             <div class="ur box">
                                                 <div class="form__title" th:text="'1. '+#{text.props}"></div>
-                                                <input id="okpo" type="text" th:placeholder="#{text.okpo}">
+                                                <div class="form-group mb-3">
+                                                    <input class="m-0" id="okpo" type="text" th:placeholder="#{text.okpo}">
+                                                </div>
+
                                                 <div class="form__title"
                                                      th:text="'2. '+#{text.legalAddress}"></div>
                                                 <div id="ur2-selectors"></div>
-                                                <input id="addressLegal" type="text"
-                                                       th:placeholder="#{table.header.address}+'*'">
-                                                <input id="index" type="text" th:placeholder="#{text.index}+'*'">
+                                                <div class="form-group mb-3">
+                                                    <input class="m-0" id="addressLegal" type="text"
+                                                           th:placeholder="#{table.header.address}+'*'">
+                                                </div>
+
+                                                <div class="form-group mb-3">
+                                                    <input class="m-0" id="index" type="text" th:placeholder="#{text.index}+'*'">
+                                                </div>
                                             </div>
                                             <div class="fop box">
                                                 <div class="form__title" th:text="'1. '+#{text.props}"></div>
-                                                <input id="erdpou" type="text" th:placeholder="#{text.erdpou}">
+                                                <div class="form-group mb-3">
+                                                    <input class="m-0" id="erdpou" type="text" th:placeholder="#{text.erdpou}">
+                                                </div>
+
                                                 <div class="form__title"
                                                      th:text="'2. '+#{table.header.address} + ' '+ #{value.registration-type.fop}"></div>
                                                 <div id="ur3-selectors"></div>
-                                                <input id="addressLegal2" type="text"
-                                                       th:placeholder="#{table.header.address}+'*'">
+                                                <div class="form-group mb-3">
+                                                    <input class="m-0" id="addressLegal2" type="text"
+                                                           th:placeholder="#{table.header.address}+'*'">
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -254,19 +301,19 @@
     function saveFiz(formData) {
         $.ajax({
             type: "post",
-            url: `${contextPath}/user-fiz/save`,
+            url: `${contextPath}/user/save`,
             data: formData,
             processData: false,
             contentType: false,
             enctype: "multipart/form-data",
             success: function () {
-                sessionStorage.setItem("registrationSuccess","1");
+                sessionStorage.setItem("registrationSuccess", "1");
                 window.location.replace(contextPath + '/login');
             },
             error: function (error) {
                 clearValid();
                 let data = JSON.parse(error.responseText);
-                validate4(data);
+                validate2(data);
                 console.log("Error submitting form:", error);
             }
         });

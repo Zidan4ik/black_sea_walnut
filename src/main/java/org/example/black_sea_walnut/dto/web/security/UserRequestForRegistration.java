@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.validator.annotation.*;
+import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroups;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-@PasswordValidation
+@PasswordValidation(groups = PasswordValidGroups.NotBlankConfirm.class)
 public class UserRequestForRegistration {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
@@ -40,8 +41,9 @@ public class UserRequestForRegistration {
     private boolean isFop;
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile fileImage;
-    @NotBlank(message = "{error.field.password.empty}")
+    @NotBlank(message = "{error.field.password.empty}", groups =  PasswordValidGroups.NotBlankNew.class)
     private String password;
+    @NotBlank(message = "{error.field.password.empty}", groups =  PasswordValidGroups.NotBlankConfirm.class)
     private String passwordConfirm;
     private Role role;
 }

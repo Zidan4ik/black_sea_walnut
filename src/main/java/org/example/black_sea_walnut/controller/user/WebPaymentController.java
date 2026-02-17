@@ -34,7 +34,7 @@ public class WebPaymentController {
         NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
         AimBlockResponseForAddInMain aim = historyMainService.getByPageTypeInResponseAimBlock(PageType.main_aim);
         ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
-        return new ResponseEntity(
+        return new ResponseEntity<>(
                 PaymentResponseForView.builder()
                 .aim(aim)
                 .numbers(numbers)
