@@ -155,11 +155,11 @@
                             <div class="row">
                                 <div class="col-lg-5">
                                     <div class="form__title" th:text="'1. '+#{text.contactInformation}"></div>
-                                    <input id="fio" data-error="fio" type="text"
+                                    <input id="fio" data-name="fio" type="text"
                                            th:placeholder="#{table.header.fio}+'*'">
-                                    <input id="email" data-error="email" type="email"
+                                    <input id="email" data-name="email" type="email"
                                            th:placeholder="#{table.header.email}+'*'">
-                                    <input id="phone" data-error="phone" type="tel"
+                                    <input id="phone" data-name="phone" type="tel"
                                            th:placeholder="#{table.header.phone}+'*'">
                                     <div class="form__title" th:text="'2. '+#{table.header.typeOfDelivery}"></div>
                                     <fieldset id="group1" class="radio__wrapper radio__wrapper_click">
@@ -343,37 +343,60 @@
     card.mount('#card-element');
 
     async function handlePayment(formData) {
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = true;
+
         try {
-            const response = await fetch(contextPath + `/checkout/card`, {
+            const response = await fetch(`${contextPath}/checkout/card`, {
                 method: "POST",
                 body: formData
             });
-            if (!response.ok) {
-                let res = await response.json();
-                throw new Error(JSON.stringify(res));
+
+            if (response.status === 401) {
+                await showAlert('warning', 'text.not.authorized');
+                return;
             }
-            let data = await response.json();
+
+            const responseText = await response.text();
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                console.error("Сервер повернув не JSON:", responseText);
+                throw new Error("SERVER_ERROR");
+            }
+
+            if (!response.ok) {
+                clearValid();
+                validate2(data);
+                return;
+            }
+
             if (data.clientSecret) {
-                const clientSecret = data.clientSecret;
-                const {error} = await stripe.confirmCardPayment(clientSecret, {
+                const { paymentIntent, error } = await stripe.confirmCardPayment(data.clientSecret, {
                     payment_method: {
                         card: card,
-                        billing_details: {name: $('#fio').val()}
+                        billing_details: { name: $('#fio').val() || "Customer" }
                     }
                 });
+
                 if (error) {
-                    console.error("Payment failed", error);
-                    alert("Помилка оплати: " + error.message);
-                } else {
+                    alert("Помилка Stripe: " + error.message);
+                } else if (paymentIntent.status === 'succeeded') {
                     window.location.href = contextPath + "/thanks";
                 }
+            } else {
+                window.location.href = contextPath + "/thanks";
             }
+
         } catch (error) {
-            let data = JSON.parse(error.message);
-            clearValid();
-            validate4(data);
+            console.error("Критична помилка:", error);
+            if (error.message !== "SERVER_ERROR") {
+                await showAlert('error', 'Виникла технічна помилка');
+            }
+        } finally {
+            if (submitButton) submitButton.disabled = false;
         }
-    }
-</script>
+    }</script>
 </body>
 </html>

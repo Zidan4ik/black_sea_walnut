@@ -39,9 +39,9 @@ public class PaymentController {
         return "web/payment";
     }
 
-    @PostMapping("/create-payment-intent")
+    @PostMapping("/create-payment-intent") // ??? test page for payment
     @ResponseBody
-    public Map<String, String> createPaymentIntent(@RequestParam("amount") Long amount) throws StripeException {
+    public Map<String, String> createPaymentIntent(@RequestBody Long amount) throws StripeException {
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setAmount(amount)
                 .setCurrency("uah")
@@ -72,12 +72,15 @@ public class PaymentController {
                     (() -> new EntityNotFoundException("User with email: " + userDetails.getUsername() + " was not found!"))
             );
             dto.setUser(user);
+
             PaymentType paymentType = PaymentType.fromString(dto.getTypeOfPayment());
             if (paymentType.equals(PaymentType.card)) {
+
                 PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                         .setAmount(dto.getTotalAmount())
                         .setCurrency("uah")
                         .build();
+
                 PaymentIntent paymentIntent = PaymentIntent.create(params);
                 Map<String, String> response = new HashMap<>();
                 response.put("clientSecret", paymentIntent.getClientSecret());
