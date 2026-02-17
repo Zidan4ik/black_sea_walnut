@@ -37,25 +37,22 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-//                                .requestMatchers("/web/cart").permitAll()
-//                                .requestMatchers("/web/cart/**").hasAnyAuthority("USER","ADMIN","SUPER_ADMIN")
-//                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","SUPER_ADMIN")
+                                .requestMatchers("/web/cart/get").hasAnyAuthority("USER","ADMIN","SUPER_ADMIN")
+                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN","SUPER_ADMIN")
                                 .anyRequest().permitAll())
                 .formLogin(
-                        AbstractHttpConfigurer::disable
-//                        login -> login
-//                                .loginPage("/login")
-//                                .loginProcessingUrl("/process_login")
-//                                .successHandler(authenticationSuccessHandler())
-//                                .failureUrl("/login?error")
-//                                .permitAll()
+                        login -> login
+                                .loginPage("/login")
+                                .loginProcessingUrl("/process_login")
+                                .successHandler(authenticationSuccessHandler())
+                                .failureUrl("/login?error")
+                                .permitAll()
                 )
                 .logout(
-                        AbstractHttpConfigurer::disable
-//                        logout -> logout
-//                                .logoutUrl("/logout")
-//                                .logoutSuccessUrl("/login?logout")
-//                                .permitAll()
+                        logout -> logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout")
+                                .permitAll()
                 )
                 .build();
     }
