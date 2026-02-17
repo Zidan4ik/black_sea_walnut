@@ -81,7 +81,7 @@ public class DatabaseLoader implements CommandLineRunner {
                     "Одеська область", List.of("Одеса", "Чорноморськ", "Ізмаїл", "Білгород-Дністровський", "Подільськ")
             );
 
-            Country ukraine = countryService.save(new Country("Ukraine"));
+            Country ukraine = countryService.save(new Country("Україна"));
 
             ukraineData.forEach((regionName, cities)->{
                 Region region = regionService.save(new Region(regionName, ukraine));

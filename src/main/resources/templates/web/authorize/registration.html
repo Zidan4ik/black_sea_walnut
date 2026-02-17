@@ -284,6 +284,7 @@
                 clearValid();
             }
         });
+        ['fiz', 'ur', 'ur2', 'ur3'].forEach(prefix => handleChangeGeography(prefix));
     });
 
     function addEventListenerImage() {
@@ -397,9 +398,6 @@
             resForm.append("cityForDeliveryIdLegal", $(`#${prefix}-select-cities`).val() || '');
         }
     }
-
-
-    ['fiz', 'ur', 'ur2', 'ur3'].forEach(prefix => handleChangeGeography(prefix));
 
 </script>
 </body>

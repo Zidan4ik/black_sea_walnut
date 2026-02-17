@@ -166,10 +166,10 @@
     <div class="modal fade show" id="ModalForLeftCall" tabindex="-1" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content text-center">
-                <div class="modal-header text-center" style="font-size: 20px" th:text="#{text.enterYouPhoneNumber}"></div>
-                <div class="modal-body d-flex justify-content-center" data-error="phone">
-                    <input
-                            class="form-control" type="text" id="input-number-user" style="width: 80%"/>
+                <div class="modal-header text-center" style="font-size: 20px"
+                     th:text="#{text.enterYouPhoneNumber}"></div>
+                <div class="modal-body d-flex justify-content-center" data-name="phone">
+                    <input class="form-control" type="text" id="input-number-user" style="width: 80%"/>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <a class="btn btn-image sendCall" style="color: white;" th:text="#{text.send}"></a>
@@ -690,9 +690,9 @@
         const child = document.getElementById('container-contacts');
         if (child) {
             const targetElement = child.closest('footer.footer__bottom');
-            if(targetElement){
+            if (targetElement) {
                 targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-            }else{
+            } else {
                 child.scrollIntoView({behavior: 'smooth', block: 'start'});
             }
         }
@@ -746,24 +746,28 @@
         });
     }
 
+    const containerCartTable = $('#container-cart-table');
+
     function invokeRequestCart() {
         let request = new XMLHttpRequest();
         request.open("GET", contextPath + `/web/cart/get?languageCode=${getCurrentLang()}`);
         request.send();
         request.addEventListener('load', async function () {
-            if (request.status === 200) {
+            const contentType = request.getResponseHeader("Content-Type");
+            if (request.status === 200 && contentType
+                && contentType.indexOf("application/json") !== -1) {
                 let data = JSON.parse(request.response);
-                const $container = $('#container-cart');
+                const $containerCard = $('#container-cart');
                 if (data.length > 0) {
-                    $container.add('.popup__cart_sum').show();
+                    $containerCard.add('.popup__cart_sum').show();
                     $('.popup__cart_clean').hide();
                     let gram = await changeLanguage('text.gram', getCurrentLang());
-                    if ($container.length > 0) {
+                    if ($containerCard.length > 0) {
                         let summa = 0;
                         let amount = 0;
-                        $container.empty();
+                        $containerCard.empty();
                         data.forEach(function (item) {
-                            $container.append(`
+                            $containerCard.append(`
                         <div class="row align-items-center no-gutters item_row card-row" data-id="${item.id}">
                             <div class="col-md-5 col-12">
                                 <div class="item_title">
@@ -786,7 +790,7 @@
                                     </div>
                                     <div class="col-5">
                                         <div class="item_sum">
-                                            <p>${item.price} <span th:text="#{text.grn}"></span></p>
+                                            <p>${item.price} <span>${messages.grn}</span></p>
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -815,7 +819,7 @@
                         });
                     }
                 } else {
-                    $container.add('.popup__cart_sum').hide();
+                    $containerCard.add('.popup__cart_sum').hide();
                     $('.popup__cart_clean').show();
                     const $quantities = $('.quantity');
                     if ($quantities.length > 0) {
@@ -823,8 +827,59 @@
                             $(this).text('0');
                         });
                     }
-
                 }
+
+                if (containerCartTable.length) {
+                    containerCartTable.empty();
+                    if (data.length > 0) {
+                        const key = await changeLanguage('text.gram', getCurrentLang());
+                        const keyGrn = await changeLanguage('text.grn', getCurrentLang());
+                        containerCartTable.append(data.map(item => {
+                            const price = parseFloat(item.price);
+                            const count = parseInt(item.amount, 10);
+                            const total = price * count;
+                            return `
+                            <tr class="card-row product-row" data-id="${item.id}">
+                                <td><span class="bt-content name-span">${item.name}</span><span class="mass-span">${Number(item.mass)}</span>${key}</td>
+                                <td>
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus" data-id="${item.id}">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
+                                        <button type="button" class="quantity_plus" data-id="${item.id}">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
+                                </td>
+                                <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
+                                <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
+                            </tr>
+                        `;
+                        }).join(''));
+
+                        const summaEl = $('#resSumma');
+                        if (summaEl.length) {
+                            summaEl.text(data.reduce((sum, item) => {
+                                const price = parseFloat(item.price);
+                                const count = parseInt(item.amount, 10);
+                                return sum + (price * count);
+                            }, 0));
+                        }
+                    } else {
+                        let noExistKey = await changeLanguage('text.table.exist', getCurrentLang());
+                        containerCartTable.append(`<tr>
+                            <td colspan="4" style="text-align: center; color: gray; font-style: italic;">${noExistKey}</td>
+                        </tr>`);
+                    }
+                }
+
+            }
+            else{
+                console.error("The server returned non-JSON! The session may have expired.");
             }
         });
     }
@@ -834,11 +889,6 @@
         addEventListenerCart();
         selectedLanguage();
         showModelCalls();
-
-        // let current_lang = getCookie("lang");
-        // $('#lang-menu').find('span.title').text(current_lang);
-        // console.log(current_lang);
-
     });
 
     function showModelCalls() {
@@ -865,7 +915,6 @@
             } else if ($(this).hasClass('item_close')) {
                 deleteCartItem(id, $(this));
             }
-            // invokeRequestCart();
         });
 
         $('#container-cart, #container-cart-table').on('change', '.quantity_input', function () {
@@ -891,7 +940,7 @@
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             invokeRequestCart();
-            let containerCartTable = $('#container-cart-table');
+            // let containerCartTable = $('#container-cart-table');
             if (containerCartTable.length) {
                 let input = target.closest('.item_quantity').find('.quantity_input');
                 let count = parseInt(input.val(), 10) || 0;
@@ -950,7 +999,7 @@
                 if (count === 1) {
                     let containerEl = target.closest('#container-cart-table');
                     if (containerEl.find('tr').length === 1) {
-                        invokeRequestCartData();
+                        invokeRequestCart();
                     } else {
                         rowEl.remove();
                     }
@@ -997,17 +1046,17 @@
             if (!response.ok) {
                 if (response.status === 400) {
                     invokeRequestCart();
-                    invokeRequestCartData();
                     await showAlertWithoutLocale('error', await response.text());
                 }
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+
             let containerCartTable = $('#container-cart-table');
             if (containerCartTable.length) {
                 if (Number(value) === 0) {
                     let containerEl = target.closest('#container-cart-table');
                     if (containerEl.find('tr').length === 1) {
-                        invokeRequestCartData();
+                        invokeRequestCart();
                     } else {
                         target.closest('.product-row').remove();
                     }
@@ -1074,7 +1123,7 @@
     }
 
     function handleChangeGeography(selectPrefix) {
-        $(document).on('click', `#${selectPrefix}-select-countries`, function () {
+        $(document).on('change', `#${selectPrefix}-select-countries`, function () {
             const countryId = $(this).val();
             if (countryId === "") {
                 $(`#${selectPrefix}-select-regions`).prop('disabled', true).val("");
@@ -1086,7 +1135,7 @@
             }
         });
 
-        $(document).on('click', `#${selectPrefix}-select-regions`, function () {
+        $(document).on('change', `#${selectPrefix}-select-regions`, function () {
             const regionId = $(this).val();
             if (regionId === "") {
                 $(`#${selectPrefix}-select-cities`).prop('disabled', true).val("");
@@ -1111,69 +1160,67 @@
         } catch (error) {
             let data = JSON.parse(error.message);
             clearValid();
-            validate4(data);
+            validate2(data);
         }
     }
 
-    const containerCartTable = $('#container-cart-table');
-
-    function invokeRequestCartData() {
-        let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `/web/cart/get`)
-        request.send();
-        request.addEventListener('load', async function () {
-            if (request.status === 200) {
-                let data = JSON.parse(request.response);
-                if (containerCartTable.length) {
-                    containerCartTable.empty();
-                    if (data.length > 0) {
-                        const key = await changeLanguage('text.gram', getCurrentLang());
-                        const keyGrn = await changeLanguage('text.grn', getCurrentLang());
-                        containerCartTable.append(data.map(item => {
-                            const price = parseFloat(item.price);
-                            const count = parseInt(item.amount, 10);
-                            const total = price * count;
-                            return `
-                            <tr class="card-row product-row" data-id="${item.id}">
-                                <td><span class="bt-content name-span">${item.name}</span><span class="mass-span">${Number(item.mass)}</span>${key}</td>
-                                <td>
-                                    <div class="item_quantity">
-                                        <button type="button" class="quantity_minus" data-id="${item.id}">
-                                            <i class="nut-icon icons-qty-left"></i>
-                                        </button>
-                                        <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
-                                        <button type="button" class="quantity_plus" data-id="${item.id}">
-                                            <i class="nut-icon icons-qty-right"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
-                                </td>
-                                <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
-                                <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
-                            </tr>
-                        `;
-                        }).join(''));
-
-                        const summaEl = $('#resSumma');
-                        if (summaEl.length) {
-                            summaEl.text(data.reduce((sum, item) => {
-                                const price = parseFloat(item.price);
-                                const count = parseInt(item.amount, 10);
-                                return sum + (price * count);
-                            }, 0));
-                        }
-                    } else {
-                        let noExistKey = await changeLanguage('text.table.exist', getCurrentLang());
-                        containerCartTable.append(`<tr>
-                            <td colspan="4" style="text-align: center; color: gray; font-style: italic;">${noExistKey}</td>
-                        </tr>`);
-                    }
-                }
-            }
-        });
-    }
+    // function invokeRequestCartData() {
+    //     let request = new XMLHttpRequest();
+    //     request.open("GET", contextPath + `/web/cart/get`)
+    //     request.send();
+    //     request.addEventListener('load', async function () {
+    //         if (request.status === 200) {
+    //             let data = JSON.parse(request.response);
+    //             if (containerCartTable.length) {
+    //                 containerCartTable.empty();
+    //                 if (data.length > 0) {
+    //                     const key = await changeLanguage('text.gram', getCurrentLang());
+    //                     const keyGrn = await changeLanguage('text.grn', getCurrentLang());
+    //                     containerCartTable.append(data.map(item => {
+    //                         const price = parseFloat(item.price);
+    //                         const count = parseInt(item.amount, 10);
+    //                         const total = price * count;
+    //                         return `
+    //                         <tr class="card-row product-row" data-id="${item.id}">
+    //                             <td><span class="bt-content name-span">${item.name}</span><span class="mass-span">${Number(item.mass)}</span>${key}</td>
+    //                             <td>
+    //                                 <div class="item_quantity">
+    //                                     <button type="button" class="quantity_minus" data-id="${item.id}">
+    //                                         <i class="nut-icon icons-qty-left"></i>
+    //                                     </button>
+    //                                     <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
+    //                                     <button type="button" class="quantity_plus" data-id="${item.id}">
+    //                                         <i class="nut-icon icons-qty-right"></i>
+    //                                     </button>
+    //                                 </div>
+    //                             </td>
+    //                             <td>
+    //                                 <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
+    //                             </td>
+    //                             <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
+    //                             <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
+    //                         </tr>
+    //                     `;
+    //                     }).join(''));
+    //
+    //                     const summaEl = $('#resSumma');
+    //                     if (summaEl.length) {
+    //                         summaEl.text(data.reduce((sum, item) => {
+    //                             const price = parseFloat(item.price);
+    //                             const count = parseInt(item.amount, 10);
+    //                             return sum + (price * count);
+    //                         }, 0));
+    //                     }
+    //                 } else {
+    //                     let noExistKey = await changeLanguage('text.table.exist', getCurrentLang());
+    //                     containerCartTable.append(`<tr>
+    //                         <td colspan="4" style="text-align: center; color: gray; font-style: italic;">${noExistKey}</td>
+    //                     </tr>`);
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
 
     async function showAlert(icon, messageKey) {
         let title = await changeLanguage(messageKey, getCurrentLang());
@@ -1235,6 +1282,7 @@
         officeAndSalesDepartment: /*[[#{text.officeAndSalesDepartment}]]*/ 'default',
         production: /*[[#{text.production}]]*/ 'default',
         all: /*[[#{value.status.all}]]*/ 'default',
+        grn: /*[[#{text.grn}]]*/ 'default',
     };
 </script>
 </body>

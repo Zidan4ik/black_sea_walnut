@@ -241,7 +241,7 @@
 
 <script layout:fragment="script">
     $(document).ready(async function () {
-        invokeRequestCartData();
+        invokeRequestCart();
         invokeRequestContactData();
         let countries = await getCountriesAll();
         await fillSelectorsByContainer('ur-selectors', 'ur');
