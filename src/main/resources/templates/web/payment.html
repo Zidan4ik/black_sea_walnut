@@ -25,7 +25,8 @@
     </form>
 
     <script>
-        const stripe = Stripe('pk_test_51R2IQUJrY7tkTcm5RI5omR8c2XidVO6rMtUZyoEEa37xPGoYDrH7hYLqhJM7xjk1wAi7YsQJNgaER5CpdYtr0TE700E1y2704W'); // Use your Stripe Publishable Key
+        const stripe = Stripe('pk_test_51R2IQUJrY7tkTcm5zV1U55LmEieXSI31KXC4BBhRzGW5FAh9M94wzTodJJAlp5zp5f5dQRAwEC0U7C1Ntui2ouoZ00sT3SUeUE');
+        // Use your Stripe Publishable Key
         const paymentForm = document.getElementById('payment-form');
         const elements = stripe.elements();
 
@@ -53,35 +54,45 @@
 
         paymentForm.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const response = await fetch('/create-payment-intent?amount=5000', {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"}
-            });
 
-            const data = await response.json();
-            const clientSecret = data.clientSecret;
+            const submitBtn = paymentForm.querySelector('button');
+            submitBtn.disabled = true;
 
-            const {error} = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: cardNumber,
-                    billing_details: {
-                        name: 'Customer Name',
+            try{
+                const response = await fetch('/create-payment-intent', {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({amount: 5000})
+                });
+
+                const {clientSecret2} = await response.json();
+                const {clientSecret} = await response.json();
+
+                console.log(clientSecret2)
+                console.log(clientSecret)
+
+                const {result} = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: cardNumber,
+                        billing_details: {
+                            name: document.getElementById('customer-name')?.value || 'Customer Name',
+                        },
                     },
-                },
-            });
+                });
 
-            if (error) {
-                console.error("Payment failed", error);
-                alert("Помилка оплати: " + error.message);
-            } else {
-                window.location.href = contextPath + '/thanks';
+                if (result.error) {
+                    console.error("Payment failed", result.error);
+                    alert("Помилка: " + result.error.message);
+                    submitBtn.disabled = false;
+                } else{
+                    window.location.href = contextPath + '/thanks';
+                }
+            } catch (err){
+                console.error("System error:", err);
+                submitBtn.disabled = false;
             }
         });
     </script>
 </div>
-
-<script layout:fragment="script">
-
-</script>
 </body>
 </html>
