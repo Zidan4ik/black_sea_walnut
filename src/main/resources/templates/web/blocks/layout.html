@@ -158,7 +158,7 @@
             </div>
             <!-- Если корзина пуста -->
             <div class="popup__cart_clean text-center" style="display: none;">
-                <p>Ваша корзина пуста</p>
+                <p th:text="#{text.your.cart.is.empty}"></p>
             </div>
         </div>
     </div>
@@ -748,7 +748,7 @@
 
     function invokeRequestCart() {
         let request = new XMLHttpRequest();
-        request.open("GET", contextPath + `/web/cart/get`);
+        request.open("GET", contextPath + `/web/cart/get?languageCode=${getCurrentLang()}`);
         request.send();
         request.addEventListener('load', async function () {
             if (request.status === 200) {
@@ -1192,6 +1192,39 @@
             timer: 2000,
             showConfirmButton: false
         });
+    }
+
+    async function handlePayment(formData) {
+        try {
+            const response = await fetch(contextPath + `/checkout/card`, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                let res = await response.json();
+                throw new Error(JSON.stringify(res));
+            }
+            let data = await response.json();
+            if (data.clientSecret) {
+                const clientSecret = data.clientSecret;
+                const {error} = await stripe.confirmCardPayment(clientSecret, {
+                    payment_method: {
+                        card: card,
+                        billing_details: {name: $('#fio').val()}
+                    }
+                });
+                if (error) {
+                    console.error("Payment failed", error);
+                    alert("Помилка оплати: " + error.message);
+                } else {
+                    window.location.href = contextPath + "/thanks";
+                }
+            }
+        } catch (error) {
+            let data = JSON.parse(error.message);
+            clearValid();
+            validate2(data);
+        }
     }
 </script>
 <script th:inline="javascript">

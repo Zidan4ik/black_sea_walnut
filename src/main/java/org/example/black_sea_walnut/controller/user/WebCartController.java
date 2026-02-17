@@ -6,6 +6,7 @@ import org.example.black_sea_walnut.dto.web.BasketResponseForCart;
 import org.example.black_sea_walnut.entity.Basket;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.BasketService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.UserService;
@@ -37,14 +38,14 @@ public class WebCartController {
     }
 
     @GetMapping("/cart/get")
-    public ResponseEntity<List<BasketResponseForCart>> getCurrentTemporaryOrders() {
+    public ResponseEntity<List<BasketResponseForCart>> getCurrentTemporaryOrders(@RequestParam String languageCode) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
             User user = userService.getByEmail(userDetails.getUsername())
                     .orElseThrow(() -> new EntityNotFoundException("User with email: " + userDetails.getUsername() + " was not found!"));
 
-            List<BasketResponseForCart> baskets = basketService.getAllInResponseForCart(user);
+            List<BasketResponseForCart> baskets = basketService.getAllInResponseForCart(user, LanguageCode.fromString(languageCode));
             return ResponseEntity.ok(baskets);
         }
 

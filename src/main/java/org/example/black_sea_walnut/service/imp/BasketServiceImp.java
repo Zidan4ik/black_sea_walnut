@@ -11,7 +11,6 @@ import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.exception.InsufficientStockException;
 import org.example.black_sea_walnut.mapper.BasketMapper;
-import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.repository.BasketRepository;
 import org.example.black_sea_walnut.service.BasketService;
 import org.example.black_sea_walnut.service.ProductService;
@@ -20,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +31,10 @@ public class BasketServiceImp implements BasketService {
     private final ProductService productService;
 
     @Override
-    public List<BasketResponseForCart> getAllInResponseForCart(User user) {
+    public List<BasketResponseForCart> getAllInResponseForCart(User user, LanguageCode code) {
         LogUtil.logInfo("Fetch all products in basket by user's id:" + user.getId());
-        List<BasketResponseForCart> products = basketRepository.getAllByUser(user).stream().map(basketMapper::toResponseForCart).toList();
+        List<BasketResponseForCart> products = basketRepository.getAllByUser(user).stream()
+                .map(m->basketMapper.toResponseForCart(m,code)).toList();
         LogUtil.logInfo("Fetched " + products.size() + " products from the basket for user's id: " + user.getId());
         return products;
     }
@@ -146,24 +148,27 @@ public class BasketServiceImp implements BasketService {
             throw new InsufficientStockException("No more products!");
         }
 
-        String productName = product.getProductTranslations().stream()
-                .filter(t -> t.getLanguageCode().equals(LanguageCode.uk))
-                .map(ProductTranslation::getName)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Translation not found"));
+        Map<LanguageCode, String> names = product.getProductTranslations().stream()
+                .collect(Collectors.toMap(
+                        ProductTranslation::getLanguageCode,
+                        ProductTranslation::getName,
+                        (existing, replacement) -> existing
+                ));
 
-        Basket basket = basketRepository.getBasketByUserAndProductName(currentUser, productName);
+        Basket basket = basketRepository.getBasketByUserAndArticleId(currentUser,product.getArticleId());
         if (basket == null) {
             basket = new Basket();
+            basket.setArticleId(product.getArticleId());
             basket.setProducts(List.of(product));
             basket.setUser(currentUser);
-            basket.setProductName(productName);
+            basket.setProductNameUk(names.get(LanguageCode.uk));
+            basket.setProductNameEn(names.get(LanguageCode.en));
             basket.setCount(1);
             basket.setMass(product.getMass());
-            LogUtil.logInfo("Created new basket for product: " + productName + " and user: " + currentUser.getId());
+            LogUtil.logInfo("Created new basket for product id: " + product.getArticleId() + " and user: " + currentUser.getId());
         } else {
             basket.setCount(basket.getCount() + 1);
-            LogUtil.logInfo("Updated basket count for product: " + productName + " and user: " + currentUser.getId());
+            LogUtil.logInfo("Updated basket count for product id: " + product.getArticleId() + " and user: " + currentUser.getId());
         }
 
         productService.decreaseCountItems(idProduct);

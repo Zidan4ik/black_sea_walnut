@@ -12,7 +12,7 @@ import java.util.List;
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     List<Basket> getAllByUser(User user);
 
-    Basket getBasketByUserAndProductName(User user, String productName);
+    Basket getBasketByUserAndArticleId(User user, Long articleId);
 
     void deleteByUser(User user);
 }

@@ -43,8 +43,8 @@ public class WebFactoryController {
         FactoryBannerBlockResponseForAdd banner = historyFactoryService.getByPageTypeInResponseBannerBlock(PageType.factory_banner);
         NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
         EcoProductionResponseForAddInMain ecology = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
-        List<NewRequestForAdd> news = newService.getAllInResponseForAdd();
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
         List<GalleryResponseForAdd> gallery = galleryService.getAllInResponseByLanguageCodeByActive(LanguageCode.fromString(lang),true);
         return new ResponseEntity<>(FactoryResponseForView
                 .builder()

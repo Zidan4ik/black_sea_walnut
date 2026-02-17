@@ -18,7 +18,9 @@ public class Basket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String productName;
+    private Long articleId;
+    private String productNameUk;
+    private String productNameEn;
     private int count;
     private int unitPrice;
     private int mass;

@@ -3,11 +3,12 @@ package org.example.black_sea_walnut.service;
 import org.example.black_sea_walnut.dto.web.BasketResponseForCart;
 import org.example.black_sea_walnut.entity.Basket;
 import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.enums.LanguageCode;
 
 import java.util.List;
 
 public interface BasketService {
-    List<BasketResponseForCart> getAllInResponseForCart(User user);
+    List<BasketResponseForCart> getAllInResponseForCart(User user, LanguageCode code);
 
     List<Basket> getAll();
 
