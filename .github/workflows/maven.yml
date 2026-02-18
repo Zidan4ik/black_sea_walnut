@@ -43,9 +43,10 @@ jobs:
           service: black-sea-walnut
           region: europe-west1
           image: europe-west1-docker.pkg.dev/blackseawalnut/walnut-repo/black-sea-walnut:latest
+          timeout: 300s
           flags: '--add-cloudsql-instances=blackseawalnut:europe-west1:walnut-mysql'
           env_vars: |
-            SPRING_DATASOURCE_URL="jdbc:mysql:///black_sea_walnut?cloudSqlInstance=blackseawalnut:europe-west1:walnut-mysql&socketFactory=com.google.cloud.sql.mysql.SocketFactory"
+            SPRING_DATASOURCE_URL=jdbc:mysql:///black_sea_walnut?cloudSqlInstance=blackseawalnut:europe-west1:walnut-mysql&socketFactory=com.google.cloud.sql.mysql.SocketFactory
             SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }}
             SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
             STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
