@@ -15,7 +15,7 @@
             <div class="row justify-content-center" id="container-products"></div>
             <div class="row">
                 <div class="wrapper">
-                    <a th:href="@{/web/shop}" class="button button_transparent">Перейти в магазин</a>
+                    <a th:href="@{/web/shop}" class="button button_transparent" th:text="#{text.go.to.store}"></a>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-12">
-                    <h2>Про користь продукту</h2>
-                    <p>Кожен вид горіха містить свій неповторний унікальний баланс вітамінів та мікроелементів.</p>
+                    <h2 th:text="#{text.about.benefits.of.the.product}"></h2>
+                    <p th:text="#{text.main.nut.description}"></p>
                 </div>
             </div>
             <div id="container-nuts" class="row justify-content-center"></div>
@@ -209,8 +209,8 @@
                                             <i class="nut-icon icons-food-scale-tool"></i>
                                         </div>
                                         <div class="weight_item_descr">
-                                            <p>Масса</p>
-                                            <p><span>${item.mass}<i>г.</i></span></p>
+                                            <p>${messages.productMass + ':'}</p>
+                                            <p><span>${item.mass + ' '} ${messages.gram}</span></p>
                                         </div>
                                     </div>
                                     <div class="weight_item">
@@ -218,26 +218,26 @@
                                             <i class="nut-icon icons-group"></i>
                                         </div>
                                         <div class="weight_item_descr">
-                                            <p>Упаковка</p>
-                                            <p><span>вакуумная</span></p>
+                                            <p>${messages.packaging + ':'}</p>
+                                            <p><span>${messages.vacuum}</span></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="production__item_sum">
                                     <div class="sum_item">
                                         <div class="sum_item_title">
-                                            <p>Цена: </p>
+                                            <p>${messages.price + ':'} </p>
                                         </div>
                                         <div class="sum_item_new">
-                                            <p>${item.priceNew} <i>грн.</i></p>
+                                            <p>${item.priceNew + ' '} ${messages.grn}</p>
                                         </div>
                                         <div class="sum_item_old">
-                                            <p>${item.priceOld} <i>грн.</i></p>
+                                            <p>${item.priceOld + ' '} ${messages.grn}</p>
                                         </div>
                                     </div>
                                     <div class="sum_item">
                                         <div class="sum_item_button">
-                                            <a href="${contextPath}/web/product/${item.id}" class="button">Купить</a>
+                                            <a href="${contextPath}/web/product/${item.id}" class="button">${messages.buy}</a>
                                         </div>
                                     </div>
                                 </div>
