@@ -100,7 +100,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/password-reset-request")
-    public ResponseEntity<?> resetPasswordRequest(@Validated(EmailValidGroups.class) @ModelAttribute EmailRecoveryDto dto,
+    public ResponseEntity<?> resetPasswordRequest(@Validated(OrderedEmailValidation.class) @ModelAttribute EmailRecoveryDto dto,
                                                   BindingResult bindingResult, final HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
@@ -126,7 +126,7 @@ public class AuthorizationController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@ModelAttribute @Valid PasswordResetRequest passwordResetRequest,
+    public ResponseEntity<?> resetPassword(@ModelAttribute @Validated(OrderedPasswordValidation.class) PasswordResetRequest passwordResetRequest,
                                            BindingResult bindingResult,
                                            @RequestParam("token") String passwordResetToken) {
         if (bindingResult.hasErrors()) {

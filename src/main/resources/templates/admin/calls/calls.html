@@ -8,14 +8,14 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.calls}"></h4>
-        <div class="card" id="card-block" style="width: 1220px;">
-            <h5 class="card-header" th:text="#{text.calls}">Calls</h5>
+        <div class="card" id="card-block">
+            <h5 class="card-header text-center text-md-start" th:text="#{text.calls}">Calls</h5>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-12 col-md-6">
+                <div class="row mb-3 align-items-center">
+                    <div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
                         <div class="d-flex align-items-center">
                             <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
                                     th:text="#{text.show}"></span>
@@ -27,30 +27,33 @@
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
-                                </select> <span th:text="#{text.entries}"></span></label>
+                                </select>
+                                <span th:text="#{text.entries}"></span>
+                            </label>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-end">
-                        <a id="total-delete_" type="button">
-                            <i class="ti ti-trash btnTrashMyBefore" style="font-size: 26px;"></i>
+                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                        <a id="total-delete_" type="button"
+                           class="btn btn-sm btnTrashMyBefore d-flex align-items-center justify-content-center"
+                           style="width: 45px; height: 45px; padding: 0;">
+                            <i class="ti ti-trash" style="font-size: 22px;"></i>
                         </a>
                     </div>
                 </div>
                 <div id="error-container"></div>
-                <div class="table-responsive" style="overflow-x: auto;">
+                <div class="table-responsive" style="-webkit-overflow-scrolling: touch;">
                     <table class="table table-bordered table-hover linkedRow"
-                           style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
                         <tr>
-                            <th style="width: 200px" th:text="#{table.header.application}">№ Application</th>
-                            <th style="width: 200px" th:text="#{table.header.date}">Date</th>
-                            <th style="width: 100px" th:text="#{table.header.time}">Time</th>
-                            <th style="width: 200px" th:text="#{table.header.phone}">Phone</th>
-                            <th style="width: 200px" th:text="#{table.header.application.status}">Status of
+                            <th style="min-width: 150px" th:text="#{table.header.application}">№ Application</th>
+                            <th style="min-width: 150px" th:text="#{table.header.date}">Date</th>
+                            <th style="min-width: 100px" th:text="#{table.header.time}">Time</th>
+                            <th style="min-width: 180px" th:text="#{table.header.phone}">Phone</th>
+                            <th style="min-width: 180px" th:text="#{table.header.application.status}">Status of
                                 application
                             </th>
-                            <th style="width: 200px" th:text="#{table.header.functions}">Functions</th>
+                            <th style="min-width: 150px" th:text="#{table.header.functions}">Functions</th>
                         </tr>
                         <tr>
                             <th>
@@ -88,7 +91,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="p-2" id="table-pagination-container_"></div>
+                <div class="mt-3 d-flex justify-content-center justify-content-md-end"
+                     id="table-pagination-container_"></div>
                 <input type="hidden" name="languageCode" value="en" id="languageCode_">
             </div>
         </div>

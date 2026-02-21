@@ -43,7 +43,8 @@ let config = {
     textMuted: '#7983bb',
     borderColor: '#434968'
   },
-  enableMenuLocalStorage: true // Enable menu state with local storage support
+  enableMenuLocalStorage: true, // Enable menu state with local storage support
+  swipeEnabled: true
 };
 
 let assetsPath = document.documentElement.getAttribute('data-assets-path'),
