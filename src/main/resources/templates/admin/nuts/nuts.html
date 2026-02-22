@@ -7,24 +7,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.nuts}"></title>
-    <style>
-        .truncate-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 300px;
-        }
-
-        .truncate-text p {
-            margin: 0 !important;
-        }
-
-        @media (max-width: 767px) {
-            .truncate-text {
-                max-width: 150px;
-            }
-        }
-    </style>
 </head>
 <body>
 <!-- Content -->
@@ -61,18 +43,17 @@
                     </div>
                 </div>
                 <div id="error-container"></div>
-                <div class="table-responsive text-nowrap"
-                     style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <div class="table-responsive text-nowrap">
                     <table class="table table-bordered table-hover linkedRow"
                            style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
                         <tr>
-                            <th style="width: 100px">ID</th>
-                            <th style="width: 200px" th:text="#{text.title}"></th>
-                            <th style="width: 300px" th:text="#{text.description}"></th>
-                            <th style="width: 180px" th:text="#{table.header.dateOfPublication}"></th>
-                            <th style="width: 150px" th:text="#{table.header.functions}"></th>
+                            <th style="min-width: 100px">ID</th>
+                            <th style="min-width: 200px" th:text="#{text.title}"></th>
+                            <th style="min-width: 300px" th:text="#{text.description}"></th>
+                            <th style="min-width: 180px" th:text="#{table.header.dateOfPublication}"></th>
+                            <th style="min-width: 150px" th:text="#{table.header.functions}"></th>
                         </tr>
                         <tr>
                             <th>

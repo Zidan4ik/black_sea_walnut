@@ -10,14 +10,14 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.products}"></h4>
-        <div class="card" id="card-block" style="width: 1220px;">
-            <h5 class="card-header" th:text="#{text.products}"></h5>
+        <div class="card w-100" id="card-block">
+            <h5 class="card-header text-center text-md-start" th:text="#{text.products}"></h5>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-12 col-md-6">
+                <div class="row mb-3 align-items-center">
+                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
                         <div class="d-flex align-items-center">
                             <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span th:text="#{text.show}"></span>
                                 <select class="form-select mx-2 select-card-block-spinner"
@@ -31,31 +31,28 @@
                                 </select> <span th:text="#{text.entries}"></span></label>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 text-end">
-                        <div class="row d-flex justify-content-center align-items-center">
-                            <div class="col-9 text-end">
-                                <a th:href="@{/admin/product/create}" class="btn btn-green btn-circle">
-                                    <i class="ti ti-plus"></i>
-                                </a>
-                            </div>
-                            <div class="col-3 text-start label-add" th:text="#{text.button.add}">                            </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex justify-content-center justify-content-md-end align-items-center">
+                            <a th:href="@{/admin/product/create}" class="btn btn-green btn-icon rounded-pill me-2">
+                                <i class="ti ti-plus"></i>
+                            </a>
+                            <span class="fw-bold label-add" style="font-size: large;" th:text="#{text.button.add}"></span>
                         </div>
                     </div>
                 </div>
                 <div id="error-container"></div>
-                <div class="table-responsive" style="overflow-x: auto;">
+                <div class="table-responsive text-nowrap">
                     <table class="table table-bordered table-hover linkedRow"
-                           style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
                         <tr>
-                            <th style="width: 100px">ID</th>
-                            <th style="width: 200px" th:text="#{table.header.name}">Name</th>
-                            <th style="width: 200px" th:text="#{table.header.taste}">Taste</th>
-                            <th style="width: 200px" th:text="#{table.header.totalCount}">Total counts</th>
-                            <th style="width: 200px" th:text="#{table.header.priceByProduct}">Price by product</th>
-                            <th style="width: 200px" th:text="#{table.header.status}">Status</th>
-                            <th style="width: 200px" th:text="#{table.header.functions}">Action</th>
+                            <th style="min-width: 100px">ID</th>
+                            <th style="min-width: 200px" th:text="#{table.header.name}">Name</th>
+                            <th style="min-width: 200px" th:text="#{table.header.taste}">Taste</th>
+                            <th style="min-width: 200px" th:text="#{table.header.totalCount}">Total counts</th>
+                            <th style="min-width: 200px" th:text="#{table.header.priceByProduct}">Price by product</th>
+                            <th style="min-width: 200px" th:text="#{table.header.status}">Status</th>
+                            <th style="min-width: 200px" th:text="#{table.header.functions}">Action</th>
                         </tr>
                         <tr>
                             <th>
@@ -90,7 +87,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="p-2" id="table-pagination-container_"></div>
+                <div class="p-2 d-flex justify-content-center justify-content-md-end"
+                     id="table-pagination-container_"></div>
                 <input type="hidden" name="languageCode" id="languageCode_" value="uk">
             </div>
         </div>

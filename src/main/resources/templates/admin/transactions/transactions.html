@@ -11,15 +11,14 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.transactions}"></h4>
-<!--        <div id="error-container"></div>-->
-        <div class="card" id="card-block" style="width: 1220px;">
-            <h5 class="card-header" th:text="#{text.transactions}"></h5>
+        <div class="card w-100" id="card-block">
+            <h5 class="card-header text-center text-md-start" th:text="#{text.transactions}"></h5>
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start">
                         <div class="d-flex align-items-center">
                             <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
                                     th:text="#{text.show}"></span>
@@ -36,21 +35,20 @@
                     </div>
                 </div>
                 <div id="error-container"></div>
-                <div class="table-responsive" style="overflow-x: auto;">
+                <div class="table-responsive text-nowrap">
                     <table class="table table-bordered table-hover linkedRow"
-                           style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
                         <tr>
-                            <th style="width: 100px">ID</th>
-                            <th style="width: 200px" th:text="#{table.header.customer}"></th>
-                            <th style="width: 200px" th:text="#{table.header.date}"></th>
-                            <th style="width: 200px" th:text="#{table.header.time}"></th>
-                            <th style="width: 200px" th:text="#{table.header.summa}"></th>
-                            <th style="width: 200px" th:text="#{table.header.phone}"></th>
-                            <th style="width: 200px" th:text="#{table.header.email}"></th>
-                            <th style="width: 137px" th:text="#{table.header.typeOfPayment}"></th>
-                            <th style="width: 137px" th:text="#{table.header.statusPayment}"></th>
+                            <th style="min-width: 100px">ID</th>
+                            <th style="min-width: 200px" th:text="#{table.header.customer}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.date}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.time}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.summa}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.phone}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.email}"></th>
+                            <th style="min-width: 137px" th:text="#{table.header.typeOfPayment}"></th>
+                            <th style="min-width: 137px" th:text="#{table.header.statusPayment}"></th>
                         </tr>
                         <tr>
                             <th>
@@ -108,7 +106,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="p-2" id="table-pagination-container_"></div>
+                <div class="p-2 d-flex justify-content-center justify-content-md-end"
+                     id="table-pagination-container_"></div>
                 <input type="hidden" name="languageCode" value="en" id="languageCode_">
             </div>
         </div>
@@ -125,9 +124,9 @@
                 const datePicker = $("#date_");
                 datePicker.datepicker({
                     format: "dd.mm.yyyy",
-                    autoclose: true,         // Календар закриється після вибору
-                    todayHighlight: true,    // Підсвічувати сьогоднішню дату
-                    orientation: "bottom"    // Щоб не перекривав інпут
+                    autoclose: true,
+                    todayHighlight: true,
+                    orientation: "bottom"
                 }).on('changeDate', function () {
                     htmx.trigger($("#date_")[0], 'input')
                 });

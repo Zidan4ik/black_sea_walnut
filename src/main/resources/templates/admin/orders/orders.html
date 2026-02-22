@@ -15,14 +15,14 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <h4 class="text-center fw-bold" th:text="#{text.table.orders}"></h4>
-        <div class="card" id="card-block">
-            <h5 class="card-header" th:text="#{text.orders}"></h5>
+        <div class="card w-100" id="card-block">
+            <h5 class="card-header text-center text-md-start" th:text="#{text.orders}"></h5>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-sm-12 col-md-6">
+                <div class="row mb-3 align-items-center">
+                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start">
                         <div class="d-flex align-items-center">
                             <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span th:text="#{text.show}"></span>
                                 <select class="form-select mx-2 select-card-block-spinner"
@@ -38,19 +38,18 @@
                     </div>
                 </div>
                 <div id="error-container"></div>
-                <div class="table-responsive">
+                <div class="table-responsive text-nowrap">
                     <table class="table table-bordered table-hover table-striped linkedRow"
-                           style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
                         <tr>
-                            <th style="width: 100px">ID</th>
-                            <th style="width: 200px" th:text="#{table.header.customer}"></th>
-                            <th style="width: 200px" th:text="#{table.header.email}"></th>
-                            <th style="width: 137px" th:text="#{table.header.totalCount}"></th>
-                            <th style="width: 137px" th:text="#{table.header.totalPrice}"></th>
-                            <th style="width: 200px" th:text="#{table.header.dateOfOrdering}"></th>
-                            <th style="width: 150px" th:text="#{table.header.functions}"></th>
+                            <th style="min-width: 100px">ID</th>
+                            <th style="min-width: 200px" th:text="#{table.header.customer}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.email}"></th>
+                            <th style="min-width: 137px" th:text="#{table.header.totalCount}"></th>
+                            <th style="min-width: 137px" th:text="#{table.header.totalPrice}"></th>
+                            <th style="min-width: 200px" th:text="#{table.header.dateOfOrdering}"></th>
+                            <th style="min-width: 150px" th:text="#{table.header.functions}"></th>
                         </tr>
                         <tr>
                             <th>
@@ -91,7 +90,8 @@
                         </thead>
                     </table>
                 </div>
-                <div class="p-2" id="table-pagination-container_"></div>
+                <div class="p-2 d-flex justify-content-center justify-content-md-end"
+                     id="table-pagination-container_"></div>
                 <input type="hidden" name="languageCode" value="en" id="languageCode_">
             </div>
         </div>

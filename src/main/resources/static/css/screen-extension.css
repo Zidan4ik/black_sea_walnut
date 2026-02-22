@@ -30,7 +30,11 @@
 
 @media (max-width: 1200px) {
     .drag-target {
+        top: 70px !important;
         height: calc(100% - 70px) !important;
-        width: 20px !important;
+        width: 40px !important;
+        left: 0 !important;
+        z-index: 1040;
+        touch-action: pan-y;
     }
 }

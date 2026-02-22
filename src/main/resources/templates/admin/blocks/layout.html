@@ -49,6 +49,27 @@
         .pointer {
             cursor: pointer;
         }
+
+        body {
+            overscroll-behavior-x: none;
+        }
+
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+
+        .truncate-text p {
+            margin: 0 !important;
+        }
+
+        @media (max-width: 767px) {
+            .truncate-text {
+                max-width: 150px;
+            }
+        }
     </style>
 
     <link rel="stylesheet" th:href="@{/css/pagination.css}"/>

@@ -35,102 +35,97 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-
         <!-- Header content -->
-        <div class="row">
-            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
-                <div class="col-auto text-center">
-                    <a th:href="@{/admin/users}">
-                        <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
-                    </a>
-                </div>
-                <div class="col-auto" style="padding-right: 5px;" th:text="#{text.users}"></div>
-                <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;font-weight: bold;" data-text="fullName"></div>
+        <div class="row mb-4">
+            <div class="col-12 d-flex flex-wrap align-items-center justify-content-start gap-2 mb-3">
+                <a th:href="@{/admin/users}" class="d-flex align-items-center">
+                    <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
+                </a>
+                <span th:text="#{text.users}"></span>
+                <i class="ti ti-arrow-right text-muted" style="font-size: 15px;"></i>
+                <span class="fw-bold" data-text="fullName"></span>
             </div>
-            <div class="row">
-                <div class="col-auto text-start">
-                    <span class="title-out-user" data-text="fullName"></span>
-                </div>
-                <div class="col-auto d-flex align-items-start p-0">
-                    <a class="user-status-icon" type="button" th:data-id="${id}">
-                        <i th:classappend="${userStatus != 'isActive'? 'ti-arrow-back-up':'ti-forbid'}"
-                           class="ti"></i>
+
+            <div class="col-12 d-flex flex-column flex-md-row justify-content-end align-items-md-center gap-3">
+                <!--                <div class="d-flex align-items-center">-->
+                <!--                    <h4 class="title-out-user mb-0 fw-bold" data-text="fullName"></h4>-->
+                <!--                </div>-->
+
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                    <a class="user-status-icon d-flex align-items-center justify-content-center"
+                       type="button" th:data-id="${id}"
+                       style="text-decoration: none; background: none; border: none; padding: 0; cursor: pointer;">
+                        <i th:classappend="${userStatus != 'isActive'? 'ti-arrow-back-up text-warning':'ti-forbid text-danger'}"
+                           class="ti fs-4" style="transition: none;"></i>
                     </a>
-                </div>
-                <div class="col d-flex justify-content-end">
-                    <input id="registrationType_" class="form-control" type="text" style="width: auto;" disabled>
+                    <input id="registrationType_" class="form-control bg-light" type="text" style="width: auto;"
+                           disabled="">
+
                 </div>
             </div>
         </div>
         <!--/ Header content -->
-
-
         <div class="row">
             <div id="header-block-uk"></div>
+            <div id="image-block-uk" class="col-12 col-md-4 col-lg-3 mb-4 text-center">
+                <div class="card p-3 shadow-none border">
+                    <div class="position-relative d-inline-block w-100">
+                        <img id="fileImage" data-name="fileImage"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
+                             alt="User image" class="rounded img-fluid"
+                             style="height: 250px; object-fit: cover; width: 100%;">
 
-            <div id="image-block-uk" class="col-12 col-sm-3 mb-3"
-                 style="text-align: center;">
-                <div class="d-flex flex-column align-items-center ms-1 position-relative"
-                     style="flex: 1;">
-                    <img id="fileImage" data-name="fileImage"
-                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
-                         alt="error" style="width: 100%; height: 250px; display: block;">
-                    <button type="button" data-type="fileImage"
-                            class="btn btn-outline-success btn-select"
-                            style="width: 80%;margin-top: 10px;" th:text="#{text.button.change}">
-                    </button>
-                    <a type="button" data-type="fileImage"
-                       class="btnTrashMyBefore position-absolute btn-delete" style="right: 5px;padding-top: 5px;">
-                        <i class="ti ti-trash" style="font-size: x-large;"></i>
-                    </a>
-                </div>
-                <div class="d-flex flex-column justify-content-center align-items-center"
-                     style="flex: 1; text-align: center;">
-                                <span style="color: darkgrey; margin-top: 10px;" th:text="#{text.mediaSize5}">
-                                </span>
+                        <a type="button" data-type="fileImage"
+                           class="btn btn-sm btnTrashMyBefore position-absolute btn-delete"
+                           style="top: 10px; right: 10px;">
+                            <i class="ti ti-trash"></i>
+                        </a>
+                    </div>
+                    <button type="button" data-type="fileImage" class="btn btn-outline-success btn-select mt-3 w-100"
+                            th:text="#{text.button.change}"></button>
+                    <small class="text-muted mt-2 d-block" th:text="#{text.mediaSize5}"></small>
                 </div>
             </div>
-            <div class="col-12 col-sm-7 mb-3 mt-4">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <h5 th:text="#{text.contactInformation}+':'"></h5>
-                        <div>
-                            <label for="fullName_" class="form-label bold" th:text="#{table.header.fio}+'*'"></label>
+
+            <div class="col-12 col-md-8 col-lg-9">
+                <div class="row g-4">
+                    <div class="col-12 col-lg-6">
+                        <h5 class="pb-2 border-bottom fw-bold" th:text="#{text.contactInformation}"></h5>
+                        <div class="mb-3">
+                            <label for="fullName_" class="form-label" th:text="#{table.header.fio}+'*'"></label>
                             <input class="form-control" id="fullName_" type="text" data-name="fullName"
                                    th:placeholder="#{text.fullNamePerson}"/>
                         </div>
-                        <div>
-                            <label for="phone_" class="form-label bold" th:text="#{table.header.phone}+'*'"></label>
+                        <div class="mb-3">
+                            <label for="phone_" class="form-label" th:text="#{table.header.phone}+'*'"></label>
                             <input class="form-control" id="phone_" type="text" data-name="phone"
                                    placeholder="+38067123123"/>
                         </div>
-                        <div>
-                            <label for="email_" class="form-label bold" th:text="#{table.header.email}+'*'"></label>
+                        <div class="mb-3">
+                            <label for="email_" class="form-label" th:text="#{table.header.email}+'*'"></label>
                             <input class="form-control" id="email_" type="text" data-name="email"
                                    placeholder="ivanivanov@gmail.com"/>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <h5 th:text="#{text.addressForDeliveryOnUkraine}+':'"></h5>
-                        <div>
-                            <label for="region_" class="form-label bold" th:text="#{text.regions}+'*'"></label>
-                            <select class="form-select mx-2 select-card-block-spinner ms-0"
-                                    id="region_" data-name="regionForDeliveryId">
+
+                    <div class="col-12 col-lg-6">
+                        <h5 class="pb-2 border-bottom fw-bold" th:text="#{text.addressForDeliveryOnUkraine}"></h5>
+                        <div class="mb-3">
+                            <label for="region_" class="form-label" th:text="#{text.regions}+'*'"></label>
+                            <select class="form-select" id="region_" data-name="regionForDeliveryId">
                                 <option th:text="#{text.regions}" value="" selected></option>
                             </select>
                         </div>
-                        <div>
-                            <label for="city_" class="form-label bold" th:text="#{table.header.city}+'*'"></label>
-                            <select class="form-select mx-2 select-card-block-spinner ms-0"
-                                    id="city_" data-name="cityForDeliveryId" disabled>
+                        <div class="mb-3">
+                            <label for="city_" class="form-label" th:text="#{table.header.city}+'*'"></label>
+                            <select class="form-select" id="city_" data-name="cityForDeliveryId" disabled>
                                 <option th:text="#{text.cities}" value="" selected></option>
                             </select>
                         </div>
-                        <div>
-                            <label for="departmentForDelivery_" class="form-label bold"
+                        <div class="mb-3">
+                            <label for="departmentForDelivery_" class="form-label"
                                    th:text="#{text.departmentOfNP}+'*'"></label>
                             <input class="form-control" id="departmentForDelivery_" type="text"
                                    data-name="departmentForDelivery"
@@ -138,130 +133,128 @@
                         </div>
                     </div>
                 </div>
-                <div class="row g-3 pt-3" id="container-user-details_" style="display: none">
-                    <div class="col-6">
-                        <h5 th:text="#{text.props}+':'"></h5>
-                        <div id="container-okpo_" style="display: none;">
-                            <input class="form-control" id="okpo_" type="text"
-                                   data-name="okpo" th:placeholder="#{text.okpo}+'*'"/>
+
+                <div class="row g-4 pt-4" id="container-user-details_" style="display: none">
+                    <div class="col-12 col-lg-6">
+                        <h5 class="pb-2 border-bottom fw-bold" th:text="#{text.props}"></h5>
+                        <div id="container-okpo_" class="mb-3" style="display: none;">
+                            <label class="form-label" th:text="#{text.okpo}"></label>
+                            <input class="form-control" id="okpo_" type="text" data-name="okpo"
+                                   th:placeholder="#{text.okpo}"/>
                         </div>
-                        <div id="container-edrpou_" style="display: none;">
-                            <input class="form-control" id="edrpou_" type="text"
-                                   data-name="edrpou" th:placeholder="#{text.erdpou}+'*'"/>
+                        <div id="container-edrpou_" class="mb-3" style="display: none;">
+                            <label class="form-label" th:text="#{text.erdpou}"></label>
+                            <input class="form-control" id="edrpou_" type="text" data-name="edrpou"
+                                   th:placeholder="#{text.erdpou}"/>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <h5 id="title-registration_"></h5>
-                        <div class="d-flex flex-column gap-2">
-                            <div>
-                                <select class="form-select mx-2 select-card-block-spinner ms-0"
-                                        id="regionAdditionallyId_" data-name="regionAdditionallyId">
+                    <div class="col-12 col-lg-6">
+                        <h5 class="pb-2 border-bottom fw-bold" id="title-registration_"></h5>
+                        <div class="row g-2">
+                            <div class="col-12 col-md-6">
+                                <select class="form-select" id="regionAdditionallyId_" data-name="regionAdditionallyId">
                                     <option value="" selected th:text="#{text.regions}"></option>
                                 </select>
                             </div>
-                            <div>
-                                <select class="form-select mx-2 select-card-block-spinner ms-0"
-                                        id="cityAdditionallyId_" data-name="cityAdditionallyId" disabled>
+                            <div class="col-12 col-md-6">
+                                <select class="form-select" id="cityAdditionallyId_" data-name="cityAdditionallyId"
+                                        disabled>
                                     <option value="" selected th:text="#{text.cities}"></option>
                                 </select>
                             </div>
-                            <div>
+                            <div class="col-12">
                                 <input class="form-control" id="addressAdditionally_" type="text"
-                                       data-name="addressAdditionally"
-                                       th:placeholder="#{table.header.address}+'*'"/>
+                                       data-name="addressAdditionally" th:placeholder="#{table.header.address}+'*'"/>
                             </div>
-                            <div id="container-index_" style="display: none;">
-                                <input class="form-control" id="indexLawful_" type="text"
-                                       data-name="indexLawful"
+                            <div id="container-index_" class="col-12" style="display: none;">
+                                <input class="form-control" id="indexLawful_" type="text" data-name="indexLawful"
                                        th:placeholder="#{text.index}+'*'"/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
-                        th:text="#{text.button.save}"></button>
+
+            <div class="row mt-5">
+                <div class="col-12 text-center text-md-center">
+                    <button type="button" class="btn btn-green px-5 py-2 w-50 w-md-auto" id="btn-save_"
+                            th:text="#{text.button.save}"></button>
+                </div>
             </div>
-            <div class="row d-flex justify-content-center mt-5">
-                <h4 class="text-center" th:text="#{text.ordersHistory}"></h4>
-                <div class="row mb-3">
-                    <div class="col-sm-12 col-md-6">
-                        <div class="d-flex align-items-center">
-                            <label for="pick-size-for-pagination_" class="d-flex align-items-center"><span
-                                    th:text="#{text.show}"></span>
-                                <select class="form-select mx-2 select-card-block-spinner"
-                                        id="pick-size-for-pagination_"
-                                        name="size">
-                                    <option value="1">1</option>
-                                    <option value="3">3</option>
-                                    <option value="5" selected>5</option>
-                                    <option value="15">15</option>
-                                    <option value="20">20</option>
-                                </select> <span th:text="#{text.entries}"></span></label>
+
+            <div class="row mt-5 pt-5">
+                <div class="col-12 text-center mb-4">
+                    <h4 class="fw-bold" th:text="#{text.ordersHistory}"></h4>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+                                <label class="d-flex align-items-center gap-2">
+                                    <span th:text="#{text.show}"></span>
+                                    <select class="form-select form-select-sm" id="pick-size-for-pagination_"
+                                            name="size" style="width: auto;">
+                                        <option value="1">1</option>
+                                        <option value="5" selected>5</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                    <span th:text="#{text.entries}"></span>
+                                </label>
+                            </div>
                         </div>
+
+                        <div id="error-container"></div>
+
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-bordered table-hover linkedRow"
+                                   id="table-data-container_">
+                                <thead>
+                                <tr>
+                                    <th style="min-width: 100px; text-align: center;"
+                                        th:text="#{table.header.order}"></th>
+                                    <th style="min-width: 150px; text-align: center;"
+                                        th:text="#{table.header.date}"></th>
+                                    <th style="min-width: 150px; text-align: center;"
+                                        th:text="#{table.header.statusOrder}"></th>
+                                    <th style="min-width: 120px; text-align: center;"
+                                        th:text="#{table.header.summa}"></th>
+                                    <th style="min-width: 150px; text-align: center;"
+                                        th:text="#{table.header.statusPayment}"></th>
+                                    <th style="width: 50px;"></th>
+                                </tr>
+                                <tr class="bg-light">
+                                    <th><input class="form-control form-control-sm" name="id"/></th>
+                                    <th>
+                                        <div class="input-group input-group-merge">
+                                            <input type="text" class="form-control form-control-sm" id="dateOfOrdering_"
+                                                   name="date" autocomplete="off"/>
+                                            <span class="input-group-text p-1"><i class="ti ti-calendar"></i></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <select class="form-select form-select-sm" name="statusOrder">
+                                            <option value="" selected th:text="#{value.status.all}"></option>
+                                            <option value="inProgress" th:text="#{value.status.inProcess}"></option>
+                                            <option value="new_" th:text="#{value.status.new}"></option>
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        <select class="form-select form-select-sm" name="typePayment">
+                                            <option value="" selected th:text="#{value.status.all}"></option>
+                                            <option value="card" th:text="#{value.status.card}"></option>
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div id="table-pagination-container_"
+                             class="mt-3 d-flex justify-content-center justify-content-md-end"></div>
                     </div>
                 </div>
-                <div id="error-container"></div>
-                <div id="card-block" class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow"
-                           style="table-layout: fixed; position: static; zoom: 1;"
-                           id="table-data-container_">
-                        <thead>
-                        <tr>
-                            <th style="width: 200px;text-align: center;" th:text="#{table.header.order}"></th>
-                            <th style="width: 180px;text-align: center;" th:text="#{table.header.date}"></th>
-                            <th style="width: 200px;text-align: center;" th:text="#{table.header.statusOrder}"></th>
-                            <th style="width: 200px;text-align: center;" th:text="#{table.header.summa}"></th>
-                            <th style="width: 200px;text-align: center;" th:text="#{table.header.statusPayment}"></th>
-                            <th style="width: 60px;"></th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <input class="form-control input-card-block-spinner"
-                                       name="id"/>
-                            </th>
-                            <th>
-                                <div class="input-group input-group-merge">
-                                    <input type="text"
-                                           class="form-control input-card-block-spinner"
-                                           id="dateOfOrdering_"
-                                           placeholder=""
-                                           name="date"
-                                           autocomplete="off"/>
-                                    <span class="input-group-text" onclick="focusInput(this)">
-                                        <i class="ti ti-calendar"></i>
-                                     </span>
-                                </div>
-                            </th>
-                            <th>
-                                <select class="form-select mx-2 select-card-block-spinner"
-                                        id="pick-type-of-payment_"
-                                        name="statusOrder">
-                                    <option value="" selected th:text="#{value.status.all}"></option>
-                                    <option value="inProgress" th:text="#{value.status.inProcess}"></option>
-                                    <option value="new_" th:text="#{value.status.new}"></option>
-                                    <option value="close" th:text="#{value.status.close}"></option>
-                                    <option value="cancel" th:text="#{value.status.cancel}"></option>
-                                </select>
-                            </th>
-                            <th></th>
-                            <th>
-                                <select class="form-select mx-2 select-card-block-spinner"
-                                        id="" name="typePayment">
-                                    <option value="" selected th:text="#{value.status.all}"></option>
-                                    <option value="card" th:text="#{value.status.card}"></option>
-                                    <option value="cash" th:text="#{value.status.cash}"></option>
-                                    <option value="invoice" th:text="#{value.status.invoice}"></option>
-                                </select>
-                            </th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="p-2" id="table-pagination-container_"></div>
-                <input type="hidden" name="languageCode" value="en" id="languageCode_">
             </div>
         </div>
 
@@ -317,7 +310,7 @@
                 saveUser();
                 selectedLanguage();
 
-                invokeRequest(inputs,0);
+                invokeRequest(inputs, 0);
             });
 
             function saveUser() {
@@ -448,7 +441,6 @@
         <script>
             async function requestGetUser(id) {
                 let data = await $.get(`${contextPath}/admin/user/${id}`);
-                console.log(data);
                 userStatus = data.registrationType;
                 $(`#registrationType_`).val(returnUserStatus(userStatus));
                 if (userStatus === 'legal' || userStatus === 'fop') {
@@ -459,7 +451,7 @@
                         $(`#container-edrpou_`).css("display", 'block');
                     }
                     $(`#container-user-details_`).css("display", 'flex');
-                    $(`#title-registration_`).text(returnUserStatus(userStatus)+': ');
+                    $(`#title-registration_`).text(returnUserStatus(userStatus) + ': ');
                 }
                 for (let key in data) {
                     if (data.hasOwnProperty(key)) {
