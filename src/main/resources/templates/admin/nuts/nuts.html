@@ -38,14 +38,13 @@
                             <a th:href="@{/admin/nut/create}" class="btn btn-green btn-icon rounded-pill me-2">
                                 <i class="ti ti-plus"></i>
                             </a>
-                            <span class="fw-bold">Add</span>
+                            <span class="fw-bold" th:text="#{text.button.add}"></span>
                         </div>
                     </div>
                 </div>
                 <div id="error-container"></div>
                 <div class="table-responsive text-nowrap">
                     <table class="table table-bordered table-hover linkedRow"
-                           style="table-layout: fixed; position: static; zoom: 1;"
                            id="table-data-container_">
                         <thead>
                         <tr>

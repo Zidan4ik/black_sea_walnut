@@ -7,88 +7,73 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.contacts}"></title>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
-    <link rel="stylesheet" th:href="@{/css/button.css}"/>
-    <link rel="stylesheet" th:href="@{/css/icon.css}"/>
-    <link rel="stylesheet" th:href="@{/css/text.css}"/>
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <div class="row">
-            <h4 class="text-center" th:text="#{text.contacts}"></h4>
-            <div class="mb-3 mt-4">
-                <div class="row g-3">
-                    <div class="col-4">
-                        <h5 th:text="#{text.numberPhone}+':'"></h5>
-                        <div>
+            <h4 class="text-center mb-4" th:text="#{text.contacts}"></h4>
+
+            <div class="mb-3">
+                <div class="row g-4">
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <h5 class="fw-bold mb-3" th:text="#{text.numberPhone}+':'"></h5>
+                        <div class="mb-2">
                             <input class="form-control" id="phone1_" type="text" data-name="phone1"
                                    placeholder="0666790100"/>
                         </div>
-                        <div>
+                        <div class="mb-3">
                             <input class="form-control" id="phone2_" type="text" data-name="phone2"
                                    placeholder="0666790100"/>
                         </div>
-                        <h5 th:text="#{table.header.email}+':'"></h5>
+
+                        <h5 class="fw-bold mb-3" th:text="#{table.header.email}+':'"></h5>
                         <div>
-                            <input class="form-control" id="email_" type="text" data-name="email"
+                            <input class="form-control" id="email_" type="email" data-name="email"
                                    placeholder="ivanivanov@gmail.com"/>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <h5 th:text="#{text.officesAndSalesDepartments}+':'"></h5>
-                        <div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <h5 class="fw-bold mb-3" th:text="#{text.officesAndSalesDepartments}+':'"></h5>
+                        <div class="mb-3">
                             <textarea class="form-control descriptions" id="addressWork_" rows="3"
-                                      data-name="addressWork"
-                                      data-error=""></textarea>
+                                      data-name="addressWork"></textarea>
                         </div>
-                        <h5 th:text="#{text.factory}+':'"></h5>
-                        <div>
+
+                        <h5 class="fw-bold mb-3" th:text="#{text.factory}+':'"></h5>
+                        <div class="mb-3">
                             <textarea class="form-control descriptions" id="addressFactory_" rows="3"
-                                      data-name="addressFactory"
-                                      data-error=""></textarea>
+                                      data-name="addressFactory"></textarea>
                         </div>
-                        <h5 th:text="#{text.coordinates}+':'"></h5>
+
+                        <h5 class="fw-bold mb-3" th:text="#{text.coordinates}+':'"></h5>
                         <div>
                             <input class="form-control" id="coordinates_" type="text" data-name="coordinates"
-                                   placeholder="49.84441337669724, 24.026211881982103"/>
+                                   placeholder="49.844, 24.026"/>
                         </div>
                     </div>
-                    <div class="col-4 d-flex flex-column gap-2">
-                        <h5 th:text="#{text.socialMedias}+':'"></h5>
-                        <div>
-                            <input class="form-control" id="telegram_" type="text" data-name="telegram"
-                                   th:placeholder="#{text.placeholderTelegram}"/>
-                        </div>
-                        <div>
-                            <input class="form-control" id="viber_" type="text" data-name="viber"
-                                   th:placeholder="#{text.placeholderViber}"/>
-                        </div>
-                        <div>
-                            <input class="form-control" id="watsapp_" type="text" data-name="watsapp"
-                                   th:placeholder="#{text.placeholderWatsApp}"/>
-                        </div>
-                        <div>
-                            <input class="form-control" id="facebook_" type="text" data-name="facebook"
-                                   th:placeholder="#{text.placeholderFacebook}"/>
-                        </div>
-                        <div>
-                            <input class="form-control" id="instagram_" type="text" data-name="instagram"
-                                   th:placeholder="#{text.placeholderInstagram}"/>
-                        </div>
-                        <div>
-                            <input class="form-control" id="youtube_" type="text" data-name="youtube"
-                                   th:placeholder="#{text.placeholderYoutube}"/>
-                        </div>
+
+                    <div class="col-12 col-lg-4 d-flex flex-column gap-2">
+                        <h5 class="fw-bold mb-2" th:text="#{text.socialMedias}+':'"></h5>
+                        <input class="form-control" id="telegram_" type="text" data-name="telegram" th:placeholder="#{text.placeholderTelegram}"/>
+                        <input class="form-control" id="viber_" type="text" data-name="viber" th:placeholder="#{text.placeholderViber}"/>
+                        <input class="form-control" id="watsapp_" type="text" data-name="watsapp" th:placeholder="#{text.placeholderWatsApp}"/>
+                        <input class="form-control" id="facebook_" type="text" data-name="facebook" th:placeholder="#{text.placeholderFacebook}"/>
+                        <input class="form-control" id="instagram_" type="text" data-name="instagram" th:placeholder="#{text.placeholderInstagram}"/>
+                        <input class="form-control" id="youtube_" type="text" data-name="youtube" th:placeholder="#{text.placeholderYoutube}"/>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
-                th:text="#{text.button.save}">
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-green w-50" id="btn-save_"
+                        th:text="#{text.button.save}">
                 </button>
             </div>
+
         </div>
 
         <!-- Hidden Inputs-->
@@ -105,7 +90,6 @@
 
         <script>
             $(document).ready(function () {
-                // let id = $('#id_').val();
                 requestGetContact(1);
                 saveUser();
                 selectedLanguage();

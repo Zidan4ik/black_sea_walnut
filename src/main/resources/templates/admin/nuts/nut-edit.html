@@ -11,46 +11,39 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
 
         <!-- Header content -->
-        <div class="row">
-            <div class="row col-12 d-flex align-items-center mb-3 justify-content-start">
-                <div class="col-auto text-center">
-                    <a th:href="@{/admin/nuts}">
-                        <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
-                    </a>
-                </div>
-                <div class="col-auto" style="padding-right: 5px;" th:text="#{text.table.nuts}"></div>
-                <i class="ti ti-arrow-right col-auto p-0" style="color: grey; font-size: 15px;"></i>
-                <div class="col-auto" style="padding-left: 5px;" th:text="#{text.addNut}"></div>
+        <div class="row mb-4">
+            <div class="col-12 d-flex align-items-center flex-wrap gap-2 justify-content-start">
+                <a th:href="@{/admin/nuts}">
+                    <i class="ti ti-arrow-left icon-hover-arrow" style="color: green; font-size: 30px;"></i>
+                </a>
+                <span class="text-muted" th:text="#{text.table.nuts}"></span>
+                <i class="ti ti-arrow-right text-muted" style="font-size: 14px;"></i>
+                <span class="fw-bold" th:text="#{text.addNut}"></span>
             </div>
         </div>
         <!--/ Header content -->
 
         <!-- Language tabs -->
-        <div class="nav-align-top">
+        <div class="nav-align-top mb-4">
             <ul class="nav nav-tabs" role="tablist" style="background: none;">
                 <li class="nav-item">
                     <button type="button" class="nav-link active" data-bs-toggle="tab"
                             data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
-                            style="margin-left: 15px;"
                             data-lang="uk">
-                            <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
-                            </span>
-                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                        <i class="ti ti-planet me-1"></i>
+                        <span>UK</span>
                     </button>
                 </li>
                 <li class="nav-item">
                     <button type="button" class="nav-link" data-bs-toggle="tab"
                             data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
                             data-lang="en">
-                            <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
-                            </span>
-                        <i class="ti ti-planet ti-sm d-sm-none"></i>
+                        <i class="ti ti-planet me-1"></i>
+                        <span>EN</span>
                     </button>
                 </li>
             </ul>
@@ -70,9 +63,9 @@
                             <div class="mb-3" id="switch-block-uk"></div>
                             <div class="mb-3">
                                 <label for="titleUk_" class="form-label" style="color: darkgrey; font-size: large;">
-                                    Заголовок:</label>
-                                <input class="form-control" id="titleUk_" data-name="titleUk" type="text"
-                                       placeholder="" style="width: 50%;"/>
+                                    Заголовок:
+                                </label>
+                                <input class="form-control w-100" id="titleUk_" data-name="titleUk" type="text" placeholder="">
                             </div>
                             <div class="mb-3 row">
                                 <label for="fileSvg" class="form-label"
@@ -107,8 +100,8 @@
                             <div class="mb-3">
                                 <label for="titleEn_" class="form-label" style="color: darkgrey; font-size: large;">
                                     Title:</label>
-                                <input class="form-control" id="titleEn_" data-name="titleEn" type="text"
-                                       placeholder="" style="width: 50%;"/>
+                                <input class="form-control w-100" id="titleEn_" data-name="titleEn"
+                                       type="text" placeholder=""/>
                             </div>
                             <div class="mb-3 row">
                                 <label for="fileSvg" class="form-label"
@@ -154,17 +147,22 @@
 
                 <!-- Image Svg Base -->
                 <div id="shared-image-svg" class="shared-image" style="display: none;">
-                    <img id="fileSvg" data-name="fileSvg"
-                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s"
-                         alt="error" style="width: 150px;height: 100px;">
-                    <div class="row gap-3" style="margin: 3px;">
-                        <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-select"
-                                style="width: 25%;"
-                                th:text="#{text.button.change}">
+                    <img id="fileSvg" data-name=""
+                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&amp;s"
+                         alt="icon"
+                         class="img-fluid rounded"
+                         style="width: 150px; height: 113px; object-fit: contain;">
+
+                    <div class="d-flex flex-wrap gap-2 w-100 mt-2">
+                        <button type="button" data-type="fileSvg"
+                                class="btn btn-outline-success btn-select flex-grow-1 flex-md-grow-0"
+                                style="min-width: 120px;">
+                            Змінити
                         </button>
-                        <button type="button" data-type="fileSvg" class="btn btn-outline-success btn-delete"
-                                style="width: 25%;"
-                                th:text="#{text.button.delete}">
+                        <button type="button" data-type="fileSvg"
+                                class="btn btn-outline-success btn-delete flex-grow-1 flex-md-grow-0"
+                                style="min-width: 120px;">
+                            Видалити
                         </button>
                     </div>
                 </div>
@@ -191,7 +189,7 @@
 
                 <!-- Button save Base -->
                 <div id="shared-save" style="display: none;">
-                    <button type="button" class="btn btn-green" id="btn-save_" style="width: 25%;"
+                    <button type="button" class="btn btn-green w-50" id="btn-save_"
                             th:text="#{text.button.save}"></button>
                 </div>
                 <!--/ Button save Base -->
@@ -213,9 +211,14 @@
                     function getFroalaEditor(idElementEditor) {
                         return new FroalaEditor(`#${idElementEditor}`, {
                             theme: current_mode,
-                            height: 120,
-                            width: 700,
+                            height: 200,
+                            width: 'auto',
                             scrollableContainer: `#${idElementEditor}`,
+                            toolbarButtons: [
+                                ['bold', 'italic', 'underline', 'strikeThrough'],
+                                ['formatOL', 'formatUL', 'align', 'formatBlock'],
+                                ['insertLink', 'undo', 'redo', 'html']
+                            ],
                             events: {
                                 'initialized': function () {
                                     let element = $(`#hidden-${idElementEditor}`);

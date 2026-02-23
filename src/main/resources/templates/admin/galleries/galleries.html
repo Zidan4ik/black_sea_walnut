@@ -10,12 +10,12 @@
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
         <!-- Header content -->
-        <div class="row">
-            <div class="col-12 text-start">
-                <span class="title-out" th:text="#{text.addProduct}"></span>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="title-out h4" th:text="#{text.addProduct}"></h2>
             </div>
         </div>
         <!--/ Header content -->
@@ -23,10 +23,10 @@
             <h3 class="text-center" th:text="#{text.imagesAndVideos}"></h3>
             <div class="row" id="container-gallery">
                 <div id="gallery-items-wrapper" class="row col-12" style="display: contents;"></div>
-                <div class="col-6 d-flex align-items-center pt-3" id="add-button-container"
-                     style="height: 263px;margin-left: 24px;">
-                    <button type="button" id="btn-add" class="btn btn-success btn-gallery-add">
-                        <i class="ti ti-plus" style="border: white;font-size: 100px;"></i>
+                <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center justify-content-lg-start pt-3" id="add-button-container" style="min-height: 263px; padding-left: 30px;">
+                    <button type="button" id="btn-add" class="btn btn-success btn-gallery-add rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 100px; height: 100px; background-color: #337D5A; border-color: #337D5A;">
+                        <i class="ti ti-plus" style="font-size: 80px; line-height: 1;"></i>
                     </button>
                 </div>
             </div>
@@ -77,10 +77,11 @@
 
             $(container).on('click', '.btn-delete', function () {
                 if ($(this).attr('data-typeDelete') === 'delete-image') return;
-                let parentContainer = $(this).closest('.row')[0];
-                let id = parentContainer.getAttribute('data-id');
+                let parentContainer = $(this).closest('.gallery-item-row')[0];
+                console.log(parentContainer);
 
                 if (parentContainer.getAttribute('data-type') === 'old') {
+                    let id = parentContainer.getAttribute('data-id');
                     confirmAndPathDelete(id,`${contextPath}/admin/gallery/delete`,()=>{
                         invokeRequestGalleries();
                     })
@@ -239,7 +240,7 @@
 
         function addNewGallery() {
             const newBlock = document.createElement('div');
-            newBlock.className = 'col-6 row pt-3';
+            newBlock.className = 'col-6 row pt-3 gallery-item-row';
             let UUID = new Date().getTime();
             newBlock.dataset.id = UUID;
             newBlock.dataset.type = 'new';
@@ -247,7 +248,7 @@
             if(lang==='uk'){
                 newBlock.innerHTML = `
                                 <div class="col-6 text-center">
-                                    <img id="image${UUID}" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s" alt="error" style="width: 200px; height: 200px;">
+                                    <img id="image${UUID}" src="${contextPath}/image/default-image.jpg" alt="error" style="width: 200px; height: 200px;">
                                     <label class="form-label" style="color: #AAAAAA;">Png, jpg, jpeg, mp4, avi до 15 МБ</label>
                                     <div class="d-flex justify-content-center gap-3">
                                         <button type="button" class="btn btn-success btn-image btn-select"
@@ -292,7 +293,7 @@
             }else if (lang === 'en'){
                 newBlock.innerHTML = `
                                 <div class="col-6 text-center">
-                                    <img id="image${UUID}" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGL-nM5H8eZfM19UQbIgDn0XwOUj1ByAyV4Q&s" alt="error" style="width: 200px; height: 200px;">
+                                    <img id="image${UUID}" src="${contextPath}/image/default-image.jpg" alt="error" style="width: 200px; height: 200px;">
                                     <label class="form-label" style="color: #AAAAAA;">Png, jpg, jpeg, mp4, avi to 15 MB</label>
                                     <div class="d-flex justify-content-center gap-3">
                                         <button type="button" class="btn btn-success btn-image btn-select"

@@ -33,7 +33,6 @@
                 <li class="nav-item">
                     <button type="button" class="nav-link active" data-bs-toggle="tab"
                             data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
-                            style="margin-left: 15px;"
                             data-lang="uk">
                         <i class="ti ti-planet me-1"></i>
                         <span>UK</span>
@@ -80,7 +79,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3 mb-4">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2">
                         <h4 class="mb-0">2 блок - Продукція</h4>
                         <div id="status-production-block-uk"></div>
                     </div>
@@ -98,7 +97,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3 mb-4">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2">
                         <h4 class="mb-0">3 блок - Про виробника</h4>
                         <div id="status-factory-block-uk"></div>
                     </div>
@@ -131,7 +130,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3 mb-4">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">4 блок - В цифрах</h4>
                         <div id="status-number-block-uk"></div>
                     </div>
@@ -160,7 +159,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3 mb-4">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2">
                         <h4 class="mb-0">5 блок - Ціль</h4>
                         <div id="status-aim-block-uk"></div>
                     </div>
@@ -176,7 +175,7 @@
                 <hr class="my-4">
 
                 <div class="row mt-4 g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">6 блок - Еко продукція</h4>
                         <div id="status-eco-production-block-uk"></div>
                     </div>
@@ -218,7 +217,7 @@
                  data-bs-toggle="tab">
 
                 <div class="row g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">1 block - Main</h4>
                         <div id="status-main-block-en"></div>
                     </div>
@@ -239,7 +238,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">2 block - Production</h4>
                         <div id="status-production-block-en"></div>
                     </div>
@@ -257,7 +256,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">3 block - About factory</h4>
                         <div id="status-factory-block-en"></div>
                     </div>
@@ -286,7 +285,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">4 block - Numbers</h4>
                         <div id="status-number-block-en"></div>
                     </div>
@@ -319,7 +318,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">5 block - Our main aim</h4>
                         <div id="status-aim-block-en"></div>
                     </div>
@@ -340,7 +339,7 @@
                 <hr class="my-4">
 
                 <div class="row g-3">
-                    <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                    <div class="col-12 d-flex align-items-center justify-content-center flex-wrap gap-2 mb-2">
                         <h4 class="mb-0">6 block - Eco products</h4>
                         <div id="status-eco-production-block-en"></div>
                     </div>
@@ -564,7 +563,8 @@
 
             <!-- Button save Base -->
             <div id="shared-save" style="display: none;">
-                <button type="button" class="btn btn-green w-50" id="btn-save_">Зберегти</button>
+                <button type="button" class="btn btn-green w-50" id="btn-save_"
+                        th:text="#{text.button.save}"></button>
             </div>
             <!--/ Button save Base -->
 
