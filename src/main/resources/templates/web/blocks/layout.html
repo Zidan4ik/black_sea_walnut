@@ -60,6 +60,15 @@
             color: forestgreen !important;
         }
 
+
+        @media (max-width: 991px) {
+            .btn-request-call {
+                color: #000000b8 !important;
+                border: none !important;
+            }
+        }
+
+
         .btn-image {
             background: #337D5A;
             border: #337D5A;
@@ -555,8 +564,8 @@
         let isVideo = item.pathToImage.includes('/video/');
 
         return `
-        <div class="swiper-slide">
-            <div class="card" style="width: 24rem;">
+        <div class="swiper-slide d-flex justify-content-center">
+            <div class="card" style="width: 100%; max-width: 24rem; margin: 0 auto;">
                 ${!isImage && !isVideo ? `<img src="${path_default_image}" class="card-img-top" alt="error"
                                     style="width: 100%;height: 220px;">` : ''}
                 ${isImage && !isVideo ? `<img src="${contextPath + item.pathToImage || path_default_image}" class="card-img-top" alt="error"
@@ -877,8 +886,7 @@
                     }
                 }
 
-            }
-            else{
+            } else {
                 console.error("The server returned non-JSON! The session may have expired.");
             }
         });

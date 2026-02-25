@@ -51,11 +51,12 @@
     <section class="news gray_section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-6 col-12">
+                <div class="col-md-6 col-12 text-center text-md-start">
                     <h2 th:text="#{text.sidebar.news}"></h2>
                     <p class="news__descr" th:text="#{text.latestNewsAndUsefulInformation}"></p>
                 </div>
-                <div class="col-md-6 col-12 d-flex justify-content-end" id="container-navigation-news">
+                <div class="col-md-6 col-12 d-flex justify-content-center justify-content-md-end mt-3 mt-md-0"
+                     id="container-navigation-news">
                     <div class="nav-buttons">
                         <div class="prevArrowBtn-new" tabindex="0" role="button" aria-label="Previous slide">
                             <i class="ti ti-arrow-left"></i>
@@ -65,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12 mt-4">
                     <div class="news-container swiper-container row d-flex justify-content-evenly">
                         <div class="swiper">
                             <div id="container-news" class="swiper-wrapper"></div>

@@ -48,7 +48,7 @@
                                 <a><span></span></a>
                             </li>
                         </ul>
-                        <ul class="logo_button_mobile d-lg-none d-flex">
+                        <ul class="logo_button_mobile d-lg-none d-flex" style="margin-top: 1px;">
                             <li>
                                 <a class="button btn-request-call" th:text="#{text.requestCall}"></a>
                             </li>
@@ -139,44 +139,47 @@
     <div class="top-header__menu d-lg-flex d-none">
         <div class="container">
             <div class="row">
-                <nav class="menu_main menu_top">
-                    <div class="mobile-line d-lg-none d-flex">
-                        <ul class="line_social">
-                            <li>
+                <nav class="menu_main menu_top w-100">
+                    <div class="d-lg-none d-flex justify-content-between align-items-center w-100 px-3 py-2"
+                         style="background: #FAFAFA;">
+
+                        <ul class="line_social d-flex list-unstyled m-0 p-0">
+                            <li class="me-3">
                                 <a class="facebook-link"><i class="nut-icon icons-facebook"></i></a>
                             </li>
-                            <li>
+                            <li class="me-3">
                                 <a class="instagram-link"><i class="nut-icon icons-instagram"></i></a>
                             </li>
                             <li>
                                 <a class="youtube-link"><i class="nut-icon icons-youtube"></i></a>
                             </li>
                         </ul>
-                        <ul class="log_in d-lg-flex">
-                            <li>
-                                <a th:if="${currentUser}">
-                                    <a data-bs-toggle="dropdown" type="button" style="border: none;background:none;">
-                                        <i class="nut-icon icons-man-user" style="font-size: larger"></i>
+
+                        <ul class="log_in d-flex list-unstyled m-0 p-0 align-items-center">
+                            <li class="me-3">
+                                <th:block th:if="${currentUser}">
+                                    <a data-bs-toggle="dropdown" role="button" class="p-0">
+                                        <i class="nut-icon icons-man-user" style="font-size: 1.2rem; color: #93B474;"></i>
                                     </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" th:href="@{/web/account}"
-                                               th:text="#{text.account}"></a></li>
-                                        <li><a class="dropdown-item" th:href="@{/logout}"
-                                               th:text="#{value.status.exit}"></a></li>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                        <li><a class="dropdown-item" th:href="@{/web/account}" th:text="#{text.account}"></a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}" th:text="#{value.status.exit}"></a></li>
                                     </ul>
-                                </a>
-                                <a th:unless="${currentUser}" th:href="@{/login}">
-                                    <span class="loginMy" th:text="#{text.login}"
-                                          style="border-bottom: none;"></span>
+                                </th:block>
+                                <a th:unless="${currentUser}" th:href="@{/login}" class="text-decoration-none text-dark small fw-bold">
+                                    <span class="loginMy" th:text="#{text.login}"></span>
                                 </a>
                             </li>
                             <li>
-                                <a th:href="@{/registration}">
-                                    <span class="registrationMy" th:text="#{text.registration}"
-                                          style="border-bottom: none;"></span></a>
+                                <a th:href="@{/registration}" class="text-decoration-none text-dark small fw-bold">
+                                    <span class="registrationMy" th:text="#{text.registration}"></span>
+                                </a>
                             </li>
                         </ul>
+
                     </div>
+
                     <ul class="menu_main_ul">
                         <li>
                             <a th:href="@{/web/shop}" th:text="#{text.shop}"></a>

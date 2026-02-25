@@ -19624,7 +19624,7 @@ a.with_arrow b {
     }
 
     .top-header__line .row.align-items-center .wrap .lang-menu .title {
-        border: 1.5px solid #337D5A;
+        /*border: 1.5px solid #337D5A;*/
     }
 
     .top-header__line .row.align-items-center .wrap .lang-menu .title::after {
