@@ -7,7 +7,6 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.clients} + ' ' + #{text.page}"></title>
-    <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
 </head>
 <body>
 <!-- Content -->
@@ -310,7 +309,6 @@
             </div>
             <!--/ Modal -->
 
-            <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
             <script th:src="@{/js/image.js}"></script>
             <script th:src="@{/js/validator.js}"></script>
             <script th:src="@{/js/copy.js}"></script>
@@ -600,7 +598,6 @@
                                                             isActiveEl.checked = nestedObject[nestedKey];
                                                         }
                                                     } else if (nestedKey === 'clientsBlockFiles') {
-                                                        console.log(1);
                                                         let array = nestedObject[nestedKey];
                                                         if (Array.isArray(array)) {
                                                             array.forEach(function (el) {

@@ -37,5 +37,7 @@ public interface DiscountService {
 
     void deleteCommonById(Long id);
 
+    void deleteProductLinksByDiscountCommonId(Long discountId);
+
     Map<Long,List<Discount>> findAllGroupedByCommonId();
 }

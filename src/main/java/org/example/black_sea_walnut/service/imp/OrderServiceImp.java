@@ -54,7 +54,9 @@ public class OrderServiceImp implements OrderService {
         if (orderOptional.isPresent()) {
             List<OrderDetail> details = orderOptional.get().getOrderDetails();
             LogUtil.logInfo("Found " + details.size() + " order details for order.");
-            return details.stream().map(OrderDetailMapper::toDTOView).toList();
+            return details.stream().map(od->{
+                return OrderDetailMapper.toDTOView(od,LanguageCode.uk);
+            }).toList();
         } else {
             LogUtil.logWarning("Order not found for userId: " + userId + " and personalId: " + personalId);
             return null;
@@ -75,7 +77,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public PageResponse<OrderUserResponseForView> getAllByUser(Long userId, OrderUserResponseForView response, Pageable pageable, LanguageCode code) {
         LogUtil.logInfo("Fetching orders with user id: " + userId + " with filter: " + response + " and page request: " + pageable);
-        Specification<Order> specification = OrderSpecification.getSpecification(response,userId);
+        Specification<Order> specification = OrderSpecification.getSpecification(response, userId);
         Page<Order> page = orderRepository.findAll(specification, pageable);
         List<OrderUserResponseForView> responsesDtoAdd = page.map(mapper::toResponseForUserOrderView).stream().toList();
         LogUtil.logInfo("Fetched " + responsesDtoAdd.size() + " orders.");
@@ -119,9 +121,9 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public ResponseOrderForAdd getByIdInDTOAdd(Long id) {
+    public ResponseOrderForAdd getByIdInDTOAdd(Long id, LanguageCode code) {
         LogUtil.logInfo("Fetching order by id: " + id);
-        ResponseOrderForAdd order = mapper.toDTOAdd(getById(id));
+        ResponseOrderForAdd order = mapper.toDTOAdd(getById(id),code);
         LogUtil.logInfo("Fetched order by id: " + id);
         return order;
     }

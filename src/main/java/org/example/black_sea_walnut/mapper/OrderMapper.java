@@ -32,13 +32,16 @@ public class OrderMapper {
                 .statusOrder(entity.getOrderStatus())
                 .typePayment(entity.getPaymentType())
                 .isPay(entity.isPayed())
-                .date   (DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
+                .date(DateUtil.toFormatDateFromDB(entity.getDateOfOrdering(), "dd.MM.yyyy"))
                 .build();
     }
 
-    public ResponseOrderForAdd toDTOAdd(Order entity) {
-        List<ResponseOrderDetailForView> list = entity.getOrderDetails().stream().map(OrderDetailMapper::toDTOView).toList();
+    public ResponseOrderForAdd toDTOAdd(Order entity, LanguageCode code) {
+        List<ResponseOrderDetailForView> list = entity.getOrderDetails().stream().map(
+                od -> OrderDetailMapper.toDTOView(od, code)
+        ).toList();
         User user = entity.getUser();
+
         return ResponseOrderForAdd
                 .builder()
                 .id(entity.getId())
@@ -51,7 +54,7 @@ public class OrderMapper {
                 .paymentType(entity.getPaymentType())
                 .isPayed(entity.isPayed())
                 .orderStatus(entity.getOrderStatus())
-                .city(user != null && user.getCity() != null? user.getCity().toString() : null)
+                .city(user != null && user.getCity() != null ? user.getCity().toString() : null)
                 .companyDelivery(entity.getCompanyDelivery())
                 .personNameDelivery(entity.getPersonNameDelivery())
                 .emailDelivery(entity.getEmailDelivery())

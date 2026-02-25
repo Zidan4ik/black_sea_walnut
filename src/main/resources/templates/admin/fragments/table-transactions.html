@@ -12,10 +12,9 @@
     <span th:if="${item.typeOfPayment == 'card'}" th:text="#{value.status.card}"></span>
     <span th:if="${item.typeOfPayment == 'cash'}" th:text="#{value.status.cash}"></span>
   </td>
-  <td th:if="${item.statusPayment} == 'payed'"  th:text="#{value.status.payed}" class="bg-greenMy" style="background-color: green;"></td>
-  <td th:if="${item.statusPayment} == 'unPayed'"  th:text="#{value.status.unPayed}" class="bg-redMy"></td>
-  <td th:if="${item.statusPayment} == 'inProcess'"  th:text="#{value.status.inProcess}" class="bg-orangeMy"></td>
-</tr>
+  <td th:if="${item.statusPayment == 'payed'}" th:text="#{value.status.payed}" class="status-badge status-payed"></td>
+  <td th:if="${item.statusPayment == 'unPayed'}" th:text="#{value.status.unPayed}" class="status-badge status-unpayed"></td>
+  <td th:if="${item.statusPayment == 'inProcess'}" th:text="#{value.status.inProcess}" class="status-badge status-process"></td></tr>
 <tr th:unless="${data.size()>0}">
   <td colspan="9" style="text-align: center; color: gray; font-style: italic;" th:text="#{text.table.exist}">
   </td>

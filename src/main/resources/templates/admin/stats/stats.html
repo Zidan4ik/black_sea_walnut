@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title th:text="#{text.transactions}"></title>
+    <title th:text="#{text.sidebar.statistic}"></title>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/apex-charts/apex-charts.css}"/>
     <link rel="stylesheet" th:href="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css}"/>
     <style>
@@ -16,9 +16,9 @@
             background-color: lightgrey !important;
             width: auto !important;
             text-align: center;
+            font-size: 0.85rem;
         }
-    </style>
-    <style>
+
         #scrollbar {
             -webkit-appearance: none;
             width: 100%;
@@ -30,13 +30,8 @@
             transition: opacity .2s;
         }
 
-        #scrollbar:hover {
-            opacity: 1;
-        }
-
         #scrollbar::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
             width: 20px;
             height: 20px;
             background: forestgreen;
@@ -45,55 +40,61 @@
             border: 2px solid #037b55;
         }
 
-        #scrollbar::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: forestgreen;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid #037b55;
+        canvas {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .chart-container {
+            min-height: 300px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-        <div class="row">
-            <div class="col-auto">
-                <h4 th:text="#{text.countOrdersByMonth}"></h4>
+
+        <div class="card p-4 mb-5 shadow-sm">
+            <div class="row align-items-center g-3 mb-4">
+                <div class="col-12 col-md-auto">
+                    <h4 class="mb-0" th:text="#{text.countOrdersByMonth}"></h4>
+                </div>
+                <div class="col-12 col-md-4 col-lg-3">
+                    <div class="input-group input-group-merge">
+                        <input id="dateAmountOrdersByMonth_" type="text" class="form-control" placeholder="dd.mm.yyyy"/>
+                        <span class="input-group-text cursor-pointer" onclick="focusInput('dateAmountOrdersByMonth_')">
+                            <i class="ti ti-calendar"></i>
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="col-auto input-group input-group-merge"
-                 style="width:20%; justify-content: center; display: inline-flex; padding: 0">
-                <input id="dateAmountOrdersByMonth_" type="text" class="form-control" placeholder="dd.mm.yyyy"/>
-                <span class="input-group-text" onclick="focusInput('dateAmountOrdersByMonth_')">
-                    <i class="ti ti-calendar"></i>
-                </span>
-            </div>
-            <div id="chart-orders"></div>
-            <div id="chart-orders-noExist"></div>
-            <input type="range" id="scrollbar" min="0" max="10" step="1" value="10"
-                   style="width: 100%; margin-top: 20px;">
+            <div id="chart-orders" class="chart-container"></div>
+            <div id="chart-orders-noExist" class="text-center text-muted"></div>
+            <input type="range" id="scrollbar" min="0" max="10" step="1" value="10" class="mt-3">
         </div>
-        <div class="mt-5">
-            <div class="d-flex justify-content-center">
-                <h4><span th:text="#{text.top}"></span>
-                    <span id="text-amount-products_">5</span>
+
+        <div class="card p-4 mb-5 shadow-sm">
+            <div class="text-center mb-4">
+                <h4>
+                    <span th:text="#{text.top}"></span>
+                    <span id="text-amount-products_" class="badge bg-label-success">5</span>
                     <span th:text="#{text.goods}"></span>
                 </h4>
             </div>
-            <div class="row">
-                <div class="col-auto input-group input-group-merge"
-                     style="width:20%; justify-content: center; display: inline-flex; padding: 0">
-                    <input id="dateAmountProducts_" type="text" class="form-control input-card-block-spinner"
-                           placeholder="dd.mm.yyyy"/>
-                    <span class="input-group-text" onclick="focusInput('dateAmountProducts_')">
-                        <i class="ti ti-calendar"></i>
-                    </span>
+
+            <div class="row g-3 mb-4 justify-content-center">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="input-group input-group-merge">
+                        <input id="dateAmountProducts_" type="text" class="form-control" placeholder="dd.mm.yyyy"/>
+                        <span class="input-group-text cursor-pointer" onclick="focusInput('dateAmountProducts_')">
+                            <i class="ti ti-calendar"></i>
+                        </span>
+                    </div>
                 </div>
-                <div class="col-auto">
-                    <select class="form-select mx-2 select-card-block-spinner"
-                            id="size-amount-products_">
+                <div class="col-12 col-sm-6 col-md-2">
+                    <select class="form-select" id="size-amount-products_">
                         <option value="3">3</option>
                         <option value="5" selected>5</option>
                         <option value="7">7</option>
@@ -101,49 +102,49 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6 table-responsive mt-3" style="overflow-x: auto;">
-                    <div id="card-block">
-                        <table class="table table-bordered table-hover linkedRow"
-                               style="table-layout: fixed; position: static; zoom: 1;">
+
+            <div class="row g-4">
+                <div class="col-12 col-xl-6">
+                    <div class="table-responsive border rounded">
+                        <table class="table table-hover mb-0">
                             <thead>
                             <tr>
-                                <th class="header-mini-table" th:text="#{text.article}+'№'"></th>
+                                <th class="header-mini-table">№</th>
                                 <th class="header-mini-table" th:text="#{table.header.name}"></th>
                                 <th class="header-mini-table" th:text="#{table.header.count}"></th>
                                 <th class="header-mini-table" th:text="#{table.header.sales}"></th>
                             </tr>
                             </thead>
-                            <tbody id="table-data-container_" class="text-center">
-                            </tbody>
+                            <tbody id="table-data-container_" class="text-center"></tbody>
                         </table>
                     </div>
                 </div>
-                <div id="chart-products" class="col-6"
-                     style="min-height: 365px;width: 50%;margin: 0 auto;"></div>
+                <div class="col-12 col-xl-6">
+                    <div id="chart-products" style="height: 365px; width: 100%;"></div>
+                </div>
             </div>
         </div>
-        <div class="mt-5">
-            <div class="d-flex justify-content-center">
-                <h4 th:text="#{text.kindOfUsers}"></h4>
-            </div>
-            <div class="row">
-                <div class="col d-flex justify-content-center">
-                    <div class="col-auto input-group input-group-merge"
-                         style="width:50%; height: 22%; justify-content: center; display: inline-flex; padding: 0">
+
+        <div class="card p-4 shadow-sm">
+            <h4 class="text-center mb-4" th:text="#{text.kindOfUsers}"></h4>
+            <div class="row g-4 align-items-center">
+                <div class="col-12 col-md-4 offset-md-1">
+                    <div class="input-group input-group-merge">
                         <input id="dateAmountUsers_" type="text" class="form-control" placeholder="dd.mm.yyyy"/>
-                        <span class="input-group-text" onclick="focusInput('dateAmountUsers_')">
-                    <i class="ti ti-calendar"></i>
-                </span>
+                        <span class="input-group-text cursor-pointer" onclick="focusInput('dateAmountUsers_')">
+                            <i class="ti ti-calendar"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="col" id="chart-users"></div>
+                <div class="col-12 col-md-6 d-flex justify-content-center">
+                    <div id="chart-users" style="min-height: 300px; width: 100%;"></div>
+                </div>
             </div>
         </div>
     </div>
+
     <input type="hidden" name="languageCode" value="uk" id="languageCode_">
     <script th:src="@{/vuexy/assets/vendor/libs/apex-charts/apexcharts.js}"></script>
-    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
     <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
     <script th:src="@{/js/pagination.js}"></script>
 
@@ -324,23 +325,27 @@
                 element.chart.destroy();
                 element.chart = null;
             }
-
             element.innerHTML = '';
+
+            let isDark = (typeof current_mode !== 'undefined' && current_mode === 'dark');
+            let textColor = isDark ? '#FFFFFF' : '#000000';
 
             var visiblePoints = 7;
             var startIndex = 0;
 
             var options = {
                 series: [{
-                    name: 'TEAM A',
+                    name: 'Orders',
                     type: 'area',
                     data: data.slice(startIndex)
                 }],
                 chart: {
                     height: 300,
                     type: 'area',
+                    foreColor: textColor,
                     toolbar: {show: true},
-                    zoom: {enabled: true}
+                    zoom: {enabled: true},
+                    animations: {enabled: false}
                 },
                 colors: ['#037b55'],
                 stroke: {
@@ -363,20 +368,39 @@
                 markers: {
                     size: 5,
                     colors: ['#54a455'],
-                    strokeColors: '#5abfaf',
+                    strokeColors: isDark ? '#2F3349' : '#FFFFFF',
                     strokeWidth: 2
+                },
+                tooltip: {
+                    theme: isDark ? 'dark' : 'light',
+                    x: {format: 'dd MMM yyyy'}
                 },
                 yaxis: [{
                     title: {
-                        text: document.documentElement.lang === 'uk' ? 'К-сть замовлень'
-                            : (document.documentElement.lang === 'en' ? 'Amount orders' : ''),
+                        text: messages.amountOrders,
+                        style: {
+                            color: textColor,
+                            fontWeight: 400
+                        }
                     },
+                    labels: {
+                        style: {
+                            colors: textColor,
+                            fontWeight: 400
+                        }
+                    }
                 }],
                 xaxis: {
                     type: 'datetime',
                     labels: {
-                        format: 'dd MMM'
-                    }
+                        format: 'dd MMM',
+                        style: {colors: textColor}
+                    },
+                    axisBorder: {show: true, color: isDark ? '#444' : '#ccc'},
+                    axisTicks: {show: true, color: isDark ? '#444' : '#ccc'}
+                },
+                grid: {
+                    borderColor: isDark ? '#444' : '#eee',
                 }
             };
 
@@ -386,71 +410,104 @@
             element.chart = chart;
 
             var scrollbar = document.getElementById("scrollbar");
-            scrollbar.max = data.length - visiblePoints;
+            scrollbar.max = data.length > visiblePoints ? data.length - visiblePoints : 0;
             scrollbar.value = startIndex;
 
-            scrollbar.addEventListener("input", function () {
-                var newIndex = parseInt(scrollbar.value);
+            const newScrollbar = scrollbar.cloneNode(true);
+            scrollbar.parentNode.replaceChild(newScrollbar, scrollbar);
+
+            newScrollbar.addEventListener("input", function () {
+                var newIndex = parseInt(this.value);
                 chart.updateSeries([{
-                    name: 'TEAM A',
-                    type: 'area',
+                    name: 'Orders',
                     data: data.slice(newIndex, newIndex + visiblePoints)
-                }]);
+                }], false);
             });
         }
 
         function loadChartProducts(data) {
+            let isDark = (typeof current_mode !== 'undefined' && current_mode === 'dark');
+            let textColor = isDark ? "#FFFFFF" : "#000000";
+            let tooltipBg = isDark ? "#2F3349" : "#FFFFFF";
+
             var options = {
                 animationEnabled: true,
                 backgroundColor: "transparent",
-                title: {
-                    text: ""
-                },
-                width: 594,
                 height: 365,
+                theme: isDark ? "theme2" : "theme1",
+
+                toolTip: {
+                    fontColor: textColor,
+                    backgroundColor: tooltipBg,
+                    borderColor: isDark ? "#444" : "#ccc",
+                    cornerRadius: 5
+                },
+
                 data: [{
                     type: "funnel",
-                    indexLabel: "{label}",
+                    indexLabel: "",
+                    indexLabelLineThickness: 0,
+                    indexLabelFontColor: textColor,
+
                     toolTipContent: "<b>{label}</b>: {y} <b>({percentage}%)</b>",
-                    neckWidth: 50,
+                    valueRepresents: "height",
+                    neckWidth: 20,
                     neckHeight: 0,
-                    valueRepresents: "area",
                     dataPoints: data
                 }]
             };
+
             calculatePercentage(options);
-            $("#chart-products").html();
             $("#chart-products").CanvasJSChart(options);
         }
 
         function loadChartUsers(labels, count) {
             $("#chart-users").empty();
+
+            let isDark = (typeof current_mode !== 'undefined' && current_mode === 'dark');
+            let textColor = isDark ? '#FFFFFF' : '#000000';
+
             var options = {
                 series: count,
                 chart: {
-                    width: 380,
                     type: 'pie',
+                    height: 350,
+                    foreColor: textColor
                 },
                 labels: labels,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        colors: textColor
+                    }
+                },
+                stroke: {
+                    show: true,
+                    colors: isDark ? ['#2F3349'] : ['#FFFFFF']
+                },
+                dataLabels: {
+                    style: {
+                        colors: ['#FFFFFF'],
+                        textAnchor: 'middle'
+                    },
+                    dropShadow: {enabled: false}
+                },
                 responsive: [{
                     breakpoint: 480,
                     options: {
-                        chart: {
-                            width: 200
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
+                        chart: {width: '100%'},
+                        legend: {position: 'bottom'}
                     }
                 }]
             };
+
             var chart = new ApexCharts(document.querySelector("#chart-users"), options);
             chart.render();
         }
 
         function calculatePercentage(options) {
             const dataPoint = options.data[0].dataPoints;
-            const total = dataPoint.reduce((sum, item) => sum + item.y, 0); // Сума всіх значень
+            const total = dataPoint.reduce((sum, item) => sum + item.y, 0);
 
             for (let i = 0; i < dataPoint.length; i++) {
                 options.data[0].dataPoints[i].percentage = ((dataPoint[i].y / total) * 100).toFixed(2);

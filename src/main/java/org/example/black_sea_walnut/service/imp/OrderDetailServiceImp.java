@@ -6,6 +6,7 @@ import org.example.black_sea_walnut.dto.admin.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.entity.Order;
 import org.example.black_sea_walnut.entity.OrderDetail;
 import org.example.black_sea_walnut.entity.Product;
+import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.OrderDetailMapper;
 import org.example.black_sea_walnut.repository.OrderDetailsRepository;
 import org.example.black_sea_walnut.service.OrderDetailService;
@@ -25,7 +26,7 @@ public class OrderDetailServiceImp implements OrderDetailService {
         LogUtil.logInfo("Fetching all order details for order with id: " + order.getId());
 
         List<ResponseOrderDetailForView> response = orderDetailsRepository.getAllByOrder(order).stream()
-                .map(OrderDetailMapper::toDTOView)
+                .map(od->OrderDetailMapper.toDTOView(od, LanguageCode.uk))
                 .toList();
 
         LogUtil.logInfo("Mapped " + response.size() + " order details to response view for order with id: " + order.getId());

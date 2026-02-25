@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Gallery</title>
+    <title th:text="#{text.sidebar.galleries}"></title>
 </head>
 <body>
 <!-- Content -->
@@ -105,7 +105,7 @@
 
         function invokeRequestGalleries() {
             const params = new URLSearchParams();
-            params.append('languageCode', document.documentElement.lang);
+            params.append('languageCode', 'uk');
             htmx.ajax('GET', `${pathToTable}?${params.toString()}`, {
                 target: '#gallery-items-wrapper',
                 swap: 'innerHTML'
@@ -140,7 +140,7 @@
             }, 3000);
         }
 
-        $('#container-gallery').on('input', '.row', function () {
+        $('#container-gallery').on('input', '.gallery-item-row', function () {
             let idBlock = $(this).data('id');
             validate($(this), idBlock);
         });
@@ -173,9 +173,9 @@
             let file = fileInput.files[0];
             if (file !== undefined && !validImageTypes.includes(file.type)) {
                 imageBlock.append(`
-            <div class="error-message text-danger">
-                File should be extensions like JPEG or PNG
-            </div>`);
+                                    <div class="error-message text-danger">
+                                        File should be extensions like JPEG or PNG
+                                    </div>`);
             } else {
                 imageBlock.next('.error-message').remove();
             }
@@ -184,7 +184,6 @@
                 handleInputChange(rowElement[0]);
             }
         }
-
 
         function showError(element, message) {
             element.addClass('is-invalid');

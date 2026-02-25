@@ -7,27 +7,27 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.configuration}"></title>
-    <link rel="stylesheet" th:href="@{/css/tabs-localization.css}"/>
     <link rel="stylesheet" th:href="@{/css/admin/product-configuration.css}"/>
 </head>
 <body>
 <!-- Content -->
-<div layout:fragment="content" class="container-xxl d-flex align-items-stretch flex-grow-1 p-0">
+<div layout:fragment="content" class="container-xxl p-0">
     <div class="flex-shrink-1 flex-grow-1 container-p-x container-p-y">
-        <div class="row">
-            <div class="col">
-                <h4 class="fw-bold" th:text="#{text.tastes}"></h4>
-                <div class="icon-container" id="btnAdd-taste" data-modal="ModalForSaveTaste"
-                     aria-hidden="true">
-                    <span class="icon-plus"></span>
+        <div class="row g-4">
+            <div class="col-12 col-lg-6">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0" th:text="#{text.tastes}"></h4>
+                    <div class="icon-container" id="btnAdd-taste" data-modal="ModalForSaveTaste" aria-hidden="true">
+                        <span class="icon-plus"></span>
+                    </div>
                 </div>
-                <div class="table-responsive mt-3">
-                    <table class="table table-bordered">
-                        <thead>
+                <div class="table-responsive shadow-sm rounded">
+                    <table class="table table-hover table-bordered mb-0">
+                        <thead class="table-light">
                         <tr>
                             <th>Id</th>
                             <th th:text="#{table.header.name}"></th>
-                            <th th:text="#{table.header.functions}"></th>
+                            <th class="text-center" th:text="#{table.header.functions}"></th>
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0" id="table-data-container-tastes_">
@@ -35,20 +35,21 @@
                     </table>
                 </div>
             </div>
-            <div class="col">
-                <h4 class="fw-bold" th:text="#{text.discount}"></h4>
-                <div class="icon-container" id="btnAdd-discount" data-modal="ModalForSaveDiscount"
-                     aria-hidden="true">
-                    <span class="icon-plus"></span>
+            <div class="col-12 col-lg-6">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="fw-bold mb-0" th:text="#{text.discount}"></h4>
+                    <div class="icon-container" id="btnAdd-discount" data-modal="ModalForSaveDiscount" aria-hidden="true">
+                        <span class="icon-plus"></span>
+                    </div>
                 </div>
-                <div class="table-responsive mt-3">
-                    <table class="table table-bordered">
-                        <thead>
+                <div class="table-responsive shadow-sm rounded">
+                    <table class="table table-hover table-bordered mb-0">
+                        <thead class="table-light">
                         <tr>
                             <th>Id</th>
                             <th th:text="#{table.header.name}"></th>
                             <th th:text="#{text.percent}"></th>
-                            <th th:text="#{table.header.functions}"></th>
+                            <th class="text-center" th:text="#{table.header.functions}"></th>
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0" id="table-data-container-discounts_">
@@ -64,25 +65,19 @@
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="nav-align-top">
-                    <ul class="nav nav-tabs gap-3" role="tablist" style="background: none;">
+                    <ul class="nav nav-tabs" role="tablist" style="background: none; border-bottom: 0;">
                         <li class="nav-item">
                             <button type="button" class="nav-link active" data-bs-toggle="tab"
                                     data-bs-target="#navs-uk" aria-controls="navs-uk" aria-selected="true"
-                                    style="margin-left: 15px;" data-lang="uk" data-type="taste">
-                            <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
-                            </span>
-                                <i class="ti ti-planet ti-sm d-sm-none"></i>
+                                    data-lang="uk" data-type="taste">
+                                <i class="ti ti-planet me-1"></i> UK
                             </button>
                         </li>
                         <li class="nav-item">
                             <button type="button" class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#navs-en" aria-controls="navs-en" aria-selected="false"
                                     data-lang="en" data-type="taste">
-                            <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
-                            </span>
-                                <i class="ti ti-planet ti-sm d-sm-none"></i>
+                                <i class="ti ti-planet me-1"></i> EN
                             </button>
                         </li>
                     </ul>
@@ -136,27 +131,17 @@
         <div class="modal-dialog modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="nav-align-top">
-                    <ul class="nav nav-tabs gap-3" role="tablist" style="background: none;" id="tabs-discount">
+                    <ul class="nav nav-tabs" role="tablist" style="background: none; border-bottom: 0;">
                         <li class="nav-item">
                             <button type="button" class="nav-link active" data-bs-toggle="tab"
-                                    data-bs-target="#navsDiscount-uk" aria-controls="navsDiscount-uk"
-                                    aria-selected="true"
-                                    style="margin-left: 15px;" data-lang="uk" data-type="discount">
-                            <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>UK
-                            </span>
-                                <i class="ti ti-planet ti-sm d-sm-none"></i>
+                                    data-bs-target="#navsDiscount-uk" aria-selected="true" data-lang="uk" data-type="discount">
+                                <i class="ti ti-planet me-1"></i> UK
                             </button>
                         </li>
                         <li class="nav-item">
                             <button type="button" class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#navsDiscount-en" aria-controls="navsDiscount-en"
-                                    aria-selected="false"
-                                    data-lang="en" data-type="discount">
-                            <span class="d-none d-sm-block">
-                                <i class="tf-icons ti ti-planet ti-sm me-1_5"></i>EN
-                            </span>
-                                <i class="ti ti-planet ti-sm d-sm-none"></i>
+                                    data-bs-target="#navsDiscount-en" aria-selected="false" data-lang="en" data-type="discount">
+                                <i class="ti ti-planet me-1"></i> EN
                             </button>
                         </li>
                     </ul>
@@ -214,7 +199,9 @@
         </div>
     </div>
     <!--/ Modal Add Discount -->
+
     <input type="hidden" name="languageCode" value="uk" id="languageCode_">
+
     <!-- Taste Id -->
     <div id="shared-tasteId" style="display: none;">
         <label class="form-label" for="tasteId_">Id:</label>
@@ -230,14 +217,6 @@
                placeholder="1">
     </div>
     <!--/ Discount Id -->
-
-    <!--    &lt;!&ndash; Percent &ndash;&gt;-->
-    <!--    <div id="shared-percent" style="display: none;">-->
-    <!--        <label class="form-label" for="percent_">Percent:</label>-->
-    <!--        <input class="form-control" type="text" id="percent_" data-name="value"-->
-    <!--               placeholder="1" >-->
-    <!--    </div>-->
-    <!--    &lt;!&ndash;/ Percent &ndash;&gt;-->
 
     <script th:src="@{/js/validator.js}"></script>
     <script th:src="@{/js/copy.js}"></script>

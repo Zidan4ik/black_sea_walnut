@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
-import org.example.black_sea_walnut.entity.Discount;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.TasteMapper;
@@ -101,6 +100,7 @@ public class TasteServiceImp implements TasteService {
     @Transactional
     public void deleteByCommonId(Long id) {
         LogUtil.logInfo("Deleting all tastes by common ID: " + id);
+        deleteProductLinksByTasteCommonId(id);
         tasteRepository.deleteAllByCommonId(id);
     }
 
@@ -122,5 +122,10 @@ public class TasteServiceImp implements TasteService {
         Map<Long, List<Taste>> tastes = tasteRepository.findAllGroupedByCommonId();
         LogUtil.logInfo("Fetched " + tastes.size() + " tastes.");
         return tastes;
+    }
+
+    @Override
+    public void deleteProductLinksByTasteCommonId(Long tasteId) {
+        tasteRepository.deleteProductLinksByTasteCommonId(tasteId);
     }
 }

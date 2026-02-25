@@ -51,6 +51,7 @@ public class ImageServiceImp implements ImageService {
     @Override
     public void deleteByPath(String path) throws IOException {
         LogUtil.logInfo("Attempting to delete file/folder at path: " + path);
+        if (path == null) return;
         Path path_ = Path.of(path); // can add '.' in parameter for deleting files from current folder project
         Path lockFile = Path.of(path_ + ".lock");
         if (Files.exists(lockFile)) {

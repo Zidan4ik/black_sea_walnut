@@ -22,7 +22,7 @@ import java.util.Objects;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class GalleryController {
+public class    GalleryController {
     private final GalleryService galleryService;
 
     @GetMapping("/galleries")

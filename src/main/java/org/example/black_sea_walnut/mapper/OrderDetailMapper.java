@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.dto.web.BasketResponseForCart;
 import org.example.black_sea_walnut.entity.*;
+import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.ProductService;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,12 @@ import java.util.List;
 public class OrderDetailMapper {
     private final ProductService productService;
 
-    public static ResponseOrderDetailForView toDTOView(OrderDetail entity) {
+    public static ResponseOrderDetailForView toDTOView(OrderDetail entity, LanguageCode code) {
+        String productName = code.equals(LanguageCode.uk) ? entity.getProductNameUk() : entity.getProductNameEn();
         return ResponseOrderDetailForView
                 .builder()
                 .id(entity.getId())
-                .productName(entity.getProductNameUk())
+                .productName(productName)
                 .count(entity.getCount())
                 .price(entity.getUnitPrice())
                 .totalSumma(entity.getSummaWithDiscount())

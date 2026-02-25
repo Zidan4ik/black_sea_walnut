@@ -56,9 +56,14 @@ public class OrderController {
         return model;
     }
 
+//    @GetMapping("/order/{id}/data")
+//    public ResponseEntity<ResponseOrderForAdd> getOrder(@PathVariable Long id) {
+//        return new ResponseEntity<>(orderService.getByIdInDTOAdd(id), HttpStatus.OK);
+//    }
+
     @GetMapping("/order/{id}/data")
-    public ResponseEntity<ResponseOrderForAdd> getOrder(@PathVariable Long id) {
-        return new ResponseEntity<>(orderService.getByIdInDTOAdd(id), HttpStatus.OK);
+    public ResponseEntity<ResponseOrderForAdd> getOrderWithCode(@PathVariable Long id, @RequestParam String languageCode) {
+        return new ResponseEntity<>(orderService.getByIdInDTOAdd(id,LanguageCode.fromString(languageCode)), HttpStatus.OK);
     }
 
     @GetMapping("/order/delete/{id_}")

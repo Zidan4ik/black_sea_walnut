@@ -6,10 +6,12 @@ import org.example.black_sea_walnut.dto.admin.discount.DiscountRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.discount.DiscountResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.discount.DiscountResponseForView;
 import org.example.black_sea_walnut.entity.Discount;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.DiscountMapper;
 import org.example.black_sea_walnut.repository.DiscountRepository;
 import org.example.black_sea_walnut.service.DiscountService;
+import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,8 +136,14 @@ public class DiscountServiceImp implements DiscountService {
     @Transactional
     public void deleteCommonById(Long id) {
         LogUtil.logInfo("Deleting all discounts with common ID: " + id);
+        deleteProductLinksByDiscountCommonId(id);
         discountRepository.deleteAllByDiscountCommonId(id);
         LogUtil.logInfo("Deleted all discounts with common ID: " + id);
+    }
+
+    @Override
+    public void deleteProductLinksByDiscountCommonId(Long discountId) {
+        discountRepository.deleteProductLinksByDiscountCommonId(discountId);
     }
 
     @Override

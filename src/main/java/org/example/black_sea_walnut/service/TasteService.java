@@ -38,4 +38,6 @@ public interface TasteService {
     void saveAll(List<Taste> tastes);
 
     Map<Long, List<Taste>> getAllGroupedByCommonId();
+
+    void deleteProductLinksByTasteCommonId(Long tasteId);
 }

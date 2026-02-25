@@ -562,7 +562,11 @@ public class DatabaseLoader implements CommandLineRunner {
                     orderDetail.setSummaWithDiscount(summaWithDiscount);
 
                     if (!product.getProductTranslations().isEmpty()) {
-                        orderDetail.setProductNameUk(product.getProductTranslations().get(0).getName());
+                        product.getProductTranslations().forEach(
+                                t->{
+                                    if(t.getLanguageCode().equals(LanguageCode.uk)) orderDetail.setProductNameUk(t.getName());
+                                    else if (t.getLanguageCode().equals(LanguageCode.en)) orderDetail.setProductNameEn(t.getName());
+                                });
                     }
 
                     orderDetails.add(orderDetail);

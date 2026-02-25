@@ -152,7 +152,6 @@
             </div>
         </div>
     </div>
-    <script th:src="@{/vuexy/assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js}"></script>
 </div>
 <!--/ Modal -->
 
@@ -275,24 +274,19 @@
     }
 
     function selectedLanguage() {
+        let lang = getCookie("lang");
+        if (lang) {
+            document.documentElement.lang = lang;
+            $("#languageCode_").val(lang);
+        }
+
         $(".button-dropdown").on("click", function () {
             let lang = $(this).attr("data-lang");
             if (lang) {
                 setCookie("lang", lang, 30);
                 window.location.reload();
             }
-        });
-
-        window.addEventListener("load", function () {
-            let lang = getCookie("lang");
-            if (lang) {
-                document.documentElement.lang = lang;
-                let $languageCode = $("#languageCode_");
-                if ($languageCode) {
-                    $languageCode.val(lang);
-                }
-            }
-        });
+        })
     }
 
     function getCurrentLang() {
@@ -406,6 +400,7 @@
         dataTableNoExist: /*[[#{text.table.exist}]]*/ 'default',
         change: /*[[#{text.button.change}]]*/ 'default',
         delete: /*[[#{text.button.delete}]]*/ 'default',
+        amountOrders: /*[[#{text.amount.orders}]]*/ 'default',
     };
 </script>
 </body>

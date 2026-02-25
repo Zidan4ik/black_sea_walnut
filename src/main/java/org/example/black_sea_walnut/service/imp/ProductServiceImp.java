@@ -134,7 +134,7 @@ public class ProductServiceImp implements ProductService {
     @SneakyThrows
     @Override
     public void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName) {
-        if (imagePath.isEmpty() && existingProduct != null) {
+        if (existingProduct != null && imagePath.isEmpty()) {
             ImageUtil.deleteImageIfEmpty(existingProduct, fieldName, imageServiceImp);
         }
         if (image != null && !image.isEmpty()) {
@@ -232,7 +232,7 @@ public class ProductServiceImp implements ProductService {
             imageServiceImp.deleteByPath(product.getPathToImagePayment());
 
         List<OrderDetail> allByProductsContaining = orderDetailService.findAllByProductsContaining(product);
-        for (OrderDetail detail: allByProductsContaining){
+        for (OrderDetail detail : allByProductsContaining) {
             detail.getProducts().remove(product);
             orderDetailService.save(detail);
         }

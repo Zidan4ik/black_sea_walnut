@@ -31,7 +31,7 @@ public interface OrderService {
 
     Order getById(Long id);
 
-    ResponseOrderForAdd getByIdInDTOAdd(Long id);
+    ResponseOrderForAdd getByIdInDTOAdd(Long id, LanguageCode code);
 
     void deleteById(Long id);
 
