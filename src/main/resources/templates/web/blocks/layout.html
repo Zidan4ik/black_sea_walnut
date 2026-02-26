@@ -843,32 +843,43 @@
                     if (data.length > 0) {
                         const key = await changeLanguage('text.gram', getCurrentLang());
                         const keyGrn = await changeLanguage('text.grn', getCurrentLang());
+
+                        const labelProduct = await changeLanguage('table.header.product', getCurrentLang());
+                        const labelAmount = await changeLanguage('text.amount', getCurrentLang());
+                        const labelPrice = await changeLanguage('table.header.priceByProduct', getCurrentLang());
+                        const labelTotal = await changeLanguage('table.header.totalPrice', getCurrentLang());
+
                         containerCartTable.append(data.map(item => {
                             const price = parseFloat(item.price);
                             const count = parseInt(item.amount, 10);
                             const total = price * count;
                             return `
-                            <tr class="card-row product-row" data-id="${item.id}">
-                                <td><span class="bt-content name-span">${item.name}</span><span class="mass-span">${Number(item.mass)}</span>${key}</td>
-                                <td>
-                                    <div class="item_quantity">
-                                        <button type="button" class="quantity_minus" data-id="${item.id}">
-                                            <i class="nut-icon icons-qty-left"></i>
-                                        </button>
-                                        <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
-                                        <button type="button" class="quantity_plus" data-id="${item.id}">
-                                            <i class="nut-icon icons-qty-right"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
-                                </td>
-                                <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
-                                <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
-                            </tr>
-                        `;
-                        }).join(''));
+                                    <tr class="card-row product-row" data-id="${item.id}">
+                                        <td data-th="${labelProduct}">
+                                            <span class="bt-content name-span">${item.name}</span>
+                                            <span class="mass-span">${Number(item.mass)}</span>${key}
+                                        </td>
+                                        <td data-th="${labelAmount}">
+                                            <div class="item_quantity">
+                                                <button type="button" class="quantity_minus" data-id="${item.id}">
+                                                    <i class="nut-icon icons-qty-left"></i>
+                                                </button>
+                                                <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
+                                                <button type="button" class="quantity_plus" data-id="${item.id}">
+                                                    <i class="nut-icon icons-qty-right"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td data-th="${labelPrice}">
+                                            <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
+                                        </td>
+                                        <td data-th="${labelTotal}">
+                                            <span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span>
+                                        </td>
+                                        <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
+                                    </tr>
+                                `;
+                            }).join(''));
 
                         const summaEl = $('#resSumma');
                         if (summaEl.length) {
@@ -1171,64 +1182,6 @@
             validate2(data);
         }
     }
-
-    // function invokeRequestCartData() {
-    //     let request = new XMLHttpRequest();
-    //     request.open("GET", contextPath + `/web/cart/get`)
-    //     request.send();
-    //     request.addEventListener('load', async function () {
-    //         if (request.status === 200) {
-    //             let data = JSON.parse(request.response);
-    //             if (containerCartTable.length) {
-    //                 containerCartTable.empty();
-    //                 if (data.length > 0) {
-    //                     const key = await changeLanguage('text.gram', getCurrentLang());
-    //                     const keyGrn = await changeLanguage('text.grn', getCurrentLang());
-    //                     containerCartTable.append(data.map(item => {
-    //                         const price = parseFloat(item.price);
-    //                         const count = parseInt(item.amount, 10);
-    //                         const total = price * count;
-    //                         return `
-    //                         <tr class="card-row product-row" data-id="${item.id}">
-    //                             <td><span class="bt-content name-span">${item.name}</span><span class="mass-span">${Number(item.mass)}</span>${key}</td>
-    //                             <td>
-    //                                 <div class="item_quantity">
-    //                                     <button type="button" class="quantity_minus" data-id="${item.id}">
-    //                                         <i class="nut-icon icons-qty-left"></i>
-    //                                     </button>
-    //                                     <input type="text" name="quantity" data-id="${item.id}" value="${item.amount}" class="quantity_input">
-    //                                     <button type="button" class="quantity_plus" data-id="${item.id}">
-    //                                         <i class="nut-icon icons-qty-right"></i>
-    //                                     </button>
-    //                                 </div>
-    //                             </td>
-    //                             <td>
-    //                                 <span class="bt-content amount-by-item" data-id="${item.id}">${price}</span><span>${keyGrn}</span>
-    //                             </td>
-    //                             <td><span class="bt-content res-amount-row" data-id="${item.id}">${total}</span><span>${keyGrn}</span></td>
-    //                             <input class="articlesProduct" type="hidden" value="${item.articleProduct}">
-    //                         </tr>
-    //                     `;
-    //                     }).join(''));
-    //
-    //                     const summaEl = $('#resSumma');
-    //                     if (summaEl.length) {
-    //                         summaEl.text(data.reduce((sum, item) => {
-    //                             const price = parseFloat(item.price);
-    //                             const count = parseInt(item.amount, 10);
-    //                             return sum + (price * count);
-    //                         }, 0));
-    //                     }
-    //                 } else {
-    //                     let noExistKey = await changeLanguage('text.table.exist', getCurrentLang());
-    //                     containerCartTable.append(`<tr>
-    //                         <td colspan="4" style="text-align: center; color: gray; font-style: italic;">${noExistKey}</td>
-    //                     </tr>`);
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
 
     async function showAlert(icon, messageKey) {
         let title = await changeLanguage(messageKey, getCurrentLang());

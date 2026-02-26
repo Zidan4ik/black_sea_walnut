@@ -54,78 +54,90 @@
                 <div class="col-12">
                     <table id="table">
                         <thead>
-                        <tr>
-                            <th><span th:text="#{table.header.product}"></span></th>
-                            <th><span th:text="#{text.amount}"></span></th>
-                            <th><span th:text="#{table.header.priceByProduct}"></span></th>
-                            <th><span th:text="#{table.header.totalPrice}"></span></th>
+                        <tr class="card-row">
+                            <th>
+                                <span th:text="#{table.header.product}"></span>
+                            </th>
+                            <th>
+                                <span th:text="#{text.amount}"></span>
+                            </th>
+                            <th>
+                                <span th:text="#{table.header.priceByProduct}"></span>
+                            </th>
+                            <th>
+                                <span th:text="#{table.header.totalPrice}"></span>
+                            </th>
                         </tr>
                         </thead>
                         <tbody id="container-cart-table">
-                        <tr class="card-row">
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="4" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>100 <span th:text="#{text.grn}"></span></td>
-                        </tr>
-                        <tr class="card-row">
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="1" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                        </tr>
-                        <tr class="card-row">
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="1" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                        </tr>
-                        <tr class="card-row">
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="1" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                        </tr>
+
+                        <th:block th:if="${#authorization.expression('isAnonymous')}">
+                            <tr class="card-row">
+                                <td th:text="#{text.cartProduct}"></td>
+                                <td>
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="4" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                                <td>100 <span th:text="#{text.grn}"></span></td>
+                            </tr>
+                            <tr class="card-row">
+                                <td th:text="#{text.cartProduct}"></td>
+                                <td>
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="1" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                            </tr>
+                            <tr class="card-row">
+                                <td th:text="#{text.cartProduct}"></td>
+                                <td>
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="1" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                            </tr>
+                            <tr class="card-row">
+                                <td th:text="#{text.cartProduct}"></td>
+                                <td>
+                                    <div class="item_quantity">
+                                        <button type="button" class="quantity_minus">
+                                            <i class="nut-icon icons-qty-left"></i>
+                                        </button>
+                                        <input type="text" name="quantity" value="1" class="quantity_input">
+                                        <button type="button" class="quantity_plus">
+                                            <i class="nut-icon icons-qty-right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                                <td>25 <span th:text="#{text.grn}"></span></td>
+                            </tr>
+                        </th:block>
+
                         </tbody>
                     </table>
                 </div>
@@ -233,7 +245,6 @@
 
 <script layout:fragment="script">
     $(document).ready(async function () {
-        invokeRequestCart();
         invokeRequestContactData();
         let countries = await getCountriesAll();
         await fillSelectorsByContainer('fiz-selectors', 'fiz');
@@ -273,6 +284,7 @@
         data.append('typeOfPayment', $('input[name="group2"]:checked').val());
         data.append('totalAmount', Number($('#resSumma').text()) * 100 || null);
         let total = 0;
+
         $('#container-cart-table .quantity_input').each(function () {
             let val = parseFloat($(this).val());
             if (!isNaN(val)) {

@@ -1,5 +1,5 @@
 <div th:if="${currentUser != null}"  data-isAuthorized="true" class="row">
-    <div class="col-12">
+    <div class="table-responsive">
         <table id="table">
             <thead>
             <tr>
@@ -41,7 +41,7 @@
     </div>
 </div>
 <div th:unless="${currentUser != null}" data-isAuthorized="false" class="row">
-    <div class="col-12">
+    <div class="table-responsive">
         <table>
             <thead>
             <tr>

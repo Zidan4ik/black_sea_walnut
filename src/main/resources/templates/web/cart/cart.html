@@ -47,70 +47,72 @@
                         </tr>
                         </thead>
                         <tbody id="container-cart-table">
-                        <tr>
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="4" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>100 <span th:text="#{text.grn}"></span></td>
-                        </tr>
-                        <tr>
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="1" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                        </tr>
-                        <tr>
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="1" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                        </tr>
-                        <tr>
-                            <td th:text="#{text.cartProduct}"></td>
-                            <td>
-                                <div class="item_quantity">
-                                    <button type="button" class="quantity_minus">
-                                        <i class="nut-icon icons-qty-left"></i>
-                                    </button>
-                                    <input type="text" name="quantity" value="1" class="quantity_input">
-                                    <button type="button" class="quantity_plus">
-                                        <i class="nut-icon icons-qty-right"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                            <td>25 <span th:text="#{text.grn}"></span></td>
-                        </tr>
+                            <th:block th:if="${#authorization.expression('isAnonymous')}">
+                                <tr>
+                                    <td th:text="#{text.cartProduct}"></td>
+                                    <td>
+                                        <div class="item_quantity">
+                                            <button type="button" class="quantity_minus">
+                                                <i class="nut-icon icons-qty-left"></i>
+                                            </button>
+                                            <input type="text" name="quantity" value="4" class="quantity_input">
+                                            <button type="button" class="quantity_plus">
+                                                <i class="nut-icon icons-qty-right"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                    <td>100 <span th:text="#{text.grn}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td th:text="#{text.cartProduct}"></td>
+                                    <td>
+                                        <div class="item_quantity">
+                                            <button type="button" class="quantity_minus">
+                                                <i class="nut-icon icons-qty-left"></i>
+                                            </button>
+                                            <input type="text" name="quantity" value="1" class="quantity_input">
+                                            <button type="button" class="quantity_plus">
+                                                <i class="nut-icon icons-qty-right"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td th:text="#{text.cartProduct}"></td>
+                                    <td>
+                                        <div class="item_quantity">
+                                            <button type="button" class="quantity_minus">
+                                                <i class="nut-icon icons-qty-left"></i>
+                                            </button>
+                                            <input type="text" name="quantity" value="1" class="quantity_input">
+                                            <button type="button" class="quantity_plus">
+                                                <i class="nut-icon icons-qty-right"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td th:text="#{text.cartProduct}"></td>
+                                    <td>
+                                        <div class="item_quantity">
+                                            <button type="button" class="quantity_minus">
+                                                <i class="nut-icon icons-qty-left"></i>
+                                            </button>
+                                            <input type="text" name="quantity" value="1" class="quantity_input">
+                                            <button type="button" class="quantity_plus">
+                                                <i class="nut-icon icons-qty-right"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                    <td>25 <span th:text="#{text.grn}"></span></td>
+                                </tr>
+                            </th:block>
                         </tbody>
                     </table>
                 </div>
