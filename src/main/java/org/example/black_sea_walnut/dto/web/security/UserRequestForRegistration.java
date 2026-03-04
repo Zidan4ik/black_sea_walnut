@@ -3,7 +3,10 @@ package org.example.black_sea_walnut.dto.web.security;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.Role;
+import org.example.black_sea_walnut.mapper.UserMapper;
+import org.example.black_sea_walnut.service.user.UserProcessable;
 import org.example.black_sea_walnut.validator.annotation.*;
 import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroups;
 import org.hibernate.validator.constraints.Length;
@@ -12,14 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @Builder
 @PasswordValidation(groups = PasswordValidGroups.NotBlankConfirm.class)
-public class UserRequestForRegistration {
+public class UserRequestForRegistration implements UserProcessable {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")
     private String fullName;
     @PhoneFormatValidation
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 15,message = "{error.field.phone.size}")
+    @Length(max = 15, message = "{error.field.phone.size}")
     private String phone;
     @EmailValidation
     @NotBlank(message = "{error.field.empty}")
@@ -41,9 +44,14 @@ public class UserRequestForRegistration {
     private boolean isFop;
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile fileImage;
-    @NotBlank(message = "{error.field.password.empty}", groups =  PasswordValidGroups.NotBlankNew.class)
+    @NotBlank(message = "{error.field.password.empty}", groups = PasswordValidGroups.NotBlankNew.class)
     private String password;
-    @NotBlank(message = "{error.field.password.empty}", groups =  PasswordValidGroups.NotBlankConfirm.class)
+    @NotBlank(message = "{error.field.password.empty}", groups = PasswordValidGroups.NotBlankConfirm.class)
     private String passwordConfirm;
     private Role role;
+
+    @Override
+    public void updateEntity(User user, UserMapper mapper) {
+        mapper.updateEntityFromRequest(this, user);
+    }
 }

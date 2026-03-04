@@ -6,34 +6,24 @@ import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
 import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
-import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForView;
-import org.example.black_sea_walnut.dto.admin.user.request.UserIndividualRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.user.request.UserLegalRequestForView;
 import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
-import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.dto.web.user.AddressDtoIndividual;
 import org.example.black_sea_walnut.dto.web.user.AddressDtoLegal;
 import org.example.black_sea_walnut.dto.web.user.UserDtoIndividual;
 import org.example.black_sea_walnut.dto.web.user.UserDtoLegal;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.enums.MediaType;
-import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.Role;
-import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
-import org.example.black_sea_walnut.password.PasswordResetTokenRepository;
 import org.example.black_sea_walnut.password.PasswordResetTokenService;
 import org.example.black_sea_walnut.password.token.VerificationToken;
 import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
 import org.example.black_sea_walnut.repository.UserRepository;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
+import org.example.black_sea_walnut.service.user.UserProcessable;
 import org.example.black_sea_walnut.util.LogUtil;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -57,11 +46,7 @@ public class UserServiceImp implements UserService {
     private final CountryService countryService;
     private final PasswordResetTokenService passwordResetTokenService;
     private final VerificationTokenRepository tokenRepository;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
-    private final MessageSource messageSource;
-
-    @Value("${upload.path}")
-    private String contextPath;
+    private final MessageService messageService;
 
     @Override
     public List<User> getAll() {
@@ -91,7 +76,7 @@ public class UserServiceImp implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> {
                     LogUtil.logError("User with id: " + id + " was not found!", null);
-                    return new EntityNotFoundException(getMessage("error.notfoundUser") + " Id: " + id);
+                    return new EntityNotFoundException(messageService.getMessage("error.notfoundUser") + " Id: " + id);
                 });
     }
 
@@ -130,118 +115,18 @@ public class UserServiceImp implements UserService {
 
     @SneakyThrows
     @Override
-    public User save(UserFopRequestForView dto) {
-        User userToSave;
-        if (dto.getId() != null) {
-            userToSave = getById(dto.getId());
-
-            if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userToSave.getPathToImage());
+    public User save(UserProcessable dto) {
+        User userToSave = (dto.getId() != null) ? getById(dto.getId()) : new User();
+        if(dto.getFileImage()!=null && !dto.getFileImage().isEmpty()){
+            if(dto.getPathToImage()!=null){
+                imageService.deleteByPath(dto.getPathToImage());
             }
 
-            if (dto.getFileImage() != null) {
-                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
-                dto.setPathToImage(generatedPath);
-            }
-
-            userMapper.updateEntityFromRequest(dto, userToSave);
-        } else {
-            userToSave = userMapper.toEntityFromRequest(dto);
+            dto.setPathToImage(imageService.generateFileName(dto.getFileImage()));
+            imageService.save(dto.getFileImage(),dto.getPathToImage());
         }
-        imageService.save(dto.getFileImage(), dto.getPathToImage());
-
-
-        userToSave.setCity(findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        userToSave.setCityAdditional(findOrThrow(dto.getCityAdditionallyId(), cityService::getById, "City"));
-        userToSave.setRegion(findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
-        userToSave.setRegionAdditional(findOrThrow(dto.getRegionAdditionallyId(), regionService::getById, "Region"));
-
+        dto.updateEntity(userToSave,userMapper);
         return save(userToSave);
-    }
-
-    @SneakyThrows
-    @Override
-    public User save(UserIndividualRequestForAdd dto) {
-        User userToSave;
-        if (dto.getId() != null) {
-            userToSave = getById(dto.getId());
-
-            if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userToSave.getPathToImage());
-            }
-
-            if (dto.getFileImage() != null) {
-                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
-                dto.setPathToImage(generatedPath);
-            }
-
-            userMapper.updateEntityFromRequest(dto,userToSave);
-        }else{
-            userToSave = userMapper.toEntityFromRequest(dto);
-        }
-        imageService.save(dto.getFileImage(), dto.getPathToImage());
-
-        userToSave.setCity(findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        userToSave.setRegion(findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
-
-        return save(userToSave);
-    }
-
-    @SneakyThrows
-    @Override
-    public User save(UserLegalRequestForView dto) {
-        User userToSave;
-        if (dto.getId() != null) {
-            userToSave = getById(dto.getId());
-
-            if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userToSave.getPathToImage());
-            }
-
-            if (dto.getFileImage() != null) {
-                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
-                dto.setPathToImage(generatedPath);
-            }
-
-            userMapper.updateEntityFromRequest(dto,userToSave);
-        }else{
-            userToSave = userMapper.toEntityFromRequest(dto);
-        }
-        imageService.save(dto.getFileImage(), dto.getPathToImage());
-
-        userToSave.setCity(findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        userToSave.setCityAdditional(findOrThrow(dto.getCityAdditionallyId(), cityService::getById, "City"));
-        userToSave.setRegion(findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
-        userToSave.setRegionAdditional(findOrThrow(dto.getRegionAdditionallyId(), regionService::getById, "Region"));
-
-        return save(userToSave);
-    }
-
-    @SneakyThrows
-    @Override
-    public User save(UserRequestForRegistration dto) {
-
-        if (dto.getFileImage() != null) {
-            String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
-            dto.setPathToImage(generatedPath);
-        }
-        dto.setStatus(UserStatus.isActive.toString());
-        dto.setRole(Role.USER);
-
-        imageService.save(dto.getFileImage(), dto.getPathToImage());
-        User userMapped = userMapper.toEntityForRegistration(dto);
-
-        userMapped.setCountry(countryService.getById(dto.getCountryForDeliveryId()).orElse(null));
-        userMapped.setCity(cityService.getById(dto.getCityForDeliveryId()).orElse(null));
-        userMapped.setRegion(regionService.getById(dto.getRegionForDeliveryId()).orElse(null));
-
-        if (userMapped.getRegisterType().equals(RegisterType.legal)) {
-            userMapped.setCountryAdditional(countryService.getById(dto.getCountryForDeliveryId()).orElse(null));
-            userMapped.setCityAdditional(cityService.getById(dto.getCityForDeliveryId()).orElse(null));
-            userMapped.setRegionAdditional(regionService.getById(dto.getRegionForDeliveryId()).orElse(null));
-        }
-
-        return save(userMapped);
     }
 
     @SneakyThrows
@@ -253,14 +138,10 @@ public class UserServiceImp implements UserService {
                 imageService.deleteByPath(userById.getPathToImage());
             }
             if (dto.getFileImage() != null) {
-                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
-                dto.setPathToImage(generatedPath);
+                dto.setPathToImage(imageService.generateFileName(dto.getFileImage()));
             }
             userById.setCompany(dto.getCompany());
-            userById.setFullName(dto.getFullName());
-            userById.setEmail(dto.getEmail());
-            userById.setPhone(dto.getPhone());
-            userById.setPathToImage(dto.getPathToImage());
+            userMapper.mapBaseFields(dto, userById);
             imageService.save(dto.getFileImage(), dto.getPathToImage());
             save(userById);
         }
@@ -275,13 +156,9 @@ public class UserServiceImp implements UserService {
                 imageService.deleteByPath(userById.getPathToImage());
             }
             if (dto.getFileImage() != null) {
-                String generatedPath = contextPath + "/users/" + MediaType.image + "/" + imageService.generateFileName(dto.getFileImage());
-                dto.setPathToImage(generatedPath);
+                dto.setPathToImage(imageService.generateFileName(dto.getFileImage()));
             }
-            userById.setFullName(dto.getFullName());
-            userById.setEmail(dto.getEmail());
-            userById.setPhone(dto.getPhone());
-            userById.setPathToImage(dto.getPathToImage());
+            userMapper.mapBaseFields(dto, userById);
             imageService.save(dto.getFileImage(), dto.getPathToImage());
             save(userById);
         }
@@ -382,23 +259,11 @@ public class UserServiceImp implements UserService {
     public void deleteUserById(Long id) {
         User user = getById(id);
         if (user == null) {
-            throw new EntityNotFoundException(getMessage("error.notfoundUser"));
+            throw new EntityNotFoundException(messageService.getMessage("error.notfoundUser"));
         }
         if (user.getRole() == Role.SUPER_ADMIN) {
-            throw new SecurityException(getMessage("error.delete.superAdmin"));
+            throw new SecurityException(messageService.getMessage("error.delete.superAdmin"));
         }
         userRepository.deleteById(id);
-    }
-
-    private String getMessage(String code) {
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
-    }
-
-    private <T> T findOrThrow(Long id, Function<Long, Optional<T>> findMethod, String entityName) {
-        if (id == null) return null;
-        return findMethod.apply(id).
-                orElseThrow(() -> new EntityNotFoundException
-                        (entityName + " with id: " + id + " was not found!")
-                );
     }
 }

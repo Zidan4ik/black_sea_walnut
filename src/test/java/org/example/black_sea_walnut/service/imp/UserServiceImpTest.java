@@ -5,9 +5,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
 import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
-import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForView;
+import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.user.request.UserIndividualRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.user.request.UserLegalRequestForView;
+import org.example.black_sea_walnut.dto.admin.user.request.UserLegalRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
@@ -94,12 +94,12 @@ class UserServiceImpTest {
 
     private User user;
 
-    private UserLegalRequestForView dto;
+    private UserLegalRequestForAdd dto;
     private UserIndividualRequestForAdd dtoIndividual;
     private UserRequestForRegistration userRequestForRegistration;
     private UserDtoLegal userDtoLegal;
     private UserDtoIndividual userDtoIndividual;
-    private UserFopRequestForView userFopRequestForView;
+    private UserFopRequestForAdd userFopRequestForView;
 
 
     @BeforeEach
@@ -111,7 +111,7 @@ class UserServiceImpTest {
         user.setStatus(UserStatus.isActive);
         user.setRegisterType(RegisterType.individual);
 
-        dto = new UserLegalRequestForView();
+        dto = new UserLegalRequestForAdd();
         dto.setId(1L);
         dto.setFullName("John Doe");
         dto.setPhone("+1234567890");
@@ -164,7 +164,7 @@ class UserServiceImpTest {
         userDtoIndividual.setEmail("individual@example.com");
         userDtoIndividual.setPhone("+123456789");
 
-        userFopRequestForView = new UserFopRequestForView();
+        userFopRequestForView = new UserFopRequestForAdd();
         userFopRequestForView.setId(1L);
         userFopRequestForView.setPathToImage("");
         MultipartFile fileImage = mock(MultipartFile.class);
@@ -354,7 +354,7 @@ class UserServiceImpTest {
         when(cityService.getById(20L)).thenReturn(Optional.of(cityAdditionally));
         when(regionService.getById(30L)).thenReturn(Optional.of(regionForDelivery));
         when(regionService.getById(40L)).thenReturn(Optional.of(regionAdditionally));
-        when(userMapper.toEntityFromRequest(any(UserFopRequestForView.class))).thenReturn(user);
+        when(userMapper.toEntityFromRequest(any(UserFopRequestForAdd.class))).thenReturn(user);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         userService.save(userFopRequestForView);
@@ -375,7 +375,7 @@ class UserServiceImpTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(cityService.getById(anyLong())).thenReturn(Optional.of(new City()));
         when(regionService.getById(anyLong())).thenReturn(Optional.of(new Region()));
-        when(userMapper.toEntityFromRequest(any(UserFopRequestForView.class))).thenReturn(user);
+        when(userMapper.toEntityFromRequest(any(UserFopRequestForAdd.class))).thenReturn(user);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         userService.save(userFopRequestForView);
@@ -537,7 +537,7 @@ class UserServiceImpTest {
 
     @Test
     void testSaveUserFopRequestForView_CityNotFound() {
-        UserFopRequestForView dto = new UserFopRequestForView();
+        UserFopRequestForAdd dto = new org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForAdd();
         dto.setCityForDeliveryId(123L);
         dto.setFileImage(mock(MultipartFile.class));
         dto.setPathToImage("path.jpg");

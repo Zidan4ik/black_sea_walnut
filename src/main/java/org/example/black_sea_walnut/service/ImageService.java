@@ -13,4 +13,6 @@ public interface ImageService {
     void deleteByPath(String path) throws IOException;
 
     String generateFileName(MultipartFile file);
+
+    String generatePath(MultipartFile file, Uploadable request);
 }

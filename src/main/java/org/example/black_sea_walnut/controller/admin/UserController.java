@@ -1,18 +1,14 @@
 package org.example.black_sea_walnut.controller.admin;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.codec.language.bm.Lang;
 import org.example.black_sea_walnut.dto.PageResponse;
 
 import org.example.black_sea_walnut.dto.admin.order.OrderUserResponseForView;
-import org.example.black_sea_walnut.dto.admin.order.ResponseOrderForView;
 import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
-import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForView;
+import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.user.request.UserIndividualRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.user.request.UserLegalRequestForView;
+import org.example.black_sea_walnut.dto.admin.user.request.UserLegalRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
@@ -144,7 +140,7 @@ public class UserController {
 
     @PostMapping("/user-fop/save")
     public ResponseEntity<?> saveUserFop(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
-                                         UserFopRequestForView dto, BindingResult bindingResult) {
+                                         UserFopRequestForAdd dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -160,7 +156,7 @@ public class UserController {
 
     @PostMapping("/user-legal/save")
     public ResponseEntity<?> saveUserLegal(@Validated({OrderedPhoneValidation.class, OrderedEmailValidation.class})
-                                           UserLegalRequestForView dto, BindingResult bindingResult) {
+                                           UserLegalRequestForAdd dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));

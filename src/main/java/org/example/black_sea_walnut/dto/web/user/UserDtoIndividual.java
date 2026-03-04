@@ -3,8 +3,9 @@ package org.example.black_sea_walnut.dto.web.user;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
-import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.example.black_sea_walnut.validator.annotation.PhoneFormatValidation;
 import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
-public class UserDtoIndividual {
+public class UserDtoIndividual implements Uploadable, UserUpdater {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")
@@ -29,4 +30,9 @@ public class UserDtoIndividual {
     private String pathToImage;
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg"})
     private MultipartFile fileImage;
+
+    @Override
+    public String getSubFolder() {
+        return "users";
+    }
 }

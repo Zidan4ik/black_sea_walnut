@@ -410,8 +410,9 @@
                 }
 
                 let department = $('#departmentForDelivery_').val();
+                console.log(department)
                 if (department) {
-                    resForm.append('departmentForDelivery', department);
+                    resForm.append('departmentForDeliveryId', department);
                 }
 
                 resForm.append("pathToImage", $(`input[data-name="pathToImage"]`).val());

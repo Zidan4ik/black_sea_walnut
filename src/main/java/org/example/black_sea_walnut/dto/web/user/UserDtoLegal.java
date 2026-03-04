@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.dto.web.user;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
-public class UserDtoLegal {
+public class UserDtoLegal implements UserUpdater {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")

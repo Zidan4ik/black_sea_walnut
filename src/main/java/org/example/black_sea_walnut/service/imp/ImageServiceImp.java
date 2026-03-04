@@ -1,7 +1,11 @@
 package org.example.black_sea_walnut.service.imp;
 
+import lombok.RequiredArgsConstructor;
+import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.service.ImageService;
+import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.util.LogUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +17,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImp implements ImageService {
+    @Value("${upload.path}")
+    private String contextPath;
+
     @Override
     public void init(Path root) {
         LogUtil.logInitNotification(root.toString());
@@ -31,7 +39,7 @@ public class ImageServiceImp implements ImageService {
         try {
             if (path != null && !path.isEmpty()) {
                 Path path_ = Path.of(path);
-                if (!Files.exists(path_.getParent())) {
+                if (path_.getParent()!=null && !Files.exists(path_.getParent())) {
                     init(path_.getParent());
                 }
                 if (file != null) {
@@ -86,5 +94,16 @@ public class ImageServiceImp implements ImageService {
         String generatedFileName = UUID.randomUUID() + "." + StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         LogUtil.logInfo("Generated file name: " + generatedFileName + " for original file: " + file.getOriginalFilename());
         return generatedFileName;
+    }
+
+    @Override
+    public String generatePath(MultipartFile file, Uploadable request) {
+        if (file == null || file.isEmpty()) return null;
+
+        return String.format("%s/%s/%s/%s",
+                contextPath,
+                request.getSubFolder(),
+                MediaType.image,
+                generateFileName(file));
     }
 }
