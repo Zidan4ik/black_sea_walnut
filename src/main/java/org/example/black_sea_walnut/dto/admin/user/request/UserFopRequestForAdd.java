@@ -5,7 +5,7 @@ import lombok.Data;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
-import org.example.black_sea_walnut.service.user.UserProcessable;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
@@ -17,14 +17,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class UserFopRequestForAdd implements UserUpdater, UserProcessable {
+public class UserFopRequestForAdd implements UserUpdater, Saveable {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
-    @Length(max = 100,message = "{error.field.valid.length.title}")
+    @Length(max = 100, message = "{error.field.valid.length.title}")
     private String fullName;
     @PhoneFormatValidation(groups = PhoneValidGroups.NotPhoneFormatValidation.class)
-    @NotBlank(message = "{error.field.empty}",groups = PhoneValidGroups.NotBlankCheck.class)
-    @Length(max = 15,message = "{error.field.phone.size}",groups = PhoneValidGroups.NotLength.class)
+    @NotBlank(message = "{error.field.empty}", groups = PhoneValidGroups.NotBlankCheck.class)
+    @Length(max = 15, message = "{error.field.phone.size}", groups = PhoneValidGroups.NotLength.class)
     private String phone;
     @NotBlank(message = "{error.field.empty}", groups = EmailValidGroups.NotBlankCheck.class)
     @EmailValidation(groups = EmailValidGroups.EmailCheck.class)
@@ -49,6 +49,14 @@ public class UserFopRequestForAdd implements UserUpdater, UserProcessable {
 
     @Override
     public void updateEntity(User user, UserMapper mapper) {
-        mapper.updateEntityFromRequest(this,user);
+        mapper.updateEntityFromRequest(this, user);
+    }
+
+    public Integer getDepartmentAsInt() {
+        try {
+            return (departmentForDelivery != null) ? Integer.parseInt(departmentForDelivery) : null;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

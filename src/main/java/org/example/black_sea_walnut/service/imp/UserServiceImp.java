@@ -11,8 +11,6 @@ import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualRespon
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.dto.web.user.AddressDtoIndividual;
 import org.example.black_sea_walnut.dto.web.user.AddressDtoLegal;
-import org.example.black_sea_walnut.dto.web.user.UserDtoIndividual;
-import org.example.black_sea_walnut.dto.web.user.UserDtoLegal;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
@@ -22,7 +20,8 @@ import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
 import org.example.black_sea_walnut.repository.UserRepository;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
-import org.example.black_sea_walnut.service.user.UserProcessable;
+import org.example.black_sea_walnut.service.user.FileProcessable;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,7 +68,6 @@ public class UserServiceImp implements UserService {
         ));
     }
 
-
     @Override
     public User getById(Long id) {
         LogUtil.logInfo("Fetching user with id: " + id);
@@ -98,7 +96,6 @@ public class UserServiceImp implements UserService {
         return userMapper.toResponseForUserLegalAdd(getById(id));
     }
 
-
     @Override
     public User save(User entity) {
         LogUtil.logInfo("Saving user with email: " + entity.getEmail());
@@ -115,82 +112,19 @@ public class UserServiceImp implements UserService {
 
     @SneakyThrows
     @Override
-    public User save(UserProcessable dto) {
+    public User save(Saveable dto) {
         User userToSave = (dto.getId() != null) ? getById(dto.getId()) : new User();
-        if(dto.getFileImage()!=null && !dto.getFileImage().isEmpty()){
-            if(dto.getPathToImage()!=null){
-                imageService.deleteByPath(dto.getPathToImage());
+        if(dto instanceof FileProcessable fileDto){
+            if (fileDto.getFileImage() != null && !fileDto.getFileImage().isEmpty()) {
+                if (fileDto.getPathToImage() != null) {
+                    imageService.deleteByPath(fileDto.getPathToImage());
+                }
+                fileDto.setPathToImage(imageService.generateFileName(fileDto.getFileImage()));
+                imageService.save(fileDto.getFileImage(), fileDto.getPathToImage());
             }
-
-            dto.setPathToImage(imageService.generateFileName(dto.getFileImage()));
-            imageService.save(dto.getFileImage(),dto.getPathToImage());
         }
-        dto.updateEntity(userToSave,userMapper);
+        dto.updateEntity(userToSave, userMapper);
         return save(userToSave);
-    }
-
-    @SneakyThrows
-    @Override
-    public void save(UserDtoLegal dto) {
-        if (dto.getId() != null) {
-            User userById = getById(dto.getId());
-            if (dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userById.getPathToImage());
-            }
-            if (dto.getFileImage() != null) {
-                dto.setPathToImage(imageService.generateFileName(dto.getFileImage()));
-            }
-            userById.setCompany(dto.getCompany());
-            userMapper.mapBaseFields(dto, userById);
-            imageService.save(dto.getFileImage(), dto.getPathToImage());
-            save(userById);
-        }
-    }
-
-    @SneakyThrows
-    @Override
-    public void save(UserDtoIndividual dto) {
-        if (dto.getId() != null) {
-            User userById = getById(dto.getId());
-            if (dto.getPathToImage() != null && dto.getPathToImage().isEmpty()) {
-                imageService.deleteByPath(userById.getPathToImage());
-            }
-            if (dto.getFileImage() != null) {
-                dto.setPathToImage(imageService.generateFileName(dto.getFileImage()));
-            }
-            userMapper.mapBaseFields(dto, userById);
-            imageService.save(dto.getFileImage(), dto.getPathToImage());
-            save(userById);
-        }
-    }
-
-    @Override
-    public void save(AddressDtoIndividual dto) {
-        if (dto.getId() != null) {
-            User userById = getById(dto.getId());
-            userById.setCountry(countryService.getById(dto.getIdCountry()).orElse(null));
-            userById.setCity(cityService.getById(dto.getIdCity()).orElse(null));
-            userById.setRegion(regionService.getById(dto.getIdRegion()).orElse(null));
-            userById.setAddress(dto.getAddress());
-            save(userById);
-        }
-    }
-
-    @Override
-    public void save(AddressDtoLegal dto) {
-        if (dto.getId() != null) {
-            User userById = getById(dto.getId());
-            userById.setCountry(countryService.getById(dto.getIdCountry()).orElse(null));
-            userById.setCity(cityService.getById(dto.getIdCity()).orElse(null));
-            userById.setRegion(regionService.getById(dto.getIdRegion()).orElse(null));
-            userById.setCountryAdditional(countryService.getById(dto.getIdCountryLegal()).orElse(null));
-            userById.setCityAdditional(cityService.getById(dto.getIdCityLegal()).orElse(null));
-            userById.setRegionAdditional(regionService.getById(dto.getIdRegionLegal()).orElse(null));
-            userById.setAddress(dto.getAddress());
-            userById.setAddressAdditional(dto.getAddressLegal());
-            userById.setPaymentDetails(dto.getOkpo());
-            save(userById);
-        }
     }
 
     @Override

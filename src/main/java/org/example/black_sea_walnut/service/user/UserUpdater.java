@@ -4,5 +4,4 @@ public interface UserUpdater {
     String getFullName();
     String getEmail();
     String getPhone();
-    String getPathToImage();
 }

@@ -20,7 +20,10 @@ import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.service.CityService;
 import org.example.black_sea_walnut.service.CountryService;
 import org.example.black_sea_walnut.service.RegionService;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
+import org.example.black_sea_walnut.service.user.adress.HasAdditionalAddress;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
 import org.example.black_sea_walnut.util.DatabaseUtil;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
@@ -100,6 +103,7 @@ public class UserMapper {
         entity.setPassword(dto.getPassword());
         entity.setRole(dto.getRole());
         entity.setDateRegistered(LocalDate.now());
+        entity.setPathToImage(dto.getPathToImage());
         return entity;
     }
 
@@ -227,63 +231,93 @@ public class UserMapper {
                 .build();
     }
 
+    public void updateEntityFromRequest(AddressDtoIndividual dto, User entity) {
+        mapMainAddress(dto,entity);
+        entity.setCountry(databaseUtil.findOrThrow(dto.getIdCountry(), countryService::getById, "Country"));
+    }
+
+    public void updateEntityFromRequest(AddressDtoLegal dto, User entity) {
+        entity.setPaymentDetails(dto.getOkpo());
+        mapMainAddress(dto,entity);
+        mapAdditionalAddress(dto,entity);
+        entity.setCountry(databaseUtil.findOrThrow(dto.getIdCountry(), countryService::getById, "Country"));
+        entity.setCountryAdditional(databaseUtil.findOrThrow(dto.getIdCountryLegal(), countryService::getById, "Country"));
+    }
+
+    public void updateEntityFromRequest(UserDtoLegal dto, User entity) {
+        mapBaseFields(dto, entity);
+        entity.setCompany(dto.getCompany());
+        entity.setPathToImage(dto.getPathToImage());
+    }
+
+    public void updateEntityFromRequest(UserDtoIndividual dto, User entity) {
+        mapBaseFields(dto, entity);
+        entity.setPathToImage(dto.getPathToImage());
+    }
+
     public void updateEntityFromRequest(UserFopRequestForAdd dto, User entity) {
         mapBaseFields(dto, entity);
-        entity.setDepartment(Integer.parseInt(dto.getDepartmentForDelivery()));
+        entity.setDepartment(dto.getDepartmentAsInt());
         entity.setPaymentDetails(dto.getEdrpou());
-        entity.setAddressAdditional(dto.getAddressAdditionally());
-
-        entity.setCity(databaseUtil.findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        entity.setCityAdditional(databaseUtil.findOrThrow(dto.getCityAdditionallyId(), cityService::getById, "City"));
-        entity.setRegion(databaseUtil.findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
-        entity.setRegionAdditional(databaseUtil.findOrThrow(dto.getRegionAdditionallyId(), regionService::getById, "Region"));
+        entity.setPathToImage(dto.getPathToImage());
+        mapMainAddress(dto,entity);
+        mapAdditionalAddress(dto,entity);
     }
 
     public void updateEntityFromRequest(UserIndividualRequestForAdd dto, User entity) {
         mapBaseFields(dto, entity);
+        entity.setPathToImage(dto.getPathToImage());
         entity.setDepartment(Math.toIntExact(dto.getDepartmentForDeliveryId()));
-        entity.setCity(databaseUtil.findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        entity.setRegion(databaseUtil.findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
+        mapMainAddress(dto,entity);
     }
 
     public void updateEntityFromRequest(UserLegalRequestForAdd dto, User entity) {
         mapBaseFields(dto, entity);
         entity.setDepartment(Integer.parseInt(dto.getDepartmentForDelivery()));
         entity.setPaymentDetails(dto.getOkpo());
-        entity.setAddressAdditional(dto.getAddressAdditionally());
         entity.setIndexAdditional(dto.getIndexLawful());
-
-        entity.setCity(databaseUtil.findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        entity.setCityAdditional(databaseUtil.findOrThrow(dto.getCityAdditionallyId(), cityService::getById, "City"));
-        entity.setRegion(databaseUtil.findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
-        entity.setRegionAdditional(databaseUtil.findOrThrow(dto.getRegionAdditionallyId(), regionService::getById, "Region"));
+        entity.setPathToImage(dto.getPathToImage());
+        mapMainAddress(dto,entity);
+        mapAdditionalAddress(dto,entity);
     }
 
     public void updateEntityFromRequest(UserRequestForRegistration dto, User entity) {
-        mapBaseFields(dto,entity);
+        mapBaseFields(dto, entity);
+        entity.setPathToImage(dto.getPathToImage());
         entity.setRole(dto.getRole());
         entity.setDateRegistered(LocalDate.now());
-        entity.setAddress(dto.getAddress());
-        entity.setAddressAdditional(dto.getAddressLegal());
         entity.setIndexAdditional(dto.getIndex());
         entity.setRegisterType(RegisterType.fromString(dto.getRegistrationType()));
         entity.setStatus(UserStatus.isActive);
         entity.setPaymentDetails(dto.getPaymentDetails());
         entity.setPassword(dto.getPassword());
         entity.setFop(dto.isFop());
-        entity.setCity(databaseUtil.findOrThrow(dto.getCityForDeliveryId(), cityService::getById, "City"));
-        entity.setRegion(databaseUtil.findOrThrow(dto.getRegionForDeliveryId(), regionService::getById, "Region"));
-        entity.setCountry(databaseUtil.findOrThrow(dto.getCountryForDeliveryId(), countryService::getById, "Country"));
-        entity.setCityAdditional(databaseUtil.findOrThrow(dto.getCityForDeliveryIdLegal(), cityService::getById, "City"));
-        entity.setRegionAdditional(databaseUtil.findOrThrow(dto.getRegionForDeliveryIdLegal(), regionService::getById, "Region"));
-        entity.setCountryAdditional(databaseUtil.findOrThrow(dto.getCountryForDeliveryIdLegal(), countryService::getById, "Country"));
 
+        entity.setCountry(databaseUtil.findOrThrow(dto.getCountryForDeliveryId(), countryService::getById, "Country"));
+        entity.setCountryAdditional(databaseUtil.findOrThrow(dto.getCountryForDeliveryIdLegal(), countryService::getById, "Country"));
+        mapMainAddress(dto,entity);
+        mapAdditionalAddress(dto,entity);
     }
 
     public void mapBaseFields(UserUpdater dto, User entity) {
         entity.setFullName(dto.getFullName());
         entity.setEmail(dto.getEmail());
         entity.setPhone(dto.getPhone());
-        entity.setPathToImage(dto.getPathToImage());
+    }
+
+    private void mapMainAddress(Saveable dto, User entity){
+        if(dto instanceof HasMainAddress addressDto){
+            entity.setCity(databaseUtil.findOrThrow(addressDto.getCityForDeliveryId(), cityService::getById, "City"));
+            entity.setRegion(databaseUtil.findOrThrow(addressDto.getRegionForDeliveryId(), regionService::getById, "Region"));
+            entity.setAddress(addressDto.getAddress());
+        }
+    }
+
+    private void mapAdditionalAddress(Saveable dto, User entity){
+        if(dto instanceof HasAdditionalAddress addressDto){
+            entity.setCity(databaseUtil.findOrThrow(addressDto.getCityAdditionallyId(), cityService::getById, "City"));
+            entity.setRegion(databaseUtil.findOrThrow(addressDto.getRegionAdditionallyId(), regionService::getById, "Region"));
+            entity.setAddress(addressDto.getAddressAdditionally());
+        }
     }
 }

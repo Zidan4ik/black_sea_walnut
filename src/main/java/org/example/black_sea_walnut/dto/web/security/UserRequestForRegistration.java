@@ -6,7 +6,8 @@ import lombok.Data;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
-import org.example.black_sea_walnut.service.user.UserProcessable;
+import org.example.black_sea_walnut.service.user.Saveable;
+import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.*;
 import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroups;
 import org.hibernate.validator.constraints.Length;
@@ -15,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @Builder
 @PasswordValidation(groups = PasswordValidGroups.NotBlankConfirm.class)
-public class UserRequestForRegistration implements UserProcessable {
+public class UserRequestForRegistration implements Saveable, UserUpdater {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")

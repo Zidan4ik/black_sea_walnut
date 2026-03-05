@@ -2,20 +2,12 @@ package org.example.black_sea_walnut.service;
 
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
-import org.example.black_sea_walnut.dto.admin.user.request.UserFopRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.user.request.UserIndividualRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.user.request.UserLegalRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
 import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
-import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
-import org.example.black_sea_walnut.dto.web.user.AddressDtoIndividual;
-import org.example.black_sea_walnut.dto.web.user.AddressDtoLegal;
-import org.example.black_sea_walnut.dto.web.user.UserDtoIndividual;
-import org.example.black_sea_walnut.dto.web.user.UserDtoLegal;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.service.user.UserProcessable;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
@@ -39,15 +31,7 @@ public interface UserService {
 
     User save(User entity);
 
-    User save(UserProcessable dto);
-
-    void save(UserDtoLegal dto);
-
-    void save(UserDtoIndividual dto);
-
-    void save(AddressDtoIndividual dto);
-
-    void save(AddressDtoLegal dto);
+    User save(Saveable dto);
 
     List<UserResponseForStats> getUsersByDate(LocalDate start, LocalDate end);
 

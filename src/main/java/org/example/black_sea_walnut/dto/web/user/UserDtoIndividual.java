@@ -3,7 +3,11 @@ package org.example.black_sea_walnut.dto.web.user;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.user.FileProcessable;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
@@ -15,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
-public class UserDtoIndividual implements Uploadable, UserUpdater {
+public class UserDtoIndividual implements Uploadable, Saveable, FileProcessable, UserUpdater {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")
@@ -34,5 +38,10 @@ public class UserDtoIndividual implements Uploadable, UserUpdater {
     @Override
     public String getSubFolder() {
         return "users";
+    }
+
+    @Override
+    public void updateEntity(User user, UserMapper mapper) {
+        mapper.updateEntityFromRequest(this,user);
     }
 }

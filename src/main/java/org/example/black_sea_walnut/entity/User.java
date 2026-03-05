@@ -35,7 +35,7 @@ public class User {
     private UserStatus status;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private int department;
+    private Integer department;
     private String address;
     private String addressAdditional;
     private String indexAdditional;
