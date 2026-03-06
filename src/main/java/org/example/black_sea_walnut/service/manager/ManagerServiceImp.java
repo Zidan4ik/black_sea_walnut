@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.manager;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,12 @@ import org.example.black_sea_walnut.entity.Manager;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ManagerMapper;
 import org.example.black_sea_walnut.repository.ManagerRepository;
-import org.example.black_sea_walnut.service.ManagerService;
 import org.example.black_sea_walnut.service.specifications.ManagerSpecification;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,12 +24,14 @@ public class ManagerServiceImp implements ManagerService {
     private final ManagerRepository managerRepository;
     private final ManagerMapper mapper;
 
+    @Transactional
     @Override
     public Manager save(Manager entity) {
         LogUtil.logInfo("Saving Manager entity: " + entity);
         return managerRepository.save(entity);
     }
 
+    @Transactional
     @Override
     public Manager save(ManagerDTO dto) {
         LogUtil.logInfo("Saving ManagerDTO: " + dto);

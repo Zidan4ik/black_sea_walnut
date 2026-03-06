@@ -9,7 +9,7 @@ import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.BasketService;
 import org.example.black_sea_walnut.service.ProductService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

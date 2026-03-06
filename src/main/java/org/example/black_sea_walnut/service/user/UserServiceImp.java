@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +9,6 @@ import org.example.black_sea_walnut.dto.admin.user.UserResponseForView;
 import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
-import org.example.black_sea_walnut.dto.web.user.AddressDtoIndividual;
-import org.example.black_sea_walnut.dto.web.user.AddressDtoLegal;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
@@ -20,8 +18,11 @@ import org.example.black_sea_walnut.password.token.VerificationTokenRepository;
 import org.example.black_sea_walnut.repository.UserRepository;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.specifications.UserSpecification;
-import org.example.black_sea_walnut.service.user.FileProcessable;
-import org.example.black_sea_walnut.service.user.Saveable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
+import org.example.black_sea_walnut.service.user.adress.HasAdditionalAddress;
+import org.example.black_sea_walnut.service.user.adress.HasCountry;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
+import org.example.black_sea_walnut.util.DatabaseUtil;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,23 +30,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImp implements UserService {
+public class UserServiceImp implements UserService, UserAuthService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ImageService imageService;
-    private final RegionService regionService;
-    private final CityService cityService;
     private final PasswordEncoder passwordEncoder;
-    private final CountryService countryService;
     private final PasswordResetTokenService passwordResetTokenService;
     private final VerificationTokenRepository tokenRepository;
     private final MessageService messageService;
+    private final CityService cityService;
+    private final RegionService regionService;
+    private final CountryService countryService;
+    private final DatabaseUtil databaseUtil;
 
     @Override
     public List<User> getAll() {
@@ -114,15 +117,9 @@ public class UserServiceImp implements UserService {
     @Override
     public User save(Saveable dto) {
         User userToSave = (dto.getId() != null) ? getById(dto.getId()) : new User();
-        if(dto instanceof FileProcessable fileDto){
-            if (fileDto.getFileImage() != null && !fileDto.getFileImage().isEmpty()) {
-                if (fileDto.getPathToImage() != null) {
-                    imageService.deleteByPath(fileDto.getPathToImage());
-                }
-                fileDto.setPathToImage(imageService.generateFileName(fileDto.getFileImage()));
-                imageService.save(fileDto.getFileImage(), fileDto.getPathToImage());
-            }
-        }
+        handleImageProcessing(dto);
+        handleAddressMapping(dto, userToSave);
+        handleCountryMapping(dto, userToSave);
         dto.updateEntity(userToSave, userMapper);
         return save(userToSave);
     }
@@ -199,5 +196,42 @@ public class UserServiceImp implements UserService {
             throw new SecurityException(messageService.getMessage("error.delete.superAdmin"));
         }
         userRepository.deleteById(id);
+    }
+
+    private void handleImageProcessing(Saveable<User,UserMapper> dto) throws IOException {
+        if (dto instanceof FileProcessable fileDto && isNewImageProvided(fileDto)) {
+            if (fileDto.getPathToImage() != null) {
+                imageService.deleteByPath(fileDto.getPathToImage());
+            }
+            String newPath = imageService.generatePath(fileDto.getFileImage(),dto);
+            fileDto.setPathToImage(newPath);
+            imageService.save(fileDto.getFileImage(), newPath);
+        }
+    }
+
+    private void handleAddressMapping(Saveable dto, User entity) {
+        if (dto instanceof HasMainAddress addr) {
+            entity.setCity(databaseUtil.findOrThrow(addr.getCityForDeliveryId(), cityService::getById, "City"));
+            entity.setRegion(databaseUtil.findOrThrow(addr.getRegionForDeliveryId(), regionService::getById, "Region"));
+            entity.setAddress(addr.getAddress());
+        }
+        if (dto instanceof HasAdditionalAddress addr) {
+            entity.setCityAdditional(databaseUtil.findOrThrow(addr.getCityAdditionallyId(), cityService::getById, "City"));
+            entity.setRegionAdditional(databaseUtil.findOrThrow(addr.getRegionAdditionallyId(), regionService::getById, "Region"));
+            entity.setAddressAdditional(addr.getAddressAdditionally());
+        }
+    }
+
+    private void handleCountryMapping(Saveable dto, User entity) {
+        if (dto instanceof HasCountry countryDto) {
+            entity.setCountry(databaseUtil.findOrThrow(countryDto.getIdCountry(), countryService::getById, "Country"));
+            if (countryDto.getIdCountryLegal() != null) {
+                entity.setCountryAdditional(databaseUtil.findOrThrow(countryDto.getIdCountryLegal(), countryService::getById, "Country"));
+            }
+        }
+    }
+
+    private boolean isNewImageProvided(FileProcessable dto) {
+        return dto.getFileImage() != null && !dto.getFileImage().isEmpty();
     }
 }

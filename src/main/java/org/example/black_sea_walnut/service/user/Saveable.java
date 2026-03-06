@@ -1,9 +1,8 @@
 package org.example.black_sea_walnut.service.user;
 
-import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.mapper.UserMapper;
-
-public interface Saveable {
+public interface Saveable <E,M> {
     Long getId();
-    void updateEntity(User user, UserMapper mapper);
+
+    default void updateEntity(E entity, M mapper) {
+    }
 }

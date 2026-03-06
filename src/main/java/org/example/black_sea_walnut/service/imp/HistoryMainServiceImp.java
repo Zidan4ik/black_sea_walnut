@@ -12,9 +12,9 @@ import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.HistoryMainService;
 import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
+import org.example.black_sea_walnut.service.history.HistoryFileRequest;
 import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +26,6 @@ public class HistoryMainServiceImp implements HistoryMainService {
     private final HistoryMainMapper historyMainMapper;
     private final HistoryService historyService;
     private final ImageService imageService;
-    @Value("${upload.path}")
-    private String uploadPath;
-
 
     @Override
     public BlockResponseForAddInMain getByPageTypeInResponseMainBlock(PageType type) {
@@ -213,7 +210,6 @@ public class HistoryMainServiceImp implements HistoryMainService {
                     imageService.deleteByPath("/uploads/pages/main/factory-images");
                 }
             }
-
             History mappedHistory = historyMainMapper.toEntityFromRequestForAdd(dto);
             History savedHistory = historyService.save(mappedHistory);
             LogUtil.logInfo("Successfully saved factories images with ID: " + savedHistory.getId());
@@ -222,5 +218,28 @@ public class HistoryMainServiceImp implements HistoryMainService {
             LogUtil.logError("Error saving factories images", e);
             throw e;
         }
+    }
+
+    @Override
+    public History saveHistoryFactoryBlock(HistoryFileRequest<HistoryMainMapper> dto) {
+        History entity = (dto.getId() == null) ? historyService.getById(dto.getId()) : new History();
+
+
+        if (dto.getFiles() != null) {
+            dto.getFiles().stream()
+                    .filter(old -> dto.getFiles().stream()
+                            .noneMatch(mDto -> old.getPathToImage().equals(mDto.getPathToImage())))
+                    .forEach(old -> imageService.deleteByPath(old.getPathToImage()));
+        }
+
+        for (HistoryMediaRequestForAdd mediaDto : dto.getFiles()) {
+            if (mediaDto.getFileImage() != null && !mediaDto.getFileImage().isEmpty()) {
+                String generatedPath = imageService.generatePath(mediaDto.getFileImage(),dto);
+                mediaDto.setPathToImage(generatedPath);
+                imageService.save(mediaDto.getFileImage(), generatedPath);
+            }
+        }
+        dto.updateEntity(entity,historyMainMapper);
+        return historyService.save(entity);
     }
 }

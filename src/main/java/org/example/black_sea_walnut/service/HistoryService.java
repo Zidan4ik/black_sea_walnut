@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface HistoryService {
     History getById(Long id);
+
     History getByPageType(PageType type);
+
     History save(History entity);
+
     List<History> getAll();
 }

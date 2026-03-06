@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.annotation.password.MatchCurrentPasswordValidation;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

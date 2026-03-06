@@ -16,7 +16,7 @@ public class UserLegalResponseForView {
     private String email;
     private Long regionForDeliveryId;
     private Long cityForDeliveryId;
-    private String departmentForDelivery;
+    private String departmentForDeliveryId;
     private String registrationType;
     private String status;
     private String pathToImage;
@@ -28,4 +28,12 @@ public class UserLegalResponseForView {
     private String password;
     private Role role;
     private List<OrderUserResponseForView> orders;
+
+    public Integer getDepartmentAsInt() {
+        try {
+            return (departmentForDeliveryId != null) ? Integer.parseInt(departmentForDeliveryId) : null;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

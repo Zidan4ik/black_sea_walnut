@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.order.OrderResponseForStatsProducts;
 import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
 import org.example.black_sea_walnut.service.OrderService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

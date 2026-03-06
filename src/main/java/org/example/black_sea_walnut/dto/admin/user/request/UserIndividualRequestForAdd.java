@@ -7,6 +7,7 @@ import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
@@ -17,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class UserIndividualRequestForAdd implements UserUpdater, Saveable {
+public class UserIndividualRequestForAdd implements UserUpdater, Saveable, HasMainAddress {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")
@@ -32,7 +33,7 @@ public class UserIndividualRequestForAdd implements UserUpdater, Saveable {
     private String email;
     private Long regionForDeliveryId;
     private Long cityForDeliveryId;
-    private int departmentForDeliveryId;
+    private String departmentForDeliveryId;
     private String registrationType;
     private String status;
     private String pathToImage;
@@ -44,5 +45,18 @@ public class UserIndividualRequestForAdd implements UserUpdater, Saveable {
     @Override
     public void updateEntity(User user, UserMapper mapper) {
         mapper.updateEntityFromRequest(this,user);
+    }
+
+    @Override
+    public String getAddress() {
+        return null;
+    }
+
+    public Integer getDepartmentAsInt() {
+        try {
+            return (departmentForDeliveryId != null) ? Integer.parseInt(departmentForDeliveryId) : null;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

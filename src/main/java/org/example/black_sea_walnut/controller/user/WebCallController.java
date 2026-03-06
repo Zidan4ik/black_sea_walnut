@@ -4,7 +4,7 @@ import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.service.CallService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
 import org.springframework.http.HttpStatus;

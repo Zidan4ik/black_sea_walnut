@@ -2,12 +2,11 @@ package org.example.black_sea_walnut.password.event;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.black_sea_walnut.service.user.UserAuthService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class RegistrationCompleteEventListener implements ApplicationListener<RegistrationCompleteEvent> {
-    private final UserService userService;
+    private final UserAuthService userService;
     private final JavaMailSender mailSender;
     private User theUser;
 

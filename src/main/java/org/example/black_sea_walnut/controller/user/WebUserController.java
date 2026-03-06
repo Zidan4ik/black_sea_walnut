@@ -1,7 +1,6 @@
 package org.example.black_sea_walnut.controller.user;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
@@ -10,10 +9,10 @@ import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPasswordValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
-import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroups;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

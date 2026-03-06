@@ -32,6 +32,7 @@ import org.example.black_sea_walnut.service.CityService;
 import org.example.black_sea_walnut.service.CountryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.example.black_sea_walnut.service.RegionService;
+import org.example.black_sea_walnut.service.user.UserServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,7 +119,7 @@ class UserServiceImpTest {
         dto.setEmail("test@example.com");
         dto.setRegionForDeliveryId(30L);
         dto.setCityForDeliveryId(10L);
-        dto.setDepartmentForDelivery("Main Warehouse");
+        dto.setDepartmentForDeliveryId("Main Warehouse");
         dto.setRegistrationType("LLC");
         dto.setStatus("Active");
         dto.setPathToImage("");
@@ -550,7 +551,7 @@ class UserServiceImpTest {
     @Test
     void testSaveUserRequestForRegistration_Success() {
         when(imageService.generateFileName(any())).thenReturn("generatedName.jpeg");
-        when(userMapper.toEntityForRegistration(any())).thenReturn(user);
+//        when(userMapper.toEntityForRegistration(any())).thenReturn(user);
         when(countryService.getById(anyLong())).thenReturn(Optional.of(new Country()));
         when(cityService.getById(anyLong())).thenReturn(Optional.of(new City()));
         when(regionService.getById(anyLong())).thenReturn(Optional.of(new Region()));
@@ -566,7 +567,7 @@ class UserServiceImpTest {
     void testSaveUserRequestForRegistration_WhenFileIsNullAndUserIsLegal() {
         user.setRegisterType(RegisterType.legal);
         userRequestForRegistration.setFileImage(null);
-        when(userMapper.toEntityForRegistration(any())).thenReturn(user);
+//        when(userMapper.toEntityForRegistration(any())).thenReturn(user);
         when(countryService.getById(anyLong())).thenReturn(Optional.of(new Country()));
         when(cityService.getById(anyLong())).thenReturn(Optional.of(new City()));
         when(regionService.getById(anyLong())).thenReturn(Optional.of(new Region()));

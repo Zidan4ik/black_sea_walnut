@@ -1,6 +1,5 @@
 package org.example.black_sea_walnut.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.entity.Region;
 import org.example.black_sea_walnut.service.CountryService;

@@ -116,7 +116,8 @@ public class HistoryMainMapper {
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainFactoryTitleUk(), dto.getMainFactoryDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainFactoryTitleEn(), dto.getMainFactoryDescriptionEn(), entity);
         entity.setTranslations(List.of(translationUk, translationEn));
-        if(dto.getFiles()!=null) entity.setHistoryMedia(dto.getFiles().stream().map(t -> mediaMapper.toEntityFromRequestForAdd(t, entity)).toList());
+        if (dto.getFiles() != null)
+            entity.setHistoryMedia(dto.getFiles().stream().map(t -> mediaMapper.toEntityFromRequestForAdd(t, entity)).toList());
         return entity;
     }
 

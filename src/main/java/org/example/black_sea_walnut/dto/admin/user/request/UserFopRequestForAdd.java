@@ -7,6 +7,8 @@ import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
+import org.example.black_sea_walnut.service.user.adress.HasAdditionalAddress;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
@@ -17,7 +19,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class UserFopRequestForAdd implements UserUpdater, Saveable {
+public class UserFopRequestForAdd implements UserUpdater, Saveable, HasMainAddress, HasAdditionalAddress {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")
@@ -33,7 +35,7 @@ public class UserFopRequestForAdd implements UserUpdater, Saveable {
     private Long countryForDeliveryId;
     private Long regionForDeliveryId;
     private Long cityForDeliveryId;
-    private String departmentForDelivery;
+    private String departmentForDeliveryId;
     private String registrationType;
     private String status;
     private String edrpou;
@@ -54,9 +56,14 @@ public class UserFopRequestForAdd implements UserUpdater, Saveable {
 
     public Integer getDepartmentAsInt() {
         try {
-            return (departmentForDelivery != null) ? Integer.parseInt(departmentForDelivery) : null;
+            return (departmentForDeliveryId != null) ? Integer.parseInt(departmentForDeliveryId) : null;
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    @Override
+    public String getAddress() {
+        return this.addressAdditionally;
     }
 }

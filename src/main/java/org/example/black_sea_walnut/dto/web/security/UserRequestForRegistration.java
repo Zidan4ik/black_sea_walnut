@@ -8,6 +8,8 @@ import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
+import org.example.black_sea_walnut.service.user.adress.HasAdditionalAddress;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
 import org.example.black_sea_walnut.validator.annotation.*;
 import org.example.black_sea_walnut.validator.groupValidation.PasswordValidGroups;
 import org.hibernate.validator.constraints.Length;
@@ -16,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @Builder
 @PasswordValidation(groups = PasswordValidGroups.NotBlankConfirm.class)
-public class UserRequestForRegistration implements Saveable, UserUpdater {
+public class UserRequestForRegistration implements Saveable, UserUpdater, HasMainAddress, HasAdditionalAddress {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")
@@ -54,5 +56,20 @@ public class UserRequestForRegistration implements Saveable, UserUpdater {
     @Override
     public void updateEntity(User user, UserMapper mapper) {
         mapper.updateEntityFromRequest(this, user);
+    }
+
+    @Override
+    public Long getCityAdditionallyId() {
+        return this.cityForDeliveryIdLegal;
+    }
+
+    @Override
+    public Long getRegionAdditionallyId() {
+        return this.regionForDeliveryIdLegal;
+    }
+
+    @Override
+    public String getAddressAdditionally() {
+        return this.addressLegal;
     }
 }

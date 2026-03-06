@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.mapper.UserMapper;
-import org.example.black_sea_walnut.service.user.FileProcessable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;

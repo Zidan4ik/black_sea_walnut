@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service;
+package org.example.black_sea_walnut.service.user;
 
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.stats.UserResponseForStats;
@@ -7,7 +7,6 @@ import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAd
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.service.user.Saveable;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
@@ -15,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<User> getAll();
-
     List<UserResponseForView> getAllInResponseForView();
 
     PageResponse<UserResponseForView> getAll(UserResponseForView response, Pageable pageable);
@@ -33,23 +30,17 @@ public interface UserService {
 
     User save(Saveable dto);
 
-    List<UserResponseForStats> getUsersByDate(LocalDate start, LocalDate end);
-
     Optional<User> getByEmail(String email);
 
     boolean isExistUserByEmail(String email);
 
-    void createPasswordResetTokenForUser(User user, String passwordToken);
-
-    void saveUserVerificationToken(User theUser, String token);
-
-    String validatePasswordResetToken(String passwordResetToken);
-
     User findUserByPasswordToken(String passwordResetToken);
 
-    void resetUserPassword(User user, String newPassword);
-
-    void deleteTokenByToken(String token);
+    List<User> getAll();
 
     void deleteUserById(Long id);
+
+    List<UserResponseForStats> getUsersByDate(LocalDate start, LocalDate end);
+
+    void deleteTokenByToken(String token);
 }

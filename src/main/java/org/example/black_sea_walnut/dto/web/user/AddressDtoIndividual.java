@@ -2,12 +2,13 @@ package org.example.black_sea_walnut.dto.web.user;
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
+import org.example.black_sea_walnut.service.user.adress.HasCountry;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
+
 @Builder
 @Data
-public class AddressDtoIndividual implements Saveable {
+public class AddressDtoIndividual implements Saveable, HasMainAddress, HasCountry {
     private Long id;
     private Long idCountry;
     private Long idRegion;
@@ -15,7 +16,12 @@ public class AddressDtoIndividual implements Saveable {
     private String address;
 
     @Override
-    public void updateEntity(User user, UserMapper mapper) {
-        mapper.updateEntityFromRequest(this,user);
+    public Long getCityForDeliveryId() {
+        return idCity;
+    }
+
+    @Override
+    public Long getRegionForDeliveryId() {
+        return this.idRegion;
     }
 }

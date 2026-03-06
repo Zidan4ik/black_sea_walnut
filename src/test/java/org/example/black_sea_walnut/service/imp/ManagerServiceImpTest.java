@@ -8,6 +8,7 @@ import org.example.black_sea_walnut.entity.Manager;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ManagerMapper;
 import org.example.black_sea_walnut.repository.ManagerRepository;
+import org.example.black_sea_walnut.service.manager.ManagerServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -12,7 +12,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.service.OrderDetailService;
 import org.example.black_sea_walnut.service.OrderService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;

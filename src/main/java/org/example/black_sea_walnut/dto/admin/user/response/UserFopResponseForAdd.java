@@ -16,7 +16,7 @@ public class UserFopResponseForAdd {
     private String email;
     private Long regionForDeliveryId;
     private Long cityForDeliveryId;
-    private String departmentForDelivery;
+    private String departmentForDeliveryId;
     private String registrationType;
     private String status;
     private String pathToImage;

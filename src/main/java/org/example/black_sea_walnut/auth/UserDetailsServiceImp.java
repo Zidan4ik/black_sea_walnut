@@ -2,7 +2,7 @@ package org.example.black_sea_walnut.auth;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

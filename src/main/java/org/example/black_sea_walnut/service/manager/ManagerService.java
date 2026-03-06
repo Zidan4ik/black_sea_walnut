@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service;
+package org.example.black_sea_walnut.service.manager;
 
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.manager.ManagerDTO;

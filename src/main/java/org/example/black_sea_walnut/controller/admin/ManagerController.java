@@ -6,7 +6,7 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.manager.ManagerDTO;
 import org.example.black_sea_walnut.dto.admin.manager.ManagerResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.ManagerService;
+import org.example.black_sea_walnut.service.manager.ManagerService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

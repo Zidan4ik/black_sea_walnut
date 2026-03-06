@@ -8,7 +8,7 @@ import org.example.black_sea_walnut.dto.web.TransactionResponseForAccount;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.TransactionsService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;

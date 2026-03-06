@@ -3,7 +3,7 @@ package org.example.black_sea_walnut.controller.user;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.black_sea_walnut.controller.AuthorizationController;
 import org.example.black_sea_walnut.entity.User;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ControllerAdvice;

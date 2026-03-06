@@ -3,7 +3,7 @@ package org.example.black_sea_walnut.validator.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 
 @RequiredArgsConstructor

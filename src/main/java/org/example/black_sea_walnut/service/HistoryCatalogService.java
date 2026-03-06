@@ -10,7 +10,10 @@ import org.example.black_sea_walnut.enums.PageType;
 
 public interface HistoryCatalogService {
     BannerBlockResponseForAdd getByPageTypeInResponseBannerBlock(PageType type);
+
     EcologicallyBlockResponseForAdd getByPageTypeInResponseEcologicallyBlock(PageType type);
+
     History saveHistoryBannerBlock(BannerBlockRequestForAdd dto);
+
     History saveHistoryEcologicallyBlock(EcologicallyBlockRequestForAdd dto);
 }

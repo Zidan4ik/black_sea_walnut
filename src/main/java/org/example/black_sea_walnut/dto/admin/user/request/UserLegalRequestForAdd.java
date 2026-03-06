@@ -7,6 +7,8 @@ import org.example.black_sea_walnut.enums.Role;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
+import org.example.black_sea_walnut.service.user.adress.HasAdditionalAddress;
+import org.example.black_sea_walnut.service.user.adress.HasMainAddress;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
@@ -17,7 +19,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class UserLegalRequestForAdd implements UserUpdater, Saveable {
+public class UserLegalRequestForAdd implements UserUpdater, Saveable, HasMainAddress, HasAdditionalAddress {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")
@@ -33,7 +35,7 @@ public class UserLegalRequestForAdd implements UserUpdater, Saveable {
     private Long regionForDeliveryId;
     private Long cityForDeliveryId;
     @NotBlank(message = "{error.field.empty}")
-    private String departmentForDelivery;
+    private String departmentForDeliveryId;
     private String registrationType;
     private String status;
     private String pathToImage;
@@ -53,5 +55,18 @@ public class UserLegalRequestForAdd implements UserUpdater, Saveable {
     @Override
     public void updateEntity(User user, UserMapper mapper) {
         mapper.updateEntityFromRequest(this,user);
+    }
+
+    @Override
+    public String getAddress() {
+        return this.addressAdditionally;
+    }
+
+    public Integer getDepartmentAsInt() {
+        try {
+            return (departmentForDeliveryId != null) ? Integer.parseInt(departmentForDeliveryId) : null;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

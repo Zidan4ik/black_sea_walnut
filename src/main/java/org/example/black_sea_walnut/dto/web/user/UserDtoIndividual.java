@@ -6,7 +6,7 @@ import lombok.Data;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.Uploadable;
-import org.example.black_sea_walnut.service.user.FileProcessable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
-public class UserDtoIndividual implements Uploadable, Saveable, FileProcessable, UserUpdater {
+public class UserDtoIndividual implements Uploadable, Saveable<User,UserMapper>, FileProcessable, UserUpdater {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100,message = "{error.field.valid.length.title}")

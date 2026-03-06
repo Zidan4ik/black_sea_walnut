@@ -5,13 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
+import org.example.black_sea_walnut.service.history.HistoryFileRequest;
 import org.hibernate.validator.constraints.Length;
 
 
 import java.util.List;
 
 @Data
-public class FactoryBlockRequestForAdd {
+public class FactoryBlockRequestForAdd implements HistoryFileRequest<HistoryMainMapper> {
     private Long mainFactoryId;
     private Boolean mainFactoryIsActive;
     @NotBlank(message = "{error.field.empty}")
@@ -26,4 +28,14 @@ public class FactoryBlockRequestForAdd {
     private String mainFactoryDescriptionEn;
     @Valid
     private List<HistoryMediaRequestForAdd> files;
+
+    @Override
+    public String getSubFolder() {
+        return "pages/main/factory-images";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getMainFactoryId();
+    }
 }

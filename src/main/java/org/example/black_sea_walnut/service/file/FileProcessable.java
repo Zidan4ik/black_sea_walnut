@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service.user;
+package org.example.black_sea_walnut.service.file;
 
 import org.springframework.web.multipart.MultipartFile;
 

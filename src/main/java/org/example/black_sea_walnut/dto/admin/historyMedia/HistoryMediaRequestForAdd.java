@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.dto.admin.historyMedia;
 
 import lombok.*;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.springframework.web.multipart.MultipartFile;
 

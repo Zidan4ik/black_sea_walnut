@@ -18,7 +18,7 @@ import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.OrderService;
-import org.example.black_sea_walnut.service.UserService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPhoneValidation;
 import org.springframework.data.domain.PageRequest;

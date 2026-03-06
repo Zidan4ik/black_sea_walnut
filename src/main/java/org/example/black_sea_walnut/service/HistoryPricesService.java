@@ -9,9 +9,14 @@ import java.util.List;
 
 public interface HistoryPricesService {
     HistoryPrices getLatestPriceByProductId(Long productId);
+
     HistoryResponsePricesForProduct getLatestPriceByProductIdInDtoForProduct(Long productId);
+
     HistoryPrices save(HistoryPrices entity);
+
     HistoryPrices save(HistoryRequestPricesForProduct dto);
+
     void deleteAllByProduct(Long productId);
+
     List<HistoryPrices> getLastTwoDataByProduct(Product product);
 }
