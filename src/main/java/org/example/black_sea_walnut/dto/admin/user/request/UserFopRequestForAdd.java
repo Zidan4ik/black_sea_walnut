@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class UserFopRequestForAdd implements UserUpdater, Saveable, HasMainAddress, HasAdditionalAddress {
+public class UserFopRequestForAdd implements UserUpdater, Saveable<User,UserMapper>, HasMainAddress, HasAdditionalAddress {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")

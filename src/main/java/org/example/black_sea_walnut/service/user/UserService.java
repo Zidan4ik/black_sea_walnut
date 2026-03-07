@@ -7,6 +7,7 @@ import org.example.black_sea_walnut.dto.admin.user.response.UserFopResponseForAd
 import org.example.black_sea_walnut.dto.admin.user.response.UserIndividualResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.user.response.UserLegalResponseForView;
 import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.mapper.UserMapper;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public interface UserService {
 
     User save(User entity);
 
-    User save(Saveable dto);
+    User save(Saveable<User, UserMapper> dto);
 
     Optional<User> getByEmail(String email);
 

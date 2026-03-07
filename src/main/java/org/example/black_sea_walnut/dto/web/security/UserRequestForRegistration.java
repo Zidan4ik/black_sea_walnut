@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @Builder
 @PasswordValidation(groups = PasswordValidGroups.NotBlankConfirm.class)
-public class UserRequestForRegistration implements Saveable, UserUpdater, HasMainAddress, HasAdditionalAddress {
+public class UserRequestForRegistration implements Saveable<User,UserMapper>, UserUpdater, HasMainAddress, HasAdditionalAddress {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")

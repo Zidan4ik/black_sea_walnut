@@ -373,6 +373,10 @@
         request.send(JSON.stringify(ids));
     }
 
+    function getActiveLanguage() {
+        const activeBtn = document.querySelector('.nav-link.active');
+        return activeBtn ? activeBtn.getAttribute('data-lang') : null;
+    }
 
 </script>
 <script th:inline="javascript">

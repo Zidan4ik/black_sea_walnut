@@ -1,6 +1,5 @@
 package org.example.black_sea_walnut.service.imp;
 
-import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.main.request.*;
 import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
@@ -391,7 +390,7 @@ class HistoryMainServiceImpTest {
         when(historyService.save(history)).thenReturn(history);
         when(historyService.getById(1L)).thenReturn(history);
 
-        History result = historyMainService.saveHistoryFactoryBlock(dto);
+        History result = historyMainService.saveHistory(dto);
         assertNotNull(result);
         verify(historyService).save(history);
     }
@@ -405,15 +404,15 @@ class HistoryMainServiceImpTest {
         when(historyService.save(history)).thenReturn(history);
         when(historyService.getById(1L)).thenReturn(history);
 
-        History result = historyMainService.saveHistoryFactoryBlock(dto);
+        History result = historyMainService.saveHistory(dto);
         assertNotNull(result);
         verify(historyService).save(history);
     }
 
     @Test
-    void saveHistoryFactoryBlock_ShouldThrowExceptionOnError() {
+    void saveHistory_ShouldThrowExceptionOnError() {
         FactoryBlockRequestForAdd dto = new FactoryBlockRequestForAdd();
         when(historyMainMapper.toEntityFromRequestForAdd(dto)).thenThrow(new RuntimeException("Error"));
-        assertThrows(RuntimeException.class, () -> historyMainService.saveHistoryFactoryBlock(dto));
+        assertThrows(RuntimeException.class, () -> historyMainService.saveHistory(dto));
     }
 }

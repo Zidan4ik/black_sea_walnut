@@ -5,13 +5,16 @@ import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaResponseF
 import org.example.black_sea_walnut.dto.admin.pages.main.request.*;
 import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
 import org.example.black_sea_walnut.entity.History;
+import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.HistoryMediaMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -34,36 +37,36 @@ public class HistoryMainMapper {
                 .build();
     }
 
-    public History toEntityFromRequestForAdd(MainBlockRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestForAdd(MainBlockRequestForAdd dto, History entity) {
         entity.setId(dto.getMainId());
         entity.setActive(dto.getMainIsActive());
         entity.setPageType(PageType.main_banner);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainTitleUk(), dto.getMainDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainTitleEn(), dto.getMainDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
         return entity;
     }
 
-    public History toEntityFromRequestForAdd(AimBlockRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestForAdd(AimBlockRequestForAdd dto, History entity) {
         entity.setId(dto.getMainAimId());
         entity.setActive(dto.getMainAimIsActive());
         entity.setPageType(PageType.main_aim);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainAimTitleUk(), dto.getMainAimDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainAimTitleEn(), dto.getMainAimDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
         return entity;
     }
 
-    public History toEntityFromRequestForAdd(EcoProductionRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestForAdd(EcoProductionRequestForAdd dto, History entity) {
         entity.setId(dto.getMainEcoProductionId());
         entity.setActive(dto.getMainEcoProductionIsActive());
         entity.setPageType(PageType.main_eco_production);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainEcoProductionTitleUk(), dto.getMainEcoProductionDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainEcoProductionTitleEn(), dto.getMainEcoProductionDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
         return entity;
     }
 
@@ -81,14 +84,14 @@ public class HistoryMainMapper {
                 .build();
     }
 
-    public History toEntityFromRequestForAdd(ProductionBlockRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestForAdd(ProductionBlockRequestForAdd dto, History entity) {
         entity.setId(dto.getMainProductionId());
         entity.setActive(dto.isMainProductionIsActive());
         entity.setPageType(PageType.main_production);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainProductionTitleUk(), dto.getMainProductionDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainProductionTitleEn(), dto.getMainProductionDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
         return entity;
     }
 
@@ -108,16 +111,23 @@ public class HistoryMainMapper {
                 .build();
     }
 
-    public History toEntityFromRequestForAdd(FactoryBlockRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestForAdd(FactoryBlockRequestForAdd dto, History entity) {
         entity.setId(dto.getMainFactoryId());
         entity.setActive(dto.getMainFactoryIsActive());
         entity.setPageType(PageType.main_factory_about);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainFactoryTitleUk(), dto.getMainFactoryDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainFactoryTitleEn(), dto.getMainFactoryDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
-        if (dto.getFiles() != null)
-            entity.setHistoryMedia(dto.getFiles().stream().map(t -> mediaMapper.toEntityFromRequestForAdd(t, entity)).toList());
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
+        if (dto.getFiles() != null) {
+            ArrayList<HistoryMedia> medias = dto.getFiles().stream()
+                    .map(m -> mediaMapper.toEntityFromRequestForAdd(m, entity))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            entity.getHistoryMedia().clear();
+            entity.getHistoryMedia().addAll(medias);
+        } else {
+            entity.getHistoryMedia().clear();
+        }
         return entity;
     }
 
@@ -143,14 +153,14 @@ public class HistoryMainMapper {
                 .build();
     }
 
-    public History toEntityFromRequestForAdd(NumberBlockRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestForAdd(NumberBlockRequestForAdd dto, History entity) {
         entity.setId(dto.getMainNumberId());
         entity.setActive(dto.getMainNumberIsActive());
         entity.setPageType(PageType.main_numbers);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getMainNumberTitle1(), dto.getMainNumberTitle2(), dto.getMainNumberTitle3(), dto.getMainNumberTitle4(), dto.getMainNumberDescriptionUk1(), dto.getMainNumberDescriptionUk2(), dto.getMainNumberDescriptionUk3(), dto.getMainNumberDescriptionUk4(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainNumberTitle1(), dto.getMainNumberTitle2(), dto.getMainNumberTitle3(), dto.getMainNumberTitle4(), dto.getMainNumberDescriptionEn1(), dto.getMainNumberDescriptionEn2(), dto.getMainNumberDescriptionEn3(), dto.getMainNumberDescriptionEn4(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
         return entity;
     }
 

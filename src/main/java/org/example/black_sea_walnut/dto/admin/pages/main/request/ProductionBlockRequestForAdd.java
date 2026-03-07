@@ -4,11 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
+import org.example.black_sea_walnut.entity.History;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.hibernate.validator.constraints.Length;
 
 @Builder
 @Getter
-public class ProductionBlockRequestForAdd {
+public class ProductionBlockRequestForAdd implements Saveable<History, HistoryMainMapper> {
     private Long mainProductionId;
     private boolean mainProductionIsActive;
     @NotBlank(message = "{error.field.empty}")
@@ -21,4 +24,14 @@ public class ProductionBlockRequestForAdd {
     private String mainProductionDescriptionUk;
     @Size(max = 150, message = "{error.field.valid.size}")
     private String mainProductionDescriptionEn;
+
+    @Override
+    public Long getId() {
+        return this.getMainProductionId();
+    }
+
+    @Override
+    public void updateEntity(History entity, HistoryMainMapper mapper) {
+        mapper.toEntityFromRequestForAdd(this,entity);
+    }
 }

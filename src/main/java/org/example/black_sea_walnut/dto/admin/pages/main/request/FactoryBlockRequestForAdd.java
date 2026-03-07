@@ -5,15 +5,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
+import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
+import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.service.history.HistoryFileRequest;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.hibernate.validator.constraints.Length;
 
 
 import java.util.List;
 
 @Data
-public class FactoryBlockRequestForAdd implements HistoryFileRequest<HistoryMainMapper> {
+public class FactoryBlockRequestForAdd implements Saveable<History,HistoryMainMapper>, Uploadable, HistoryFileRequest {
     private Long mainFactoryId;
     private Boolean mainFactoryIsActive;
     @NotBlank(message = "{error.field.empty}")
@@ -37,5 +40,10 @@ public class FactoryBlockRequestForAdd implements HistoryFileRequest<HistoryMain
     @Override
     public Long getId() {
         return this.getMainFactoryId();
+    }
+
+    @Override
+    public void updateEntity(History entity, HistoryMainMapper mapper) {
+        mapper.toEntityFromRequestForAdd(this,entity);
     }
 }

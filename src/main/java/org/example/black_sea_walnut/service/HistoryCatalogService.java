@@ -6,6 +6,8 @@ import org.example.black_sea_walnut.dto.admin.pages.catalog.response.BannerBlock
 import org.example.black_sea_walnut.dto.admin.pages.catalog.response.EcologicallyBlockResponseForAdd;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
+import org.example.black_sea_walnut.service.user.Saveable;
 
 
 public interface HistoryCatalogService {
@@ -13,7 +15,5 @@ public interface HistoryCatalogService {
 
     EcologicallyBlockResponseForAdd getByPageTypeInResponseEcologicallyBlock(PageType type);
 
-    History saveHistoryBannerBlock(BannerBlockRequestForAdd dto);
-
-    History saveHistoryEcologicallyBlock(EcologicallyBlockRequestForAdd dto);
+    History saveHistory(Saveable<History, HistoryCatalogMapper> dto);
 }

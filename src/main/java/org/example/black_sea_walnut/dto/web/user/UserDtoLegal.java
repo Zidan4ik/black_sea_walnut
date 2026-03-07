@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.dto.web.user;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.file.FileProcessable;
@@ -18,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Data
-public class UserDtoLegal implements Saveable, UserUpdater, FileProcessable {
+public class UserDtoLegal implements Saveable<User,UserMapper>, UserUpdater, FileProcessable {
     private Long id;
     @NotBlank(message = "{error.field.empty}")
     @Length(max = 100, message = "{error.field.valid.length.title}")

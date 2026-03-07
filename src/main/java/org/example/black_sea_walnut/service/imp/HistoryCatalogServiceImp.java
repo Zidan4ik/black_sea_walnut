@@ -3,29 +3,37 @@ package org.example.black_sea_walnut.service.imp;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.pages.catalog.request.BannerBlockRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.pages.catalog.request.EcologicallyBlockRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.catalog.response.BannerBlockResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.catalog.response.EcologicallyBlockResponseForAdd;
+import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.History;
-import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.HistoryCatalogService;
 import org.example.black_sea_walnut.service.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
-import org.example.black_sea_walnut.util.ImageUtil;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
+import org.example.black_sea_walnut.service.history.HistoryFileRequest;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class HistoryCatalogServiceImp implements HistoryCatalogService {
     private final HistoryService historyService;
-    private final HistoryCatalogMapper catalogMapper;
+    private final HistoryCatalogMapper historyCatalogMapper;
     private final ImageService imageService;
     @Value("${upload.path}")
     private String contextPath;
@@ -33,7 +41,7 @@ public class HistoryCatalogServiceImp implements HistoryCatalogService {
     @Override
     public BannerBlockResponseForAdd getByPageTypeInResponseBannerBlock(PageType type) {
         LogUtil.logInfo("Fetching BannerBlock for page type: " + type);
-        BannerBlockResponseForAdd response = catalogMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
+        BannerBlockResponseForAdd response = historyCatalogMapper.toResponseBannerBlockForAdd(historyService.getByPageType(type));
         LogUtil.logInfo("Fetched BannerBlock: " + response);
         return response;
     }
@@ -41,79 +49,93 @@ public class HistoryCatalogServiceImp implements HistoryCatalogService {
     @Override
     public EcologicallyBlockResponseForAdd getByPageTypeInResponseEcologicallyBlock(PageType type) {
         LogUtil.logInfo("Fetching EcologicallyBlock for page type: " + type);
-        EcologicallyBlockResponseForAdd response = catalogMapper.toResponseEcologicallyBlockForAdd(historyService.getByPageType(type));
+        EcologicallyBlockResponseForAdd response = historyCatalogMapper.toResponseEcologicallyBlockForAdd(historyService.getByPageType(type));
         LogUtil.logInfo("Fetched EcologicallyBlock: " + response);
         return response;
     }
 
-    @SneakyThrows
     @Override
-    public History saveHistoryBannerBlock(BannerBlockRequestForAdd dto) {
-        LogUtil.logInfo("Saving BannerBlock with DTO: " + dto);
-        if (dto.getCatalogBannerId() != null) {
-            History historyById = historyService.getById(dto.getCatalogBannerId());
-            if (dto.getCatalogBannerPathToImage().isEmpty() && historyById.getBanner() != null) {
-                LogUtil.logInfo("Deleting previous image for BannerBlock ID: " + dto.getCatalogBannerId());
-                imageService.deleteByPath(historyById.getBanner().getPathToMedia());
-            }
-            dto.setMediaType(ImageUtil.getMediaType(dto.getCatalogBannerFile()));
-            if (dto.getCatalogBannerFile() != null) {
-                String generatedPath = contextPath + "/pages/catalog/banner-block/" + dto.getMediaType() + "/" + imageService.generateFileName(dto.getCatalogBannerFile());
-                dto.setCatalogBannerPathToImage(generatedPath);
-                LogUtil.logInfo("Generated media file path for BannerBlock: " + generatedPath);
-            }
-            if (historyById.getBanner() != null) {
-                historyById.getBanner().setPathToMedia(dto.getCatalogBannerPathToImage());
-                historyById.getBanner().setMediaType(dto.getMediaType());
-            }
+    @Transactional
+    @SneakyThrows
+    public History saveHistory(Saveable<History, HistoryCatalogMapper> dto) {
+        History entity = (dto.getId() != null)
+                ? historyService.getById(dto.getId())
+                : new History();
+
+        if (dto instanceof FileProcessable fileDto && isNewImageProvided(fileDto)) {
+            handleBannerUpdate(entity, fileDto, (Uploadable) dto);
         }
 
-        imageService.save(dto.getCatalogBannerFile(), dto.getCatalogBannerPathToImage());
-        History mappedHistory = catalogMapper.toEntityFromRequestBannerBlock(dto);
-        LogUtil.logInfo("Saved BannerBlock with ID: " + mappedHistory.getId());
-        return historyService.save(mappedHistory);
+        if (dto instanceof HistoryFileRequest filesDto && dto instanceof Uploadable u) {
+            handleFileSynchronization(filesDto, entity, u);
+        }
+
+        dto.updateEntity(entity, historyCatalogMapper);
+
+        return historyService.save(entity);
     }
 
-    @SneakyThrows
-    @Override
-    public History saveHistoryEcologicallyBlock(EcologicallyBlockRequestForAdd dto) {
-        LogUtil.logInfo("Saving EcologicallyBlock with DTO: " + dto);
-        if (dto.getCatalogEcologicallyId() != null) {
-            History historyById = historyService.getById(dto.getCatalogEcologicallyId());
-            if (dto.getCatalogEcologicallyFiles() != null) {
-                List<HistoryMedia> mediasFromBd = historyById.getHistoryMedia();
+    private void handleBannerUpdate(History entity, FileProcessable fileDto, Uploadable u) throws IOException {
+        if (entity.getBanner() == null) {
+            entity.setBanner(new Banner());
+            entity.getBanner().setHistory(entity);
+        }
 
-                List<HistoryMedia> mediasToDelete = mediasFromBd.stream().filter(media -> dto.getCatalogEcologicallyFiles().stream().noneMatch(mediaDto -> mediaDto.getId() != null && mediaDto.getId().equals(media.getId())))
-                        .toList();
-                for (HistoryMedia media : mediasToDelete) {
-                    LogUtil.logInfo("Deleting media file with ID: " + media.getId());
-                    imageService.deleteByPath(media.getPathToImage());
-                }
+        if (entity.getBanner().getPathToMedia() != null) {
+            safeDelete(entity.getBanner().getPathToMedia());
+        }
 
-                for (HistoryMediaRequestForAdd mediaDto : dto.getCatalogEcologicallyFiles()) {
-                    mediaDto.setMediaType(ImageUtil.getMediaType(mediaDto.getFileImage()));
-                    HistoryMedia media = mediasFromBd.stream().filter(m -> m.getId().equals(mediaDto.getId())).findFirst().orElse(null);
-                    if (mediaDto.getPathToImage().isEmpty() && media != null) {
-                        LogUtil.logInfo("Deleting previous image for media ID: " + mediaDto.getId());
-                        imageService.deleteByPath(media.getPathToImage());
-                    }
+        String path = imageService.generatePath(fileDto.getFileImage(), u);
+        entity.getBanner().setPathToMedia(path);
+        imageService.save(fileDto.getFileImage(), path);
+    }
 
-                    if (mediaDto.getFileImage() != null) {
-                        String generatedPath = contextPath + "/pages/catalog/ecologically-block/" + mediaDto.getMediaType() + "/" + imageService.generateFileName(mediaDto.getFileImage());
-                        mediaDto.setPathToImage(generatedPath);
-                        LogUtil.logInfo("Generated media file path for media ID: " + mediaDto.getId() + ": " + generatedPath);
-                    }
+    private void handleFileSynchronization(HistoryFileRequest dto, History entity, Uploadable sub) {
+        if (entity.getHistoryMedia() == null) {
+            entity.setHistoryMedia(new ArrayList<>());
+        }
 
-                    if (media != null) {
-                        media.setPathToImage(mediaDto.getPathToImage());
-                        media.setMediaType(mediaDto.getMediaType());
-                    }
-                    imageService.save(mediaDto.getFileImage(), mediaDto.getPathToImage());
-                }
+        List<HistoryMediaRequestForAdd> newFiles = dto.getFiles();
+
+        if (newFiles == null || newFiles.isEmpty()) {
+            entity.getHistoryMedia().forEach(old -> safeDelete(old.getPathToImage()));
+            entity.getHistoryMedia().clear();
+            return;
+        }
+
+        Set<String> pathsInDto = newFiles.stream()
+                .map(HistoryMediaRequestForAdd::getPathToImage)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        entity.getHistoryMedia().removeIf(old -> {
+            if (!pathsInDto.contains(old.getPathToImage())) {
+                safeDelete(old.getPathToImage());
+                return true;
+            }
+            return false;
+        });
+
+        for (HistoryMediaRequestForAdd mediaDto : newFiles) {
+            if (mediaDto.getFileImage() != null && !mediaDto.getFileImage().isEmpty()) {
+                String generatedPath = imageService.generatePath(mediaDto.getFileImage(), sub);
+                mediaDto.setPathToImage(generatedPath);
+                imageService.save(mediaDto.getFileImage(), generatedPath);
             }
         }
-        History mappedHistory = catalogMapper.toEntityFromRequestEcologicallyBlock(dto);
-        LogUtil.logInfo("Saved EcologicallyBlock with ID: " + mappedHistory.getId());
-        return historyService.save(mappedHistory);
+    }
+
+    private void safeDelete(String path) {
+        try {
+            if (path != null && !path.isEmpty()) {
+                imageService.deleteByPath(path);
+            }
+        } catch (IOException e) {
+            LogUtil.logError("Failed to delete image at path: " + path, e);
+        }
+    }
+
+    private boolean isNewImageProvided(FileProcessable dto) {
+        return dto.getFileImage() != null && !dto.getFileImage().isEmpty();
     }
 }

@@ -78,12 +78,13 @@ public class HistoryController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        historyMainService.saveHistoryMainBlock(dto.getRequestMainForAdd());
-        historyMainService.saveHistoryNumberBlock(dto.getRequestNumberBlockForAdd());
-        historyMainService.saveHistoryProductionBlock(dto.getRequestProductionBlockForAdd());
-        historyMainService.saveHistoryAimBlock(dto.getRequestAimBlockForAdd());
-        historyMainService.saveHistoryEcoProductionBlock(dto.getRequestEcoProductionForAdd());
-        historyMainService.saveHistoryFactoryBlock(dto.getRequestFactoryForAdd());
+
+        historyMainService.saveHistory(dto.getRequestMainForAdd());
+        historyMainService.saveHistory(dto.getRequestProductionBlockForAdd());
+        historyMainService.saveHistory(dto.getRequestFactoryForAdd());
+        historyMainService.saveHistory(dto.getRequestNumberBlockForAdd());
+        historyMainService.saveHistory(dto.getRequestAimBlockForAdd());
+        historyMainService.saveHistory(dto.getRequestEcoProductionForAdd());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -112,8 +113,8 @@ public class HistoryController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        catalogService.saveHistoryBannerBlock(dto.getRequestBannerForAdd());
-        catalogService.saveHistoryEcologicallyBlock(dto.getRequestEcologicallyForAdd());
+        catalogService.saveHistory(dto.getRequestBannerForAdd());
+        catalogService.saveHistory(dto.getRequestEcologicallyForAdd());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

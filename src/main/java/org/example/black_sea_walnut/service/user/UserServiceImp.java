@@ -115,7 +115,7 @@ public class UserServiceImp implements UserService, UserAuthService {
 
     @SneakyThrows
     @Override
-    public User save(Saveable dto) {
+    public User save(Saveable<User,UserMapper> dto) {
         User userToSave = (dto.getId() != null) ? getById(dto.getId()) : new User();
         handleImageProcessing(dto);
         handleAddressMapping(dto, userToSave);
@@ -199,17 +199,18 @@ public class UserServiceImp implements UserService, UserAuthService {
     }
 
     private void handleImageProcessing(Saveable<User,UserMapper> dto) throws IOException {
-        if (dto instanceof FileProcessable fileDto && isNewImageProvided(fileDto)) {
+        if (dto instanceof FileProcessable fileDto && isNewImageProvided(fileDto) &&
+        dto instanceof Uploadable sub) {
             if (fileDto.getPathToImage() != null) {
                 imageService.deleteByPath(fileDto.getPathToImage());
             }
-            String newPath = imageService.generatePath(fileDto.getFileImage(),dto);
+            String newPath = imageService.generatePath(fileDto.getFileImage(),sub);
             fileDto.setPathToImage(newPath);
             imageService.save(fileDto.getFileImage(), newPath);
         }
     }
 
-    private void handleAddressMapping(Saveable dto, User entity) {
+    private void handleAddressMapping(Saveable<User,UserMapper> dto, User entity) {
         if (dto instanceof HasMainAddress addr) {
             entity.setCity(databaseUtil.findOrThrow(addr.getCityForDeliveryId(), cityService::getById, "City"));
             entity.setRegion(databaseUtil.findOrThrow(addr.getRegionForDeliveryId(), regionService::getById, "Region"));
@@ -222,7 +223,7 @@ public class UserServiceImp implements UserService, UserAuthService {
         }
     }
 
-    private void handleCountryMapping(Saveable dto, User entity) {
+    private void handleCountryMapping(Saveable<User,UserMapper> dto, User entity) {
         if (dto instanceof HasCountry countryDto) {
             entity.setCountry(databaseUtil.findOrThrow(countryDto.getIdCountry(), countryService::getById, "Country"));
             if (countryDto.getIdCountryLegal() != null) {
