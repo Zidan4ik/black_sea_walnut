@@ -5,6 +5,7 @@ import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestFo
 import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.service.history.factory.HistoryFactoryServiceImp;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -15,7 +16,7 @@ import org.example.black_sea_walnut.dto.admin.pages.factory.response.BlockRespon
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
-import org.example.black_sea_walnut.service.HistoryService;
+import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -10,6 +10,7 @@ import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.HistoryMediaMapper;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class HistoryMainMapper {
+public class HistoryMainMapper implements GenericsMapper {
     private final HistoryMediaMapper mediaMapper;
 
     public BlockResponseForAddInMain toResponseMainBlockForAdd(History entity) {
@@ -119,15 +120,7 @@ public class HistoryMainMapper {
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getMainFactoryTitleEn(), dto.getMainFactoryDescriptionEn(), entity);
         entity.getTranslations().clear();
         entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
-        if (dto.getFiles() != null) {
-            ArrayList<HistoryMedia> medias = dto.getFiles().stream()
-                    .map(m -> mediaMapper.toEntityFromRequestForAdd(m, entity))
-                    .collect(Collectors.toCollection(ArrayList::new));
-            entity.getHistoryMedia().clear();
-            entity.getHistoryMedia().addAll(medias);
-        } else {
-            entity.getHistoryMedia().clear();
-        }
+        updateHistoryMedia(entity, dto.getFiles(), mediaMapper);
         return entity;
     }
 

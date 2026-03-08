@@ -9,7 +9,9 @@ import org.example.black_sea_walnut.dto.web.MainResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.history.HistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,10 +27,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMainController {
     private final ProductService productService;
-    private final HistoryMainService historyMainService;
     private final NutService nutService;
     private final NewService newService;
     private final ContactService contactService;
+    private final HistoryService historyService;
+    private final HistoryMainMapper mainMapper;
 
     @GetMapping("/main")
     public ModelAndView viewMainPage() {
@@ -38,15 +41,15 @@ public class WebMainController {
     @GetMapping("/main/data")
     public ResponseEntity<MainResponseForView> getDataForMainPage(@RequestParam("lang") String lang) {
         List<ProductResponseForViewInTable> response = productService.getRandomProductsBySizeForDto(5, LanguageCode.fromString(lang));
-        BlockResponseForAddInMain banner = historyMainService.getByPageTypeInResponseMainBlock(PageType.main_banner);
-        ProductionResponseForAddInMain production = historyMainService.getByPageTypeInResponseProductionBlock(PageType.main_production);
-        FactoryBlockResponseForAddInMain factory = historyMainService.getByPageTypeInResponseFactoryBlock(PageType.main_factory_about);
-        NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
-        AimBlockResponseForAddInMain aim = historyMainService.getByPageTypeInResponseAimBlock(PageType.main_aim);
-        EcoProductionResponseForAddInMain eco = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
+        BlockResponseForAddInMain banner = historyService.getResponseByPageType(PageType.main_banner,mainMapper::toResponseMainBlockForAdd);
+        ProductionResponseForAddInMain production = historyService.getResponseByPageType(PageType.main_production,mainMapper::toResponseProductionBlockForAdd);
+        FactoryBlockResponseForAddInMain factory = historyService.getResponseByPageType(PageType.main_factory_about,mainMapper::toResponseFactoryBlockForAdd);
+        NumberBlockResponseForAddInMain numbers = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
+        AimBlockResponseForAddInMain aim = historyService.getResponseByPageType(PageType.main_aim,mainMapper::toResponseAimBlockForAdd);
+        EcoProductionResponseForAddInMain eco = historyService.getResponseByPageType(PageType.main_eco_production,mainMapper::toResponseEcoProductionBLockForAdd);
         List<NutResponseForAdd> nuts = nutService.getAllActiveInResponseForAdd();
         List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
         return new ResponseEntity<>(
                 MainResponseForView.builder()
                         .products(response)

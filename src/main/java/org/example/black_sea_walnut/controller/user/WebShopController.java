@@ -16,7 +16,9 @@ import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -38,11 +40,12 @@ import java.util.Set;
 public class WebShopController {
     private final ProductService productService;
     private final TasteService tasteService;
-    private final HistoryCatalogService historyCatalogService;
     private final ContactService contactService;
     private final ProductMapper productMapper;
     private final BasketService basketService;
     private final UserService userService;
+    private final HistoryCatalogMapper catalogMapper;
+    private final HistoryService historyService;
 
     @GetMapping("/shop")
     public ModelAndView viewShopPage() {
@@ -69,9 +72,9 @@ public class WebShopController {
     public ResponseEntity<ShopResponseForView> getDataForShopPage(@RequestParam("lang") String lang) {
         List<Integer> masses = productService.getAllMasses();
         Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(lang));
-        BannerBlockResponseForAdd banner = historyCatalogService.getByPageTypeInResponseBannerBlock(PageType.catalog_banner);
-        EcologicallyBlockResponseForAdd ecologically = historyCatalogService.getByPageTypeInResponseEcologicallyBlock(PageType.catalog_ecologically_pure_walnut);
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
+        BannerBlockResponseForAdd banner = historyService.getResponseByPageType(PageType.catalog_banner,catalogMapper::toResponseBannerBlockForAdd);
+        EcologicallyBlockResponseForAdd ecologically = historyService.getResponseByPageType(PageType.catalog_ecologically_pure_walnut,catalogMapper::toResponseEcologicallyBlockForAdd);
+        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
         return new ResponseEntity<>(
                 ShopResponseForView.builder()
                         .masses(masses)

@@ -338,15 +338,19 @@
                         $("#file-" + attribute).click();
                     });
 
-                    $('#container-inputs').off('change', '.files').on('change', '.files', function (event) {
-                        let attribute = $(this).data('type');
-                        const file = event.target.files[0];
-                        if (!file) return;
+                    $(container).off('change', 'input[type="file"].files')
+                        .on('change', 'input[type="file"].files', function (event) {
+                            const file = event.target.files[0];
+                            if (!file) return;
+                            console.log(file);
+                            let attribute = $(this).data('type');
+                            const imageElement = $("#" + attribute);
 
-                        const imageElement = $("#" + attribute);
-                        imageElement.attr('src', URL.createObjectURL(file));
-                        $(`input[data-image="${attribute}"]`).val('');
-                    });
+                            console.log(attribute);
+                            console.log(imageElement);
+                            imageElement.attr('src', URL.createObjectURL(file));
+                            $(`input[data-image="${attribute}"]`).val('');
+                        });
 
                     $(container).off('click', '.btn-delete').on('click', '.btn-delete', function () {
                         let value = $(this).data('type');

@@ -2176,7 +2176,7 @@ java.lang.RuntimeException: Test exception
 
 java.lang.RuntimeException: Error
 	at org.example.black_sea_walnut.mapper.pages.HistoryMainMapper.toEntityFromRequestForAdd(HistoryMainMapper.java:112) ~[classes/:na]
-	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImp.saveHistoryFactoryBlock(HistoryMainServiceImp.java:217) ~[classes/:na]
+	at org.example.black_sea_walnut.service.history.main.HistoryMainServiceImp.saveHistoryFactoryBlock(HistoryMainServiceImp.java:217) ~[classes/:na]
 	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImpTest.lambda$saveHistoryFactoryBlock_ShouldThrowExceptionOnError$3(HistoryMainServiceImpTest.java:417) ~[test-classes/:na]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
@@ -2268,7 +2268,7 @@ java.lang.RuntimeException: Error
 
 java.lang.RuntimeException: Error
 	at org.example.black_sea_walnut.mapper.pages.HistoryMainMapper.toEntityFromRequestForAdd(HistoryMainMapper.java:60) ~[classes/:na]
-	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImp.saveHistoryEcoProductionBlock(HistoryMainServiceImp.java:161) ~[classes/:na]
+	at org.example.black_sea_walnut.service.history.main.HistoryMainServiceImp.saveHistoryEcoProductionBlock(HistoryMainServiceImp.java:161) ~[classes/:na]
 	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImpTest.lambda$saveHistoryEcoProductionBlock_ShouldThrowExceptionOnError$2(HistoryMainServiceImpTest.java:345) ~[test-classes/:na]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
@@ -2353,7 +2353,7 @@ java.lang.RuntimeException: Error
 
 java.lang.RuntimeException: Error
 	at org.example.black_sea_walnut.mapper.pages.HistoryMainMapper.toEntityFromRequestForAdd(HistoryMainMapper.java:38) ~[classes/:na]
-	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImp.saveHistoryMainBlock(HistoryMainServiceImp.java:93) ~[classes/:na]
+	at org.example.black_sea_walnut.service.history.main.HistoryMainServiceImp.saveHistoryMainBlock(HistoryMainServiceImp.java:93) ~[classes/:na]
 	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImpTest.lambda$saveHistoryMainBlock_ShouldThrowExceptionOnError$0(HistoryMainServiceImpTest.java:206) ~[test-classes/:na]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
@@ -2457,7 +2457,7 @@ java.lang.RuntimeException: Error
 
 java.lang.RuntimeException: Error
 	at org.example.black_sea_walnut.mapper.pages.HistoryMainMapper.toEntityFromRequestForAdd(HistoryMainMapper.java:49) ~[classes/:na]
-	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImp.saveHistoryAimBlock(HistoryMainServiceImp.java:127) ~[classes/:na]
+	at org.example.black_sea_walnut.service.history.main.HistoryMainServiceImp.saveHistoryAimBlock(HistoryMainServiceImp.java:127) ~[classes/:na]
 	at org.example.black_sea_walnut.service.imp.HistoryMainServiceImpTest.lambda$saveHistoryAimBlock_ShouldThrowExceptionOnError$1(HistoryMainServiceImpTest.java:274) ~[test-classes/:na]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53) ~[junit-jupiter-api-5.10.3.jar:5.10.3]
 	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35) ~[junit-jupiter-api-5.10.3.jar:5.10.3]

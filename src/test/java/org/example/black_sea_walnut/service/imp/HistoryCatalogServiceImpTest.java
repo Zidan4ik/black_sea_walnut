@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestForAdd;
 import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.service.history.catalog.HistoryCatalogServiceImp;
 import org.mockito.Mock;
 
 import org.example.black_sea_walnut.dto.admin.pages.catalog.request.BannerBlockRequestForAdd;
@@ -14,7 +15,7 @@ import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.HistoryMedia;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
-import org.example.black_sea_walnut.service.HistoryService;
+import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

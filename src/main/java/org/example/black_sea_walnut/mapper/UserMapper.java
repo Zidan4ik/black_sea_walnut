@@ -17,6 +17,7 @@ import org.example.black_sea_walnut.dto.web.user.UserDtoLegal;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
 import org.example.black_sea_walnut.enums.UserStatus;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.service.user.UserUpdater;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class UserMapper {
+public class UserMapper implements GenericsMapper {
     private final OrderMapper orderMapper;
 
     public UserResponseForView toResponseForView(User entity) {

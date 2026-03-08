@@ -11,7 +11,10 @@ import org.example.black_sea_walnut.dto.admin.pages.main.response.NumberBlockRes
 import org.example.black_sea_walnut.dto.web.FactoryResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.history.HistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,8 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/web")
 public class WebFactoryController {
-    private final HistoryFactoryService historyFactoryService;
-    private final HistoryMainService historyMainService;
+    private final HistoryService historyService;
+    private final HistoryMainMapper mainMapper;
+    private final HistoryFactoryMapper factoryMapper;
     private final GalleryService galleryService;
     private final NewService newService;
     private final ContactService contactService;
@@ -39,10 +43,10 @@ public class WebFactoryController {
 
     @GetMapping("/factory/data")
     public ResponseEntity<?> getDataForFactoryPage(@RequestParam("lang") String lang) {
-        BlockResponseForAdd bock = historyFactoryService.getByPageTypeInResponseBlock(PageType.factory_block2);
-        FactoryBannerBlockResponseForAdd banner = historyFactoryService.getByPageTypeInResponseBannerBlock(PageType.factory_banner);
-        NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
-        EcoProductionResponseForAddInMain ecology = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
+        BlockResponseForAdd bock = historyService.getResponseByPageType(PageType.factory_block2,factoryMapper::toResponseBlockForAdd);
+        FactoryBannerBlockResponseForAdd banner = historyService.getResponseByPageType(PageType.factory_banner,factoryMapper::toResponseBannerBlockForAdd);
+        NumberBlockResponseForAddInMain numbers = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
+        EcoProductionResponseForAddInMain ecology = historyService.getResponseByPageType(PageType.main_eco_production,mainMapper::toResponseEcoProductionBLockForAdd);
         ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
         List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
         List<GalleryResponseForAdd> gallery = galleryService.getAllInResponseByLanguageCodeByActive(LanguageCode.fromString(lang),true);

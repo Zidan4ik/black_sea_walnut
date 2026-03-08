@@ -19,10 +19,12 @@ import org.example.black_sea_walnut.dto.admin.pages.main.PageMainRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.main.PageMainResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.main.response.*;
 import org.example.black_sea_walnut.enums.PageType;
-import org.example.black_sea_walnut.service.HistoryCatalogService;
-import org.example.black_sea_walnut.service.HistoryClientService;
-import org.example.black_sea_walnut.service.HistoryFactoryService;
-import org.example.black_sea_walnut.service.HistoryMainService;
+import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
+import org.example.black_sea_walnut.service.history.HistoryService;
+import org.example.black_sea_walnut.service.history.client.HistoryClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +41,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class HistoryController {
-    private final HistoryMainService historyMainService;
-    private final HistoryCatalogService catalogService;
-    private final HistoryFactoryService factoryService;
+    private final HistoryService historyService;
+    private final HistoryCatalogMapper catalogMapper;
+    private final HistoryMainMapper mainMapper;
+    private final HistoryFactoryMapper factoryMapper;
     private final HistoryClientService clientService;
+    private final HistoryClientsMapper clientsMapper;
 
     @GetMapping("/pages")
     public ModelAndView viewPages() {
@@ -56,13 +60,20 @@ public class HistoryController {
 
     @GetMapping("/page/main/data")
     public ResponseEntity<PageMainResponseForAdd> getDataForPageMain() {
-        BlockResponseForAddInMain mainBlock = historyMainService.getByPageTypeInResponseMainBlock(PageType.main_banner);
-        ProductionResponseForAddInMain productionBlock = historyMainService.getByPageTypeInResponseProductionBlock(PageType.main_production);
-        FactoryBlockResponseForAddInMain factoryAboutBlock = historyMainService.getByPageTypeInResponseFactoryBlock(PageType.main_factory_about);
-        NumberBlockResponseForAddInMain numberBlock = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
-        AimBlockResponseForAddInMain aimBlock = historyMainService.getByPageTypeInResponseAimBlock(PageType.main_aim);
-        EcoProductionResponseForAddInMain ecoProductionBlock = historyMainService.getByPageTypeInResponseEcoProductionBlock(PageType.main_eco_production);
-        PageMainResponseForAdd pageMainResponse = PageMainResponseForAdd.builder().responseMainBlock(mainBlock).responseProductionBlock(productionBlock).responseFactoryBlock(factoryAboutBlock).responseNumberBlock(numberBlock).responseAimBlock(aimBlock).responseEcoProductionBlock(ecoProductionBlock).build();
+        BlockResponseForAddInMain mainBlock = historyService.getResponseByPageType(PageType.main_banner,mainMapper::toResponseMainBlockForAdd);
+        ProductionResponseForAddInMain productionBlock = historyService.getResponseByPageType(PageType.main_production,mainMapper::toResponseProductionBlockForAdd);
+        FactoryBlockResponseForAddInMain factoryAboutBlock = historyService.getResponseByPageType(PageType.main_factory_about,mainMapper::toResponseFactoryBlockForAdd);
+        NumberBlockResponseForAddInMain numberBlock = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
+        AimBlockResponseForAddInMain aimBlock = historyService.getResponseByPageType(PageType.main_aim,mainMapper::toResponseAimBlockForAdd);
+        EcoProductionResponseForAddInMain ecoProductionBlock = historyService.getResponseByPageType(PageType.main_eco_production,mainMapper::toResponseEcoProductionBLockForAdd);
+        PageMainResponseForAdd pageMainResponse = PageMainResponseForAdd.builder()
+                .responseMainBlock(mainBlock)
+                .responseProductionBlock(productionBlock)
+                .responseFactoryBlock(factoryAboutBlock)
+                .responseNumberBlock(numberBlock)
+                .responseAimBlock(aimBlock)
+                .responseEcoProductionBlock(ecoProductionBlock)
+                .build();
         return new ResponseEntity<>(pageMainResponse, HttpStatus.OK);
     }
 
@@ -79,12 +90,12 @@ public class HistoryController {
                     .body(errors);
         }
 
-        historyMainService.saveHistory(dto.getRequestMainForAdd());
-        historyMainService.saveHistory(dto.getRequestProductionBlockForAdd());
-        historyMainService.saveHistory(dto.getRequestFactoryForAdd());
-        historyMainService.saveHistory(dto.getRequestNumberBlockForAdd());
-        historyMainService.saveHistory(dto.getRequestAimBlockForAdd());
-        historyMainService.saveHistory(dto.getRequestEcoProductionForAdd());
+        historyService.saveHistory(dto.getRequestMainForAdd(),mainMapper);
+        historyService.saveHistory(dto.getRequestProductionBlockForAdd(),mainMapper);
+        historyService.saveHistory(dto.getRequestFactoryForAdd(),mainMapper);
+        historyService.saveHistory(dto.getRequestNumberBlockForAdd(),mainMapper);
+        historyService.saveHistory(dto.getRequestAimBlockForAdd(),mainMapper);
+        historyService.saveHistory(dto.getRequestEcoProductionForAdd(),mainMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -95,9 +106,12 @@ public class HistoryController {
 
     @GetMapping("/page/catalog/data")
     public ResponseEntity<PageCatalogResponseForAdd> getDataForPageCatalog() {
-        BannerBlockResponseForAdd bannerResponse = catalogService.getByPageTypeInResponseBannerBlock(PageType.catalog_banner);
-        EcologicallyBlockResponseForAdd ecologicallyResponse = catalogService.getByPageTypeInResponseEcologicallyBlock(PageType.catalog_ecologically_pure_walnut);
-        PageCatalogResponseForAdd response = PageCatalogResponseForAdd.builder().bannerBlockResponseForAdd(bannerResponse).ecologicallyBlockResponseForAdd(ecologicallyResponse).build();
+        BannerBlockResponseForAdd bannerResponse = historyService.getResponseByPageType(PageType.catalog_banner, catalogMapper::toResponseBannerBlockForAdd);
+        EcologicallyBlockResponseForAdd ecologicallyResponse = historyService.getResponseByPageType(PageType.catalog_ecologically_pure_walnut, catalogMapper::toResponseEcologicallyBlockForAdd);
+        PageCatalogResponseForAdd response = PageCatalogResponseForAdd.builder()
+                .bannerBlockResponseForAdd(bannerResponse)
+                .ecologicallyBlockResponseForAdd(ecologicallyResponse)
+                .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -113,8 +127,8 @@ public class HistoryController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        catalogService.saveHistory(dto.getRequestBannerForAdd());
-        catalogService.saveHistory(dto.getRequestEcologicallyForAdd());
+        historyService.saveHistory(dto.getRequestBannerForAdd(),catalogMapper);
+        historyService.saveHistory(dto.getRequestEcologicallyForAdd(), catalogMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -125,8 +139,8 @@ public class HistoryController {
 
     @GetMapping("/page/factory/data")
     public ResponseEntity<PageFactoryResponseForAdd> getDataForPageFactory() {
-        FactoryBannerBlockResponseForAdd bannerResponse = factoryService.getByPageTypeInResponseBannerBlock(PageType.factory_banner);
-        BlockResponseForAdd blockResponse = factoryService.getByPageTypeInResponseBlock(PageType.factory_block2);
+        FactoryBannerBlockResponseForAdd bannerResponse = historyService.getResponseByPageType(PageType.factory_banner,factoryMapper::toResponseBannerBlockForAdd);
+        BlockResponseForAdd blockResponse = historyService.getResponseByPageType(PageType.factory_block2,factoryMapper::toResponseBlockForAdd);
         PageFactoryResponseForAdd response = PageFactoryResponseForAdd.builder().responseFactoryBannerForAdd(bannerResponse).responseFactoryBlockForAdd(blockResponse).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -143,8 +157,8 @@ public class HistoryController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        factoryService.saveHistoryBannerBlock(dto.getRequestFactoryBannerForAdd());
-        factoryService.saveHistoryBlock(dto.getRequestFactoryBlockForAdd());
+        historyService.saveHistory(dto.getRequestFactoryBannerForAdd(),factoryMapper);
+        historyService.saveHistory(dto.getRequestFactoryBlockForAdd(),factoryMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -155,8 +169,8 @@ public class HistoryController {
 
     @GetMapping("/page/clients/data")
     public ResponseEntity<PageClientResponseForAdd> getDataForPageClients() {
-        ClientBannerResponseForAdd banner = clientService.getByPageTypeInResponseBannerBlock(PageType.clients_banner);
-        ClientEcoProductionResponseForAdd ecoProduction = clientService.getByPageTypeInResponseEcoProductionBlock(PageType.clients_eco_production);
+        ClientBannerResponseForAdd banner = historyService.getResponseByPageType(PageType.clients_banner,clientsMapper::toResponseBannerBlockForAdd);
+        ClientEcoProductionResponseForAdd ecoProduction = historyService.getResponseByPageType(PageType.clients_eco_production,clientsMapper::toResponseEcoProductionBlockForAdd);
         List<ClientCategoryResponseForAdd> categories = clientService.getAllInResponseCategoryBlock();
         PageClientResponseForAdd dto = PageClientResponseForAdd.builder().responseClientBannerForAdd(banner).responseClientCategoryForAdd(categories).responseClientEcoProductionForAdd(ecoProduction).build();
         return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -174,9 +188,9 @@ public class HistoryController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        clientService.saveHistoryBannerBlock(dto.getRequestClientBannerForAdd());
-        clientService.saveHistoryCategoryBlock(dto.getRequestClientCategoryForAdd());
-        clientService.saveHistoryEcoProductionBlock(dto.getRequestClientEcoProductionForAdd());
+        historyService.saveHistory(dto.getRequestClientBannerForAdd(),clientsMapper);
+//        clientService.saveHistoryCategoryBlock(dto.getRequestClientCategoryForAdd());
+        historyService.saveHistory(dto.getRequestClientEcoProductionForAdd(),clientsMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

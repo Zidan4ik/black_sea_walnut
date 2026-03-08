@@ -12,14 +12,17 @@ import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.entity.translation.ClientCategoryTranslation;
 import org.example.black_sea_walnut.entity.translation.HistoryTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class HistoryClientsMapper {
+public class HistoryClientsMapper implements GenericsMapper {
     public ClientBannerResponseForAdd toResponseBannerBlockForAdd(History entity) {
         HistoryTranslation translateUk = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().orElse(null);
         HistoryTranslation translateEn = entity.getTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().orElse(null);
@@ -68,39 +71,39 @@ public class HistoryClientsMapper {
                 .build();
     }
 
-    public History toEntityFromRequestBannerBlock(ClientBannerRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestBannerBlock(ClientBannerRequestForAdd dto, History entity) {
         entity.setId(dto.getClientsBannerId());
         entity.setActive(dto.getClientsBannerIsActive());
         entity.setPageType(PageType.clients_banner);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getClientsBannerTitleUk(), dto.getClientsBannerDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getClientsBannerTitleEn(), dto.getClientsBannerDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk,translationEn)));
         return entity;
     }
 
-    public ClientCategory toEntityFromRequestClientCategoryBlock(ClientCategoryRequestForAdd dto) {
-        ClientCategory entity = new ClientCategory();
+    public ClientCategory toEntityFromRequestClientCategoryBlock(ClientCategoryRequestForAdd dto, ClientCategory entity) {
         entity.setId(dto.getClientsCategoryId());
         entity.setActive(dto.getClientsCategoryIsActive());
-        entity.setMediaTypeSvg(dto.getMediaTypeSvg());
-        entity.setMediaTypeImage(dto.getMediaTypeImage());
+        entity.setMediaTypeSvg(MediaType.image);
+        entity.setMediaTypeImage(MediaType.image);
         entity.setPathToImage(dto.getClientsCategoryPathToImage());
         entity.setPathToSvg(dto.getClientsCategoryPathToSvg());
         ClientCategoryTranslation translationUk = new ClientCategoryTranslation(null, LanguageCode.uk, dto.getClientsCategoryTitleUk(), dto.getClientsCategorySubtitleUk(), dto.getClientsCategoryDescriptionUk(), entity);
         ClientCategoryTranslation translationEn = new ClientCategoryTranslation(null, LanguageCode.en, dto.getClientsCategoryTitleEn(), dto.getClientsCategorySubtitleEn(), dto.getClientsCategoryDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk,translationEn)));
         return entity;
     }
 
-    public History toEntityFromRequestClientEcoProductionBlock(ClientEcoProductionRequestForAdd dto) {
-        History entity = new History();
+    public History toEntityFromRequestClientEcoProductionBlock(ClientEcoProductionRequestForAdd dto, History entity) {
         entity.setId(dto.getClientsEcoProductionId());
         entity.setActive(dto.getClientsEcoProductionIsActive());
         entity.setPageType(PageType.clients_eco_production);
         HistoryTranslation translationUk = new HistoryTranslation(LanguageCode.uk, dto.getClientsEcoProductionTitleUk(), dto.getClientsEcoProductionDescriptionUk(), entity);
         HistoryTranslation translationEn = new HistoryTranslation(LanguageCode.en, dto.getClientsEcoProductionTitleEn(), dto.getClientsEcoProductionDescriptionEn(), entity);
-        entity.setTranslations(List.of(translationUk, translationEn));
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk,translationEn)));
         return entity;
     }
 }

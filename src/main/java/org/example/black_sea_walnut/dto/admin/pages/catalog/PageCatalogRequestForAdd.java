@@ -1,8 +1,7 @@
 package org.example.black_sea_walnut.dto.admin.pages.catalog;
 
 import jakarta.validation.Valid;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.example.black_sea_walnut.dto.admin.pages.catalog.request.BannerBlockRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.catalog.request.EcologicallyBlockRequestForAdd;
 

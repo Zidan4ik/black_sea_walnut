@@ -1,7 +1,6 @@
 package org.example.black_sea_walnut.service.imp;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.historyPrice.HistoryResponsePricesForProduct;
 import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;

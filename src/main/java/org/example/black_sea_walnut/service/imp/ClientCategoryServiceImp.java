@@ -6,15 +6,23 @@ import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
 import org.example.black_sea_walnut.entity.ClientCategory;
+import org.example.black_sea_walnut.entity.History;
+import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.repository.ClientCategoryRepository;
 import org.example.black_sea_walnut.service.ClientCategoryService;
 import org.example.black_sea_walnut.service.ImageService;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
+import org.example.black_sea_walnut.service.history.HistoryFileRequest;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,8 +31,6 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
     private final ClientCategoryRepository clientCategoryRepository;
     private final HistoryClientsMapper clientsMapper;
     private final ImageService imageService;
-    @Value("${upload.path}")
-    private String contextPath;
 
     @Override
     public void save(ClientCategory entity) {
@@ -34,53 +40,108 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
     }
 
     @SneakyThrows
-    @Override
-    public void save(ClientCategoryRequestForAdd dto) {
-        LogUtil.logInfo("Starting to save ClientCategoryRequestForAdd: " + dto);
+    public <M extends GenericsMapper> void saveClientCategory(Saveable<ClientCategory, M> dto, M mapper) {
+        ClientCategory entity = getOrCreate(dto.getId());
 
-        dto.setMediaTypeSvg(ImageUtil.getMediaType(dto.getClientsCategoryFileSvg()));
-        dto.setMediaTypeImage(ImageUtil.getMediaType(dto.getClientsCategoryFileImage()));
+        handleImagesUpdate(entity, (ClientCategoryRequestForAdd) dto);
 
-        if (dto.getClientsCategoryId() != null) {
-            LogUtil.logInfo("ClientCategoryId provided: " + dto.getClientsCategoryId());
-            ClientCategory clientCategoryById = getById(dto.getClientsCategoryId());
-            LogUtil.logInfo("Found ClientCategory by ID: " + clientCategoryById);
+        dto.updateEntity(entity, mapper);
 
-            if (dto.getClientsCategoryPathToImage().isEmpty()) {
-                LogUtil.logInfo("Deleting old image for category with ID: " + dto.getClientsCategoryId());
-                imageService.deleteByPath(clientCategoryById.getPathToImage());
-            }
-            if (dto.getClientsCategoryPathToSvg().isEmpty()) {
-                LogUtil.logInfo("Deleting old SVG for category with ID: " + dto.getClientsCategoryId());
-                imageService.deleteByPath(clientCategoryById.getPathToSvg());
-            }
+        save(entity);
+    }
 
-            if (dto.getClientsCategoryFileImage() != null) {
-                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
-                dto.setClientsCategoryPathToImage(generatedPath);
-                LogUtil.logInfo("Generated image path for category: " + generatedPath);
-            }
-            if (dto.getClientsCategoryFileSvg() != null) {
-                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
-                dto.setClientsCategoryPathToSvg(generatedPath);
-                LogUtil.logInfo("Generated SVG path for category: " + generatedPath);
-            }
+    private void handleImagesUpdate(ClientCategory entity, ClientCategoryRequestForAdd dto) throws IOException {
 
-            clientCategoryById.setPathToImage(dto.getClientsCategoryPathToImage());
-            clientCategoryById.setPathToSvg(dto.getClientsCategoryPathToSvg());
-            clientCategoryById.setMediaTypeImage(dto.getMediaTypeImage());
-            clientCategoryById.setMediaTypeSvg(dto.getMediaTypeSvg());
-            clientCategoryById.setActive(dto.getClientsCategoryIsActive());
-            LogUtil.logInfo("Updated ClientCategory with new paths.");
+        if (dto.getClientsCategoryPathToImage() != null && dto.getClientsCategoryPathToImage().isEmpty()
+                && !entity.getPathToImage().isEmpty()) {
+            safeDelete(entity.getPathToImage());
         }
 
-        imageService.save(dto.getClientsCategoryFileImage(), dto.getClientsCategoryPathToImage());
-        imageService.save(dto.getClientsCategoryFileSvg(), dto.getClientsCategoryPathToSvg());
-        LogUtil.logInfo("Images saved successfully for category.");
 
-        save(clientsMapper.toEntityFromRequestClientCategoryBlock(dto));
-        LogUtil.logInfo("ClientCategoryRequestForAdd saved successfully.");
+        String pathToImg = (dto.getClientsCategoryPathToImage() != null) ? dto.getClientsCategoryPathToImage() : null;
+        if (dto.getClientsCategoryFileImage() != null && !dto.getClientsCategoryFileImage().isEmpty()) {
+            pathToImg = imageService.generatePath(dto.getClientsCategoryFileImage(), dto);
+            imageService.save(dto.getClientsCategoryFileImage(), pathToImg);
+        }
+        entity.setPathToImage(pathToImg);
+
+
+        if (dto.getClientsCategoryPathToSvg() != null && dto.getClientsCategoryPathToSvg().isEmpty()
+                && !entity.getPathToSvg().isEmpty()) {
+            safeDelete(entity.getPathToSvg());
+        }
+
+        String pathToSvg = (dto.getClientsCategoryPathToSvg() != null) ? dto.getClientsCategoryPathToSvg() : null;
+        if (dto.getClientsCategoryFileSvg() != null && !dto.getClientsCategoryFileSvg().isEmpty()) {
+            pathToSvg = imageService.generatePath(dto.getClientsCategoryFileSvg(), dto);
+            imageService.save(dto.getClientsCategoryFileSvg(), pathToSvg);
+        }
+        entity.setPathToSvg(pathToSvg);
+
     }
+
+    private void safeDelete(String path) {
+        try {
+            if (path != null && !path.isEmpty()) {
+                imageService.deleteByPath(path);
+            }
+        } catch (IOException e) {
+            LogUtil.logError("Failed to delete media at path: " + path, e);
+        }
+    }
+
+    public ClientCategory getOrCreate(Long id) {
+        return (id != null) ? getById(id) : new ClientCategory();
+    }
+
+//    @SneakyThrows
+//    @Override
+//    public void save(ClientCategoryRequestForAdd dto) {
+//        LogUtil.logInfo("Starting to save ClientCategoryRequestForAdd: " + dto);
+//
+//        dto.setMediaTypeSvg(ImageUtil.getMediaType(dto.getClientsCategoryFileSvg()));
+//        dto.setMediaTypeImage(ImageUtil.getMediaType(dto.getClientsCategoryFileImage()));
+//
+//        if (dto.getClientsCategoryId() != null) {
+//            LogUtil.logInfo("ClientCategoryId provided: " + dto.getClientsCategoryId());
+//            ClientCategory clientCategoryById = getById(dto.getClientsCategoryId());
+//            LogUtil.logInfo("Found ClientCategory by ID: " + clientCategoryById);
+//
+//            if (dto.getClientsCategoryPathToImage().isEmpty()) {
+//                LogUtil.logInfo("Deleting old image for category with ID: " + dto.getClientsCategoryId());
+//                imageService.deleteByPath(clientCategoryById.getPathToImage());
+//            }
+//            if (dto.getClientsCategoryPathToSvg().isEmpty()) {
+//                LogUtil.logInfo("Deleting old SVG for category with ID: " + dto.getClientsCategoryId());
+//                imageService.deleteByPath(clientCategoryById.getPathToSvg());
+//            }
+//
+//            if (dto.getClientsCategoryFileImage() != null) {
+//                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
+//                dto.setClientsCategoryPathToImage(generatedPath);
+//                LogUtil.logInfo("Generated image path for category: " + generatedPath);
+//            }
+//            if (dto.getClientsCategoryFileSvg() != null) {
+//                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
+//                dto.setClientsCategoryPathToSvg(generatedPath);
+//                LogUtil.logInfo("Generated SVG path for category: " + generatedPath);
+//            }
+//
+//            clientCategoryById.setPathToImage(dto.getClientsCategoryPathToImage());
+//            clientCategoryById.setPathToSvg(dto.getClientsCategoryPathToSvg());
+//            clientCategoryById.setMediaTypeImage(dto.getMediaTypeImage());
+//            clientCategoryById.setMediaTypeSvg(dto.getMediaTypeSvg());
+//            clientCategoryById.setActive(dto.getClientsCategoryIsActive());
+//            LogUtil.logInfo("Updated ClientCategory with new paths.");
+//        }
+//
+//        imageService.save(dto.getClientsCategoryFileImage(), dto.getClientsCategoryPathToImage());
+//        imageService.save(dto.getClientsCategoryFileSvg(), dto.getClientsCategoryPathToSvg());
+//        LogUtil.logInfo("Images saved successfully for category.");
+//
+//        save(clientsMapper.toEntityFromRequestClientCategoryBlock(dto));
+//        LogUtil.logInfo("ClientCategoryRequestForAdd saved successfully.");
+//    }
 
     @Override
     public List<ClientCategory> getAll() {

@@ -9,9 +9,11 @@ import org.example.black_sea_walnut.dto.admin.pages.main.response.NumberBlockRes
 import org.example.black_sea_walnut.dto.web.ClientsResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
+import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.ContactService;
-import org.example.black_sea_walnut.service.HistoryClientService;
-import org.example.black_sea_walnut.service.HistoryMainService;
+import org.example.black_sea_walnut.service.history.HistoryService;
+import org.example.black_sea_walnut.service.history.client.HistoryClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +29,9 @@ import java.util.List;
 @RequestMapping("/web")
 public class WebClientsController {
     private final HistoryClientService historyClientService;
-    private final HistoryMainService historyMainService;
+    private final HistoryService historyService;
+    private final HistoryMainMapper mainMapper;
+    private final HistoryClientsMapper historyClientsMapper;
     private final ContactService contactService;
 
     @GetMapping("/clients")
@@ -37,11 +41,11 @@ public class WebClientsController {
 
     @GetMapping("/clients/data")
     public ResponseEntity<ClientsResponseForView> getClientsPageData(@RequestParam(name = "lang") LanguageCode code) {
-        ClientBannerResponseForAdd banner = historyClientService.getByPageTypeInResponseBannerBlock(PageType.clients_banner);
-        ClientEcoProductionResponseForAdd eco = historyClientService.getByPageTypeInResponseEcoProductionBlock(PageType.clients_eco_production);
+        ClientBannerResponseForAdd banner = historyService.getResponseByPageType(PageType.clients_banner,historyClientsMapper::toResponseBannerBlockForAdd);
+        ClientEcoProductionResponseForAdd eco = historyService.getResponseByPageType(PageType.clients_eco_production, historyClientsMapper::toResponseEcoProductionBlockForAdd);
         List<ClientCategoryResponseForAdd> categories = historyClientService.getAllInResponseCategoryBlock();
         ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
-        NumberBlockResponseForAddInMain numbers = historyMainService.getByPageTypeInResponseNumberBlock(PageType.main_numbers);
+        NumberBlockResponseForAddInMain numbers = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
 
         return new ResponseEntity<>(ClientsResponseForView.builder()
                 .banner(banner)

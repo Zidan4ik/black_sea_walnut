@@ -4,13 +4,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Setter;
+import org.example.black_sea_walnut.entity.ClientCategory;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class ClientCategoryRequestForAdd {
+public class ClientCategoryRequestForAdd implements Saveable<ClientCategory, HistoryClientsMapper>, Uploadable {
     private Long clientsCategoryId;
     private Boolean clientsCategoryIsActive;
     private MediaType mediaTypeSvg;
@@ -39,4 +43,19 @@ public class ClientCategoryRequestForAdd {
     private MultipartFile clientsCategoryFileImage;
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg", "image/svg+xml"})
     private MultipartFile clientsCategoryFileSvg;
+
+    @Override
+    public void updateEntity(ClientCategory entity, HistoryClientsMapper mapper) {
+        mapper.toEntityFromRequestClientCategoryBlock(this,entity);
+    }
+
+    @Override
+    public String getSubFolder() {
+        return "pages/clients/images";
+    }
+
+    @Override
+    public Long getId() {
+        return this.getClientsCategoryId();
+    }
 }
