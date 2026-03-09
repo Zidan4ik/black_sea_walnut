@@ -42,106 +42,17 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
     @SneakyThrows
     public <M extends GenericsMapper> void saveClientCategory(Saveable<ClientCategory, M> dto, M mapper) {
         ClientCategory entity = getOrCreate(dto.getId());
-
-        handleImagesUpdate(entity, (ClientCategoryRequestForAdd) dto);
-
+        if (dto instanceof FileProcessable dtos && dto instanceof Uploadable u) {
+            handleImagesUpdate(entity, dtos, u);
+        }
         dto.updateEntity(entity, mapper);
-
         save(entity);
     }
 
-    private void handleImagesUpdate(ClientCategory entity, ClientCategoryRequestForAdd dto) throws IOException {
-
-        if (dto.getClientsCategoryPathToImage() != null && dto.getClientsCategoryPathToImage().isEmpty()
-                && !entity.getPathToImage().isEmpty()) {
-            safeDelete(entity.getPathToImage());
-        }
-
-
-        String pathToImg = (dto.getClientsCategoryPathToImage() != null) ? dto.getClientsCategoryPathToImage() : null;
-        if (dto.getClientsCategoryFileImage() != null && !dto.getClientsCategoryFileImage().isEmpty()) {
-            pathToImg = imageService.generatePath(dto.getClientsCategoryFileImage(), dto);
-            imageService.save(dto.getClientsCategoryFileImage(), pathToImg);
-        }
-        entity.setPathToImage(pathToImg);
-
-
-        if (dto.getClientsCategoryPathToSvg() != null && dto.getClientsCategoryPathToSvg().isEmpty()
-                && !entity.getPathToSvg().isEmpty()) {
-            safeDelete(entity.getPathToSvg());
-        }
-
-        String pathToSvg = (dto.getClientsCategoryPathToSvg() != null) ? dto.getClientsCategoryPathToSvg() : null;
-        if (dto.getClientsCategoryFileSvg() != null && !dto.getClientsCategoryFileSvg().isEmpty()) {
-            pathToSvg = imageService.generatePath(dto.getClientsCategoryFileSvg(), dto);
-            imageService.save(dto.getClientsCategoryFileSvg(), pathToSvg);
-        }
-        entity.setPathToSvg(pathToSvg);
-
-    }
-
-    private void safeDelete(String path) {
-        try {
-            if (path != null && !path.isEmpty()) {
-                imageService.deleteByPath(path);
-            }
-        } catch (IOException e) {
-            LogUtil.logError("Failed to delete media at path: " + path, e);
-        }
-    }
-
+    @Override
     public ClientCategory getOrCreate(Long id) {
         return (id != null) ? getById(id) : new ClientCategory();
     }
-
-//    @SneakyThrows
-//    @Override
-//    public void save(ClientCategoryRequestForAdd dto) {
-//        LogUtil.logInfo("Starting to save ClientCategoryRequestForAdd: " + dto);
-//
-//        dto.setMediaTypeSvg(ImageUtil.getMediaType(dto.getClientsCategoryFileSvg()));
-//        dto.setMediaTypeImage(ImageUtil.getMediaType(dto.getClientsCategoryFileImage()));
-//
-//        if (dto.getClientsCategoryId() != null) {
-//            LogUtil.logInfo("ClientCategoryId provided: " + dto.getClientsCategoryId());
-//            ClientCategory clientCategoryById = getById(dto.getClientsCategoryId());
-//            LogUtil.logInfo("Found ClientCategory by ID: " + clientCategoryById);
-//
-//            if (dto.getClientsCategoryPathToImage().isEmpty()) {
-//                LogUtil.logInfo("Deleting old image for category with ID: " + dto.getClientsCategoryId());
-//                imageService.deleteByPath(clientCategoryById.getPathToImage());
-//            }
-//            if (dto.getClientsCategoryPathToSvg().isEmpty()) {
-//                LogUtil.logInfo("Deleting old SVG for category with ID: " + dto.getClientsCategoryId());
-//                imageService.deleteByPath(clientCategoryById.getPathToSvg());
-//            }
-//
-//            if (dto.getClientsCategoryFileImage() != null) {
-//                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeImage() + "/" + imageService.generateFileName(dto.getClientsCategoryFileImage());
-//                dto.setClientsCategoryPathToImage(generatedPath);
-//                LogUtil.logInfo("Generated image path for category: " + generatedPath);
-//            }
-//            if (dto.getClientsCategoryFileSvg() != null) {
-//                String generatedPath = contextPath + "/pages/clients/images/" + dto.getMediaTypeSvg() + "/" + imageService.generateFileName(dto.getClientsCategoryFileSvg());
-//                dto.setClientsCategoryPathToSvg(generatedPath);
-//                LogUtil.logInfo("Generated SVG path for category: " + generatedPath);
-//            }
-//
-//            clientCategoryById.setPathToImage(dto.getClientsCategoryPathToImage());
-//            clientCategoryById.setPathToSvg(dto.getClientsCategoryPathToSvg());
-//            clientCategoryById.setMediaTypeImage(dto.getMediaTypeImage());
-//            clientCategoryById.setMediaTypeSvg(dto.getMediaTypeSvg());
-//            clientCategoryById.setActive(dto.getClientsCategoryIsActive());
-//            LogUtil.logInfo("Updated ClientCategory with new paths.");
-//        }
-//
-//        imageService.save(dto.getClientsCategoryFileImage(), dto.getClientsCategoryPathToImage());
-//        imageService.save(dto.getClientsCategoryFileSvg(), dto.getClientsCategoryPathToSvg());
-//        LogUtil.logInfo("Images saved successfully for category.");
-//
-//        save(clientsMapper.toEntityFromRequestClientCategoryBlock(dto));
-//        LogUtil.logInfo("ClientCategoryRequestForAdd saved successfully.");
-//    }
 
     @Override
     public List<ClientCategory> getAll() {
@@ -188,5 +99,42 @@ public class ClientCategoryServiceImp implements ClientCategoryService {
         imageService.deleteByPath(client.getPathToSvg());
         clientCategoryRepository.deleteById(id);
         LogUtil.logInfo("ClientCategory with ID: " + id + " deleted successfully.");
+    }
+
+    private void handleImagesUpdate(ClientCategory entity, FileProcessable dto, Uploadable u) {
+
+        if (dto.getPathToImage() != null && dto.getPathToImage().isEmpty()
+                && entity.getPathToImage() != null && !entity.getPathToImage().isEmpty()) {
+            safeDelete(entity.getPathToImage());
+        }
+
+        String pathToImg = (dto.getPathToImage() != null) ? dto.getPathToImage() : null;
+        if (dto.getFileImage() != null && !dto.getFileImage().isEmpty()) {
+            pathToImg = imageService.generatePath(dto.getFileImage(), u);
+            imageService.save(dto.getFileImage(), pathToImg);
+        }
+        dto.setPathToImage(pathToImg);
+
+        if (dto.getPathToSvg() != null && dto.getPathToSvg().isEmpty()
+                && entity.getPathToSvg() != null && !entity.getPathToSvg().isEmpty()) {
+            safeDelete(entity.getPathToSvg());
+        }
+
+        String pathToSvg = (dto.getPathToSvg() != null) ? dto.getPathToSvg() : null;
+        if (dto.getFileSvg() != null && !dto.getFileSvg().isEmpty()) {
+            pathToSvg = imageService.generatePath(dto.getFileSvg(), u);
+            imageService.save(dto.getFileSvg(), pathToSvg);
+        }
+        dto.setPathToSvg(pathToSvg);
+    }
+
+    private void safeDelete(String path) {
+        try {
+            if (path != null && !path.isEmpty()) {
+                imageService.deleteByPath(path);
+            }
+        } catch (IOException e) {
+            LogUtil.logError("Failed to delete media at path: " + path, e);
+        }
     }
 }

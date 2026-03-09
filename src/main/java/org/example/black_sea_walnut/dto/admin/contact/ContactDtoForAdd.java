@@ -3,6 +3,10 @@ package org.example.black_sea_walnut.dto.admin.contact;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.entity.Contact;
+import org.example.black_sea_walnut.mapper.ContactMapper;
+import org.example.black_sea_walnut.service.history.DtoResponse;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.CoordinatesValidation;
 import org.example.black_sea_walnut.validator.annotation.EmailValidation;
 import org.example.black_sea_walnut.validator.annotation.IsNoExistEmail;
@@ -12,7 +16,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @Builder
-public class ContactDtoForAdd {
+public class ContactDtoForAdd implements Saveable<Contact, ContactMapper>, DtoResponse {
     private Long id;
     @PhoneFormatValidation
     @NotBlank(message = "{error.field.empty}")
@@ -45,4 +49,9 @@ public class ContactDtoForAdd {
     private String instagram;
     @NotBlank(message = "{error.field.empty}")
     private String youtube;
+
+    @Override
+    public void updateEntity(Contact entity, ContactMapper mapper) {
+        mapper.toEntityContactForAdd(this,entity);
+    }
 }

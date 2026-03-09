@@ -7,8 +7,9 @@ import org.example.black_sea_walnut.dto.admin.pages.main.response.NumberBlockRes
 import org.example.black_sea_walnut.dto.web.PaymentResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
-import org.example.black_sea_walnut.service.ContactService;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class WebPaymentController {
     private final ContactService contactService;
     private final HistoryService historyService;
     private final HistoryMainMapper mainMapper;
+    private final ContactMapper contactMapper;
 
     @GetMapping("/payment")
     public ModelAndView viewPaymentPage() {
@@ -35,7 +37,7 @@ public class WebPaymentController {
     public ResponseEntity<PaymentResponseForView> getPaymentData(@RequestParam(name = "lang") LanguageCode code) {
         NumberBlockResponseForAddInMain numbers = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
         AimBlockResponseForAddInMain aim = historyService.getResponseByPageType(PageType.main_aim,mainMapper::toResponseAimBlockForAdd);
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(
                 PaymentResponseForView.builder()
                 .aim(aim)

@@ -23,6 +23,7 @@ import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
+import org.example.black_sea_walnut.service.ClientCategoryService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.history.client.HistoryClientService;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,7 @@ public class HistoryController {
     private final HistoryFactoryMapper factoryMapper;
     private final HistoryClientService clientService;
     private final HistoryClientsMapper clientsMapper;
+    private final ClientCategoryService clientCategoryService;
 
     @GetMapping("/pages")
     public ModelAndView viewPages() {
@@ -171,7 +173,7 @@ public class HistoryController {
     public ResponseEntity<PageClientResponseForAdd> getDataForPageClients() {
         ClientBannerResponseForAdd banner = historyService.getResponseByPageType(PageType.clients_banner,clientsMapper::toResponseBannerBlockForAdd);
         ClientEcoProductionResponseForAdd ecoProduction = historyService.getResponseByPageType(PageType.clients_eco_production,clientsMapper::toResponseEcoProductionBlockForAdd);
-        List<ClientCategoryResponseForAdd> categories = clientService.getAllInResponseCategoryBlock();
+        List<ClientCategoryResponseForAdd> categories = clientCategoryService.getAllInResponse();
         PageClientResponseForAdd dto = PageClientResponseForAdd.builder().responseClientBannerForAdd(banner).responseClientCategoryForAdd(categories).responseClientEcoProductionForAdd(ecoProduction).build();
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
@@ -189,7 +191,7 @@ public class HistoryController {
                     .body(errors);
         }
         historyService.saveHistory(dto.getRequestClientBannerForAdd(),clientsMapper);
-//        clientService.saveHistoryCategoryBlock(dto.getRequestClientCategoryForAdd());
+        clientService.saveHistoryCategoryBlock(dto.getRequestClientCategoryForAdd());
         historyService.saveHistory(dto.getRequestClientEcoProductionForAdd(),clientsMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }

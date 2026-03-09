@@ -8,13 +8,14 @@ import org.example.black_sea_walnut.entity.ClientCategory;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class ClientCategoryRequestForAdd implements Saveable<ClientCategory, HistoryClientsMapper>, Uploadable {
+public class ClientCategoryRequestForAdd implements Saveable<ClientCategory, HistoryClientsMapper>, Uploadable, FileProcessable {
     private Long clientsCategoryId;
     private Boolean clientsCategoryIsActive;
     private MediaType mediaTypeSvg;
@@ -57,5 +58,35 @@ public class ClientCategoryRequestForAdd implements Saveable<ClientCategory, His
     @Override
     public Long getId() {
         return this.getClientsCategoryId();
+    }
+
+    @Override
+    public MultipartFile getFileImage() {
+        return this.getClientsCategoryFileImage();
+    }
+
+    @Override
+    public MultipartFile getFileSvg() {
+        return this.getClientsCategoryFileSvg();
+    }
+
+    @Override
+    public String getPathToImage() {
+        return this.getClientsCategoryPathToImage();
+    }
+
+    @Override
+    public String getPathToSvg() {
+       return this.getClientsCategoryPathToSvg();
+    }
+
+    @Override
+    public void setPathToImage(String path) {
+        this.setClientsCategoryPathToImage(path);
+    }
+
+    @Override
+    public void setPathToSvg(String path) {
+        this.setClientsCategoryPathToSvg(path);
     }
 }

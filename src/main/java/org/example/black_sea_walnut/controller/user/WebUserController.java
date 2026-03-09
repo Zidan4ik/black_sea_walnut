@@ -7,8 +7,10 @@ import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.dto.web.user.*;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.RegisterType;
+import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.mapper.UserMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPasswordValidation;
@@ -35,7 +37,7 @@ import java.util.Optional;
 @RequestMapping("/web")
 public class WebUserController {
     private final ContactService contactService;
-    private final CountryService countryService;
+    private final ContactMapper contactMapper;
     private final UserService userService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -86,7 +88,7 @@ public class WebUserController {
 
     @GetMapping("/contacts/get")
     public ResponseEntity<ContactDtoForAdd> getContacts() {
-        return new ResponseEntity<>(contactService.getByIdInDto(1L), HttpStatus.OK);
+        return new ResponseEntity<>(contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd), HttpStatus.OK);
     }
 
     @GetMapping("/info-user/get")

@@ -9,9 +9,10 @@ import org.example.black_sea_walnut.dto.admin.pages.main.response.NumberBlockRes
 import org.example.black_sea_walnut.dto.web.ClientsResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
-import org.example.black_sea_walnut.service.ContactService;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.history.client.HistoryClientService;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class WebClientsController {
     private final HistoryMainMapper mainMapper;
     private final HistoryClientsMapper historyClientsMapper;
     private final ContactService contactService;
+    private final ContactMapper contactMapper;
 
     @GetMapping("/clients")
     public ModelAndView viewClientsPage() {
@@ -44,7 +46,7 @@ public class WebClientsController {
         ClientBannerResponseForAdd banner = historyService.getResponseByPageType(PageType.clients_banner,historyClientsMapper::toResponseBannerBlockForAdd);
         ClientEcoProductionResponseForAdd eco = historyService.getResponseByPageType(PageType.clients_eco_production, historyClientsMapper::toResponseEcoProductionBlockForAdd);
         List<ClientCategoryResponseForAdd> categories = historyClientService.getAllInResponseCategoryBlock();
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         NumberBlockResponseForAddInMain numbers = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
 
         return new ResponseEntity<>(ClientsResponseForView.builder()

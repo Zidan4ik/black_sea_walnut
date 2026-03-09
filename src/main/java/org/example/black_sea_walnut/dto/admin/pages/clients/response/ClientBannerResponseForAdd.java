@@ -2,11 +2,11 @@ package org.example.black_sea_walnut.dto.admin.pages.clients.response;
 
 import lombok.Builder;
 import lombok.Data;
-import org.example.black_sea_walnut.service.history.HistoryResponse;
+import org.example.black_sea_walnut.service.history.DtoResponse;
 
 @Data
 @Builder
-public class ClientBannerResponseForAdd implements HistoryResponse {
+public class ClientBannerResponseForAdd implements DtoResponse {
     private Long clientsBannerId;
     private Boolean clientsBannerIsActive;
     private String clientsBannerTitleUk;

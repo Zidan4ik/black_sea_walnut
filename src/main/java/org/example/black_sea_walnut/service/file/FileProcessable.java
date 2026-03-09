@@ -4,6 +4,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileProcessable {
     MultipartFile getFileImage();
+
+    default MultipartFile getFileSvg() {
+        return null;
+    }
+
     String getPathToImage();
+
+    default String getPathToSvg() {
+        return "";
+    }
+
     void setPathToImage(String path);
+
+    default void setPathToSvg(String path) {
+    }
 }

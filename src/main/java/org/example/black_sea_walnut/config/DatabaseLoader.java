@@ -7,6 +7,7 @@ import org.example.black_sea_walnut.entity.translation.*;
 import org.example.black_sea_walnut.enums.*;
 import org.example.black_sea_walnut.repository.*;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;

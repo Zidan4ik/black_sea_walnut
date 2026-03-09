@@ -2,10 +2,11 @@ package org.example.black_sea_walnut.mapper;
 
 import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
 import org.example.black_sea_walnut.entity.Contact;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContactMapper {
+public class ContactMapper implements GenericsMapper {
     public ContactDtoForAdd toDtoContactForAdd(Contact entity) {
         return ContactDtoForAdd
                 .builder()
@@ -24,22 +25,20 @@ public class ContactMapper {
                 .youtube(entity.getYoutube())
                 .build();
     }
-    public Contact toEntityContactForAdd(ContactDtoForAdd dto){
-        return Contact
-                .builder()
-                .id(dto.getId())
-                .phone1(dto.getPhone1())
-                .phone2(dto.getPhone2())
-                .email(dto.getEmail())
-                .addressWork(dto.getAddressWork())
-                .addressFactory(dto.getAddressFactory())
-                .coordinates(dto.getCoordinates())
-                .telegram(dto.getTelegram())
-                .viber(dto.getViber())
-                .whatsapp(dto.getWatsapp())
-                .facebook(dto.getFacebook())
-                .instagram(dto.getInstagram())
-                .youtube(dto.getYoutube())
-                .build();
+    public Contact toEntityContactForAdd(ContactDtoForAdd dto, Contact entity){
+        entity.setId(dto.getId());
+        entity.setPhone1(dto.getPhone1());
+        entity.setPhone2(dto.getPhone2());
+        entity.setEmail(dto.getEmail());
+        entity.setAddressWork(dto.getAddressWork());
+        entity.setAddressFactory(dto.getAddressFactory());
+        entity.setCoordinates(dto.getCoordinates());
+        entity.setTelegram(dto.getTelegram());
+        entity.setViber(dto.getViber());
+        entity.setWhatsapp(dto.getWatsapp());
+        entity.setFacebook(dto.getFacebook());
+        entity.setInstagram(dto.getInstagram());
+        entity.setYoutube(dto.getYoutube());
+        return entity;
     }
 }

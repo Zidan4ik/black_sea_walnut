@@ -15,9 +15,11 @@ import org.example.black_sea_walnut.dto.web.ShopResponseForView;
 import org.example.black_sea_walnut.entity.User;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,7 @@ public class WebShopController {
     private final UserService userService;
     private final HistoryCatalogMapper catalogMapper;
     private final HistoryService historyService;
+    private final ContactMapper contactMapper;
 
     @GetMapping("/shop")
     public ModelAndView viewShopPage() {
@@ -74,7 +77,7 @@ public class WebShopController {
         Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(lang));
         BannerBlockResponseForAdd banner = historyService.getResponseByPageType(PageType.catalog_banner,catalogMapper::toResponseBannerBlockForAdd);
         EcologicallyBlockResponseForAdd ecologically = historyService.getResponseByPageType(PageType.catalog_ecologically_pure_walnut,catalogMapper::toResponseEcologicallyBlockForAdd);
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(
                 ShopResponseForView.builder()
                         .masses(masses)
@@ -94,7 +97,7 @@ public class WebShopController {
     public ResponseEntity<ProductResponseInWeb> getDataForShopPage(@PathVariable Long id,
                                                                    @RequestParam("lang") String lang) {
         ProductResponseForView product = productMapper.toResponseForView(productService.getById(id), LanguageCode.fromString(lang));
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(ProductResponseInWeb
                 .builder()
                 .product(product)

@@ -3,13 +3,13 @@ package org.example.black_sea_walnut.dto.admin.pages.catalog.response;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaResponseForAdd;
-import org.example.black_sea_walnut.service.history.HistoryResponse;
+import org.example.black_sea_walnut.service.history.DtoResponse;
 
 import java.util.List;
 
 @Builder
 @Getter
-public class EcologicallyBlockResponseForAdd implements HistoryResponse {
+public class EcologicallyBlockResponseForAdd implements DtoResponse {
     private Long catalogEcologicallyId;
     private Boolean catalogEcologicallyIsActive;
     private String catalogEcologicallyTitleUk;

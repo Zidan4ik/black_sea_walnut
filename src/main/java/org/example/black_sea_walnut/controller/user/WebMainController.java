@@ -9,8 +9,10 @@ import org.example.black_sea_walnut.dto.web.MainResponseForView;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
+import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.*;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class WebMainController {
     private final ContactService contactService;
     private final HistoryService historyService;
     private final HistoryMainMapper mainMapper;
+    private final ContactMapper contactMapper;
 
     @GetMapping("/main")
     public ModelAndView viewMainPage() {
@@ -49,7 +52,7 @@ public class WebMainController {
         EcoProductionResponseForAddInMain eco = historyService.getResponseByPageType(PageType.main_eco_production,mainMapper::toResponseEcoProductionBLockForAdd);
         List<NutResponseForAdd> nuts = nutService.getAllActiveInResponseForAdd();
         List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(
                 MainResponseForView.builder()
                         .products(response)

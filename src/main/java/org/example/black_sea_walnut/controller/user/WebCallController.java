@@ -3,6 +3,7 @@ package org.example.black_sea_walnut.controller.user;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
+import org.example.black_sea_walnut.mapper.CallMapper;
 import org.example.black_sea_walnut.service.CallService;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
@@ -25,7 +26,7 @@ import java.util.Map;
 @RequestMapping("/web")
 public class WebCallController {
     private final CallService callService;
-    private final UserService userService;
+    private final CallMapper callMapper;
 
     @PostMapping("/call/save")
     public ResponseEntity<?> saveCall(@Validated({OrderedEmailValidation.class, OrderedPhoneValidation.class, Default.class})
@@ -39,7 +40,7 @@ public class WebCallController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        callService.save(dto);
+        callService.save(dto,callMapper);
         return ResponseEntity.ok().build();
     }
 }

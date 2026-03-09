@@ -3,7 +3,9 @@ package org.example.black_sea_walnut.controller.admin;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
+import org.example.black_sea_walnut.mapper.CallMapper;
 import org.example.black_sea_walnut.service.CallService;
+import org.example.black_sea_walnut.service.specifications.CallSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class CallController {
     private final CallService callService;
-
+    private final CallMapper callMapper;
     @GetMapping("/calls")
     public ModelAndView showCalls() {
         return new ModelAndView("admin/calls/calls");
@@ -31,7 +33,8 @@ public class CallController {
                                   @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-calls");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<CallResponseForView> pageResponse = callService.getAll(callResponseForView, pageable);
+        PageResponse<CallResponseForView> pageResponse = callService.getAll(CallSpecification.getSpecification(callResponseForView),
+                pageable, callMapper::toResponseForView);
         model.addObject("data", pageResponse.getContent());
         return model;
     }
@@ -43,7 +46,8 @@ public class CallController {
                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<CallResponseForView> pageResponse = callService.getAll(callResponseForView, pageable);
+        PageResponse<CallResponseForView> pageResponse = callService.getAll(CallSpecification.getSpecification(callResponseForView),
+                pageable, callMapper::toResponseForView);
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }

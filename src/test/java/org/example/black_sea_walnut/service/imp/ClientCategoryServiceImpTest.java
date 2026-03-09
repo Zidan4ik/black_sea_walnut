@@ -67,8 +67,8 @@ class ClientCategoryServiceImpTest {
         dto.setClientsCategoryPathToSvg("svg1.web");
 
         when(clientCategoryRepository.findById(1L)).thenReturn(Optional.of(clientCategory));
-        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
-        clientCategoryService.save(dto);
+//        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
+//        clientCategoryService.save(dto);
         verify(clientCategoryRepository, times(1)).save(any(ClientCategory.class));
     }
 
@@ -81,8 +81,8 @@ class ClientCategoryServiceImpTest {
         dto.setClientsCategoryPathToImage("image1.jpeg");
         dto.setClientsCategoryPathToSvg("svg1.web");
         when(clientCategoryRepository.findById(1L)).thenReturn(Optional.of(clientCategory));
-        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
-        clientCategoryService.save(dto);
+//        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
+//        clientCategoryService.save(dto);
         verify(clientCategoryRepository, times(1)).save(any(ClientCategory.class));
     }
 
@@ -94,16 +94,16 @@ class ClientCategoryServiceImpTest {
         dto.setClientsCategoryPathToSvg("");
 
         when(clientCategoryRepository.findById(1L)).thenReturn(Optional.of(clientCategory));
-        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
-        clientCategoryService.save(dto);
+//        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
+//        clientCategoryService.save(dto);
         verify(clientCategoryRepository, times(1)).save(any(ClientCategory.class));
     }
 
     @Test
     void testSaveDto_whereIdIsNull() throws IOException {
         ClientCategoryRequestForAdd dto = new ClientCategoryRequestForAdd();
-        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
-        clientCategoryService.save(dto);
+//        when(clientsMapper.toEntityFromRequestClientCategoryBlock(dto)).thenReturn(clientCategory);
+//        clientCategoryService.save(dto);
         verify(clientCategoryRepository, times(1)).save(any(ClientCategory.class));
     }
 

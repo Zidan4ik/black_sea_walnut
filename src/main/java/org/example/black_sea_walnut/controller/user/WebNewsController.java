@@ -7,7 +7,8 @@ import org.example.black_sea_walnut.dto.web.NewResponseForView;
 import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.ContactService;
+import org.example.black_sea_walnut.mapper.ContactMapper;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.NewService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.util.List;
 public class WebNewsController {
     private final NewService newService;
     private final ContactService contactService;
+    private final ContactMapper contactMapper;
 
     @GetMapping("/news")
     public ModelAndView viewNewsPage() {
@@ -47,7 +49,7 @@ public class WebNewsController {
 
     @GetMapping("/news/data")
     public ResponseEntity<?> getNewsPageDate(@RequestParam(name = "lang") String code) {
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1l);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(NewResponseForView
                 .builder()
                 .contacts(contacts)
@@ -57,7 +59,7 @@ public class WebNewsController {
     @GetMapping("/new/{id}/data")
     public ResponseEntity<?> getNewsPageDate(@RequestParam(name = "lang") String code,
                                              @PathVariable Long id) {
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         NewResponseInWeb new_ = newService.getByIdInResponseForWeb(id, LanguageCode.fromString(code));
         List<NewResponseInWeb> news = newService.getAllBySizeAmongLast(2, LanguageCode.fromString(code),id);
         return new ResponseEntity<>(NewResponseForView

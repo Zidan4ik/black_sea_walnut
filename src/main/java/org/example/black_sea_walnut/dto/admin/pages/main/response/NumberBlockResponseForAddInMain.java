@@ -2,11 +2,11 @@ package org.example.black_sea_walnut.dto.admin.pages.main.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.example.black_sea_walnut.service.history.HistoryResponse;
+import org.example.black_sea_walnut.service.history.DtoResponse;
 
 @Builder
 @Getter
-public class NumberBlockResponseForAddInMain implements HistoryResponse {
+public class NumberBlockResponseForAddInMain implements DtoResponse {
     private Long mainNumberId;
     private boolean mainNumberIsActive;
     private String mainNumberTitle1;

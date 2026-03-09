@@ -7,11 +7,9 @@ import org.example.black_sea_walnut.dto.admin.historyMedia.HistoryMediaRequestFo
 import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.enums.PageType;
-import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
-import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.repository.HistoryRepository;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
-import org.example.black_sea_walnut.service.history.HistoryResponse;
+import org.example.black_sea_walnut.service.history.DtoResponse;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.example.black_sea_walnut.service.Uploadable;
@@ -58,7 +56,7 @@ public class HistoryServiceImp implements HistoryService {
     }
 
     @Override
-    public <R extends HistoryResponse> R getResponseByPageType(PageType type, Function<History, R> mappingFunction) {
+    public <R extends DtoResponse> R getResponseByPageType(PageType type, Function<History, R> mappingFunction) {
         LogUtil.logInfo("Fetching and mapping history for PageType: " + type);
         History entity = getByPageType(type);
         R response = mappingFunction.apply(entity);

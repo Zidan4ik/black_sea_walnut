@@ -3,7 +3,8 @@ package org.example.black_sea_walnut.controller.admin;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
-import org.example.black_sea_walnut.service.ContactService;
+import org.example.black_sea_walnut.mapper.ContactMapper;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,23 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class ContactController {
     private final ContactService contactService;
+    private final ContactMapper contactMapper;
+
     @GetMapping("/contacts")
-    public ModelAndView showContact(){
+    public ModelAndView showContact() {
         ModelAndView model = new ModelAndView("admin/contacts/contacts");
-        model.addObject("id",1L);
+        model.addObject("id", 1L);
         return model;
     }
+
     @GetMapping("/contact/{id}")
-    public ResponseEntity<ContactDtoForAdd> getContact(@PathVariable Long id){
-        return new ResponseEntity<>(contactService.getByIdInDto(id), HttpStatus.OK);
+    public ResponseEntity<ContactDtoForAdd> getContact(@PathVariable Long id) {
+        return new ResponseEntity<>(contactService.getDtoResponseById(id, contactMapper::toDtoContactForAdd), HttpStatus.OK);
     }
+
     @PostMapping("/contact/save")
     public ResponseEntity<?> saveContact(@Valid @ModelAttribute ContactDtoForAdd dto,
-                                         BindingResult bindingResult){
+                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
@@ -42,11 +47,12 @@ public class ContactController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        contactService.save(dto);
+        contactService.save(dto, contactMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @ModelAttribute("isActiveContacts")
-    public boolean toActiveSidebarButton(){
+    public boolean toActiveSidebarButton() {
         return true;
     }
 }

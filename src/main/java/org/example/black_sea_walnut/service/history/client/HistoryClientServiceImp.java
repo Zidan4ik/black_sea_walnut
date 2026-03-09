@@ -1,22 +1,11 @@
 package org.example.black_sea_walnut.service.history.client;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientBannerRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientEcoProductionRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientBannerResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
-import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientEcoProductionResponseForAdd;
-import org.example.black_sea_walnut.entity.History;
-import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.service.ClientCategoryService;
-import org.example.black_sea_walnut.service.history.HistoryService;
-import org.example.black_sea_walnut.service.ImageService;
-import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +15,7 @@ import java.util.List;
 public class HistoryClientServiceImp implements HistoryClientService {
 
     private final ClientCategoryService clientCategoryService;
-
+    private final HistoryClientsMapper clientsMapper;
     @Override
     public List<ClientCategoryResponseForAdd> getAllInResponseCategoryBlock() {
         LogUtil.logInfo("Fetching all ClientCategoryResponseForAdd");
@@ -40,7 +29,7 @@ public class HistoryClientServiceImp implements HistoryClientService {
         if (dto != null) {
             LogUtil.logInfo("Saving ClientCategory with DTO: " + dto);
             for (ClientCategoryRequestForAdd d : dto) {
-                clientCategoryService.save(d);
+                clientCategoryService.saveClientCategory(d,clientsMapper);
             }
         }
     }

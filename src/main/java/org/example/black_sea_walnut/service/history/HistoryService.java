@@ -15,7 +15,7 @@ public interface HistoryService {
 
     History getByPageType(PageType type);
 
-    <R extends HistoryResponse> R getResponseByPageType(PageType type, Function<History, R> mappingFunction);
+    <R extends DtoResponse> R getResponseByPageType(PageType type, Function<History, R> mappingFunction);
 
     History save(History entity);
 
