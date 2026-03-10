@@ -8,7 +8,9 @@ import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.new_.NewRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.new_.ResponseNewForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.NewService;
+import org.example.black_sea_walnut.mapper.NewMapper;
+import org.example.black_sea_walnut.service.news.NewService;
+import org.example.black_sea_walnut.service.specifications.NewSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,20 +32,7 @@ import java.util.Objects;
 @RequestMapping("/admin")
 public class NewController {
     private final NewService newService;
-
-    @GetMapping("news/data")
-    public ResponseEntity<PageResponse<ResponseNewForView>> getAll(
-            @ModelAttribute ResponseNewForView responseNewForView,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam String languageCode,
-            Model model
-    ) {
-        PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseNewForView> pageResponse = newService.getAll(responseNewForView, pageable, LanguageCode.fromString(languageCode));
-        model.addAttribute("pageData", pageResponse.getMetadata());
-        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
-    }
+    private final NewMapper newMapper;
 
     @GetMapping("/news")
     public ModelAndView viewPage() {
@@ -57,7 +46,9 @@ public class NewController {
                                   @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-news");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseNewForView> pageResponse = newService.getAll(responseNewForView, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<ResponseNewForView> pageResponse = newService.getAll(
+                NewSpecification.getSpecification(responseNewForView, code), pageable, n -> newMapper.toResponseForView(n, code));
         model.addObject("data", pageResponse.getContent());
         return model;
     }
@@ -69,7 +60,9 @@ public class NewController {
                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseNewForView> pageResponse = newService.getAll(responseNewForView, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<ResponseNewForView> pageResponse = newService.getAll(
+                NewSpecification.getSpecification(responseNewForView, code), pageable, n -> newMapper.toResponseForView(n, code));
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
@@ -121,7 +114,7 @@ public class NewController {
                 dto.setMediaType(org.example.black_sea_walnut.enums.MediaType.video);
             }
         }
-        newService.saveImage(dto);
+        newService.saveNew(dto, newMapper);
         headers.add("HX-Redirect", request.getContextPath() + "/admin/news");
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }

@@ -7,12 +7,16 @@ import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.util.DateUtil;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class NewMapper {
-    public ResponseNewForView toDtoView(New entity, LanguageCode code) {
+@Component
+public class NewMapper implements GenericsMapper {
+    public ResponseNewForView toResponseForView(New entity, LanguageCode code) {
         NewTranslation translation = entity.getTranslations()
                 .stream()
                 .filter(c -> c.getLanguageCode().equals(code))
@@ -69,22 +73,18 @@ public class NewMapper {
         return builder;
     }
 
-    public New toEntity(NewRequestForAdd dto) {
-        New new_ = new New();
-        new_.setId(dto.getId());
-        new_.setActive(dto.isActive());
-        new_.setMediaType(dto.getMediaType());
-        new_.setPathToMedia(dto.getPathToImage());
+    public New toEntityForSaveNew(NewRequestForAdd dto, New entity) {
+        entity.setId(dto.getId());
+        entity.setActive(dto.isActive());
+        entity.setMediaType(dto.getMediaType());
+        entity.setPathToMedia(dto.getPathToImage());
+        entity.setDateOfPublication(DateUtil.toFormatDateToDB(dto.getDateOfPublication(), "dd.MM.yyyy"));
 
-        NewTranslation translationUA = new NewTranslation(
-                LanguageCode.uk, dto.getTitleUA(), dto.getDescriptionUA(), new_
-        );
-        NewTranslation translationEN = new NewTranslation(
-                LanguageCode.en, dto.getTitleENG(), dto.getDescriptionENG(), new_
-        );
-        new_.setTranslations(List.of(translationUA, translationEN));
-        new_.setDateOfPublication(DateUtil.toFormatDateToDB(dto.getDateOfPublication(), "dd.MM.yyyy"));
-        return new_;
+        NewTranslation translationUA = new NewTranslation(LanguageCode.uk, dto.getTitleUA(), dto.getDescriptionUA(), entity);
+        NewTranslation translationEN = new NewTranslation(LanguageCode.en, dto.getTitleENG(), dto.getDescriptionENG(), entity);
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUA,translationEN)));
+        return entity;
     }
 
     public NewResponseInWeb toResponseForWeb(New entity, LanguageCode code) {

@@ -23,7 +23,7 @@ import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
-import org.example.black_sea_walnut.service.ClientCategoryService;
+import org.example.black_sea_walnut.service.history.client.ClientCategoryService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.history.client.HistoryClientService;
 import org.springframework.http.HttpStatus;

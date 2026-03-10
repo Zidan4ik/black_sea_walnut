@@ -1,11 +1,10 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.call;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.entity.Call;
 import org.example.black_sea_walnut.repository.CallRepository;
-import org.example.black_sea_walnut.service.CallService;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.LogUtil;

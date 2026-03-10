@@ -8,6 +8,7 @@ import org.example.black_sea_walnut.entity.ClientCategory;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.repository.ClientCategoryRepository;
 import org.example.black_sea_walnut.service.ImageService;
+import org.example.black_sea_walnut.service.history.client.ClientCategoryServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

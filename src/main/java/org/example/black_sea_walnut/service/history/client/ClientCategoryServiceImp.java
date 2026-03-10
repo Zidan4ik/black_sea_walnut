@@ -1,25 +1,18 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.history.client;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
 import org.example.black_sea_walnut.entity.ClientCategory;
-import org.example.black_sea_walnut.entity.History;
-import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.repository.ClientCategoryRepository;
-import org.example.black_sea_walnut.service.ClientCategoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.service.file.FileProcessable;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
-import org.example.black_sea_walnut.service.history.HistoryFileRequest;
 import org.example.black_sea_walnut.service.user.Saveable;
-import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

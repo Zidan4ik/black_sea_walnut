@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.history.HistoryService;
+import org.example.black_sea_walnut.service.history.client.ClientCategoryService;
 import org.example.black_sea_walnut.service.history.client.HistoryClientServiceImp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

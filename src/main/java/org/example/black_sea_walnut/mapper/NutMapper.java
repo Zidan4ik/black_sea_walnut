@@ -6,16 +6,17 @@ import org.example.black_sea_walnut.dto.admin.nut.NutResponseForView;
 import org.example.black_sea_walnut.entity.Nut;
 import org.example.black_sea_walnut.entity.translation.NutTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.util.DateUtil;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class NutMapper {
-    public Nut toEntityFromRequestAdd(NutRequestForAdd dto) {
-        Nut entity = new Nut();
+public class NutMapper implements GenericsMapper {
+    public void toEntityFromRequestAdd(NutRequestForAdd dto, Nut entity) {
         entity.setId(dto.getId());
         entity.setActive(dto.isActive());
         entity.setPathToImage(dto.getPathToImage());
@@ -25,8 +26,8 @@ public class NutMapper {
         NutTranslation translationUk = new NutTranslation(null, LanguageCode.uk, dto.getTitleUk(), dto.getDescriptionUk(), entity);
         NutTranslation translationEn = new NutTranslation(null, LanguageCode.en, dto.getTitleEn(), dto.getDescriptionEn(), entity);
 
-        entity.setTranslations(List.of(translationUk, translationEn));
-        return entity;
+        entity.getTranslations().clear();
+        entity.getTranslations().addAll(new ArrayList<>(List.of(translationUk, translationEn)));
     }
 
     public NutResponseForAdd toResponseForAdd(Nut entity) {

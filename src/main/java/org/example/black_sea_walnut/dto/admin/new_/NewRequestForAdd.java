@@ -4,7 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.mapper.NewMapper;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.file.FileProcessable;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @Getter
 @Setter
-public class NewRequestForAdd {
+public class NewRequestForAdd implements Saveable<New, NewMapper>, Uploadable, FileProcessable {
     private Long id;
     private boolean isActive;
     @NotBlank(message = "{error.field.empty}")
@@ -29,4 +34,19 @@ public class NewRequestForAdd {
     @MediaValidation(message = "{error.file.valid}", allowedTypes = {"image/png", "image/jpg", "image/jpeg", "video/mp4"})
     private MultipartFile file;
     private MediaType mediaType;
+
+    @Override
+    public void updateEntity(New entity, NewMapper mapper) {
+        mapper.toEntityForSaveNew(this,entity);
+    }
+
+    @Override
+    public String getSubFolder() {
+        return "news";
+    }
+
+    @Override
+    public MultipartFile getFileImage() {
+        return this.getFile();
+    }
 }

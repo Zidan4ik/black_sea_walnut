@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service;
+package org.example.black_sea_walnut.service.call;
 
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.entity.Call;

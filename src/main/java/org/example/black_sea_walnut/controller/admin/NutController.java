@@ -9,7 +9,9 @@ import org.example.black_sea_walnut.dto.admin.nut.NutResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.nut.NutResponseForView;
 import org.example.black_sea_walnut.entity.Nut;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.NutService;
+import org.example.black_sea_walnut.mapper.NutMapper;
+import org.example.black_sea_walnut.service.nut.NutService;
+import org.example.black_sea_walnut.service.specifications.NutSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +29,7 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class NutController {
     private final NutService nutService;
+    private final NutMapper nutMapper;
 
     @GetMapping("/nuts")
     public ModelAndView viewNuts() {
@@ -40,7 +43,10 @@ public class NutController {
                                   @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-nuts");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<NutResponseForView> pageResponse = nutService.getAll(nutResponseForView, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<NutResponseForView> pageResponse =
+                nutService.getAll(NutSpecification.getSpecification(nutResponseForView, code),
+                        pageable, nut -> nutMapper.toResponseForView(nut, code));
         model.addObject("data", pageResponse.getContent());
         return model;
     }
@@ -52,7 +58,10 @@ public class NutController {
                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<NutResponseForView> pageResponse = nutService.getAll(nutResponseForView, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<NutResponseForView> pageResponse = nutService.getAll(
+                NutSpecification.getSpecification(nutResponseForView, code),
+                pageable, nut -> nutMapper.toResponseForView(nut, code));
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
@@ -72,7 +81,7 @@ public class NutController {
     @GetMapping("/nut/{id}")
     @ResponseBody
     public ResponseEntity<NutResponseForAdd> getNut(@PathVariable Long id) {
-        return new ResponseEntity<>(nutService.getByIdInResponseDtoAdd(id), HttpStatus.OK);
+        return new ResponseEntity<>(nutService.getByIdInResponseDtoAdd(id, nutMapper::toResponseForAdd), HttpStatus.OK);
     }
 
     @SneakyThrows
@@ -88,7 +97,7 @@ public class NutController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        nutService.save(dto);
+        nutService.saveNut(dto, nutMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -97,7 +106,7 @@ public class NutController {
     public ResponseEntity<?> saveAfterSwitch(@RequestParam(name = "id") Long id,
                                              @RequestParam(name = "isActive") boolean isActive) {
         Nut nut = nutService.getById(id);
-        nut.setActive(Boolean.valueOf(isActive));
+        nut.setActive(isActive);
         nutService.save(nut);
         return new ResponseEntity<>(HttpStatus.OK);
     }

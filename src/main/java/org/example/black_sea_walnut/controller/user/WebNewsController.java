@@ -3,13 +3,16 @@ package org.example.black_sea_walnut.controller.user;
 import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.contact.ContactDtoForAdd;
+import org.example.black_sea_walnut.dto.admin.new_.ResponseNewForView;
 import org.example.black_sea_walnut.dto.web.NewResponseForView;
 import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ContactMapper;
+import org.example.black_sea_walnut.mapper.NewMapper;
 import org.example.black_sea_walnut.service.contact.ContactService;
-import org.example.black_sea_walnut.service.NewService;
+import org.example.black_sea_walnut.service.news.NewService;
+import org.example.black_sea_walnut.service.specifications.NewSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ import java.util.List;
 @RequestMapping("/web")
 public class WebNewsController {
     private final NewService newService;
+    private final NewMapper newMapper;
     private final ContactService contactService;
     private final ContactMapper contactMapper;
 
@@ -43,7 +47,10 @@ public class WebNewsController {
             @RequestParam(defaultValue = "4") int size,
             @RequestParam(name = "lang") String languageCode) {
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ResponseNewForViewInWeb> pageResponse = newService.getAllByActive(pageable, LanguageCode.fromString(languageCode),true);
+        ResponseNewForView dto = ResponseNewForView.builder().isActive(true).build();
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<ResponseNewForViewInWeb> pageResponse = newService.getAll(
+                NewSpecification.getSpecification(dto, code), pageable,c->newMapper.toDtoViewForWeb(c,code));
         return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 

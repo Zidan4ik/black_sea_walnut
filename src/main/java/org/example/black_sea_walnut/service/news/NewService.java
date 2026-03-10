@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service;
+package org.example.black_sea_walnut.service.news;
 
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.new_.NewRequestForAdd;
@@ -7,21 +7,20 @@ import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
 import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
+import org.example.black_sea_walnut.service.specifications.NewSpecification;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Function;
 
 public interface NewService {
-    PageResponse<ResponseNewForView> getAll(ResponseNewForView response, Pageable pageable, LanguageCode code);
-
-    PageResponse<ResponseNewForViewInWeb> getAll(Pageable pageable, LanguageCode code);
-
-    PageResponse<ResponseNewForViewInWeb> getAllByActive(Pageable pageable, LanguageCode code, boolean isActive);
+    <R> PageResponse<R> getAll(Specification<New> spec, Pageable pageable, Function<New,R> mappingFunction);
 
     List<New> getAll();
-
-    List<NewRequestForAdd> getAllInResponseForAdd();
 
     List<NewRequestForAdd> getAllActiveInResponseForAdd();
 
@@ -35,9 +34,7 @@ public interface NewService {
 
     New save(New entity);
 
-    New saveLikeDto(NewRequestForAdd dto);
-
-    New saveImage(NewRequestForAdd dto) throws IOException;
+    <M extends GenericsMapper> New saveNew(Saveable<New,M> dto, M mapper) throws IOException;
 
     void deleteById(Long id);
 }

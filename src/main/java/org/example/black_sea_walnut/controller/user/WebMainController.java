@@ -14,6 +14,8 @@ import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
+import org.example.black_sea_walnut.service.news.NewService;
+import org.example.black_sea_walnut.service.nut.NutService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.calls.CallResponseForView;
 import org.example.black_sea_walnut.mapper.CallMapper;
-import org.example.black_sea_walnut.service.CallService;
+import org.example.black_sea_walnut.service.call.CallService;
 import org.example.black_sea_walnut.service.specifications.CallSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;

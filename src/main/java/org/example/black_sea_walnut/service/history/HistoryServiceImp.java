@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.history;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +8,9 @@ import org.example.black_sea_walnut.entity.Banner;
 import org.example.black_sea_walnut.entity.History;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.repository.HistoryRepository;
-import org.example.black_sea_walnut.service.history.GenericsMapper;
-import org.example.black_sea_walnut.service.history.DtoResponse;
-import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.ImageService;
 import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.service.file.FileProcessable;
-import org.example.black_sea_walnut.service.history.HistoryFileRequest;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;

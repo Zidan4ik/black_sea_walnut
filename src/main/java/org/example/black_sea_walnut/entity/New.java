@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.black_sea_walnut.entity.translation.NewTranslation;
 import org.example.black_sea_walnut.enums.MediaType;
+import org.example.black_sea_walnut.service.file.ImageEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class New {
+public class New implements ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,5 +28,10 @@ public class New {
     private String pathToMedia;
     private MediaType mediaType;
     @OneToMany(mappedBy = "new_",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<NewTranslation> translations;
+    private List<NewTranslation> translations = new ArrayList<>();
+
+    @Override
+    public String getPathToImage() {
+        return this.getPathToMedia();
+    }
 }

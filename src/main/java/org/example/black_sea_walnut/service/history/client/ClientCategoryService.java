@@ -1,6 +1,5 @@
-package org.example.black_sea_walnut.service;
+package org.example.black_sea_walnut.service.history.client;
 
-import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
 import org.example.black_sea_walnut.entity.ClientCategory;
 import org.example.black_sea_walnut.service.history.GenericsMapper;

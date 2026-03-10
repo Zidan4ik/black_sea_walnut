@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.pages.clients.request.ClientCategoryRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.pages.clients.response.ClientCategoryResponseForAdd;
 import org.example.black_sea_walnut.mapper.pages.HistoryClientsMapper;
-import org.example.black_sea_walnut.service.ClientCategoryService;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;
 
