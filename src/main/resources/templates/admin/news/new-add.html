@@ -79,7 +79,7 @@
                             </div>
                             <div class="mb-3" style="overflow: hidden;">
                                 <label class="form-label fw-bold">Опис:</label>
-                                <div id="description_ua" class="w-100"></div>
+                                <div id="description-ua" class="w-100"></div>
                                 <input type="hidden" id="hidden-description-ua_" name="descriptionUA">
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                             </div>
                             <div class="mb-3" style="overflow: hidden;">
                                 <label class="form-label fw-bold">Description:</label>
-                                <div id="description_eng" class="w-100"></div>
+                                <div id="description-eng" class="w-100"></div>
                                 <input type="hidden" id="hidden-description-eng_" name="descriptionENG">
                             </div>
                         </div>
@@ -140,7 +140,6 @@
                                  data-lang="ua">
                                 <input type="text" class="form-control"
                                        data-name="dateOfPublication"
-                                       name="dateOfPublication"
                                        data-error="dateOfPublication"
                                        placeholder=""
                                        autocomplete="off"/>
@@ -229,22 +228,15 @@
                         addEventListenerSyncDate();
                         clearErrorWhenChangeValue('[data-name="titleUA"],[data-name="titleENG"]');
 
-                        var editor_ua = getFroalaEditor('description_ua');
-                        var editor_eng = getFroalaEditor('description_eng');
+                        var editor_ua = getFroalaEditor('description-ua');
+                        var editor_eng = getFroalaEditor('description-eng');
                     });
 
-                    function getFroalaEditor(idElementEditor) {
-                        const hiddenSelector = `#hidden-${idElementEditor.replace('_', '')}_`;
-
-                        return new FroalaEditor(`#${idElementEditor}`, {
+                    function getFroalaEditor(id) {
+                        let hiddenSelector = $(`#hidden-${id}_`);
+                        const editor = new FroalaEditor(`#${id}`, {
                             theme: current_mode,
                             height: 200,
-                            width: '100%',
-                            toolbarButtons: [
-                                ['bold', 'italic', 'underline'],
-                                ['formatOL', 'formatUL', 'align'],
-                                ['insertLink', 'undo', 'redo', 'html']
-                            ],
                             events: {
                                 'initialized': function () {
                                     let initialContent = $(hiddenSelector).val() || '';
@@ -252,7 +244,9 @@
                                 },
                                 'contentChanged': function () {
                                     const html = this.html.get();
-                                    $(hiddenSelector).val(html);
+                                    if(hiddenSelector.length){
+                                        hiddenSelector.val(html);
+                                    }
                                 }
                             }
                         });

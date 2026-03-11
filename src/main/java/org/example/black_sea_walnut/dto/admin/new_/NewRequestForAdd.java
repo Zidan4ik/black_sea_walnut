@@ -9,6 +9,7 @@ import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.NewMapper;
 import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.service.file.FileProcessable;
+import org.example.black_sea_walnut.service.history.DtoResponse;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.hibernate.validator.constraints.Length;
@@ -17,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @Getter
 @Setter
-public class NewRequestForAdd implements Saveable<New, NewMapper>, Uploadable, FileProcessable {
+public class NewRequestForAdd implements Saveable<New, NewMapper>, Uploadable, FileProcessable, DtoResponse {
     private Long id;
     private boolean isActive;
     @NotBlank(message = "{error.field.empty}")

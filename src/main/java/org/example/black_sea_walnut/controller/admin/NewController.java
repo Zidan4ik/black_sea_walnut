@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,7 +74,7 @@ public class NewController {
     @GetMapping("/new/edit/{id}")
     public ModelAndView editNew(@PathVariable Long id) {
         ModelAndView model = new ModelAndView("admin/news/new-edit");
-        NewRequestForAdd byIdLikeDTO = newService.getByIdLikeDTO(id);
+        NewRequestForAdd byIdLikeDTO = newService.getByIdInResponse(id,newMapper::toDtoAdd);
         model.addObject("news", byIdLikeDTO);
         return model;
     }

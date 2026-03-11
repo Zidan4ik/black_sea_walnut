@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.black_sea_walnut.entity.Product;
+import org.example.black_sea_walnut.mapper.ProductMapper;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.IsExistProductValidation;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
 import org.example.black_sea_walnut.validator.annotation.NumberNullValidation;
@@ -20,7 +23,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @IsExistProductValidation
-public class ProductRequestForAdd {
+public class ProductRequestForAdd implements Saveable<Product, ProductMapper> {
     private Long id;
     @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
@@ -93,4 +96,9 @@ public class ProductRequestForAdd {
     private Long discountId;
     private Integer newPrice;
     private Integer currentPrice;
+
+    @Override
+    public void updateEntity(Product entity, ProductMapper mapper) {
+        mapper.toEntityForRequestAdd(this,entity);
+    }
 }

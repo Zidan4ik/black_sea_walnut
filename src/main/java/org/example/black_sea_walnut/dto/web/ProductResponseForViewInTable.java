@@ -2,10 +2,11 @@ package org.example.black_sea_walnut.dto.web;
 
 import lombok.Builder;
 import lombok.Data;
+import org.example.black_sea_walnut.service.history.DtoResponse;
 
 @Builder
 @Data
-public class ProductResponseForViewInTable {
+public class ProductResponseForViewInTable implements DtoResponse {
     private Long id;
     private Long articleId;
     private String name;

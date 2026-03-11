@@ -10,6 +10,7 @@ import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.ContactMapper;
+import org.example.black_sea_walnut.mapper.NewMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.contact.ContactService;
@@ -37,6 +38,8 @@ public class WebMainController {
     private final HistoryService historyService;
     private final HistoryMainMapper mainMapper;
     private final ContactMapper contactMapper;
+    private final NewMapper newMapper;
+
 
     @GetMapping("/main")
     public ModelAndView viewMainPage() {
@@ -53,7 +56,7 @@ public class WebMainController {
         AimBlockResponseForAddInMain aim = historyService.getResponseByPageType(PageType.main_aim,mainMapper::toResponseAimBlockForAdd);
         EcoProductionResponseForAddInMain eco = historyService.getResponseByPageType(PageType.main_eco_production,mainMapper::toResponseEcoProductionBLockForAdd);
         List<NutResponseForAdd> nuts = nutService.getAllActiveInResponseForAdd();
-        List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
+        List<NewRequestForAdd> news = newService.getAllInResponseByActive(true, newMapper::toDtoAdd);
         ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(
                 MainResponseForView.builder()

@@ -12,6 +12,7 @@ import org.example.black_sea_walnut.dto.web.FactoryResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.ContactMapper;
+import org.example.black_sea_walnut.mapper.NewMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryFactoryMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryMainMapper;
 import org.example.black_sea_walnut.service.*;
@@ -39,6 +40,7 @@ public class WebFactoryController {
     private final NewService newService;
     private final ContactService contactService;
     private final ContactMapper contactMapper;
+    private final NewMapper newMapper;
 
     @GetMapping("/factory")
     public ModelAndView viewFactoryPage() {
@@ -52,7 +54,7 @@ public class WebFactoryController {
         NumberBlockResponseForAddInMain numbers = historyService.getResponseByPageType(PageType.main_numbers,mainMapper::toResponseNumberBlockForAdd);
         EcoProductionResponseForAddInMain ecology = historyService.getResponseByPageType(PageType.main_eco_production,mainMapper::toResponseEcoProductionBLockForAdd);
         ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
-        List<NewRequestForAdd> news = newService.getAllActiveInResponseForAdd();
+        List<NewRequestForAdd> news = newService.getAllInResponseByActive(true,newMapper::toDtoAdd);
         List<GalleryResponseForAdd> gallery = galleryService.getAllInResponseByLanguageCodeByActive(LanguageCode.fromString(lang),true);
         return new ResponseEntity<>(FactoryResponseForView
                 .builder()

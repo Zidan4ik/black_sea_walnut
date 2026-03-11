@@ -12,10 +12,12 @@ import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInPr
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.service.specifications.ProductSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +41,7 @@ public class ProductController {
     private final TasteService tasteService;
     private final Validator validator;
     private final HistoryPricesService historyPricesService;
+    private final ProductMapper productMapper;
 
     @GetMapping("/warehouse")
     public ModelAndView viewWareAndHouse() {
@@ -57,7 +60,9 @@ public class ProductController {
                                   @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/table-products");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(
+                ProductSpecification.getSpecification(responseProductForView, code), pageable, n -> productMapper.toDTOForView(n, code));
         model.addObject("data", pageResponse.getContent());
 
         Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
@@ -75,7 +80,9 @@ public class ProductController {
                                        @RequestParam String languageCode) {
         ModelAndView model = new ModelAndView("admin/fragments/pagination");
         PageRequest pageable = PageRequest.of(page, size);
-        PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(responseProductForView, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(
+                ProductSpecification.getSpecification(responseProductForView, code), pageable, n -> productMapper.toDTOForView(n, code));
         model.addObject("pageData", pageResponse.getMetadata());
         return model;
     }
@@ -90,7 +97,7 @@ public class ProductController {
     public ResponseEntity<?> saveProduct(@Valid ProductRequestForAdd dto,
                                          BindingResult bindingResult) {
 
-            if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
@@ -99,7 +106,7 @@ public class ProductController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        Product product = productService.save(dto);
+        productService.save(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -115,9 +122,9 @@ public class ProductController {
 
 
     @GetMapping("/product/{id}/edit")
-    public ModelAndView viewProduct(@PathVariable Long id){
+    public ModelAndView viewProduct(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("admin/products/product-edit");
-        modelAndView.addObject("id",id);
+        modelAndView.addObject("id", id);
         return modelAndView;
     }
 
@@ -137,17 +144,18 @@ public class ProductController {
 
     @GetMapping("/product/{id}")
     @ResponseBody
-    public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id){
+    public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id) {
         ResponseEntity<ProductResponseForAdd> productResponseForAddResponseEntity = new ResponseEntity<>(productService.getByIdLikeDTOAdd(id), HttpStatus.OK);
         return productResponseForAddResponseEntity;
     }
 
     @GetMapping("/products/configuration")
-    public ModelAndView viewConfiguration(){
+    public ModelAndView viewConfiguration() {
         return new ModelAndView("admin/products/configuration");
     }
+
     @ModelAttribute("isActiveWarehouse")
-    public boolean toActiveSidebarButton(){
+    public boolean toActiveSidebarButton() {
         return true;
     }
 }

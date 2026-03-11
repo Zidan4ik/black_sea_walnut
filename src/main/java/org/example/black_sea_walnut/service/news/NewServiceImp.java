@@ -5,10 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.admin.new_.NewRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.new_.ResponseNewForView;
 import org.example.black_sea_walnut.dto.web.NewResponseInWeb;
-import org.example.black_sea_walnut.dto.web.ResponseNewForViewInWeb;
 import org.example.black_sea_walnut.entity.New;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.NewMapper;
@@ -17,7 +14,6 @@ import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.service.file.FileProcessable;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.service.imp.ImageServiceImp;
-import org.example.black_sea_walnut.service.specifications.NewSpecification;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
@@ -26,7 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 
@@ -56,15 +51,9 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
-    public NewRequestForAdd getByIdLikeDTO(Long id) {
-        LogUtil.logInfo("Fetching news DTO by ID: " + id);
-        return newMapper.toDtoAdd(getById(id));
-    }
-
-    @Override
-    public NewResponseInWeb getByIdInResponseForWeb(Long id, LanguageCode code) {
+    public <R> R getByIdInResponse(Long id, Function<New,R> mappingFunction) {
         LogUtil.logInfo("Fetching news for web by ID: " + id);
-        return newMapper.toResponseForWeb(getById(id), code);
+        return mappingFunction.apply(getById(id));
     }
 
     @Override
@@ -80,20 +69,15 @@ public class NewServiceImp implements NewService {
     }
 
     @Override
-    public List<NewRequestForAdd> getAllActiveInResponseForAdd() {
+    public <R> List<R> getAllInResponseByActive(boolean IsActive, Function<New,R> mappingFunction) {
         LogUtil.logInfo("Fetching all active news in DTO response format");
-        return newRepository.getAllByIsActive(true).stream().map(newMapper::toDtoAdd).toList();
+        return newRepository.getAllByIsActive(IsActive).stream().map(mappingFunction).toList();
     }
 
     @Override
     @Transactional
     public New save(New entity) {
         LogUtil.logInfo("Saving news entity with ID: " + entity.getId());
-        if (entity.getId() != null) {
-            New existingNew = getById(entity.getId());
-            existingNew.getTranslations().clear();
-            existingNew.getTranslations().addAll(entity.getTranslations());
-        }
         return newRepository.save(entity);
     }
 
@@ -101,7 +85,7 @@ public class NewServiceImp implements NewService {
     @Transactional
     public <M extends GenericsMapper> New saveNew(Saveable<New, M> dto, M mapper) {
         LogUtil.logInfo("Saving news with file for ID: " + dto.getId());
-        New entity = getById(dto.getId());
+        New entity = getOrCreate(dto.getId());
         if (dto instanceof FileProcessable fileDtos && dto instanceof Uploadable u) {
             imageUtil.handleImage(entity, fileDtos, u);
         }
@@ -118,5 +102,9 @@ public class NewServiceImp implements NewService {
         New new_ = getById(id);
         imageServiceImp.deleteByPath(new_.getPathToMedia());
         newRepository.deleteById(id);
+    }
+
+    private New getOrCreate(Long id) {
+        return (id != null) ? getById(id) : new New();
     }
 }

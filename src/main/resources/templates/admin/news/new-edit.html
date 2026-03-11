@@ -71,14 +71,17 @@
                         <div class="col-12 col-xl-8">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Заголовок:</label>
-                                <input th:field="*{news.titleUA}" class="form-control" type="text" name="titleUA" data-name="titleUA"
+                                <input th:field="*{news.titleUA}" class="form-control" type="text" name="titleUA"
+                                       data-name="titleUA"
                                        placeholder="Центр підтримки експорту"/>
                                 <div id="title-ua-error" class="text-danger small mt-1"></div>
                             </div>
                             <div class="mb-3" style="overflow: hidden;">
                                 <label class="form-label fw-bold">Опис:</label>
-                                <div id="description_ua" class="w-100" style="min-height: 200px; border: 1px solid #ccc;"></div>
-                                <input th:field="*{news.descriptionUA}" type="hidden" id="hidden-description-ua_" name="descriptionUA">
+                                <div id="description-ua" class="w-100"
+                                     style="min-height: 200px; border: 1px solid #ccc;"></div>
+                                <input th:field="*{news.descriptionUA}" type="hidden" id="hidden-description-ua_"
+                                       name="descriptionUA">
                             </div>
                         </div>
 
@@ -109,14 +112,17 @@
                         <div class="col-12 col-xl-8">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Title:</label>
-                                <input th:field="*{news.titleENG}" type="text" class="form-control" name="titleENG" data-name="titleENG"
+                                <input th:field="*{news.titleENG}" type="text" class="form-control" name="titleENG"
+                                       data-name="titleENG"
                                        placeholder="Export Support Center"/>
                                 <div id="error-titleENG" class="text-danger small mt-1"></div>
                             </div>
                             <div class="mb-3" style="overflow: hidden;">
                                 <label class="form-label fw-bold">Description:</label>
-                                <div id="description_eng" class="w-100" style="min-height: 200px; border: 1px solid #ccc;"></div>
-                                <input th:field="*{news.descriptionENG}" type="hidden" id="hidden-description-eng_" name="descriptionENG">
+                                <div id="description-eng" class="w-100"
+                                     style="min-height: 200px; border: 1px solid #ccc;"></div>
+                                <input th:field="*{news.descriptionENG}" type="hidden" id="hidden-description-eng_"
+                                       name="descriptionENG">
                             </div>
                         </div>
 
@@ -149,7 +155,8 @@
                             <img id="img_"
                                  th:src="${(!news.getPathToImage().isEmpty() && news.getPathToImage().contains('/image/')) ?'/Walnut-R.Pravnyk' + news.getPathToImage():'/Walnut-R.Pravnyk/image/default-image.jpg'}"
                                  th:styleappend="${news.getPathToImage().isEmpty()?'':(news.getPathToImage().contains('/image/')?'':'display:none;')}"
-                                 class="rounded shadow-sm" style="width: 100%; height: 300px; object-fit: cover; display: block;">
+                                 class="rounded shadow-sm"
+                                 style="width: 100%; height: 300px; object-fit: cover; display: block;">
 
                             <video id="video_" controls
                                    th:src="${(news.getPathToImage() != null && !news.getPathToImage().isEmpty()) ? '/Walnut-R.Pravnyk' + news.getPathToImage():''}"
@@ -209,30 +216,48 @@
                         let descriptionUA = document.getElementById("hidden-description-ua_").value;
                         let descriptionEN = document.getElementById("hidden-description-eng_").value;
 
-                        var editor_ua = getFroalaEditor('description_ua', descriptionUA);
-                        var editor_eng = getFroalaEditor('description_eng', descriptionEN);
+                        var editor_ua = getFroalaEditor('description-ua', descriptionUA);
+                        var editor_eng = getFroalaEditor('description-eng', descriptionEN);
 
                         selectedLanguage();
                         addEventListenerSyncDate();
                         clearErrorWhenChangeValue('[data-name="titleUA"],[data-name="titleENG"]');
                     });
 
+                    const froalaInstances = {};
+
                     function getFroalaEditor(id, content) {
-                        const hiddenSelector = `#hidden-${id.replace('_', '')}_`;
-                        return new FroalaEditor(`#${id}`, {
+                        let hiddenSelector = $(`#hidden-${id}_`);
+                        const editor = new FroalaEditor(`#${id}`, {
                             theme: current_mode,
                             height: 200,
-                            width: '100%',
+                            // width: '100%',
                             events: {
                                 'initialized': function () {
                                     this.html.set(content || '');
                                 },
                                 'contentChanged': function () {
-                                    $(hiddenSelector).val(this.html.get());
+                                    const html = this.html.get();
+                                    if(hiddenSelector.length){
+                                        hiddenSelector.val(html);
+                                    }
                                 }
                             }
                         });
+                        froalaInstances[id] = editor;
+                        return editor;
                     }
+
+                    document.body.addEventListener('htmx:configRequest', function(event) {
+                        for (const id in froalaInstances) {
+                            const editor = froalaInstances[id];
+                            const hiddenInput = document.getElementById(`hidden-${id}_`);
+                            if (hiddenInput) {
+                                hiddenInput.value = editor.html.get();
+                                console.log(`Syncing ${id}:`, hiddenInput.value); // для тесту
+                            }
+                        }
+                    });
 
                     function getActiveLangTab() {
                         return document.querySelector('button.nav-link.active').getAttribute('data-lang');
@@ -246,8 +271,13 @@
                         }
                     });
 
-                    document.body.addEventListener('htmx:confirm',function(event){
-                        if($('.is-invalid').length > 0){
+                    document.body.addEventListener('htmx:confirm', function (event) {
+                        for (const id in froalaInstances) {
+                            const input = document.getElementById(`hidden-${id}_`);
+                            if (input) input.value = froalaInstances[id].html.get();
+                        }
+
+                        if ($('.is-invalid').length > 0) {
                             event.preventDefault();
                         }
                     });

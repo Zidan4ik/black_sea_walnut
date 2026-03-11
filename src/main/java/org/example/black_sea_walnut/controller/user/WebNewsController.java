@@ -67,8 +67,9 @@ public class WebNewsController {
     public ResponseEntity<?> getNewsPageDate(@RequestParam(name = "lang") String code,
                                              @PathVariable Long id) {
         ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
-        NewResponseInWeb new_ = newService.getByIdInResponseForWeb(id, LanguageCode.fromString(code));
-        List<NewResponseInWeb> news = newService.getAllBySizeAmongLast(2, LanguageCode.fromString(code),id);
+        LanguageCode c = LanguageCode.fromString(code);
+        NewResponseInWeb new_ = newService.getByIdInResponse(id, n->newMapper.toResponseForWeb(n, c));
+        List<NewResponseInWeb> news = newService.getAllBySizeAmongLast(2, c,id);
         return new ResponseEntity<>(NewResponseForView
                 .builder()
                 .contacts(contacts)

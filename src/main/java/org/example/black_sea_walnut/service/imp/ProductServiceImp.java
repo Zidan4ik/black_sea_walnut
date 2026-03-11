@@ -21,13 +21,14 @@ import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
-import org.example.black_sea_walnut.service.specifications.ProductSpecification;
-import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.ImageUtil;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +49,6 @@ public class ProductServiceImp implements ProductService {
     private final ImageServiceImp imageServiceImp;
     private final ProductMapper productMapper;
     private final HistoryPricesService historyPricesService;
-    private final TransactionsRepository transactionsRepository;
     private final OrderDetailServiceImp orderDetailService;
 
     @Value("${upload.path}")
@@ -62,20 +63,12 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public PageResponse<ProductResponseForViewInProducts> getAll(ProductResponseForViewInProducts response, Pageable pageable, LanguageCode code) {
+    public <R> PageResponse<R> getAll(Specification<Product> spec, Pageable pageable, Function<Product,R> mappingFunction) {
         LogUtil.logInfo("Fetching all products with filters");
-        Page<Product> page = productRepository.findAll(ProductSpecification.getSpecification(response, code), pageable);
-        List<ProductResponseForViewInProducts> responseDTOView = page.map(p -> mapper.toDTOForView(p, code)).toList();
-        LogUtil.logInfo("Fetched product: " + responseDTOView.size());
-        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()));
-    }
-
-    @Override
-    public PageResponse<ProductResponseForViewInTable> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code) {
-        LogUtil.logInfo("Fetching all products with filters");
-        Page<Product> page = productRepository.findAll(ProductSpecification2.getSpecification(response, code), pageable);
-        List<ProductResponseForViewInTable> responseDTOView = page.map(p -> mapper.toResponseForViewInProduction(p, code)).toList();
-        return new PageResponse<>(responseDTOView, new PageResponse.Metadata(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()));
+        Page<Product> page = productRepository.findAll(spec, pageable);
+        List<R> content = page.map(mappingFunction).getContent();
+        LogUtil.logInfo("Fetched product: " + content.size());
+        return new PageResponse<>(content, new PageResponse.Metadata(page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages()));
     }
 
     @Override
@@ -86,23 +79,23 @@ public class ProductServiceImp implements ProductService {
     @SneakyThrows
     @Transactional
     @Override
-    public Product save(ProductRequestForAdd dto) {
+    public <M extends GenericsMapper> Product save(Saveable<Product, ProductMapper> dto, M mapper) {
         LogUtil.logInfo("Saving product: " + dto);
-        Product product;
+        Product entity;
         if (dto.getId() != null) {
-            product = getById(dto.getId());
-            updateBasicFields(product, dto);
+            entity = getById(dto.getId());
+            updateBasicFields(entity, dto);
             if (dto.getNewPrice() != null) {
-                product.setPriceByUnit(String.valueOf(dto.getNewPrice()));
-                product.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), product));
+                entity.setPriceByUnit(String.valueOf(dto.getNewPrice()));
+                entity.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), entity));
             }
         } else {
-            product = mapper.toEntityForRequestAdd(dto);
+            entity = mapper.toEntityForRequestAdd(dto);
         }
-        updateProductImages(dto, product);
-        product.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())));
-        product.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())));
-        Product productSaved = productRepository.save(product);
+        updateProductImages(dto, entity);
+        entity.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())));
+        entity.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())));
+        Product productSaved = productRepository.save(entity);
         savePhysicalImages(dto, productSaved);
         return productSaved;
     }

@@ -9,18 +9,18 @@ import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public interface ProductService {
     List<Product> getAll();
 
-    PageResponse<ProductResponseForViewInProducts> getAll(ProductResponseForViewInProducts response, Pageable pageable, LanguageCode code);
-
-    PageResponse<ProductResponseForViewInTable> getAll(ProductResponseForShopPage response, Pageable pageable, LanguageCode code);
+    <R> PageResponse<R> getAll(Specification<Product> spec, Pageable pageable, Function<Product, R> mappingFunction);
 
     Product save(Product entity);
 

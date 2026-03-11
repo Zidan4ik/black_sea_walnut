@@ -12,16 +12,18 @@ import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 
 @Component
 @RequiredArgsConstructor
-public class ProductMapper {
+public class ProductMapper implements GenericsMapper {
     public ProductResponseForViewInProducts toDTOForView(Product entity, LanguageCode languageCode) {
         ProductTranslation translation = entity.getProductTranslations().stream()
                 .filter(l -> l.getLanguageCode() == languageCode)
@@ -83,8 +85,7 @@ public class ProductMapper {
         return dto;
     }
 
-    public Product toEntityForRequestAdd(ProductRequestForAdd dto) {
-        Product entity = new Product();
+    public Product toEntityForRequestAdd(ProductRequestForAdd dto, Product entity) {
         entity.setId(dto.getId());
         entity.setArticleId(dto.getArticleId());
         entity.setActive(dto.getIsActive());
@@ -96,9 +97,10 @@ public class ProductMapper {
                 dto.getNameEn(), dto.getRecipeEn(), dto.getConditionExploitationEn(), dto.getDescriptionProductEn(),
                 dto.getDescriptionPackingEn(), dto.getDescriptionPaymentEn(), dto.getDescriptionDeliveryEn(), entity);
 
-        entity.setProductTranslations(List.of(productUk, productEn));
-        entity.setCreatedDate(LocalDateTime.now());
+        entity.getProductTranslations().clear();
+        entity.getProductTranslations().addAll(new ArrayList<>(List.of(productUk,productEn)));
 
+        entity.setCreatedDate(LocalDateTime.now());
         entity.setMass(dto.getMass().intValue());
         entity.setMassEnergy(dto.getEnergyMass().intValue());
 
@@ -184,7 +186,6 @@ public class ProductMapper {
                 .conditionExploitation(translation.getConditionExploitation())
                 .build();
     }
-
 
     public ProductResponseForViewInTable toResponseForViewInProduction(Product entity, LanguageCode languageCode) {
         ProductTranslation translation = entity.getProductTranslations().stream()

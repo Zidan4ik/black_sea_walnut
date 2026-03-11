@@ -21,6 +21,8 @@ import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
+import org.example.black_sea_walnut.service.specifications.ProductSpecification;
+import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -65,7 +67,9 @@ public class WebShopController {
                 Sort.by(Sort.Direction.ASC, "priceByUnit") :
                 Sort.by(Sort.Direction.DESC, "priceByUnit");
         PageRequest pageable = PageRequest.of(page, size, sort);
-        PageResponse<ProductResponseForViewInTable> pageResponse = productService.getAll(response, pageable, LanguageCode.fromString(languageCode));
+        LanguageCode code = LanguageCode.fromString(languageCode);
+        PageResponse<ProductResponseForViewInTable> pageResponse = productService.getAll(ProductSpecification2.getSpecification(
+                response, code), pageable, p -> productMapper.toResponseForViewInMain(p, code));
         model.addObject("data", pageResponse.getContent());
         model.addObject("totalPages", pageResponse.getMetadata().getTotalPages());
         return model;
@@ -75,9 +79,9 @@ public class WebShopController {
     public ResponseEntity<ShopResponseForView> getDataForShopPage(@RequestParam("lang") String lang) {
         List<Integer> masses = productService.getAllMasses();
         Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(lang));
-        BannerBlockResponseForAdd banner = historyService.getResponseByPageType(PageType.catalog_banner,catalogMapper::toResponseBannerBlockForAdd);
-        EcologicallyBlockResponseForAdd ecologically = historyService.getResponseByPageType(PageType.catalog_ecologically_pure_walnut,catalogMapper::toResponseEcologicallyBlockForAdd);
-        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
+        BannerBlockResponseForAdd banner = historyService.getResponseByPageType(PageType.catalog_banner, catalogMapper::toResponseBannerBlockForAdd);
+        EcologicallyBlockResponseForAdd ecologically = historyService.getResponseByPageType(PageType.catalog_ecologically_pure_walnut, catalogMapper::toResponseEcologicallyBlockForAdd);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L, contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(
                 ShopResponseForView.builder()
                         .masses(masses)
@@ -97,7 +101,7 @@ public class WebShopController {
     public ResponseEntity<ProductResponseInWeb> getDataForShopPage(@PathVariable Long id,
                                                                    @RequestParam("lang") String lang) {
         ProductResponseForView product = productMapper.toResponseForView(productService.getById(id), LanguageCode.fromString(lang));
-        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L, contactMapper::toDtoContactForAdd);
         return new ResponseEntity<>(ProductResponseInWeb
                 .builder()
                 .product(product)
