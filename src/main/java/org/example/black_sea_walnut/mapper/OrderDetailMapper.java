@@ -5,7 +5,7 @@ import org.example.black_sea_walnut.dto.admin.order.ResponseOrderDetailForView;
 import org.example.black_sea_walnut.dto.web.BasketResponseForCart;
 import org.example.black_sea_walnut.entity.*;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.ProductService;
+import org.example.black_sea_walnut.service.product.ProductService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

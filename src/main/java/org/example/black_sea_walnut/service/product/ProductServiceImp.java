@@ -1,4 +1,4 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.product;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -7,19 +7,17 @@ import org.example.black_sea_walnut.dto.*;
 import org.example.black_sea_walnut.dto.admin.historyPrice.HistoryResponsePricesForProduct;
 import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
-import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.*;
-import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.repository.ProductRepository;
-import org.example.black_sea_walnut.repository.TransactionsRepository;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
-import org.example.black_sea_walnut.service.ProductService;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.imp.ImageServiceImp;
+import org.example.black_sea_walnut.service.imp.OrderDetailServiceImp;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
@@ -63,7 +61,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public <R> PageResponse<R> getAll(Specification<Product> spec, Pageable pageable, Function<Product,R> mappingFunction) {
+    public <R> PageResponse<R> getAll(Specification<Product> spec, Pageable pageable, Function<Product, R> mappingFunction) {
         LogUtil.logInfo("Fetching all products with filters");
         Page<Product> page = productRepository.findAll(spec, pageable);
         List<R> content = page.map(mappingFunction).getContent();
@@ -79,100 +77,60 @@ public class ProductServiceImp implements ProductService {
     @SneakyThrows
     @Transactional
     @Override
-    public <M extends GenericsMapper> Product save(Saveable<Product, ProductMapper> dto, M mapper) {
+    public <M extends GenericsMapper> Product save(Saveable<Product, M> dto, M mapper) {
         LogUtil.logInfo("Saving product: " + dto);
-        Product entity;
-        if (dto.getId() != null) {
-            entity = getById(dto.getId());
-            updateBasicFields(entity, dto);
-            if (dto.getNewPrice() != null) {
-                entity.setPriceByUnit(String.valueOf(dto.getNewPrice()));
-                entity.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), entity));
-            }
-        } else {
-            entity = mapper.toEntityForRequestAdd(dto);
+        Product entity = (dto.getId() != null) ? getById(dto.getId()) : new Product();
+
+
+        if (dto instanceof ProductProperties p) {
+            entity.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(p.getDiscountId())));
+            entity.setTastes(new HashSet<>(tasteService.getAllByCommonId(p.getTasteId())));
         }
-        updateProductImages(dto, entity);
-        entity.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(dto.getDiscountId())));
-        entity.setTastes(new HashSet<>(tasteService.getAllByCommonId(dto.getTasteId())));
-        Product productSaved = productRepository.save(entity);
-        savePhysicalImages(dto, productSaved);
-        return productSaved;
+
+        if (dto instanceof ProductImages pi) {
+            if (dto instanceof Uploadable u) {
+                updateProductImages(pi, entity, u);
+            }
+            savePhysicalImages(pi, entity);
+        }
+        dto.updateEntity(entity,mapper);
+        return productRepository.save(entity);
     }
 
-    private void updateProductImages(ProductRequestForAdd dto, Product product) {
-        processImage(dto.getImage1(), dto.getPathToImage1(), product::setPathToImage1, product, "pathToImage1");
-        processImage(dto.getImage2(), dto.getPathToImage2(), product::setPathToImage2, product, "pathToImage2");
-        processImage(dto.getImage3(), dto.getPathToImage3(), product::setPathToImage3, product, "pathToImage3");
-        processImage(dto.getImage4(), dto.getPathToImage4(), product::setPathToImage4, product, "pathToImage4");
+    private void updateProductImages(ProductImages dto, Product entity, Uploadable u) {
+        processImage(dto.getImage1(), dto.getPathToImage1(), entity::setPathToImage1, entity, "pathToImage1", u);
+        processImage(dto.getImage2(), dto.getPathToImage2(), entity::setPathToImage2, entity, "pathToImage2", u);
+        processImage(dto.getImage3(), dto.getPathToImage3(), entity::setPathToImage3, entity, "pathToImage3", u);
+        processImage(dto.getImage4(), dto.getPathToImage4(), entity::setPathToImage4, entity, "pathToImage4", u);
 
-        processImage(dto.getImageDescription(), dto.getPathToImageDescription(), product::setPathToImageDescription, product, "pathToImageDescription");
-        processImage(dto.getImagePacking(), dto.getPathToImagePacking(), product::setPathToImagePacking, product, "pathToImagePacking");
-        processImage(dto.getImagePayment(), dto.getPathToImagePayment(), product::setPathToImagePayment, product, "pathToImagePayment");
-        processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), product::setPathToImageDelivery, product, "pathToImageDelivery");
+        processImage(dto.getImageDescription(), dto.getPathToImageDescription(), entity::setPathToImageDescription, entity, "pathToImageDescription", u);
+        processImage(dto.getImagePacking(), dto.getPathToImagePacking(), entity::setPathToImagePacking, entity, "pathToImagePacking", u);
+        processImage(dto.getImagePayment(), dto.getPathToImagePayment(), entity::setPathToImagePayment, entity, "pathToImagePayment", u);
+        processImage(dto.getImageDelivery(), dto.getPathToImageDelivery(), entity::setPathToImageDelivery, entity, "pathToImageDelivery", u);
     }
 
-    private void savePhysicalImages(ProductRequestForAdd dto, Product productSaved) {
-        imageServiceImp.save(dto.getImage1(), productSaved.getPathToImage1());
-        imageServiceImp.save(dto.getImage2(), productSaved.getPathToImage2());
-        imageServiceImp.save(dto.getImage3(), productSaved.getPathToImage3());
-        imageServiceImp.save(dto.getImage4(), productSaved.getPathToImage4());
+    private void savePhysicalImages(ProductImages dto, Product entity) {
+        imageServiceImp.save(dto.getImage1(), entity.getPathToImage1());
+        imageServiceImp.save(dto.getImage2(), entity.getPathToImage2());
+        imageServiceImp.save(dto.getImage3(), entity.getPathToImage3());
+        imageServiceImp.save(dto.getImage4(), entity.getPathToImage4());
 
-        imageServiceImp.save(dto.getImageDescription(), productSaved.getPathToImageDescription());
-        imageServiceImp.save(dto.getImagePacking(), productSaved.getPathToImagePacking());
-        imageServiceImp.save(dto.getImagePayment(), productSaved.getPathToImagePayment());
-        imageServiceImp.save(dto.getImageDelivery(), productSaved.getPathToImageDelivery());
+        imageServiceImp.save(dto.getImageDescription(), entity.getPathToImageDescription());
+        imageServiceImp.save(dto.getImagePacking(), entity.getPathToImagePacking());
+        imageServiceImp.save(dto.getImagePayment(), entity.getPathToImagePayment());
+        imageServiceImp.save(dto.getImageDelivery(), entity.getPathToImageDelivery());
     }
 
     @SneakyThrows
-    @Override
-    public void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName) {
-        if (existingProduct != null && imagePath.isEmpty()) {
-            ImageUtil.deleteImageIfEmpty(existingProduct, fieldName, imageServiceImp);
+    private void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product entity, String fieldName, Uploadable u) {
+        if (entity != null && imagePath.isEmpty()) {
+            ImageUtil.deleteImageIfEmpty(entity, fieldName, imageServiceImp);
         }
         if (image != null && !image.isEmpty()) {
-            String generatedPath = contextPath + "/products/" + MediaType.image + "/" + imageServiceImp.generateFileName(image);
-            pathSetter.accept(generatedPath);
+            pathSetter.accept(imageServiceImp.generatePath(image, u));
         } else {
             pathSetter.accept(imagePath);
         }
-    }
-
-    @Override
-    public void updateBasicFields(Product product, ProductRequestForAdd dto) {
-        List<ProductTranslation> productTranslations = product.getProductTranslations();
-        for (LanguageCode code : LanguageCode.values()) {
-            ProductTranslation translation = productTranslations.stream().filter(t -> t.getLanguageCode().equals(code)).findFirst().orElseGet(() -> {
-                ProductTranslation pt = new ProductTranslation();
-                pt.setLanguageCode(code);
-                pt.setProduct(product);
-                productTranslations.add(pt);
-                return pt;
-            });
-
-            if (code == LanguageCode.uk) {
-                translation.setName(dto.getNameUk());
-                translation.setRecipe(dto.getRecipeUk());
-                translation.setConditionExploitation(dto.getConditionExploitationUk());
-                translation.setDescriptionProduct(dto.getDescriptionProductUk());
-                translation.setDescriptionPacking(dto.getDescriptionPackingUk());
-                translation.setDescriptionPayment(dto.getDescriptionPaymentUk());
-                translation.setDescriptionDelivery(dto.getDescriptionDeliveryUk());
-            } else if (code == LanguageCode.en) {
-                translation.setName(dto.getNameEn());
-                translation.setRecipe(dto.getRecipeEn());
-                translation.setConditionExploitation(dto.getConditionExploitationEn());
-                translation.setDescriptionProduct(dto.getDescriptionProductEn());
-                translation.setDescriptionPacking(dto.getDescriptionPackingEn());
-                translation.setDescriptionPayment(dto.getDescriptionPaymentEn());
-                translation.setDescriptionDelivery(dto.getDescriptionDeliveryEn());
-            }
-        }
-        product.setActive(dto.getIsActive());
-        product.setArticleId(dto.getArticleId());
-        product.setTotalCount(dto.getAmount());
-        product.setMassEnergy(dto.getEnergyMass() != null ? dto.getEnergyMass().intValue() : 0);
-        product.setMass(dto.getMass() != null ? Math.toIntExact(dto.getMass()) : 0);
     }
 
     @Override

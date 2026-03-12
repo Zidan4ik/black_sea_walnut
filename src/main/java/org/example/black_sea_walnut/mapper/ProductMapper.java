@@ -13,6 +13,7 @@ import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.entity.translation.ProductTranslation;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
+import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -47,30 +48,33 @@ public class ProductMapper implements GenericsMapper {
     }
 
     public ProductResponseForAdd toResponseForAdd(Product entity) {
-        ProductTranslation productInUk = entity.getProductTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.uk)).findFirst().get();
-        ProductTranslation productInEn = entity.getProductTranslations().stream().filter(t -> t.getLanguageCode().equals(LanguageCode.en)).findFirst().get();
-        ProductResponseForAdd dto = ProductResponseForAdd
-                .builder()
+        ProductTranslation translationUk = getTranslation(entity, LanguageCode.uk);
+        ProductTranslation translationEn = getTranslation(entity, LanguageCode.en);
+
+        ProductResponseForAdd dto = ProductResponseForAdd.builder()
                 .id(entity.getId())
                 .articleId(entity.getArticleId())
                 .isActive(entity.isActive())
                 .amount(String.valueOf(entity.getTotalCount()))
                 .mass(String.valueOf(entity.getMass()))
                 .energyMass(String.valueOf(entity.getMassEnergy()))
-                .nameUk(productInUk.getName())
-                .recipeUk(productInUk.getRecipe())
-                .conditionExploitationUk(productInUk.getConditionExploitation())
-                .descriptionProductUk(productInUk.getDescriptionProduct())
-                .descriptionPackingUk(productInUk.getDescriptionPacking())
-                .descriptionPaymentUk(productInUk.getDescriptionPayment())
-                .descriptionDeliveryUk(productInUk.getDescriptionDelivery())
-                .nameEn(productInEn.getName())
-                .recipeEn(productInEn.getRecipe())
-                .descriptionProductEn(productInEn.getDescriptionProduct())
-                .conditionExploitationEn(productInEn.getConditionExploitation())
-                .descriptionPackingEn(productInEn.getDescriptionPacking())
-                .descriptionPaymentEn(productInEn.getDescriptionPayment())
-                .descriptionDeliveryEn(productInEn.getDescriptionDelivery())
+
+                .nameUk(translationUk.getName())
+                .recipeUk(translationUk.getRecipe())
+                .conditionExploitationUk(translationUk.getConditionExploitation())
+                .descriptionProductUk(translationUk.getDescriptionProduct())
+                .descriptionPackingUk(translationUk.getDescriptionPacking())
+                .descriptionPaymentUk(translationUk.getDescriptionPayment())
+                .descriptionDeliveryUk(translationUk.getDescriptionDelivery())
+
+                .nameEn(translationEn.getName())
+                .recipeEn(translationEn.getRecipe())
+                .descriptionProductEn(translationEn.getDescriptionProduct())
+                .conditionExploitationEn(translationEn.getConditionExploitation())
+                .descriptionPackingEn(translationEn.getDescriptionPacking())
+                .descriptionPaymentEn(translationEn.getDescriptionPayment())
+                .descriptionDeliveryEn(translationEn.getDescriptionDelivery())
+
                 .pathToImage1(entity.getPathToImage1())
                 .pathToImage2(entity.getPathToImage2())
                 .pathToImage3(entity.getPathToImage3())
@@ -80,8 +84,12 @@ public class ProductMapper implements GenericsMapper {
                 .pathToImagePayment(entity.getPathToImagePayment())
                 .pathToImageDelivery(entity.getPathToImageDelivery())
                 .build();
-        entity.getTastes().stream().findFirst().ifPresent(t -> dto.setTasteId(t.getCommonId()));
-        entity.getDiscounts().stream().findFirst().ifPresent(d -> dto.setDiscountId(d.getDiscountCommonId()));
+
+        entity.getTastes().stream().findFirst()
+                .ifPresent(t -> dto.setTasteId(t.getCommonId()));
+        entity.getDiscounts().stream().findFirst()
+                .ifPresent(d -> dto.setDiscountId(d.getDiscountCommonId()));
+
         return dto;
     }
 
@@ -90,32 +98,15 @@ public class ProductMapper implements GenericsMapper {
         entity.setArticleId(dto.getArticleId());
         entity.setActive(dto.getIsActive());
         entity.setTotalCount(dto.getAmount());
-        ProductTranslation productUk = new ProductTranslation(LanguageCode.uk,
-                dto.getNameUk(), dto.getRecipeUk(), dto.getConditionExploitationUk(), dto.getDescriptionProductUk(),
-                dto.getDescriptionPackingUk(), dto.getDescriptionPaymentUk(), dto.getDescriptionDeliveryUk(), entity);
-        ProductTranslation productEn = new ProductTranslation(LanguageCode.en,
-                dto.getNameEn(), dto.getRecipeEn(), dto.getConditionExploitationEn(), dto.getDescriptionProductEn(),
-                dto.getDescriptionPackingEn(), dto.getDescriptionPaymentEn(), dto.getDescriptionDeliveryEn(), entity);
-
-        entity.getProductTranslations().clear();
-        entity.getProductTranslations().addAll(new ArrayList<>(List.of(productUk,productEn)));
-
         entity.setCreatedDate(LocalDateTime.now());
         entity.setMass(dto.getMass().intValue());
         entity.setMassEnergy(dto.getEnergyMass().intValue());
-
-        entity.setPathToImage1(dto.getPathToImage1());
-        entity.setPathToImage2(dto.getPathToImage2());
-        entity.setPathToImage3(dto.getPathToImage3());
-        entity.setPathToImage4(dto.getPathToImage4());
-        entity.setPathToImageDescription(dto.getPathToImageDescription());
-        entity.setPathToImagePacking(dto.getPathToImagePacking());
-        entity.setPathToImagePayment(dto.getPathToImagePayment());
-        entity.setPathToImageDelivery(dto.getPathToImageDelivery());
-        if (dto.getId() == null) {
-            entity.setHistoryPrices(List.of(new HistoryPrices(dto.getNewPrice(), LocalDateTime.now(), LocalDateTime.now().plusDays(30), entity)));
+        if(dto.getNewPrice()!=null){
+            entity.setPriceByUnit(String.valueOf(dto.getNewPrice()));
+            entity.getHistoryPrices().add(new HistoryPrices(dto.getNewPrice(),
+                    LocalDateTime.now(), LocalDateTime.now().plusDays(10), entity));
         }
-        entity.setPriceByUnit(String.valueOf(dto.getNewPrice()));
+        updateBasicFields(entity, dto);
         return entity;
     }
 
@@ -214,5 +205,27 @@ public class ProductMapper implements GenericsMapper {
                 .priceNew(priceNew)
                 .priceOld(priceOld)
                 .build();
+    }
+
+    public void updateBasicFields(Product entity, ProductRequestForAdd dto) {
+        entity.getProductTranslations().clear();
+        entity.getProductTranslations().add(new ProductTranslation(
+                null, LanguageCode.uk, dto.getNameUk(), dto.getRecipeUk(), dto.getConditionExploitationUk(), dto.getDescriptionProductUk(),
+                dto.getDescriptionPackingUk(), dto.getDescriptionPaymentUk(), dto.getDescriptionDeliveryUk(), entity
+        ));
+        entity.getProductTranslations().add(new ProductTranslation(
+                null, LanguageCode.en, dto.getNameEn(), dto.getRecipeEn(), dto.getConditionExploitationEn(), dto.getDescriptionProductEn(),
+                dto.getDescriptionPackingEn(), dto.getDescriptionPaymentEn(), dto.getDescriptionDeliveryEn(), entity
+        ));
+    }
+
+    private ProductTranslation getTranslation(Product entity, LanguageCode code) {
+        return entity.getProductTranslations().stream()
+                .filter(t -> t.getLanguageCode().equals(code))
+                .findFirst()
+                .orElseGet(() -> {
+                    LogUtil.logError("Missing translation for language: " + code + " in Product ID: " + entity.getId(), null);
+                    return new ProductTranslation();
+                });
     }
 }

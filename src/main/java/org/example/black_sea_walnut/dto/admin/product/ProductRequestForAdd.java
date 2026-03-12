@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.mapper.ProductMapper;
+import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.product.ProductProperties;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.IsExistProductValidation;
 import org.example.black_sea_walnut.validator.annotation.MediaValidation;
@@ -23,7 +25,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @IsExistProductValidation
-public class ProductRequestForAdd implements Saveable<Product, ProductMapper> {
+public class ProductRequestForAdd implements Saveable<Product, ProductMapper>, ProductProperties, Uploadable {
     private Long id;
     @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")
@@ -100,5 +102,20 @@ public class ProductRequestForAdd implements Saveable<Product, ProductMapper> {
     @Override
     public void updateEntity(Product entity, ProductMapper mapper) {
         mapper.toEntityForRequestAdd(this,entity);
+    }
+
+    @Override
+    public Long getDiscountId() {
+        return this.discountId;
+    }
+
+    @Override
+    public Long getTasteId() {
+        return this.tasteId;
+    }
+
+    @Override
+    public String getSubFolder() {
+        return "products";
     }
 }

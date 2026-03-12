@@ -13,7 +13,7 @@ import org.example.black_sea_walnut.exception.InsufficientStockException;
 import org.example.black_sea_walnut.mapper.BasketMapper;
 import org.example.black_sea_walnut.repository.BasketRepository;
 import org.example.black_sea_walnut.service.BasketService;
-import org.example.black_sea_walnut.service.ProductService;
+import org.example.black_sea_walnut.service.product.ProductService;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

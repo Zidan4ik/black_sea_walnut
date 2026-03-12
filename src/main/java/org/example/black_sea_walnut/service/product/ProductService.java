@@ -1,13 +1,14 @@
-package org.example.black_sea_walnut.service;
+package org.example.black_sea_walnut.service.product;
 
 import org.example.black_sea_walnut.dto.PageResponse;
 import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
-import org.example.black_sea_walnut.dto.admin.product.ProductResponseForShopPage;
-import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
+import org.example.black_sea_walnut.mapper.ProductMapper;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ public interface ProductService {
 
     Product save(Product entity);
 
-    Product save(ProductRequestForAdd dto);
+    <M extends GenericsMapper> Product save(Saveable<Product, M> dto, M mapper);
 
     Product getById(Long id);
 
@@ -47,8 +48,4 @@ public interface ProductService {
     void decreaseCountItems(Long productId);
 
     void increaseCountItems(Long productId);
-
-    void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product existingProduct, String fieldName);
-
-    void updateBasicFields(Product product, ProductRequestForAdd dto);
 }

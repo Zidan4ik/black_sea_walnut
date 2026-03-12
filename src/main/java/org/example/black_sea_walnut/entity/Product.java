@@ -56,5 +56,5 @@ public class Product {
     )
     private Set<Taste> tastes = new HashSet<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<HistoryPrices> historyPrices;
+    private List<HistoryPrices> historyPrices = new ArrayList<>();
 }

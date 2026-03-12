@@ -21,7 +21,7 @@ import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
-import org.example.black_sea_walnut.service.specifications.ProductSpecification;
+import org.example.black_sea_walnut.service.product.ProductService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.PageRequest;

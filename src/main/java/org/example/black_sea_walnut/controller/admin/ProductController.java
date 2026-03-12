@@ -10,12 +10,11 @@ import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.product.ResponseAllDiscountsAndTastes;
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
-import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
-import org.example.black_sea_walnut.service.ProductService;
+import org.example.black_sea_walnut.service.product.ProductService;
 import org.example.black_sea_walnut.service.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
 import org.springframework.data.domain.PageRequest;
@@ -106,7 +105,7 @@ public class ProductController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        productService.save(dto);
+        productService.save(dto,productMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
