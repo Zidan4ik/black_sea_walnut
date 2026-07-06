@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.validator.annotation.IsExistTasteValidation;
 
 import java.util.Objects;

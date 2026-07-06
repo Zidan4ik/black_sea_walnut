@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.Uploadable;
+import org.example.black_sea_walnut.service.product.ProductImages;
 import org.example.black_sea_walnut.service.product.ProductProperties;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.validator.annotation.IsExistProductValidation;
@@ -25,7 +26,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @IsExistProductValidation
-public class ProductRequestForAdd implements Saveable<Product, ProductMapper>, ProductProperties, Uploadable {
+public class ProductRequestForAdd implements Saveable<Product, ProductMapper>, ProductProperties, Uploadable, ProductImages {
     private Long id;
     @NumberNullValidation(message ="{error.field.empty.number}")
     @Min(value = 0, message = "{error.field.valid.min.value}")

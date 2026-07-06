@@ -4,10 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.black_sea_walnut.dto.admin.historyPrice.HistoryResponsePricesForProduct;
+import org.example.black_sea_walnut.service.history.DtoResponse;
+import org.example.black_sea_walnut.service.product.PricedResponse;
 
 @Builder
 @Getter
-public class ProductResponseForAdd {
+public class ProductResponseForAdd implements DtoResponse, PricedResponse {
     private Long id;
     private Long articleId;
     private Boolean isActive;

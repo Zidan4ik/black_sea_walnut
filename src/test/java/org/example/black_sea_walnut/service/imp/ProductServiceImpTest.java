@@ -14,7 +14,7 @@ import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.service.DiscountService;
 import org.example.black_sea_walnut.service.HistoryPricesService;
-import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.service.product.ProductServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -286,7 +286,7 @@ class ProductServiceImpTest {
     }
 
     @Test
-    void testGetByIdLikeDTOAdd() {
+    void testGetByIdLikeDTO() {
         Long id = 1L;
         Product product = new Product();
         product.setId(id);
@@ -295,7 +295,7 @@ class ProductServiceImpTest {
         when(mapper.toResponseForAdd(product)).thenReturn(responseForAdd);
         when(historyPricesService.getLatestPriceByProductIdInDtoForProduct(id)).thenReturn(HistoryResponsePricesForProduct.builder().build());
 
-        ProductResponseForAdd result = productService.getByIdLikeDTOAdd(id);
+        ProductResponseForAdd result = productService.getByIdLikeDTO(id);
 
         assertNotNull(result);
         verify(productRepository).findById(id);

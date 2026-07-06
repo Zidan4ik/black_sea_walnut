@@ -4,13 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.black_sea_walnut.dto.*;
-import org.example.black_sea_walnut.dto.admin.historyPrice.HistoryResponsePricesForProduct;
-import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.*;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.enums.MediaType;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.repository.ProductRepository;
 import org.example.black_sea_walnut.service.DiscountService;
@@ -18,7 +14,7 @@ import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.Uploadable;
 import org.example.black_sea_walnut.service.imp.ImageServiceImp;
 import org.example.black_sea_walnut.service.imp.OrderDetailServiceImp;
-import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.ImageUtil;
@@ -32,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -41,16 +36,12 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
     private final ProductRepository productRepository;
-    private final ProductMapper mapper;
     private final TasteService tasteService;
     private final DiscountService discountService;
     private final ImageServiceImp imageServiceImp;
     private final ProductMapper productMapper;
     private final HistoryPricesService historyPricesService;
     private final OrderDetailServiceImp orderDetailService;
-
-    @Value("${upload.path}")
-    private String contextPath;
 
     @Override
     public List<Product> getAll() {
@@ -81,7 +72,6 @@ public class ProductServiceImp implements ProductService {
         LogUtil.logInfo("Saving product: " + dto);
         Product entity = (dto.getId() != null) ? getById(dto.getId()) : new Product();
 
-
         if (dto instanceof ProductProperties p) {
             entity.setDiscounts(new HashSet<>(discountService.getAllByDiscountCommonId(p.getDiscountId())));
             entity.setTastes(new HashSet<>(tasteService.getAllByCommonId(p.getTasteId())));
@@ -93,7 +83,7 @@ public class ProductServiceImp implements ProductService {
             }
             savePhysicalImages(pi, entity);
         }
-        dto.updateEntity(entity,mapper);
+        dto.updateEntity(entity, mapper);
         return productRepository.save(entity);
     }
 
@@ -123,7 +113,7 @@ public class ProductServiceImp implements ProductService {
 
     @SneakyThrows
     private void processImage(MultipartFile image, String imagePath, Consumer<String> pathSetter, Product entity, String fieldName, Uploadable u) {
-        if (entity != null && imagePath.isEmpty()) {
+        if (entity != null && imagePath != null && imagePath.isEmpty()) {
             ImageUtil.deleteImageIfEmpty(entity, fieldName, imageServiceImp);
         }
         if (image != null && !image.isEmpty()) {
@@ -152,13 +142,15 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductResponseForAdd getByIdLikeDTOAdd(Long id) {
+    public <R> R getByIdLikeDTO(Long id, Function<Product,R> mappingFunction) {
         LogUtil.logInfo("Fetching product for DTO by ID: " + id);
         Product product = getById(id);
-        ProductResponseForAdd productInDtoAdd = mapper.toResponseForAdd(product);
-        HistoryResponsePricesForProduct responseHistoryPrices = historyPricesService.getLatestPriceByProductIdInDtoForProduct(product.getId());
-        productInDtoAdd.setPrices(responseHistoryPrices);
-        return productInDtoAdd;
+        R dto = mappingFunction.apply(product);
+        if(dto instanceof PricedResponse pr){
+            pr.setPrices(historyPricesService
+                            .getLatestPriceByProductIdInDtoForProduct(product.getId()));
+        }
+        return dto;
     }
 
     @Override

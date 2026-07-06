@@ -17,11 +17,13 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.enums.PageType;
 import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.mapper.ProductMapper;
+import org.example.black_sea_walnut.mapper.TasteMapper;
 import org.example.black_sea_walnut.mapper.pages.HistoryCatalogMapper;
 import org.example.black_sea_walnut.service.*;
 import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.product.ProductService;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification2;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +44,7 @@ import java.util.Set;
 @RequestMapping("/web")
 @RequiredArgsConstructor
 public class WebShopController {
-    private final ProductService productService;
+    private final ProductService productService ;
     private final TasteService tasteService;
     private final ContactService contactService;
     private final ProductMapper productMapper;
@@ -51,6 +53,7 @@ public class WebShopController {
     private final HistoryCatalogMapper catalogMapper;
     private final HistoryService historyService;
     private final ContactMapper contactMapper;
+    private final TasteMapper tasteMapper;
 
     @GetMapping("/shop")
     public ModelAndView viewShopPage() {
@@ -78,7 +81,7 @@ public class WebShopController {
     @GetMapping("/shop/data")
     public ResponseEntity<ShopResponseForView> getDataForShopPage(@RequestParam("lang") String lang) {
         List<Integer> masses = productService.getAllMasses();
-        Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(lang));
+        Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(lang),tasteMapper::toDTOForView);
         BannerBlockResponseForAdd banner = historyService.getResponseByPageType(PageType.catalog_banner, catalogMapper::toResponseBannerBlockForAdd);
         EcologicallyBlockResponseForAdd ecologically = historyService.getResponseByPageType(PageType.catalog_ecologically_pure_walnut, catalogMapper::toResponseEcologicallyBlockForAdd);
         ContactDtoForAdd contacts = contactService.getDtoResponseById(1L, contactMapper::toDtoContactForAdd);

@@ -758,7 +758,6 @@
                         request.addEventListener('load', function () {
                             if (request.status === 200) {
                                 let data = JSON.parse(request.response);
-                                console.log(data);
                                 for (let key in data) {
                                     if (data.hasOwnProperty(key)) {
                                         let input = $(`input[data-name="${key}"], textarea[data-name="${key}"],

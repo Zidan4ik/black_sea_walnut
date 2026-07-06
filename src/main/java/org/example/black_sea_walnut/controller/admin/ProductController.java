@@ -13,9 +13,8 @@ import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.DiscountService;
-import org.example.black_sea_walnut.service.HistoryPricesService;
 import org.example.black_sea_walnut.service.product.ProductService;
-import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,8 +36,6 @@ public class ProductController {
     private final ProductService productService;
     private final DiscountService discountService;
     private final TasteService tasteService;
-    private final Validator validator;
-    private final HistoryPricesService historyPricesService;
     private final ProductMapper productMapper;
 
     @GetMapping("/warehouse")
@@ -64,7 +60,7 @@ public class ProductController {
                 ProductSpecification.getSpecification(responseProductForView, code), pageable, n -> productMapper.toDTOForView(n, code));
         model.addObject("data", pageResponse.getContent());
 
-        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
+        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode),null);
         Set<DiscountResponseForView> discounts = discountService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
         model.addObject("tastes", tasteService.getSentence(names));
         model.addObject("discounts", discountService.getSentence(discounts));
@@ -111,8 +107,8 @@ public class ProductController {
 
     @GetMapping("/tastesAndDiscounts/get")
     public ResponseEntity<ResponseAllDiscountsAndTastes> getTastesAndDiscounts() {
-        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk);
-        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en);
+        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk,null);
+        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en,null);
         Set<DiscountResponseForView> discountUk = discountService.getAllByLanguageCodeInDTO(LanguageCode.uk);
         Set<DiscountResponseForView> discountEn = discountService.getAllByLanguageCodeInDTO(LanguageCode.en);
         ResponseAllDiscountsAndTastes dto = ResponseAllDiscountsAndTastes.builder().tastesUk(tastesUk).tastesEn(tastesEn).discountsUk(discountUk).discountsEn(discountEn).build();
@@ -144,8 +140,7 @@ public class ProductController {
     @GetMapping("/product/{id}")
     @ResponseBody
     public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id) {
-        ResponseEntity<ProductResponseForAdd> productResponseForAddResponseEntity = new ResponseEntity<>(productService.getByIdLikeDTOAdd(id), HttpStatus.OK);
-        return productResponseForAddResponseEntity;
+        return new ResponseEntity<>(productService.getByIdLikeDTO(id,productMapper::toResponseForAdd), HttpStatus.OK);
     }
 
     @GetMapping("/products/configuration")

@@ -21,9 +21,9 @@ public class AdminCityController {
     private final CityService cityService;
     private final RegionService regionService;
 
-    @GetMapping("/cities/get")
-    public ResponseEntity<?> getCities() {
-        return new ResponseEntity<>(cityService.getAll(), HttpStatus.OK);
+    @GetMapping("cities/get")
+    public ResponseEntity<?> getCities(){
+        return new ResponseEntity<>(cityService.getAll(),HttpStatus.OK);
     }
 
     @GetMapping("/cities")

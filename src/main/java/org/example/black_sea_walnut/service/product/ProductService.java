@@ -1,21 +1,16 @@
 package org.example.black_sea_walnut.service.product;
 
 import org.example.black_sea_walnut.dto.PageResponse;
-import org.example.black_sea_walnut.dto.admin.product.ProductRequestForAdd;
-import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.web.ProductResponseForViewInTable;
 import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.service.history.GenericsMapper;
 import org.example.black_sea_walnut.service.user.Saveable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface ProductService {
@@ -31,7 +26,7 @@ public interface ProductService {
 
     Product getByArticleId(Long id);
 
-    ProductResponseForAdd getByIdLikeDTOAdd(Long id);
+    <R> R getByIdLikeDTO(Long id, Function<Product,R> mappingFunction);
 
     void deleteById(Long id) throws IOException;
 

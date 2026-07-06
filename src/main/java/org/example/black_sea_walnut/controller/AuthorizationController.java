@@ -1,7 +1,6 @@
 package org.example.black_sea_walnut.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -11,14 +10,14 @@ import org.example.black_sea_walnut.dto.web.security.EmailRecoveryDto;
 import org.example.black_sea_walnut.dto.web.security.UserRequestForRegistration;
 import org.example.black_sea_walnut.entity.Country;
 import org.example.black_sea_walnut.entity.User;
+import org.example.black_sea_walnut.mapper.ContactMapper;
 import org.example.black_sea_walnut.password.PasswordResetRequest;
-import org.example.black_sea_walnut.password.PasswordResetTokenRepository;
 import org.example.black_sea_walnut.password.PasswordResetTokenService;
 import org.example.black_sea_walnut.password.event.RegistrationCompleteEventListener;
-import org.example.black_sea_walnut.service.ContactService;
+import org.example.black_sea_walnut.service.contact.ContactService;
 import org.example.black_sea_walnut.service.CountryService;
-import org.example.black_sea_walnut.service.UserService;
-import org.example.black_sea_walnut.validator.groupValidation.EmailValidGroups;
+import org.example.black_sea_walnut.service.user.UserAuthService;
+import org.example.black_sea_walnut.service.user.UserService;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedEmailValidation;
 import org.example.black_sea_walnut.validator.groupValidation.OrderedPasswordValidation;
 import org.springframework.http.HttpStatus;
@@ -35,12 +34,13 @@ import java.util.*;
 @Controller
 @RequiredArgsConstructor
 public class AuthorizationController {
+    private final UserAuthService userAuthService;
     private final UserService userService;
     private final CountryService countryService;
     private final ContactService contactService;
     private final RegistrationCompleteEventListener eventListener;
     private final PasswordResetTokenService passwordResetTokenService;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final ContactMapper contactMapper;
 
 
     @GetMapping("/login")
@@ -57,7 +57,7 @@ public class AuthorizationController {
 
     @GetMapping("/registration/data")
     public ResponseEntity<?> getDataInRegistrationPage() {
-        ContactDtoForAdd contacts = contactService.getByIdInDto(1L);
+        ContactDtoForAdd contacts = contactService.getDtoResponseById(1L,contactMapper::toDtoContactForAdd);
         List<Country> countries = countryService.getAll();
         return new ResponseEntity<>(RegistrationResponseForView
                 .builder()
@@ -118,7 +118,7 @@ public class AuthorizationController {
                 passwordResetTokenService.deleteTokenByUser(user);
             }
             String passwordResetToken = UUID.randomUUID().toString();
-            userService.createPasswordResetTokenForUser(user, passwordResetToken);
+            userAuthService.createPasswordResetTokenForUser(user, passwordResetToken);
             passwordResetEmailLink(user, applicationUrl(request), passwordResetToken);
             res = "We have sent a reset password link to your email. Please check!";
         }
@@ -137,13 +137,13 @@ public class AuthorizationController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        String tokenValidationResult = userService.validatePasswordResetToken(passwordResetToken);
+        String tokenValidationResult = userAuthService.validatePasswordResetToken(passwordResetToken);
         if (!tokenValidationResult.equalsIgnoreCase("valid")) {
             return new ResponseEntity<>("Invalid token password reset token", HttpStatus.BAD_REQUEST);
         }
         User user = userService.findUserByPasswordToken(passwordResetToken);
         if (user != null) {
-            userService.resetUserPassword(user, passwordResetRequest.getNewPassword());
+            userAuthService.resetUserPassword(user, passwordResetRequest.getNewPassword());
             userService.deleteTokenByToken(passwordResetToken);
             return new ResponseEntity<>("Password has been reset successfully", HttpStatus.OK);
         }

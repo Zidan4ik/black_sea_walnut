@@ -12,6 +12,7 @@ import org.example.black_sea_walnut.service.history.HistoryService;
 import org.example.black_sea_walnut.service.history.client.ClientCategoryService;
 import org.example.black_sea_walnut.service.news.NewService;
 import org.example.black_sea_walnut.service.product.ProductService;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;

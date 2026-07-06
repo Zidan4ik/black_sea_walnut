@@ -17,7 +17,6 @@ import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -207,7 +206,7 @@ public class ProductMapper implements GenericsMapper {
                 .build();
     }
 
-    public void updateBasicFields(Product entity, ProductRequestForAdd dto) {
+    private void updateBasicFields(Product entity, ProductRequestForAdd dto) {
         entity.getProductTranslations().clear();
         entity.getProductTranslations().add(new ProductTranslation(
                 null, LanguageCode.uk, dto.getNameUk(), dto.getRecipeUk(), dto.getConditionExploitationUk(), dto.getDescriptionProductUk(),

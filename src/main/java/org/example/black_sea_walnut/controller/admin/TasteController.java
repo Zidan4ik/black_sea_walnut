@@ -6,7 +6,8 @@ import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.enums.LanguageCode;
-import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.mapper.TasteMapper;
+import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class TasteController {
     private final TasteService tasteService;
+    private final TasteMapper tasteMapper;
 
     @PostMapping("/taste/save")
     public ResponseEntity<?> saveTaste(@Valid TasteRequestForAdd dto,
@@ -36,7 +38,7 @@ public class TasteController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        tasteService.save(dto);
+        tasteService.save(dto,tasteMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -48,7 +50,7 @@ public class TasteController {
 
     @GetMapping("/tastes")
     public ResponseEntity<Set<TasteResponseForView>> getTastes(@RequestParam String languageCode) {
-        Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(languageCode));
+        Set<TasteResponseForView> tastes = tasteService.getAllByLanguageCodeInDTO(LanguageCode.fromString(languageCode),tasteMapper::toDTOForView);
         return new ResponseEntity<>(tastes, HttpStatus.OK);
     }
 

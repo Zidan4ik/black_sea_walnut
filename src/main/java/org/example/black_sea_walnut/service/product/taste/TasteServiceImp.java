@@ -1,20 +1,23 @@
-package org.example.black_sea_walnut.service.imp;
+package org.example.black_sea_walnut.service.product.taste;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.example.black_sea_walnut.dto.admin.taste.TasteRequestForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
 import org.example.black_sea_walnut.entity.Taste;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.TasteMapper;
 import org.example.black_sea_walnut.repository.TasteRepository;
-import org.example.black_sea_walnut.service.TasteService;
+import org.example.black_sea_walnut.service.Nameable;
+import org.example.black_sea_walnut.service.history.DtoResponse;
+import org.example.black_sea_walnut.service.history.GenericsMapper;
+import org.example.black_sea_walnut.service.user.Saveable;
 import org.example.black_sea_walnut.util.LogUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,27 +26,26 @@ public class TasteServiceImp implements TasteService {
     private final TasteRepository tasteRepository;
     private final TasteMapper mapper = new TasteMapper();
 
-    @Override
-    public List<Taste> getAllByLanguageCodeInDTO() {
+    public List<Taste> getAllByLanguageCode() {
         LogUtil.logInfo("Fetching all tastes");
         return tasteRepository.findAll();
     }
 
     @Override
-    public Set<TasteResponseForView> getAllByLanguageCodeInDTO(LanguageCode code) {
+    public <R> Set<R> getAllByLanguageCodeInDTO(LanguageCode code, Function<Taste,R> mappingFunction) {
         LogUtil.logInfo("Fetching tastes by language code: " + code);
         Set<Taste> tastesSet = tasteRepository.findAllByLanguageCode(code);
+
         return tastesSet.stream()
-                .map(mapper::toDTOForView)
-                .sorted(Comparator.comparing(TasteResponseForView::getId))
+                .map(mappingFunction)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override
-    public String getSentence(Set<TasteResponseForView> tastes) {
+    public <R extends Nameable> String getSentence(Set<R> tastes) {
         LogUtil.logInfo("Generating sentence from taste names");
         return tastes.stream()
-                .map(TasteResponseForView::getName)
+                .map(Nameable::getName)
                 .collect(Collectors.joining(", "));
     }
 
@@ -60,9 +62,9 @@ public class TasteServiceImp implements TasteService {
     }
 
     @Override
-    public void save(TasteRequestForAdd dto) {
+    public <M extends GenericsMapper> void save(Saveable<Taste, M> dto, M mapper) {
         LogUtil.logInfo("Saving new tastes from DTO: " + dto);
-        List<Taste> list = mapper.toEntityFromRequest(dto);
+        List<Taste> list = dto.updateAndGetList(mapper);
         for (Taste t : list) {
             save(t);
         }
