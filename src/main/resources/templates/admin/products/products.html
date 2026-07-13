@@ -7,6 +7,9 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="#{text.products}"></title>
+
+    <script th:src="@{/js/tailwind.js}"></script>
+    <script th:src="@{/js/lucide.js}"></script>
 </head>
 <body>
 <!-- Content -->
@@ -28,11 +31,56 @@
                                     <option value="5" selected>5</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
-                                </select> <span th:text="#{text.entries}"></span></label>
+                                </select> <span th:text="#{text.export}"></span></label>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="d-flex justify-content-center justify-content-md-end align-items-center">
+                            <div class="relative inline-block text-left">
+
+                                <button id="exportButton" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-transparent hover:bg-emerald-50/80 text-emerald-700 font-semibold text-sm rounded-xl transition-all duration-200 border border-transparent active:scale-95 focus:outline-none hover:shadow-sm">
+                                    <i data-lucide="file-output" class="w-4 h-4 text-emerald-600 transition-colors duration-200"></i>
+                                    <span th:text="#{text.export}">Export</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 text-emerald-600" id="arrowIcon"></i>
+                                </button>
+
+                                <div id="dropdownMenu" class="hidden absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl transform opacity-0 scale-95 transition-all duration-200 origin-top-left z-50">
+                                    <div class="p-1.5 space-y-0.5">
+
+                                        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 rounded-xl transition-all duration-150 text-left group">
+                                            <i data-lucide="printer" class="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors"></i>
+                                            <span class="font-medium text-gray-600 group-hover:text-emerald-700 transition-colors"
+                                            th:text="#{text.print}"></span>
+                                        </button>
+
+                                        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 rounded-xl transition-all duration-150 text-left group">
+                                            <i data-lucide="file-text" class="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors"></i>
+                                            <span class="font-medium text-gray-600 group-hover:text-emerald-700 transition-colors">Csv</span>
+                                        </button>
+
+                                        <button id="export-excel"
+                                                class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 rounded-xl transition-all duration-150 text-left group">
+                                            <i data-lucide="upload-cloud" class="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors"></i>
+                                            <span class="font-medium text-gray-600 group-hover:text-emerald-700 transition-colors">Excel</span>
+                                        </button>
+
+                                        <button id="export-pdf" onclick="exportTableData(['id', 'name', 'taste', 'totalCount', 'priceByUnit', 'discount'], 'pdf')"
+                                                class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 rounded-xl transition-all duration-150 text-left group">
+                                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors"></i>
+                                            <span class="font-medium text-gray-600 group-hover:text-emerald-700 transition-colors">Pdf</span>
+                                        </button>
+
+                                        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 rounded-xl transition-all duration-150 text-left group">
+                                            <i data-lucide="copy" class="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors"></i>
+                                            <span class="font-medium text-gray-600 group-hover:text-emerald-700 transition-colors"
+                                                  th:text="#{text.copy}"></span>
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <a th:href="@{/admin/product/create}" class="btn btn-green btn-icon rounded-pill me-2">
                                 <i class="ti ti-plus"></i>
                             </a>
@@ -106,6 +154,20 @@
             window.location.pathname = contextPath + `/admin/product/${id}/edit`;
         });
 
+        $(document).on('click', '#export-excel', function() {
+            let currentLang = getCurrentLang();
+            if (!currentLang) currentLang = 'uk';
+            window.location.href =
+                `${contextPath}/admin/products/export/excel?lang=` + currentLang.toLowerCase();
+        });
+
+        $(document).on('click', '#export-pdf', function() {
+            let currentLang = getCurrentLang();
+            if (!currentLang) currentLang = 'uk';
+            window.location.href =
+                `${contextPath}/admin/products/export/pdf?lang=` + currentLang.toLowerCase();
+        });
+
         $(document).on('click', '.delete-icon', function () {
             let id = $(this).data('id');
             confirmAndPathDelete(id,`${contextPath}/admin/product/${id}/delete`,()=>{invokeRequest(inputs,0,true)});
@@ -153,6 +215,54 @@
 
         $(document).ready(function (){
             selectedLanguage();
+        });
+    </script>
+
+    <script>
+        // Ініціалізація іконок Lucide
+        lucide.createIcons();
+
+        const button = document.getElementById('exportButton');
+        const menu = document.getElementById('dropdownMenu');
+        const arrow = document.getElementById('arrowIcon');
+
+        let isOpen = false;
+
+        function toggleDropdown() {
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                // Показуємо меню
+                menu.classList.remove('hidden');
+                // Невеликий таймаут, щоб браузер встиг зняти hidden перед початком анімації opacity/scale
+                setTimeout(() => {
+                    menu.classList.remove('opacity-0', 'scale-95');
+                    menu.classList.add('opacity-100', 'scale-100');
+                    arrow.classList.add('rotate-180');
+                }, 10);
+            } else {
+                // Ховаємо меню з плавною анімацією назад
+                menu.classList.remove('opacity-100', 'scale-100');
+                menu.classList.add('opacity-0', 'scale-95');
+                arrow.classList.remove('rotate-180');
+
+                // Чекаємо завершення анімації (200мс), перед тим як повністю приховати (hidden)
+                setTimeout(() => {
+                    if (!isOpen) menu.classList.add('hidden');
+                }, 200);
+            }
+        }
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation(); // Запобігає миттєвому закриттю через click на body
+            toggleDropdown();
+        });
+
+        // Закриваємо меню, якщо клікнули поза ним
+        document.addEventListener('click', (e) => {
+            if (isOpen && !button.contains(e.target) && !menu.contains(e.target)) {
+                toggleDropdown();
+            }
         });
     </script>
 </div>

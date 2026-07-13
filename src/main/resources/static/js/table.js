@@ -81,6 +81,57 @@ function invokeRequest(inputs, page, forceUpdate = false) {
     }
 }
 
+function exportTableData(inputs, format) {
+    if (Array.isArray(inputs)) {
+        const errorContainer = document.getElementById('error-container');
+
+        const validationRules = {
+            id: {msg: messages.invalidNumber, reg: /^\d+$/},
+            priceByUnit: {msg: messages.filterProduct, reg: /^\d+$/},
+            totalCount: {msg: messages.filterAmount, reg: /^\d+$/},
+            totalPrice: {msg: messages.filterPrice, reg: /^\d+$/,},
+            date: {msg: messages.filterDate, reg: /^(0[1-9]|[12]\d|3[01]).(0[1-9]|1[0-2]).\d{4}$/},
+            phone: {msg: messages.filterPhone, reg: /^(\+38)?\s?\(?\d{3}\)?\s?\d{3}\s?\d{2}\s?\d{2}$/}
+        };
+
+        for (const name of inputs) {
+            const input = document.querySelector(`[name=${name}]`);
+            if (!input) continue;
+            input.classList.remove('is-invalid');
+            let value = input.value;
+            if (value !== '' && validationRules[name]) {
+                const rule = validationRules[name];
+                if (!rule.reg.test(value)) {
+                    input.classList.add('is-invalid');
+                    if (errorContainer) {
+                        errorContainer.innerHTML = `
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                ${rule.msg} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`;
+                    }
+                    return;
+                }
+            }
+        }
+
+        if (errorContainer) errorContainer.innerHTML = '';
+
+        const params = new URLSearchParams();
+        for (const name of inputs) {
+            const input = document.querySelector(`[name=${name}]`);
+            if (input && input.value !== '') {
+                params.append(name, input.value);
+            }
+        }
+
+        let currentLang = getCurrentLang();
+        if (!currentLang) currentLang = 'uk';
+
+        params.append('languageCode', currentLang.toLowerCase());
+        window.location.href = `${window.location.pathname}/export/${format}?${params.toString()}`;
+    }
+}
+
 $(document).on('click', '.pagination a', function () {
     let $li = $(this).parent('li');
     const isActive = $li.hasClass('active');

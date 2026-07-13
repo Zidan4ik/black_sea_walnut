@@ -10,13 +10,20 @@ import org.example.black_sea_walnut.dto.admin.product.ProductResponseForAdd;
 import org.example.black_sea_walnut.dto.admin.product.ResponseAllDiscountsAndTastes;
 import org.example.black_sea_walnut.dto.admin.product.ProductResponseForViewInProducts;
 import org.example.black_sea_walnut.dto.admin.taste.TasteResponseForView;
+import org.example.black_sea_walnut.entity.Product;
 import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ProductMapper;
+import org.example.black_sea_walnut.mapper.TasteMapper;
 import org.example.black_sea_walnut.service.DiscountService;
+import org.example.black_sea_walnut.service.document.excel.ProductExcelExporter;
+import org.example.black_sea_walnut.service.document.pdf.PdfExportService;
 import org.example.black_sea_walnut.service.product.ProductService;
 import org.example.black_sea_walnut.service.product.taste.TasteService;
 import org.example.black_sea_walnut.service.specifications.ProductSpecification;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +32,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +46,47 @@ public class ProductController {
     private final DiscountService discountService;
     private final TasteService tasteService;
     private final ProductMapper productMapper;
+    private final TasteMapper tasteMapper;
+    private final ProductExcelExporter productExcelExporter;
+    private final PdfExportService pdfExportService;
+
+    @GetMapping("/products/export/excel")
+    @ResponseBody
+    public ResponseEntity<InputStreamResource> exportToExcelProduct(@RequestParam(defaultValue = "uk") LanguageCode lang){
+        List<Product> products = productService.getAll();
+        ByteArrayInputStream in = productExcelExporter.exportProducts(products, lang);
+        String fileName = "products_report_" + lang + ".xlsx";
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(in));
+    }
+
+    @GetMapping("/products/export/pdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportToPdfProduct(@ModelAttribute ProductResponseForViewInProducts responseProductForView,
+                                                     @RequestParam(defaultValue = "uk") String lang){
+        try {
+            LanguageCode code = LanguageCode.fromString(lang);
+            Pageable unpaged = Pageable.unpaged();
+            PageResponse<ProductResponseForViewInProducts> pageResponse = productService.getAll(
+                    ProductSpecification.getSpecification(responseProductForView, code),
+                    unpaged,
+                    product -> productMapper.toDTOForView(product, code)
+            );
+
+            List<ProductResponseForViewInProducts> dtoList = pageResponse.getContent();
+            String title = code == LanguageCode.en ? "Products Report" : "Звіт по продуктах";
+            byte[] pdfBytes = pdfExportService.exportToPdf(dtoList, title);
+            String fileName = "products_report_" + code.name().toLowerCase() + ".pdf";
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(pdfBytes);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @GetMapping("/warehouse")
     public ModelAndView viewWareAndHouse() {
@@ -60,7 +110,7 @@ public class ProductController {
                 ProductSpecification.getSpecification(responseProductForView, code), pageable, n -> productMapper.toDTOForView(n, code));
         model.addObject("data", pageResponse.getContent());
 
-        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode),null);
+        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode),tasteMapper::toDTOForView);
         Set<DiscountResponseForView> discounts = discountService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
         model.addObject("tastes", tasteService.getSentence(names));
         model.addObject("discounts", discountService.getSentence(discounts));
@@ -107,8 +157,8 @@ public class ProductController {
 
     @GetMapping("/tastesAndDiscounts/get")
     public ResponseEntity<ResponseAllDiscountsAndTastes> getTastesAndDiscounts() {
-        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk,null);
-        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en,null);
+        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk,tasteMapper::toDTOForView);
+        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en,tasteMapper::toDTOForView);
         Set<DiscountResponseForView> discountUk = discountService.getAllByLanguageCodeInDTO(LanguageCode.uk);
         Set<DiscountResponseForView> discountEn = discountService.getAllByLanguageCodeInDTO(LanguageCode.en);
         ResponseAllDiscountsAndTastes dto = ResponseAllDiscountsAndTastes.builder().tastesUk(tastesUk).tastesEn(tastesEn).discountsUk(discountUk).discountsEn(discountEn).build();

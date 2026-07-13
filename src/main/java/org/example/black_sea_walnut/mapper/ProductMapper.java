@@ -43,6 +43,7 @@ public class ProductMapper implements GenericsMapper {
                 .totalCount(String.valueOf(entity.getTotalCount()))
                 .priceByUnit(entity.getPriceByUnit())
                 .discount(discountName)
+                .languageCode(languageCode)
                 .build();
     }
 
