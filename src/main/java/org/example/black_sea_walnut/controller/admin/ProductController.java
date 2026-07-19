@@ -15,6 +15,7 @@ import org.example.black_sea_walnut.enums.LanguageCode;
 import org.example.black_sea_walnut.mapper.ProductMapper;
 import org.example.black_sea_walnut.mapper.TasteMapper;
 import org.example.black_sea_walnut.service.DiscountService;
+import org.example.black_sea_walnut.service.document.csv.CsvExportService;
 import org.example.black_sea_walnut.service.document.excel.ProductExcelExporter;
 import org.example.black_sea_walnut.service.document.pdf.PdfExportService;
 import org.example.black_sea_walnut.service.product.ProductService;
@@ -49,10 +50,11 @@ public class ProductController {
     private final TasteMapper tasteMapper;
     private final ProductExcelExporter productExcelExporter;
     private final PdfExportService pdfExportService;
+    private final CsvExportService csvExportService;
 
     @GetMapping("/products/export/excel")
     @ResponseBody
-    public ResponseEntity<InputStreamResource> exportToExcelProduct(@RequestParam(defaultValue = "uk") LanguageCode lang){
+    public ResponseEntity<InputStreamResource> exportToExcelProduct(@RequestParam(defaultValue = "uk") LanguageCode lang) {
         List<Product> products = productService.getAll();
         ByteArrayInputStream in = productExcelExporter.exportProducts(products, lang);
         String fileName = "products_report_" + lang + ".xlsx";
@@ -65,7 +67,7 @@ public class ProductController {
     @GetMapping("/products/export/pdf")
     @ResponseBody
     public ResponseEntity<byte[]> exportToPdfProduct(@ModelAttribute ProductResponseForViewInProducts responseProductForView,
-                                                     @RequestParam(defaultValue = "uk") String lang){
+                                                     @RequestParam(defaultValue = "uk") String lang) {
         try {
             LanguageCode code = LanguageCode.fromString(lang);
             Pageable unpaged = Pageable.unpaged();
@@ -86,6 +88,35 @@ public class ProductController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/products/export/csv")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportToCsvProduct(
+            @ModelAttribute ProductResponseForViewInProducts responseProductForView,
+            @RequestParam(defaultValue = "uk") String lang,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        LanguageCode code = LanguageCode.fromString(lang);
+
+        Pageable unpaged = PageRequest.of(page, size);
+
+        PageResponse<ProductResponseForViewInProducts> pageResponse =
+                productService.getAll(
+                        ProductSpecification.getSpecification(responseProductForView, code),
+                        unpaged,
+                        product -> productMapper.toDTOForView(product, code)
+                );
+        byte[] csv = csvExportService.export(pageResponse.getContent());
+
+        String fileName = "products_report_" + code.name().toLowerCase() + ".csv";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + fileName + "\"")
+                .contentType(new MediaType("text", "csv"))
+                .body(csv);
     }
 
     @GetMapping("/warehouse")
@@ -110,7 +141,7 @@ public class ProductController {
                 ProductSpecification.getSpecification(responseProductForView, code), pageable, n -> productMapper.toDTOForView(n, code));
         model.addObject("data", pageResponse.getContent());
 
-        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode),tasteMapper::toDTOForView);
+        Set<TasteResponseForView> names = tasteService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode), tasteMapper::toDTOForView);
         Set<DiscountResponseForView> discounts = discountService.getAllByLanguageCodeInDTO(LanguageCode.valueOf(languageCode));
         model.addObject("tastes", tasteService.getSentence(names));
         model.addObject("discounts", discountService.getSentence(discounts));
@@ -151,14 +182,14 @@ public class ProductController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errors);
         }
-        productService.save(dto,productMapper);
+        productService.save(dto, productMapper);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/tastesAndDiscounts/get")
     public ResponseEntity<ResponseAllDiscountsAndTastes> getTastesAndDiscounts() {
-        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk,tasteMapper::toDTOForView);
-        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en,tasteMapper::toDTOForView);
+        Set<TasteResponseForView> tastesUk = tasteService.getAllByLanguageCodeInDTO(LanguageCode.uk, tasteMapper::toDTOForView);
+        Set<TasteResponseForView> tastesEn = tasteService.getAllByLanguageCodeInDTO(LanguageCode.en, tasteMapper::toDTOForView);
         Set<DiscountResponseForView> discountUk = discountService.getAllByLanguageCodeInDTO(LanguageCode.uk);
         Set<DiscountResponseForView> discountEn = discountService.getAllByLanguageCodeInDTO(LanguageCode.en);
         ResponseAllDiscountsAndTastes dto = ResponseAllDiscountsAndTastes.builder().tastesUk(tastesUk).tastesEn(tastesEn).discountsUk(discountUk).discountsEn(discountEn).build();
@@ -190,7 +221,7 @@ public class ProductController {
     @GetMapping("/product/{id}")
     @ResponseBody
     public ResponseEntity<ProductResponseForAdd> getProduct(@PathVariable Long id) {
-        return new ResponseEntity<>(productService.getByIdLikeDTO(id,productMapper::toResponseForAdd), HttpStatus.OK);
+        return new ResponseEntity<>(productService.getByIdLikeDTO(id, productMapper::toResponseForAdd), HttpStatus.OK);
     }
 
     @GetMapping("/products/configuration")

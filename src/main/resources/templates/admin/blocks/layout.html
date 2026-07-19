@@ -244,6 +244,25 @@
         });
     }
 
+    function invokeCustomAlertError(message) {
+        Swal.fire({
+            icon: 'error',
+            title: message || messages.error || 'Error!',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
+    function invokeCustomAlertCopy(){
+        Swal.fire({
+            icon: 'success',
+            title: messages.copied,
+            text: messages.copyDataToBuffer,
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+
     function invokeBlockUI() {
         $("#card-block").block({
             message: '<div class="sk-wave sk-primary mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
@@ -405,6 +424,8 @@
         change: /*[[#{text.button.change}]]*/ 'default',
         delete: /*[[#{text.button.delete}]]*/ 'default',
         amountOrders: /*[[#{text.amount.orders}]]*/ 'default',
+        copyDataToBuffer: /*[[#{text.copyDesc}]]*/ 'default',
+        copied: /*[[#{text.copied}]]*/ 'default',
     };
 </script>
 </body>
