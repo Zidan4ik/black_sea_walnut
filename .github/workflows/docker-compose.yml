@@ -7,3 +7,5 @@ services:
       - "8080:8080"
     volumes:
       - /home/ubuntu/uploads:/app/uploads
+    env_file:
+      - .env
