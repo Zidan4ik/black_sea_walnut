@@ -7,6 +7,6 @@ services:
       - /home/ubuntu/uploads:/app/uploads
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - DB_HOST=${DB_HOST}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_URL=${AWS_DB_URL}
+      - DB_USERNAME=${AWS_DB_USERNAME}
+      - DB_PASSWORD=${AWS_DB_PASSWORD}

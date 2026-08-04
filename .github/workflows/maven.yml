@@ -20,9 +20,9 @@ jobs:
             cd ~/black_sea_walnut
             git pull origin main
 
-            DB_HOST="${{ secrets.DB_HOST }}" \
-            DB_USERNAME="${{ secrets.DB_USERNAME }}" \
-            DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            AWS_DB_URL="${{ secrets.AWS_DB_URL }}" \
+            AWS_DB_USERNAME="${{ secrets.AWS_DB_USERNAME }}" \
+            AWS_DB_PASSWORD="${{ secrets.AWS_DB_PASSWORD }}" \
             docker-compose up -d --build
 
             docker image prune -f
