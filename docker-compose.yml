@@ -5,5 +5,8 @@ services:
       - "8080:8080"
     volumes:
       - /home/ubuntu/uploads:/app/uploads
-    env_file:
-      - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
