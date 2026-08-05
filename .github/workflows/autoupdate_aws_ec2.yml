@@ -5,7 +5,7 @@ on:
     branches: [ "dev2" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,9 +26,7 @@ jobs:
             git checkout dev2
             git pull origin dev2
 
-            AWS_DB_URL="${{ secrets.AWS_DB_URL }}" \
-            AWS_DB_USERNAME="${{ secrets.AWS_DB_USERNAME }}" \
-            AWS_DB_PASSWORD="${{ secrets.AWS_DB_PASSWORD }}" \
-            docker-compose up -d --build
+            docker compose down
+            docker compose up -d --build
 
             docker image prune -f

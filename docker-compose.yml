@@ -1,13 +1,10 @@
+version: '3.8'
 services:
   app:
     build: .
     ports:
       - "8080:8080"
-    volumes:
-      - /home/ubuntu/uploads:/app/uploads
     environment:
-      - TZ=Europe/Prague
-      - SPRING_PROFILES_ACTIVE=prod
       - AWS_DB_URL=${AWS_DB_URL}
       - AWS_DB_USERNAME=${AWS_DB_USERNAME}
       - AWS_DB_PASSWORD=${AWS_DB_PASSWORD}
