@@ -6,6 +6,7 @@ services:
     volumes:
       - /home/ubuntu/uploads:/app/uploads
     environment:
+      - TZ=Europe/Prague
       - SPRING_PROFILES_ACTIVE=prod
       - DB_URL=${AWS_DB_URL}
       - DB_USERNAME=${AWS_DB_USERNAME}
