@@ -1,10 +1,27 @@
 version: '3.8'
+
 services:
+  db:
+    image: mysql:8.0
+    container_name: walnut-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: black_sea_walnut
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: pravnyk2003
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+
   app:
-    build: .
+    image: zidan4ikuk/black_sea_walnut:latest
+    container_name: walnut-app
+    restart: always
     ports:
       - "8080:8080"
     environment:
-      - AWS_DB_URL=${AWS_DB_URL}
-      - AWS_DB_USERNAME=${AWS_DB_USERNAME}
-      - AWS_DB_PASSWORD=${AWS_DB_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/black_sea_walnut?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: pravnyk2003
+    depends_on:
+      - db

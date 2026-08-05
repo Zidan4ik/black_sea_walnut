@@ -1,32 +1,48 @@
-name: CI/CD Deploy to AWS EC2
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "dev2" ]
+    branches:
+      - dev2
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy application via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        env:
-          AWS_DB_URL: ${{ secrets.AWS_DB_URL }}
-          AWS_DB_USERNAME: ${{ secrets.AWS_DB_USERNAME }}
-          AWS_DB_PASSWORD: ${{ secrets.AWS_DB_PASSWORD }}
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          host: ${{ secrets.AWS_EC2_HOST }}
-          username: ${{ secrets.AWS_EC2_USERNAME }}
-          key: ${{ secrets.AWS_EC2_SSH_KEY }}
-          envs: AWS_DB_URL,AWS_DB_USERNAME,AWS_DB_PASSWORD
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/black_sea_walnut:latest
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/black_sea_walnut
-            git fetch origin
-            git checkout dev2
-            git pull origin dev2
-
+            docker compose pull
             docker compose down
-            docker compose up -d --build
-
-            docker image prune -f
+            docker compose up -d
