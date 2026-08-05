@@ -11,11 +11,15 @@ jobs:
     steps:
       - name: Deploy application via SSH
         uses: appleboy/ssh-action@v1.0.3
+        envs:
+          AWS_DB_URL: ${{ secrets.AWS_DB_URL }}
+          AWS_DB_USERNAME: ${{ secrets.AWS_DB_USERNAME }}
+          AWS_DB_PASSWORD: ${{ secrets.AWS_DB_PASSWORD }}
         with:
           host: ${{ secrets.AWS_EC2_HOST }}
           username: ${{ secrets.AWS_EC2_USERNAME }}
           key: ${{ secrets.AWS_EC2_SSH_KEY }}
-          envs: AWS_DB_URL, AWS_DB_USERNAME, AWS_DB_PASSWORD
+          envs: AWS_DB_URL,AWS_DB_USERNAME,AWS_DB_PASSWORD
           script: |
             cd ~/black_sea_walnut
             git fetch origin
