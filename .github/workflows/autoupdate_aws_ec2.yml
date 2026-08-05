@@ -33,7 +33,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.zidan4ikuk }}/black_sea_walnut:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/black_sea_walnut:latest
 
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
