@@ -12,13 +12,15 @@ jobs:
       - name: Deploy application via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          envs: DB_HOST, DB_USERNAME, DB_PASSWORD
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ${{ secrets.AWS_EC2_USERNAME }}
+          key: ${{ secrets.AWS_EC2_SSH_KEY }}
+          envs: AWS_DB_URL, AWS_DB_USERNAME, AWS_DB_PASSWORD
           script: |
             cd ~/black_sea_walnut
-            git pull origin main
+            git fetch origin
+            git checkout dev2
+            git pull origin dev2
 
             AWS_DB_URL="${{ secrets.AWS_DB_URL }}" \
             AWS_DB_USERNAME="${{ secrets.AWS_DB_USERNAME }}" \
