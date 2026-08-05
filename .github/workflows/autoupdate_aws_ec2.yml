@@ -34,6 +34,8 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/black_sea_walnut:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
