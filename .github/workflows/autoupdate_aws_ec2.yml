@@ -42,9 +42,11 @@ jobs:
             cd ~/black_sea_walnut
             
             pkill -f 'java -jar' || true
+            sleep 3
             
             export AWS_DB_URL="jdbc:mysql://localhost:3306/black_sea_walnut?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
             export AWS_DB_USERNAME="${{ secrets.AWS_DB_USERNAME }}"
             export AWS_DB_PASSWORD="${{ secrets.AWS_DB_PASSWORD }}"
 
             nohup java -jar *.jar > app.log 2>&1 &
+            sleep 2
